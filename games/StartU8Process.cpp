@@ -73,9 +73,9 @@ void StartU8Process::run()
 			return;
 		}
 	
-		uint16 objid = uclist.getuint16(0);
+		uint16_t objid = uclist.getuint16_t(0);
 		Egg* egg = p_dynamic_cast<Egg*>(getObject(objid));
-		sint32 ix, iy, iz;
+		int32_t ix, iy, iz;
 		egg->getLocation(ix,iy,iz);
 		// Center on egg
 		CameraProcess::SetCameraProcess(new CameraProcess(ix,iy,iz));
@@ -93,7 +93,7 @@ void StartU8Process::run()
 		perr << "Unable to find MUSIC egg!" << std::endl;
 	}
 	else {
-		ObjId objid = uclist.getuint16(0);
+		ObjId objid = uclist.getuint16_t(0);
 		Item *musicEgg = getItem(objid);
 		musicEgg->callUsecodeEvent_cachein();
 	}
@@ -114,7 +114,7 @@ void StartU8Process::saveData(ODataSource* ods)
 	Process::saveData(ods);
 }
 
-bool StartU8Process::loadData(IDataSource* ids, uint32 version)
+bool StartU8Process::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

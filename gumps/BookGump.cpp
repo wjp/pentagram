@@ -104,7 +104,7 @@ void BookGump::OnMouseDouble(int button, int mx, int my)
 	Close();
 }
 
-uint32 BookGump::I_readBook(const uint8* args, unsigned int /*argsize*/)
+uint32_t BookGump::I_readBook(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_STRING(str);
@@ -122,7 +122,7 @@ void BookGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to save ModalGump");
 }
 
-bool BookGump::loadData(IDataSource* ids, uint32 version)
+bool BookGump::loadData(IDataSource* ids, uint32_t version)
 {
 	CANT_HAPPEN_MSG("Trying to load ModalGump");
 

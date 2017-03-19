@@ -26,10 +26,10 @@
 class PaletteFaderProcess : public Process
 {
 	int							priority;
-	sint32						counter;
-	sint32						max_counter;
-	sint16						old_matrix[12];	// Fixed point -4.11
-	sint16						new_matrix[12];
+	int32_t						counter;
+	int32_t						max_counter;
+	int16_t						old_matrix[12];	// Fixed point -4.11
+	int16_t						new_matrix[12];
 public:
 	static PaletteFaderProcess	*fader;
 
@@ -37,8 +37,8 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 	PaletteFaderProcess();
 	PaletteFaderProcess(Pentagram::PalTransforms trans, int priority, int frames);
-	PaletteFaderProcess(uint32 rgba, bool from, int priority, int frames, bool current);
-	PaletteFaderProcess(sint16 from[12], sint16 to[12], int priority, int frames);
+	PaletteFaderProcess(uint32_t rgba, bool from, int priority, int frames, bool current);
+	PaletteFaderProcess(int16_t from[12], int16_t to[12], int priority, int frames);
 	virtual ~PaletteFaderProcess(void);
 
 	virtual void run();
@@ -50,7 +50,7 @@ public:
 	INTRINSIC(I_fadeFromBlack);
 	INTRINSIC(I_lightningBolt);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

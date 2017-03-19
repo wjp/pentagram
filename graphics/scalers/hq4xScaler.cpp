@@ -29,16 +29,16 @@ namespace Pentagram {
 
 hq4xScaler::hq4xScaler() : Scaler()
 {
-	Scale16Nat = GetScaler<uint16, Manip_Nat2Nat_16, uint16>();
-	Scale16Sta = GetScaler<uint16, Manip_Sta2Nat_16, uint32>();
+	Scale16Nat = GetScaler<uint16_t, Manip_Nat2Nat_16, uint16_t>();
+	Scale16Sta = GetScaler<uint16_t, Manip_Sta2Nat_16, uint32_t>();
 
-	Scale32Nat = GetScaler<uint32, Manip_Nat2Nat_32, uint32>();
-	Scale32Sta = GetScaler<uint32, Manip_Sta2Nat_32, uint32>();
-	Scale32_A888 = GetScaler<uint32, Manip_32_A888, uint32>();
-	Scale32_888A = GetScaler<uint32, Manip_32_888A, uint32>();
+	Scale32Nat = GetScaler<uint32_t, Manip_Nat2Nat_32, uint32_t>();
+	Scale32Sta = GetScaler<uint32_t, Manip_Sta2Nat_32, uint32_t>();
+	Scale32_A888 = GetScaler<uint32_t, Manip_32_A888, uint32_t>();
+	Scale32_888A = GetScaler<uint32_t, Manip_32_888A, uint32_t>();
 }
 
-const uint32 hq4xScaler::ScaleBits() const { return 1<<4; }
+const uint32_t hq4xScaler::ScaleBits() const { return 1<<4; }
 const bool hq4xScaler::ScaleArbitrary() const { return false; }
 
 const char *hq4xScaler::ScalerName() const { return "hq4x"; }

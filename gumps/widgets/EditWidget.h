@@ -43,8 +43,8 @@ public:
 
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
 
-	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
-	virtual void PaintComposited(RenderSurface* surf, sint32 lerp_factor, sint32 sx, sint32 sy);
+	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
+	virtual void PaintComposited(RenderSurface* surf, int32_t lerp_factor, int32_t sx, int32_t sy);
 
 	virtual Gump* OnMouseMotion(int mx, int my);
 	virtual bool OnKeyDown(int key, int mod);
@@ -70,7 +70,7 @@ protected:
 	unsigned int maxlength;
 	bool multiline;
 
-	uint32 cursor_changed;
+	uint32_t cursor_changed;
 	bool cursor_visible;
 
 	void ensureCursorVisible();

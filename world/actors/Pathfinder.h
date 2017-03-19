@@ -29,15 +29,15 @@ class Item;
 
 struct PathfindingState
 {
-	sint32 x, y, z;
+	int32_t x, y, z;
 	Animation::Sequence lastanim;
-	uint32 direction;
+	uint32_t direction;
 	bool flipped;
 	bool firststep;
 	bool combat;
 
 	void load(Actor* actor);
-	bool checkPoint(sint32 x_, sint32 y_, sint32 z_,int range);
+	bool checkPoint(int32_t x_, int32_t y_, int32_t z_,int range);
 	bool checkItem(Item* item, int xyRange, int zRange);
 	bool checkHit(Actor* actor, Actor* target);
 };
@@ -45,8 +45,8 @@ struct PathfindingState
 struct PathfindingAction
 {
 	Animation::Sequence action;
-	uint32 direction;
-	uint32 steps;
+	uint32_t direction;
+	uint32_t steps;
 };
 
 struct PathNode;
@@ -63,7 +63,7 @@ public:
 	~Pathfinder();
 
 	void init(Actor* actor, PathfindingState* state=0);
-	void setTarget(sint32 x, sint32 y, sint32 z);
+	void setTarget(int32_t x, int32_t y, int32_t z);
 	void setTarget(Item* item, bool hit=false);
 
 	//! try to reach the target by pathfinding
@@ -82,19 +82,19 @@ public:
 protected:
 	PathfindingState start;
 	Actor* actor;
-	sint32 targetx, targety, targetz;
+	int32_t targetx, targety, targetz;
 	Item* targetitem;
 	bool hitmode;
-	sint32 expandtime;
+	int32_t expandtime;
 
-	sint32 actor_xd,actor_yd,actor_zd;
+	int32_t actor_xd,actor_yd,actor_zd;
 
 	std::list<PathfindingState> visited;
 	std::priority_queue<PathNode*,std::vector<PathNode*>,PathNodeCmp> nodes;
 
 	std::list<PathNode*> nodelist;
 
-	bool alreadyVisited(sint32 x, sint32 y, sint32 z);
+	bool alreadyVisited(int32_t x, int32_t y, int32_t z);
 	void newNode(PathNode* oldnode,PathfindingState& state,unsigned int steps);
 	void expandNode(PathNode* node);
 	unsigned int costHeuristic(PathNode* node);

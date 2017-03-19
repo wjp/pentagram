@@ -73,7 +73,7 @@ void ShapeRenderedText::draw(RenderSurface* surface, int x, int y, bool /*destma
 }
 
 void ShapeRenderedText::drawBlended(RenderSurface* surface, int x, int y,
-									uint32 col, bool /*destmasked*/)
+									uint32_t col, bool /*destmasked*/)
 {
 	// TODO Support masking here ????
 

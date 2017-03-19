@@ -77,7 +77,7 @@ void AmbushProcess::saveData(ODataSource* ods)
 	ods->write4(delaycount);
 }
 
-bool AmbushProcess::loadData(IDataSource* ids, uint32 version)
+bool AmbushProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

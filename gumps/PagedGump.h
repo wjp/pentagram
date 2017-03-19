@@ -34,10 +34,10 @@ public:
 	virtual void Close(bool no_del = false);
 
 	// Paint the Gump
-	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
 
 	virtual bool OnKeyDown(int key, int mod);
-	virtual void ChildNotify(Gump *child, uint32 message);
+	virtual void ChildNotify(Gump *child, uint32_t message);
 
 	//! add a page. Note: g already has to be a child gump.
 	void addPage(Gump* g);

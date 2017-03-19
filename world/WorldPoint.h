@@ -21,21 +21,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 struct WorldPoint
 {
-	uint8 buf[5];
+	uint8_t buf[5];
 
-	uint16 getX() const 
+	uint16_t getX() const 
 		{ return buf[0] + (buf[1]<<8); }
-	uint16 getY() const 
+	uint16_t getY() const 
 		{ return buf[2] + (buf[3]<<8); }
-	uint16 getZ() const 
+	uint16_t getZ() const 
 		{ return buf[4]; }
 
-	void setX(sint32 x) 
-		{ buf[0] = static_cast<uint8>(x); buf[1] = static_cast<uint8>(x>>8); }
-	void setY(sint32 y) 
-		{ buf[2] = static_cast<uint8>(y); buf[3] = static_cast<uint8>(y>>8); }
-	void setZ(sint32 z) 
-		{ buf[4] = static_cast<uint8>(z); }
+	void setX(int32_t x) 
+		{ buf[0] = static_cast<uint8_t>(x); buf[1] = static_cast<uint8_t>(x>>8); }
+	void setY(int32_t y) 
+		{ buf[2] = static_cast<uint8_t>(y); buf[3] = static_cast<uint8_t>(y>>8); }
+	void setZ(int32_t z) 
+		{ buf[4] = static_cast<uint8_t>(z); }
 };
 
 #endif // WORLDPOINT_H_INCLUDED

@@ -55,7 +55,7 @@ static void ctl_pitch_bend(int channel, int val);
 static void ctl_reset(void);
 static int ctl_open(int using_stdin, int using_stdout);
 static void ctl_close(void);
-static int ctl_read(sint32 *valp);
+static int ctl_read(int32_t *valp);
 static int cmsg(int type, int verbosity_level, const char *fmt, ...);
 
 /**********************************/
@@ -85,7 +85,7 @@ static void ctl_close(void)
   ctl.opened=0;
 }
 
-static int ctl_read(sint32 *valp)
+static int ctl_read(int32_t *valp)
 {
   return TM_RC_NONE;
 }

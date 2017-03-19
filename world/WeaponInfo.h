@@ -21,15 +21,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 struct WeaponInfo {
-	uint32 shape;
-	uint8 overlay_type;
-	uint32 overlay_shape;
-	uint8 damage_modifier;
-	uint8 base_damage;
-	uint8 dex_attack_bonus;
-	uint8 dex_defend_bonus;
-	uint8 armour_bonus;
-	uint16 damage_type;
+	uint32_t shape;
+	uint8_t overlay_type;
+	uint32_t overlay_shape;
+	uint8_t damage_modifier;
+	uint8_t base_damage;
+	uint8_t dex_attack_bonus;
+	uint8_t dex_defend_bonus;
+	uint8_t armour_bonus;
+	uint16_t damage_type;
 	int treasure_chance;
 
 	enum DmgType {

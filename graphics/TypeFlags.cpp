@@ -39,7 +39,7 @@ TypeFlags::~TypeFlags()
 
 }
 
-ShapeInfo* TypeFlags::getShapeInfo(uint32 shapenum)
+ShapeInfo* TypeFlags::getShapeInfo(uint32_t shapenum)
 {
 	if (shapenum < shapeInfo.size())
 		return &(shapeInfo[shapenum]);
@@ -59,15 +59,15 @@ void TypeFlags::load(IDataSource *ds)
 		blocksize = 9;
 	}
 
-	uint32 size = ds->getSize();
-	uint32 count = size / blocksize;
+	uint32_t size = ds->getSize();
+	uint32_t count = size / blocksize;
 
 	shapeInfo.clear();
 	shapeInfo.resize(count);
 
-	for (uint32 i = 0; i < count; ++i)
+	for (uint32_t i = 0; i < count; ++i)
 	{
-		uint8 data[9];
+		uint8_t data[9];
 		ds->read(data, blocksize);
 
 		ShapeInfo si;
@@ -158,7 +158,7 @@ void TypeFlags::load(IDataSource *ds)
 	if (GAME_IS_U8) {
 		// Workaround for incorrectly set solid flags on some "moss
 		// curtains" in the catacombs. See also docs/u8bugs.txt
-		for(uint32 i = 459; i <= 464; ++i) {
+		for(uint32_t i = 459; i <= 464; ++i) {
 			shapeInfo[i].flags &= ~ShapeInfo::SI_SOLID;
 		}
 	}
@@ -186,34 +186,34 @@ void TypeFlags::loadWeaponInfo()
 		int val;
 
 		config->get(k + "/shape", val);
-		wi->shape = static_cast<uint32>(val);
+		wi->shape = static_cast<uint32_t>(val);
 
 		config->get(k + "/overlay", val);
-		wi->overlay_type = static_cast<uint8>(val);
+		wi->overlay_type = static_cast<uint8_t>(val);
 
 		config->get(k + "/overlay_shape", val);
-		wi->overlay_shape = static_cast<uint32>(val);
+		wi->overlay_shape = static_cast<uint32_t>(val);
 
 		config->get(k + "/damage_mod", val);
-		wi->damage_modifier = static_cast<uint8>(val);
+		wi->damage_modifier = static_cast<uint8_t>(val);
 
 		config->get(k + "/base_damage", val);
-		wi->base_damage = static_cast<uint8>(val);
+		wi->base_damage = static_cast<uint8_t>(val);
 
 		config->get(k + "/attack_dex", val);
-		wi->dex_attack_bonus = static_cast<uint8>(val);
+		wi->dex_attack_bonus = static_cast<uint8_t>(val);
 
 		config->get(k + "/defend_dex", val);
-		wi->dex_defend_bonus = static_cast<uint8>(val);
+		wi->dex_defend_bonus = static_cast<uint8_t>(val);
 
 		config->get(k + "/armour", val);
-		wi->armour_bonus = static_cast<uint8>(val);
+		wi->armour_bonus = static_cast<uint8_t>(val);
 
 		config->get(k + "/damage_type", val);
-		wi->damage_type = static_cast<uint16>(val);
+		wi->damage_type = static_cast<uint16_t>(val);
 
 		if (config->get(k + "/treasure_chance", val))
-			wi->treasure_chance = static_cast<uint16>(val);
+			wi->treasure_chance = static_cast<uint16_t>(val);
 		else
 			wi->treasure_chance = 0;
 
@@ -240,7 +240,7 @@ void TypeFlags::loadArmourInfo()
 		int val;
 
 		config->get(k + "/shape", val);
-		ai.shape = static_cast<uint32>(val);
+		ai.shape = static_cast<uint32_t>(val);
 
 		assert(ai.shape < shapeInfo.size());
 		assert(msf->getShape(ai.shape));
@@ -259,20 +259,20 @@ void TypeFlags::loadArmourInfo()
 		}
 
 		config->get(k + "/frame", val);
-		ai.frame = static_cast<uint32>(val);
+		ai.frame = static_cast<uint32_t>(val);
 
 		assert(ai.frame < framecount);
 
 		config->get(k + "/armour", val);
-		ai.armour_class = static_cast<uint16>(val);
+		ai.armour_class = static_cast<uint16_t>(val);
 
 		if (config->get(k + "/type", val))
-			ai.defense_type = static_cast<uint16>(val);
+			ai.defense_type = static_cast<uint16_t>(val);
 		else
 			ai.defense_type = 0;
 
 		if (config->get(k + "/kick_bonus", val))
-			ai.kick_attack_bonus = static_cast<uint16>(val);
+			ai.kick_attack_bonus = static_cast<uint16_t>(val);
 		else
 			ai.kick_attack_bonus = 0;
 
@@ -299,40 +299,40 @@ void TypeFlags::loadMonsterInfo()
 		int val;
 
 		config->get(k + "/shape", val);
-		mi->shape = static_cast<uint32>(val);
+		mi->shape = static_cast<uint32_t>(val);
 
 		config->get(k + "/hp_min", val);
-		mi->min_hp = static_cast<uint16>(val);
+		mi->min_hp = static_cast<uint16_t>(val);
 
 		config->get(k + "/hp_max", val);
-		mi->max_hp = static_cast<uint16>(val);
+		mi->max_hp = static_cast<uint16_t>(val);
 
 		config->get(k + "/dex_min", val);
-		mi->min_dex = static_cast<uint16>(val);
+		mi->min_dex = static_cast<uint16_t>(val);
 
 		config->get(k + "/dex_max", val);
-		mi->max_dex = static_cast<uint16>(val);
+		mi->max_dex = static_cast<uint16_t>(val);
 
 		config->get(k + "/damage_min", val);
-		mi->min_dmg = static_cast<uint16>(val);
+		mi->min_dmg = static_cast<uint16_t>(val);
 
 		config->get(k + "/damage_max", val);
-		mi->max_dmg = static_cast<uint16>(val);
+		mi->max_dmg = static_cast<uint16_t>(val);
 
 		config->get(k + "/armour", val);
-		mi->armour_class = static_cast<uint16>(val);
+		mi->armour_class = static_cast<uint16_t>(val);
 
 		config->get(k + "/alignment", val);
-		mi->alignment = static_cast<uint8>(val);
+		mi->alignment = static_cast<uint8_t>(val);
 
 		config->get(k + "/unk", val);
 		mi->unk = (val != 0);
 
 		config->get(k + "/damage_type", val);
-		mi->damage_type = static_cast<uint16>(val);
+		mi->damage_type = static_cast<uint16_t>(val);
 
 		config->get(k + "/defense_type", val);
-		mi->defense_type = static_cast<uint16>(val);
+		mi->defense_type = static_cast<uint16_t>(val);
 
 		if (config->get(k + "/resurrection", val))
 			mi->resurrection = (val != 0);

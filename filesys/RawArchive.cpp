@@ -29,7 +29,7 @@ RawArchive::~RawArchive()
 	Archive::uncache();
 }
 
-void RawArchive::cache(uint32 index)
+void RawArchive::cache(uint32_t index)
 {
 	if (index >= count) return;
 	if (objects.empty()) objects.resize(count);
@@ -39,7 +39,7 @@ void RawArchive::cache(uint32 index)
 	objects[index] = getRawObject(index);
 }
 
-void RawArchive::uncache(uint32 index)
+void RawArchive::uncache(uint32_t index)
 {
 	if (index >= count) return;
 	if (objects.empty()) return;
@@ -50,7 +50,7 @@ void RawArchive::uncache(uint32 index)
 	}
 }
 
-bool RawArchive::isCached(uint32 index)
+bool RawArchive::isCached(uint32_t index)
 {
 	if (index >= count) return false;
 	if (objects.empty()) return false;
@@ -58,22 +58,22 @@ bool RawArchive::isCached(uint32 index)
 	return (objects[index] != 0);
 }
 
-const uint8* RawArchive::get_object_nodel(uint32 index)
+const uint8_t* RawArchive::get_object_nodel(uint32_t index)
 {
 	if (index >= count) return 0;
 	cache(index);
 	return objects[index];
 }
 
-uint8* RawArchive::get_object(uint32 index)
+uint8_t* RawArchive::get_object(uint32_t index)
 {
 	if (index >= count) return 0;
 
 	if (index < objects.size() && objects[index]) {
 		// already cached
-		uint32 size = getRawSize(index);
+		uint32_t size = getRawSize(index);
 		if (size == 0) return 0;
-		uint8* object = new uint8[size];
+		uint8_t* object = new uint8_t[size];
 		std::memcpy(object, objects[index], size);
 		return object;
 	}
@@ -81,13 +81,13 @@ uint8* RawArchive::get_object(uint32 index)
 	return getRawObject(index);
 }
 
-uint32 RawArchive::get_size(uint32 index)
+uint32_t RawArchive::get_size(uint32_t index)
 {
 	if (index >= count) return 0;
 	return getRawSize(index);
 }
 
-IDataSource* RawArchive::get_datasource(uint32 index)
+IDataSource* RawArchive::get_datasource(uint32_t index)
 {
 	if (index >= count) return 0;
 	cache(index);

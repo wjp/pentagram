@@ -48,54 +48,54 @@ fi
 
 
 
-dnl Check if we have SDL_ttf (header and library) version >= 2.0.7
+dnl Check if we have SDL2_ttf (header and library) version >= 2.0.14
 dnl Input:
-dnl SDL_CFLAGS, SDL_LIBS are set correctly
+dnl SDL2_CFLAGS, SDL2_LIBS are set correctly
 dnl Output:
-dnl SDLTTF_LIBS contains the necessary libs/ldflags
-dnl HAVE_SDL_TTF_H is AC_DEFINE-d if including "SDL_ttf.h" works
-dnl HAVE_SDL_SDL_TTF_H is AC_DEFINE-d if including <SDL/SDL_ttf.h> works
+dnl SDLTTF2_LIBS contains the necessary libs/ldflags
+dnl HAVE_SDL2_TTF_H is AC_DEFINE-d if including "SDL2_ttf.h" works
+dnl HAVE_SDL2_SDL_TTF_H is AC_DEFINE-d if including <SDL/SDL2_ttf.h> works
 
-AC_DEFUN([PENT_CHECK_SDLTTF],[
+AC_DEFUN([PENT_CHECK_SDL2TTF],[
   REQ_MAJOR=2
   REQ_MINOR=0
-  REQ_PATCHLEVEL=7
+  REQ_PATCHLEVEL=14
   REQ_VERSION=$REQ_MAJOR.$REQ_MINOR.$REQ_PATCHLEVEL
 
-  AC_MSG_CHECKING([for SDL_ttf - version >= $REQ_VERSION])
+  AC_MSG_CHECKING([for SDL2_ttf - version >= $REQ_VERSION])
 
   pent_backupcppflags="$CPPFLAGS"
   pent_backupldflags="$LDFLAGS"
   pent_backuplibs="$LIBS"
 
-  CPPFLAGS="$CPPFLAGS $SDL_CFLAGS"
-  LDFLAGS="$LDFLAGS $SDL_LIBS"
+  CPPFLAGS="$CPPFLAGS $SDL2_CFLAGS"
+  LDFLAGS="$LDFLAGS $SDL2_LIBS"
 
-  pent_sdlttfok=yes
+  pent_sdl2ttfok=yes
 
   dnl First: include "SDL_ttf.h"
 
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
   #include "SDL_ttf.h"
-  ]],)],sdlttfh_found=yes,sdlttfh_found=no)
+  ]],)],sdlttfh_found=yes,sdlttf_found=no)
 
   if test x$sdlttfh_found = xno; then
 
-    dnl If failed: include <SDL/SDL_ttf.h>
+    dnl If failed: include <SDL2/SDL_ttf.h>
 
     AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-    #include <SDL/SDL_ttf.h>
-    ]],)],sdlsdlttfh_found=yes,sdlsdlttfh_found=no)
-    if test x$sdlsdlttfh_found = xno; then
-      pent_sdlttfok=no
+    #include <SDL2/SDL_ttf.h>
+    ]],)],sdl2sdlttfh_found=yes,sdl2sdlttfh_found=no)
+    if test x$sdl2sdlttfh_found = xno; then
+      pent_sdl2ttfok=no
     else
-      AC_DEFINE(HAVE_SDL_SDL_TTF_H, 1, [Define to 1 if you have the <SDL/SDL_ttf.h> header file but not "SDL_ttf.h"])
+      AC_DEFINE(HAVE_SDL2_SDL_TTF_H, 1, [Define to 1 if you have the <SDL2/SDL_ttf.h> header file but not "SDL_ttf.h"])
     fi
   else
     AC_DEFINE(HAVE_SDL_TTF_H, 1, [Define to 1 if you have the "SDL_ttf.h" header file])
   fi
 
-  if test "x$pent_sdlttfok" = xyes; then
+  if test "x$pent_sdl2ttfok" = xyes; then
     dnl Version check (cross-compile-friendly idea borrowed from autoconf)
 
     AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
@@ -103,7 +103,7 @@ AC_DEFUN([PENT_CHECK_SDLTTF],[
     #ifdef HAVE_SDL_TTF_H
     #include "SDL_ttf.h"
     #else
-    #include <SDL/SDL_ttf.h>
+    #include <SDL2/SDL_ttf.h>
     #endif
 
     int main()
@@ -112,31 +112,31 @@ AC_DEFUN([PENT_CHECK_SDLTTF],[
       test_array[0] = 0;
       return 0;
     }
-    ]])],,[[pent_sdlttfok="no, version < $REQ_VERSION found"]])
+    ]])],,[[pent_sdl2ttfok="no, version < $REQ_VERSION found"]])
   fi
 
   dnl Next: try linking
 
-  if test "x$pent_sdlttfok" = xyes; then
+  if test "x$pent_sdl2ttfok" = xyes; then
 
-    LIBS="$LIBS -lSDL_ttf"
+    LIBS="$LIBS -lSDL2_ttf"
 
     AC_LINK_IFELSE([AC_LANG_SOURCE([[
     #include "SDL.h"
     #ifdef HAVE_SDL_TTF_H
     #include "SDL_ttf.h"
     #else
-    #include <SDL/SDL_ttf.h>
+    #include <SDL2/SDL_ttf.h>
     #endif
 
     int main(int argc, char* argv[]) {
       TTF_Init();
       return 0;
     }
-    ]])],sdlttflinkok=yes,sdlttflinkok=no)
-    if test x$sdlttflinkok = xno; then
+    ]])],sdl2ttflinkok=yes,sdl2ttflinkok=no)
+    if test x$sdl2ttflinkok = xno; then
 
-      dnl If failed: try -lSDL_ttf -lfreetype
+      dnl If failed: try -lSDL2_ttf -lfreetype
       dnl Note: This is mainly for my personal convenience. It should not
       dnl       be necessary usually, but shouldn't hurt either -wjp, 20050727
       dnl       (The reason is that I often statically link against SDL_ttf)
@@ -147,7 +147,7 @@ AC_DEFUN([PENT_CHECK_SDLTTF],[
       #ifdef HAVE_SDL_TTF_H
       #include "SDL_ttf.h"
       #else
-      #include <SDL/SDL_ttf.h>
+      #include <SDL2/SDL_ttf.h>
       #endif
 
       int main(int argc, char* argv[]) {
@@ -156,23 +156,23 @@ AC_DEFUN([PENT_CHECK_SDLTTF],[
       }
       ]])],sdlttflinkok=yes,sdlttflinkok=no)
 
-      if test x$sdlttflinkok = xno; then
-        pent_sdlttfok=no
+      if test x$sdl2ttflinkok = xno; then
+        pent_sdl2ttfok=no
       else
-        SDLTTF_LIBS="-lSDL_ttf -lfreetype"
+        SDL2TTF_LIBS="-lSDL2_ttf -lfreetype"
       fi
     else  
-      SDLTTF_LIBS="-lSDL_ttf"
+      SDL2TTF_LIBS="-lSDL2_ttf"
     fi
   fi
 
-  AC_MSG_RESULT($pent_sdlttfok)
+  AC_MSG_RESULT($pent_sdl2ttfok)
 
   LDFLAGS="$pent_backupldflags"
   CPPFLAGS="$pent_backupcppflags"
   LIBS="$pent_backuplibs"
 
-  if test "x$pent_sdlttfok" = xyes; then
+  if test "x$pent_sdl2ttfok" = xyes; then
     ifelse([$1], , :, [$1])
   else
     ifelse([$2], , :, [$2])
@@ -183,102 +183,102 @@ AC_DEFUN([PENT_CHECK_SDLTTF],[
 
 
 
-dnl Check if we have SDL (sdl-config, header and library) version >= 1.2.0
+dnl Check if we have SDL2 (sdl2-config, header and library) version >= 2.0.4
 dnl Output:
-dnl SDL_CFLAGS and SDL_LIBS are set and AC_SUBST-ed
-dnl HAVE_SDL_H is AC_DEFINE-d
+dnl SDL2_CFLAGS and SDL2_LIBS are set and AC_SUBST-ed
+dnl HAVE_SDL2_H is AC_DEFINE-d
 
-AC_DEFUN([PENT_CHECK_SDL],[
-  REQ_MAJOR=1
-  REQ_MINOR=2
-  REQ_PATCHLEVEL=0
+AC_DEFUN([PENT_CHECK_SDL2],[
+  REQ_MAJOR=2
+  REQ_MINOR=0
+  REQ_PATCHLEVEL=4
   REQ_VERSION=$REQ_MAJOR.$REQ_MINOR.$REQ_PATCHLEVEL
 
   pent_backupcppflags="$CPPFLAGS"
   pent_backupldflags="$LDFLAGS"
   pent_backuplibs="$LIBS"
 
-  pent_sdlok=yes
+  pent_sdl2ok=yes
 
-  AC_ARG_WITH(sdl-prefix,[  --with-sdl-prefix=PFX   Prefix where SDL is installed (optional)], sdl_prefix="$withval", sdl_prefix="")
-  AC_ARG_WITH(sdl-exec-prefix,[  --with-sdl-exec-prefix=PFX Exec prefix where SDL is installed (optional)], sdl_exec_prefix="$withval", sdl_exec_prefix="")
+  AC_ARG_WITH(sdl2-prefix,[  --with-sdl2-prefix=PFX   Prefix where SDL2 is installed (optional)], sdl2_prefix="$withval", sdl2_prefix="")
+  AC_ARG_WITH(sdl2-exec-prefix,[  --with-sdl2-exec-prefix=PFX Exec prefix where SDL2 is installed (optional)], sdl2_exec_prefix="$withval", sdl2_exec_prefix="")
 
-  dnl First: find sdl-config
+  dnl First: find sdl2-config
 
-  sdl_args=""
-  if test x$sdl_exec_prefix != x ; then
-     sdl_args="$sdl_args --exec-prefix=$sdl_exec_prefix"
-     if test x${SDL_CONFIG+set} != xset ; then
-        SDL_CONFIG=$sdl_exec_prefix/bin/sdl-config
+  sdl2_args=""
+  if test x$sdl2_exec_prefix != x ; then
+     sdl2_args="$sdl2_args --exec-prefix=$sdl2_exec_prefix"
+     if test x${SDL2_CONFIG+set} != xset ; then
+        SDL2_CONFIG=$sdl2_exec_prefix/bin/sdl2-config
      fi
   fi
-  if test x$sdl_prefix != x ; then
-     sdl_args="$sdl_args --prefix=$sdl_prefix"
-     if test x${SDL_CONFIG+set} != xset ; then
-        SDL_CONFIG=$sdl_prefix/bin/sdl-config
+  if test x$sdl2_prefix != x ; then
+     sdl2_args="$sdl2_args --prefix=$sdl2_prefix"
+     if test x${SDL2_CONFIG+set} != xset ; then
+        SDL2_CONFIG=$sdl2_prefix/bin/sdl2-config
      fi
   fi
 
   PATH="$prefix/bin:$prefix/usr/bin:$PATH"
-  AC_PATH_PROG(SDL_CONFIG, sdl-config, no, [$PATH])
-  if test "$SDL_CONFIG" = "no" ; then
-    pent_sdlok=no
+  AC_PATH_PROG(SDL2_CONFIG, sdl2-config, no, [$PATH])
+  if test "$SDL2_CONFIG" = "no" ; then
+    pent_sdl2ok=no
   else
-    SDL_CFLAGS=`$SDL_CONFIG $sdlconf_args --cflags`
-    SDL_LIBS=`$SDL_CONFIG $sdlconf_args --libs`
+    SDL2_CFLAGS=`$SDL2_CONFIG $sdl2conf_args --cflags`
+    SDL2_LIBS=`$SDL2_CONFIG $sdl2conf_args --libs`
 
-    sdl_major_version=`$SDL_CONFIG $sdl_args --version | \
+    sdl2_major_version=`$SDL2_CONFIG $sdl2_args --version | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    sdl_minor_version=`$SDL_CONFIG $sdl_args --version | \
+    sdl2_minor_version=`$SDL2_CONFIG $sdl2_args --version | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    sdl_patchlevel=`$SDL_CONFIG $sdl_args --version | \
+    sdl2_patchlevel=`$SDL2_CONFIG $sdl2_args --version | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
   fi
 
-  AC_MSG_CHECKING([for SDL - version >= $REQ_VERSION])
+  AC_MSG_CHECKING([for SDL2 - version >= $REQ_VERSION])
 
 
   dnl Second: include "SDL.h"
 
-  if test x$pent_sdlok = xyes ; then
-    CPPFLAGS="$CPPFLAGS $SDL_CFLAGS"
+  if test x$pent_sdl2ok = xyes ; then
+    CPPFLAGS="$CPPFLAGS $SDL2_CFLAGS"
     AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
     #include "SDL.h"
     ]],)],sdlh_found=yes,sdlh_found=no)
 
     if test x$sdlh_found = xno; then
-      pent_sdlok=no
+      pent_sdl2ok=no
     else
       AC_DEFINE(HAVE_SDL_H, 1, [Define to 1 if you have the "SDL.h" header file])
     fi
   fi
 
   dnl Next: version check (cross-compile-friendly idea borrowed from autoconf)
-  dnl (First check version reported by sdl-config, then confirm
+  dnl (First check version reported by sdl2-config, then confirm
   dnl  the version in SDL.h matches it)
 
-  if test x$pent_sdlok = xyes ; then
+  if test x$pent_sdl2ok = xyes ; then
 
-    if test ! \( \( $sdl_major_version -gt $REQ_MAJOR \) -o \( \( $sdl_major_version -eq $REQ_MAJOR \) -a \( \( $sdl_minor_version -gt $REQ_MINOR \) -o \( \( $sdl_minor_version -eq $REQ_MINOR \) -a \( $sdl_patchlevel -gt $REQ_PATCHLEVEL \) \) \) \) \); then
-      pent_sdlok="no, version < $REQ_VERSION found"
+    if test ! \( \( $sdl2_major_version -ge $REQ_MAJOR \) -o \( \( $sdl2_major_version -eq $REQ_MAJOR \) -a \( \( $sdl2_minor_version -ge $REQ_MINOR \) -o \( \( $sdl2_minor_version -eq $REQ_MINOR \) -a \( $sdl2_patchlevel -ge $REQ_PATCHLEVEL \) \) \) \) \); then
+      pent_sdl2ok="no, version < $REQ_VERSION found"
     else
       AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
       #include "SDL.h"
 
       int main()
       {
-        static int test_array[1-2*!(SDL_MAJOR_VERSION==$sdl_major_version&&SDL_MINOR_VERSION==$sdl_minor_version&&SDL_PATCHLEVEL==$sdl_patchlevel)];
+        static int test_array[1-2*!(SDL_MAJOR_VERSION==$sdl2_major_version&&SDL_MINOR_VERSION==$sdl2_minor_version&&SDL_PATCHLEVEL==$sdl2_patchlevel)];
         test_array[0] = 0;
         return 0;
       }
-      ]])],,[[pent_sdlok="no, version of SDL.h doesn't match that of sdl-config"]])
+      ]])],,[[pent_sdl2ok="no, version of SDL.h doesn't match that of sdl2-config"]])
     fi
   fi
 
   dnl Next: try linking
 
-  if test "x$pent_sdlok" = xyes; then
-    LIBS="$LIBS $SDL_LIBS"
+  if test "x$pent_sdl2ok" = xyes; then
+    LIBS="$LIBS $SDL2_LIBS"
 
     AC_LINK_IFELSE([AC_LANG_SOURCE([[
     #include "SDL.h"
@@ -287,21 +287,21 @@ AC_DEFUN([PENT_CHECK_SDL],[
       SDL_Init(0);
       return 0;
     }
-    ]])],sdllinkok=yes,sdllinkok=no)
-    if test x$sdllinkok = xno; then
-      pent_sdlok=no
+    ]])],sdl2linkok=yes,sdl2linkok=no)
+    if test x$sdl2linkok = xno; then
+      pent_sdl2ok=no
     fi
   fi
 
-  AC_MSG_RESULT($pent_sdlok)
+  AC_MSG_RESULT($pent_sdl2ok)
 
   LDFLAGS="$pent_backupldflags"
   CPPFLAGS="$pent_backupcppflags"
   LIBS="$pent_backuplibs"
 
-  if test "x$pent_sdlok" = xyes; then
-    AC_SUBST(SDL_CFLAGS)
-    AC_SUBST(SDL_LIBS)
+  if test "x$pent_sdl2ok" = xyes; then
+    AC_SUBST(SDL2_CFLAGS)
+    AC_SUBST(SDL2_LIBS)
     ifelse([$1], , :, [$1])
   else
     ifelse([$2], , :, [$2])

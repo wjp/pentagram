@@ -50,7 +50,7 @@ PNGWriter::~PNGWriter()
 
 }
 
-bool PNGWriter::init(uint32 width, uint32 height, const std::string& comment)
+bool PNGWriter::init(uint32_t width, uint32_t height, const std::string& comment)
 {
 	this->width = width;
 
@@ -108,15 +108,15 @@ bool PNGWriter::init(uint32 width, uint32 height, const std::string& comment)
 	return true;
 }
 
-bool PNGWriter::writeRows(uint32 nrows, Texture* img)
+bool PNGWriter::writeRows(uint32_t nrows, Texture* img)
 {
 	png_bytep* row_pointers = 0;
 	png_structp png_ptr = reinterpret_cast<png_structp>(png);
 	png_infop info_ptr = reinterpret_cast<png_infop>(info);
 	if (!png_ptr) return false;
 
-	assert(img->width == static_cast<sint32>(width));
-	assert(img->height >= static_cast<sint32>(nrows));
+	assert(img->width == static_cast<int32_t>(width));
+	assert(img->height >= static_cast<int32_t>(nrows));
 
     if (setjmp(png_jmpbuf(png_ptr)))
     {

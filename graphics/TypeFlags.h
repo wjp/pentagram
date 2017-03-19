@@ -31,7 +31,7 @@ public:
 	~TypeFlags();
 
 	void load(IDataSource* ds);
-	ShapeInfo* getShapeInfo(uint32 shape);
+	ShapeInfo* getShapeInfo(uint32_t shape);
 
 private:
 	void loadWeaponInfo();

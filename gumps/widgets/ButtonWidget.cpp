@@ -38,8 +38,8 @@ ButtonWidget::ButtonWidget()
 }
 
 ButtonWidget::ButtonWidget(int X, int Y, std::string txt, bool gamefont,
-						   int font, uint32 mouseOverBlendCol_,
-						   int w, int h, sint32 layer) :
+						   int font, uint32_t mouseOverBlendCol_,
+						   int w, int h, int32_t layer) :
 	Gump(X,Y,w,h,0,0,layer), shape_up(0), shape_down(0),
 	mouseOver(false), origw(w), origh(h)
 {
@@ -50,7 +50,7 @@ ButtonWidget::ButtonWidget(int X, int Y, std::string txt, bool gamefont,
 }
 
 ButtonWidget::ButtonWidget(int X, int Y, FrameID frame_up, FrameID frame_down,
-						   bool _mouseOver, sint32 layer)
+						   bool _mouseOver, int32_t layer)
 	: Gump(X,Y,5,5,0,0,layer), textwidget(0), mouseOver(_mouseOver)
 {
 	shape_up = GameData::get_instance()->getShape(frame_up);
@@ -130,7 +130,7 @@ Gump *ButtonWidget::OnMouseDown(int button, int mx, int my)
 	return 0;
 }
 
-uint16 ButtonWidget::TraceObjId(int mx, int my)
+uint16_t ButtonWidget::TraceObjId(int mx, int my)
 {
 	if (PointOnGump(mx, my))
 		return getObjId();
@@ -211,8 +211,8 @@ void ButtonWidget::saveData(ODataSource* ods)
 		dims.h = h;
 	}
 
-	uint16 flex = 0;
-	uint32 shapenum = 0;
+	uint16_t flex = 0;
+	uint32_t shapenum = 0;
 	if (shape_up)
 	{
 		shape_up->getShapeId(flex, shapenum);
@@ -233,17 +233,17 @@ void ButtonWidget::saveData(ODataSource* ods)
 	ods->write2(textwidget);
 	ods->write4(mouseOverBlendCol);
 
-	uint8 m = (mouseOver ? 1 : 0);
+	uint8_t m = (mouseOver ? 1 : 0);
 	ods->write1(m);
 }
 
-bool ButtonWidget::loadData(IDataSource* ids, uint32 version)
+bool ButtonWidget::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Gump::loadData(ids, version)) return false;
 
 	shape_up = 0;
 	ShapeArchive * flex = GameData::get_instance()->getShapeFlex(ids->read2());
-	uint32 shapenum = ids->read4();
+	uint32_t shapenum = ids->read4();
 	if (flex)
 	{
 		shape_up = flex->getShape(shapenum);

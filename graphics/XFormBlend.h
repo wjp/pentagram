@@ -32,11 +32,11 @@
 #endif
 #endif
 
-extern const uint8 U8XFormPal[1024];
+extern const uint8_t U8XFormPal[1024];
 
-inline uint32 P_FASTCALL BlendPreModulated(uint32 src, uint32 dst)
+inline uint32_t P_FASTCALL BlendPreModulated(uint32_t src, uint32_t dst)
 {
-	uint32 r, g, b;
+	uint32_t r, g, b;
 	UNPACK_RGB8(dst,r,g,b);
 	r*=256-TEX32_A(src);
 	g*=256-TEX32_A(src);
@@ -47,9 +47,9 @@ inline uint32 P_FASTCALL BlendPreModulated(uint32 src, uint32 dst)
 	return PACK_RGB16(r>65535?65535:r, g>65535?65535:g, b>65535?65535:b);
 }
 
-inline uint32 P_FASTCALL BlendPreModFast(uint32 src, uint32 dst)
+inline uint32_t P_FASTCALL BlendPreModFast(uint32_t src, uint32_t dst)
 {
-	uint32 r, g, b;
+	uint32_t r, g, b;
 	UNPACK_RGB8(dst,r,g,b);
 	r*=256-TEX32_A(src);
 	g*=256-TEX32_A(src);
@@ -61,18 +61,18 @@ inline uint32 P_FASTCALL BlendPreModFast(uint32 src, uint32 dst)
 }
 
 // This does the red highlight blending. 
-inline uint32 P_FASTCALL BlendHighlight(uint32 src, uint32 cr, uint32 cg, uint32 cb, uint32 ca, uint32 ica)
+inline uint32_t P_FASTCALL BlendHighlight(uint32_t src, uint32_t cr, uint32_t cg, uint32_t cb, uint32_t ca, uint32_t ica)
 {
-	uint32 sr, sg, sb;
+	uint32_t sr, sg, sb;
 	UNPACK_RGB8(src,sr,sg,sb);
 	return PACK_RGB16(sr*ica+cr*ca, sg*ica+cg*ca, sb*ica+cb*ca);
 }
 
 // This does the invisible blending. I've set it to about 40%
-inline uint32 P_FASTCALL BlendInvisible(uint32 src, uint32 dst)
+inline uint32_t P_FASTCALL BlendInvisible(uint32_t src, uint32_t dst)
 {
-	uint32 sr, sg, sb;
-	uint32 dr, dg, db;
+	uint32_t sr, sg, sb;
+	uint32_t dr, dg, db;
 	UNPACK_RGB8(src,sr,sg,sb);
 	UNPACK_RGB8(dst,dr,dg,db);
 	return PACK_RGB16(sr*100+dr*156,
@@ -81,10 +81,10 @@ inline uint32 P_FASTCALL BlendInvisible(uint32 src, uint32 dst)
 }
 
 // This does the translucent highlight blending. (50%) 
-inline uint32 P_FASTCALL BlendHighlightInvis(uint32 src, uint32 dst, uint32 cr, uint32 cg, uint32 cb, uint32 ca, uint32 ica)
+inline uint32_t P_FASTCALL BlendHighlightInvis(uint32_t src, uint32_t dst, uint32_t cr, uint32_t cg, uint32_t cb, uint32_t ca, uint32_t ica)
 {
-	uint32 sr, sg, sb;
-	uint32 dr, dg, db;
+	uint32_t sr, sg, sb;
+	uint32_t dr, dg, db;
 	UNPACK_RGB8(src,sr,sg,sb);
 	UNPACK_RGB8(dst,dr,dg,db);
 	return PACK_RGB16(((sr*ica+cr*ca)>>1)+(dr<<7), 

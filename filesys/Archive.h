@@ -64,7 +64,7 @@ public:
 	void cache();
 
 	//! Cache a single object
-	virtual void cache(uint32 index)=0;
+	virtual void cache(uint32_t index)=0;
 
 	//! Uncache all objects
 	//! Potentially dangerous: all stored objects will be deleted; make sure
@@ -73,23 +73,23 @@ public:
 
 	//! Uncache a single object
 	//! Potentially dangerous. See uncache()
-	virtual void uncache(uint32 index)=0;
+	virtual void uncache(uint32_t index)=0;
 
 	//! Check if an object is cached
-	virtual bool isCached(uint32 index)=0;
+	virtual bool isCached(uint32_t index)=0;
 
-	uint32 getCount() const { return count; }
+	uint32_t getCount() const { return count; }
 
 protected:
-	uint32 count;
+	uint32_t count;
 
-	uint8* getRawObject(uint32 index, uint32* sizep=0);
-	uint32 getRawSize(uint32 index);
+	uint8_t* getRawObject(uint32_t index, uint32_t* sizep=0);
+	uint32_t getRawSize(uint32_t index);
 
 private:
 	std::vector<ArchiveFile*> sources;
 
-	ArchiveFile* findArchiveFile(uint32 index);
+	ArchiveFile* findArchiveFile(uint32_t index);
 };
 
 }

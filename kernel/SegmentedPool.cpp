@@ -49,10 +49,10 @@ struct SegmentedPoolNode
 
 // We pad both the PoolNode and the memory to align it.
 
-SegmentedPool::SegmentedPool(size_t nodeCapacity_, uint32 nodes_) 
+SegmentedPool::SegmentedPool(size_t nodeCapacity_, uint32_t nodes_) 
 	: Pool(), nodes(nodes_), freeNodeCount(nodes_)
 {
-	uint32 i;
+	uint32_t i;
 
 	// Give it its real capacity.
 	// One redzone is added after the memory block.
@@ -64,7 +64,7 @@ SegmentedPool::SegmentedPool(size_t nodeCapacity_, uint32 nodes_)
 	nodeOffset = OFFSET_ALIGN(sizeof(SegmentedPoolNode) + redzoneSize)
 		+ nodeCapacity;
 
-	startOfPool = new uint8[nodeOffset * nodes_];
+	startOfPool = new uint8_t[nodeOffset * nodes_];
 	endOfPool = startOfPool + (nodeOffset * nodes_);
 
 	VALGRIND_CREATE_MEMPOOL(startOfPool, redzoneSize, 0);
@@ -120,7 +120,7 @@ void * SegmentedPool::allocate(size_t size)
 	node->nextFree = 0;
 
 //	con.Printf("Allocating Node 0x%08X\n", node);
-	uint8* p = reinterpret_cast<uint8 *>(node) +
+	uint8_t* p = reinterpret_cast<uint8_t *>(node) +
 		OFFSET_ALIGN(sizeof(SegmentedPoolNode) + redzoneSize);
 
 	VALGRIND_MEMPOOL_ALLOC(startOfPool, p, size);
@@ -162,7 +162,7 @@ void SegmentedPool::deallocate(void * ptr)
 
 void SegmentedPool::printInfo()
 {
-	uint16 i;
+	uint16_t i;
 	size_t max, min, total;
 	SegmentedPoolNode * node;
 
@@ -201,7 +201,7 @@ void SegmentedPool::printInfo()
 
 SegmentedPoolNode* SegmentedPool::getPoolNode(void * ptr)
 {
-	uint32 pos = (reinterpret_cast<uint8 *>(ptr) - startOfPool) / nodeOffset;
+	uint32_t pos = (reinterpret_cast<uint8_t *>(ptr) - startOfPool) / nodeOffset;
 	return reinterpret_cast<SegmentedPoolNode*>(startOfPool + pos*nodeOffset);
 }
 

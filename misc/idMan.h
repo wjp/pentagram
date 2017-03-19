@@ -39,21 +39,21 @@ class ODataSource;
 
 class idMan
 {
-	uint16 		begin;			//!< start of the available range of IDs
-	uint16 		end;			//!< current end of the range
-	uint16 		max_end;		//!< end of the available range
-	uint16 		startcount;		//!< number of IDs to make available initially
+	uint16_t 		begin;			//!< start of the available range of IDs
+	uint16_t 		end;			//!< current end of the range
+	uint16_t 		max_end;		//!< end of the available range
+	uint16_t 		startcount;		//!< number of IDs to make available initially
 
-	uint16 		usedcount;		//!< number of IDs currently in use
+	uint16_t 		usedcount;		//!< number of IDs currently in use
 
-	std::vector<uint16> ids;	//!< the 'next' field in a list of free IDs
-	uint16		first;			//!< the first ID in the free list
-	uint16		last;			//!< the last ID in the last list
+	std::vector<uint16_t> ids;	//!< the 'next' field in a list of free IDs
+	uint16_t		first;			//!< the first ID in the free list
+	uint16_t		last;			//!< the last ID in the last list
 public:
 	//! \param begin start of the range of available IDs
 	//! \param max_end end of the range of available IDs
 	//! \param startcount number of IDs to make available initially (0 = all)
-	idMan(uint16 begin, uint16 max_end, uint16 startcount=0);
+	idMan(uint16_t begin, uint16_t max_end, uint16_t startcount=0);
 	~idMan();
 
 	//! check if this idMan is full
@@ -61,22 +61,22 @@ public:
 		{ return first == 0 && end >= max_end; }
 
 	//! clear all IDs, reset size to the startcount, and set max_end to new_max
-	void		clearAll(uint16 new_max = 0);
+	void		clearAll(uint16_t new_max = 0);
 
 	//! get a free ID
 	//! \return a free ID, or 0 if none are available
-	uint16		getNewID();
+	uint16_t		getNewID();
 
 	//! mark a given ID as used, expanding if necessary.
 	//! Note: reserveID is O(n), so don't use too often.
 	//! \return false if the ID was already used or is out of range
-	bool		reserveID(uint16 id);
+	bool		reserveID(uint16_t id);
 
 	//! release an id
-	void		clearID(uint16 id);
+	void		clearID(uint16_t id);
 
 	//! check if an ID is in use
-	bool		isIDUsed(uint16 id) const
+	bool		isIDUsed(uint16_t id) const
 		{ return id >= begin && id <= end && ids[id] == 0 && id != last; }
 
 	//! increase the maximum size
@@ -84,10 +84,10 @@ public:
 	//!       It exists for dumpMap currently. If that is rewritten not
 	//!       to need more than 32768 object IDs, this function should be
 	//!       deleted.
-	void		setNewMax(uint16 max_end) { this->max_end = max_end; }
+	void		setNewMax(uint16_t max_end) { this->max_end = max_end; }
 
 	void save(ODataSource* ods);
-	bool load(IDataSource* ids, uint32 version);
+	bool load(IDataSource* ids, uint32_t version);
 
 private:
 	//! double the amount of available IDs (up to the maximum passed 

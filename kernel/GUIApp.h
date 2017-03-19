@@ -115,12 +115,12 @@ public:
 	bool isShowTouchingItems() const { return showTouching; }
 	void toggleShowTouchingItems() { showTouching = !showTouching; }
 
-	uint32 getGameTimeInSeconds();
+	uint32_t getGameTimeInSeconds();
 	
 	GameMapGump* getGameMapGump() { return gameMapGump; }
 	ConsoleGump* getConsoleGump() { return consoleGump; }
 	Gump* getDesktopGump() { return desktopGump; }
-	Gump* getGump(uint16 gumpid);
+	Gump* getGump(uint16_t gumpid);
 
 	//! add a gump to the right core gump (such as desktopgump)
 	//! \param gump the gump to be added
@@ -196,7 +196,7 @@ protected:
 	virtual void DeclareArgs();
 
 private:
-	uint32 save_count;
+	uint32_t save_count;
 
 	//! write savegame info (time, ..., game-specifics)
 	void writeSaveInfo(ODataSource* ods);
@@ -205,7 +205,7 @@ private:
 	void save(ODataSource* ods);
 
 	//! load CoreApp/GUIApp data
-	bool load(IDataSource* ids, uint32 version);
+	bool load(IDataSource* ids, uint32_t version);
 	
 	//! start SDL
 	void SDLInit();
@@ -254,13 +254,13 @@ private:
 	bool runSDLInit;
 	
 	// Timing stuff
-	sint32 lerpFactor;		//!< Interpolation factor for this frame (0-256)
+	int32_t lerpFactor;		//!< Interpolation factor for this frame (0-256)
 	bool inBetweenFrame;	//!< Set true if we are doing an inbetween frame
 	
 	bool frameSkip;			//!< Set to true to enable frame skipping (default false)
 	bool frameLimit;		//!< Set to true to enable frame limiting (default true)
 	bool interpolate;		//!< Set to true to enable interpolation (default true)
-	sint32 animationRate;	//!< The animation rate. Affects all processes! (default 100)
+	int32_t animationRate;	//!< The animation rate. Affects all processes! (default 100)
 	
 	// Sort of Camera Related Stuff, move somewhere else
 	
@@ -279,7 +279,7 @@ private:
 	//! get the current mouse frame
 	int getMouseFrame();
 	std::stack<MouseCursor> cursors;
-	uint32 flashingcursor; // time (SDL_GetTicks) mouse started flashing, or 0
+	uint32_t flashingcursor; // time (SDL_GetTicks) mouse started flashing, or 0
 
 	// Hack alert
 	HWMouseCursor			*hwcursors;	// Shape frames converted into system specific format.
@@ -295,7 +295,7 @@ private:
 	// mouse input state
 	MButton mouseButton[MOUSE_LAST];
 
-	uint16 mouseOverGump;
+	uint16_t mouseOverGump;
 
 	enum DraggingState {
 		DRAG_NOT = 0,
@@ -304,14 +304,14 @@ private:
 		DRAG_TEMPFAIL = 3
 	} dragging;
 	ObjId dragging_objid;
-	uint16 dragging_item_startgump;
-	uint16 dragging_item_lastgump;
+	uint16_t dragging_item_startgump;
+	uint16_t dragging_item_lastgump;
 
 	int dragging_offsetX, dragging_offsetY;
 	unsigned int inversion;
 
-	uint32 lastDown[HID_LAST];
-	uint8 down[HID_LAST];
+	uint32_t lastDown[HID_LAST];
+	uint8_t down[HID_LAST];
 public:
 	void setDraggingOffset(int x, int y)
 		{ dragging_offsetX = x; dragging_offsetY = y; }
@@ -327,7 +327,7 @@ private:
 	void moveDragging(int mx, int my);
 	void stopDragging(int mx, int my);
 
-	sint32 timeOffset;
+	int32_t timeOffset;
 	bool has_cheated;
 	bool cheats_enabled;
 

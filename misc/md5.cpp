@@ -33,17 +33,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Pentagram {
 
 typedef struct {
-	uint32 total[2];
-	uint32 state[4];
-	uint8 buffer[64];
+	uint32_t total[2];
+	uint32_t state[4];
+	uint8_t buffer[64];
 } md5_context;
 
 static void md5_starts(md5_context *ctx);
-static void md5_update(md5_context *ctx, const uint8 *input, uint32 length);
-static void md5_finish(md5_context *ctx, uint8 digest[16]);
+static void md5_update(md5_context *ctx, const uint8_t *input, uint32_t length);
+static void md5_finish(md5_context *ctx, uint8_t digest[16]);
 
-#define GET_UINT32(n, b, i)	n = b[i] + (b[i+1]<<8) + (b[i+2]<<16) + (b[i+3]<<24)
-#define PUT_UINT32(n, b, i)	do { b[i] = n; b[i+1] = n >> 8; b[i+2] = n >> 16; b[i+3] = n >> 24; } while(0)
+#define GET_uint32_t(n, b, i)	n = b[i] + (b[i+1]<<8) + (b[i+2]<<16) + (b[i+3]<<24)
+#define PUT_uint32_t(n, b, i)	do { b[i] = n; b[i+1] = n >> 8; b[i+2] = n >> 16; b[i+3] = n >> 24; } while(0)
 
 static void md5_starts(md5_context *ctx) {
 	ctx->total[0] = 0;
@@ -55,25 +55,25 @@ static void md5_starts(md5_context *ctx) {
 	ctx->state[3] = 0x10325476;
 }
 
-static void md5_process(md5_context *ctx, const uint8 data[64]) {
-	uint32 X[16], A, B, C, D;
+static void md5_process(md5_context *ctx, const uint8_t data[64]) {
+	uint32_t X[16], A, B, C, D;
 
-	GET_UINT32(X[0],  data,  0);
-	GET_UINT32(X[1],  data,  4);
-	GET_UINT32(X[2],  data,  8);
-	GET_UINT32(X[3],  data, 12);
-	GET_UINT32(X[4],  data, 16);
-	GET_UINT32(X[5],  data, 20);
-	GET_UINT32(X[6],  data, 24);
-	GET_UINT32(X[7],  data, 28);
-	GET_UINT32(X[8],  data, 32);
-	GET_UINT32(X[9],  data, 36);
-	GET_UINT32(X[10], data, 40);
-	GET_UINT32(X[11], data, 44);
-	GET_UINT32(X[12], data, 48);
-	GET_UINT32(X[13], data, 52);
-	GET_UINT32(X[14], data, 56);
-	GET_UINT32(X[15], data, 60);
+	GET_uint32_t(X[0],  data,  0);
+	GET_uint32_t(X[1],  data,  4);
+	GET_uint32_t(X[2],  data,  8);
+	GET_uint32_t(X[3],  data, 12);
+	GET_uint32_t(X[4],  data, 16);
+	GET_uint32_t(X[5],  data, 20);
+	GET_uint32_t(X[6],  data, 24);
+	GET_uint32_t(X[7],  data, 28);
+	GET_uint32_t(X[8],  data, 32);
+	GET_uint32_t(X[9],  data, 36);
+	GET_uint32_t(X[10], data, 40);
+	GET_uint32_t(X[11], data, 44);
+	GET_uint32_t(X[12], data, 48);
+	GET_uint32_t(X[13], data, 52);
+	GET_uint32_t(X[14], data, 56);
+	GET_uint32_t(X[15], data, 60);
 
 #define S(x, n) ((x << n) | ((x & 0xFFFFFFFF) >> (32 - n)))
 
@@ -177,8 +177,8 @@ static void md5_process(md5_context *ctx, const uint8 data[64]) {
 	ctx->state[3] += D;
 }
 
-static void md5_update(md5_context *ctx, const uint8 *input, uint32 length) {
-	uint32 left, fill;
+static void md5_update(md5_context *ctx, const uint8_t *input, uint32_t length) {
+	uint32_t left, fill;
 
 	if (!length)
 		return;
@@ -211,23 +211,23 @@ static void md5_update(md5_context *ctx, const uint8 *input, uint32 length) {
 	}
 }
 
-static const uint8 md5_padding[64] = {
+static const uint8_t md5_padding[64] = {
 	0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-static void md5_finish(md5_context *ctx, uint8 digest[16]) {
-	uint32 last, padn;
-	uint32 high, low;
-	uint8 msglen[8];
+static void md5_finish(md5_context *ctx, uint8_t digest[16]) {
+	uint32_t last, padn;
+	uint32_t high, low;
+	uint8_t msglen[8];
 
 	high = (ctx->total[0] >> 29) | (ctx->total[1] << 3);
 	low  = (ctx->total[0] <<  3);
 
-	PUT_UINT32(low,  msglen, 0);
-	PUT_UINT32(high, msglen, 4);
+	PUT_uint32_t(low,  msglen, 0);
+	PUT_uint32_t(high, msglen, 4);
 
 	last = ctx->total[0] & 0x3F;
 	padn = (last < 56) ? (56 - last) : (120 - last);
@@ -235,13 +235,13 @@ static void md5_finish(md5_context *ctx, uint8 digest[16]) {
 	md5_update(ctx, md5_padding, padn);
 	md5_update(ctx, msglen, 8);
 
-	PUT_UINT32(ctx->state[0], digest,  0);
-	PUT_UINT32(ctx->state[1], digest,  4);
-	PUT_UINT32(ctx->state[2], digest,  8);
-	PUT_UINT32(ctx->state[3], digest, 12);
+	PUT_uint32_t(ctx->state[0], digest,  0);
+	PUT_uint32_t(ctx->state[1], digest,  4);
+	PUT_uint32_t(ctx->state[2], digest,  8);
+	PUT_uint32_t(ctx->state[3], digest, 12);
 }
 
-bool md5_file(IDataSource* input, uint8 digest[16], uint32 length) {
+bool md5_file(IDataSource* input, uint8_t digest[16], uint32_t length) {
 	md5_context ctx;
 	int i;
 	unsigned char buf[1024];

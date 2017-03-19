@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 namespace Pentagram {
 
-AudioSample::AudioSample(uint8 *buffer_, uint32 size_) : 
+AudioSample::AudioSample(uint8_t *buffer_, uint32_t size_) : 
 		sample_rate(0), bits(0), stereo(false), 
 		frame_size(0), decompressor_size(0), length(0), 
 		buffer_size(size_), buffer(buffer_)

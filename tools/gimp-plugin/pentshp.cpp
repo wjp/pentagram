@@ -46,9 +46,9 @@ static void query(void);
 static void run(const gchar *name, gint nparams, const GimpParam * param,
 				gint *nreturn_vals, GimpParam **return_vals);
 static gint32 load_image(IDataSource * ids, const gchar * filename);
-static void load_frame(Shape * s, uint32 framenum, GimpDrawable * drawable);
-static void paintFrame(Shape * s, uint32 framenum, void * pixels,
-				uint32 pitch, sint32 x, sint32 y, GimpPixelRgn * clip_window);
+static void load_frame(Shape * s, uint32_t framenum, GimpDrawable * drawable);
+static void paintFrame(Shape * s, uint32_t framenum, void * pixels,
+				uint32_t pitch, int32_t x, int32_t y, GimpPixelRgn * clip_window);
 
 static gint32 save_image(gchar *filename, gint32 image_ID,
 						 gint32 drawable_ID, gint32 orig_image_ID);
@@ -187,14 +187,14 @@ static void run(const gchar *name, gint nparams, const GimpParam * param,
 static gint32 load_image(IDataSource * ids, const gchar * filename)
 {
 	gint32 image_ID, layer_ID;
-	sint32 height, width;
-	sint32 min_x, min_y;
-	uint32 i;
+	int32_t height, width;
+	int32_t min_x, min_y;
+	uint32_t i;
 	ShapeFrame *frame;
 	Pentagram::Palette pal;
 	guchar cmap[768];
 	const ConvertShapeFormat *read_format;
-	uint32 read_size = ids->getSize();
+	uint32_t read_size = ids->getSize();
 	gchar *framename;
 	GimpDrawable *drawable;
 
@@ -265,19 +265,19 @@ static gint32 load_image(IDataSource * ids, const gchar * filename)
 	return image_ID;
 }
 
-static void load_frame(Shape * s, uint32 framenum, GimpDrawable * drawable)
+static void load_frame(Shape * s, uint32_t framenum, GimpDrawable * drawable)
 {
 	GimpPixelRgn clip_window;
 	ShapeFrame * frame;
 
 	gimp_pixel_rgn_init(&clip_window, drawable, 0, 0, drawable->width, drawable->height, TRUE, FALSE);
 
-	uint32 pitch = drawable->width;
+	uint32_t pitch = drawable->width;
 	gulong psize = drawable->width * drawable->height;
 	guchar *pixels = g_new0(guchar, psize * 2);
 
 	frame = s->getFrame(framenum);
-	paintFrame(s, framenum, (uint16 *) pixels, pitch * 2, frame->xoff, frame->yoff, &clip_window);
+	paintFrame(s, framenum, (uint16_t *) pixels, pitch * 2, frame->xoff, frame->yoff, &clip_window);
 
 	gimp_pixel_rgn_set_rect(&clip_window, pixels, 0, 0, drawable->width, drawable->height);
 	g_free(pixels);
@@ -287,12 +287,12 @@ static void load_frame(Shape * s, uint32 framenum, GimpDrawable * drawable)
 
 #include <cstdio>
 
-static void paintFrame(Shape * s, uint32 framenum, void * pixels,
-				uint32 pitch, sint32 x, sint32 y, GimpPixelRgn * clip_window)
+static void paintFrame(Shape * s, uint32_t framenum, void * pixels,
+				uint32_t pitch, int32_t x, int32_t y, GimpPixelRgn * clip_window)
 {
 	#define untformed_pal true
 	#define NO_CLIPPING
-	#define uintX uint16
+	#define uintX uint16_t
 	// EVIL!!!!!!
 	#define clip_window (*clip_window)
 

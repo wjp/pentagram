@@ -34,14 +34,14 @@ public:
 
 	INTRINSIC(I_feedAvatar);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
-	void feedAvatar(uint16 food);
+	void feedAvatar(uint16_t food);
 
-	uint16 healCounter;
-	uint16 hungerCounter;
+	uint16_t healCounter;
+	uint16_t hungerCounter;
 };
 
 

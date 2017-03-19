@@ -49,7 +49,7 @@ class Type
 
 		inline ttype type() const { return _type; };
 		inline const char *name() const { return _namearr[_type]; };
-		inline uint32 size() const
+		inline uint32_t size() const
 		{
 			switch(_type)
 			{
@@ -81,16 +81,16 @@ class DataType
 		enum datatype { DT_NULL, DT_BYTES, DT_BP, DT_BPLIST, DT_BPADDR, DT_BPSTRPTR,
 			DT_SP, DT_SPADDR, DT_STRING, DT_PID, DT_PRESULT, DT_RESULT, DT_GLOBAL, DT_TEMP };
 		
-		DataType(const Type &newVType=Type::T_VOID, const datatype newDType=DT_NULL, const sint32 newValue=0)
+		DataType(const Type &newVType=Type::T_VOID, const datatype newDType=DT_NULL, const int32_t newValue=0)
 			: _vtype(newVType), _dtype(newDType), _value(newValue) {};
 		DataType(const Type::ttype &newVType, const datatype newDType, const std::string &newStrValue)
 			: _vtype(newVType), _dtype(newDType), _strvalue(newStrValue) {};
-		DataType(const Type::ttype &newVType, const datatype newDType, const uint32 var, const uint32 varIndex)
+		DataType(const Type::ttype &newVType, const datatype newDType, const uint32_t var, const uint32_t varIndex)
 			: _vtype(newVType), _dtype(newDType), _value(var), _valueIndex(varIndex) {};
 
 		const Type &type() const { return _vtype; };
 		const datatype &dtype() const { return _dtype; };
-		sint32 value() const { return _value; };
+		int32_t value() const { return _value; };
 		
 		void print_type_unk(Console &o) const { _vtype.print_unk(o); };
 		void print_value_unk(Console &o) const;
@@ -100,9 +100,9 @@ class DataType
 	private:
 		Type		_vtype;
 		datatype	_dtype;
-		sint32		_value;
+		int32_t		_value;
 		std::string _strvalue;
-		uint32		_valueIndex; // for globals
+		uint32_t		_valueIndex; // for globals
 };
 
 
@@ -110,14 +110,14 @@ class DataType
 
 namespace suc
 {
-	inline const char * const print_bp(const sint32 offset)
+	inline const char * const print_bp(const int32_t offset)
 	{
 		static char str[32];
 		snprintf(str, 32, "[BP%c%02Xh]", offset>0x7F?'-':'+', offset>0x7F?0x100-offset:offset);
 		return str;
 	}
 	
-	inline const char * const print_sp(const sint32 offset)
+	inline const char * const print_sp(const int32_t offset)
 	{
 		static char str[32];
 		snprintf(str, 32, "[SP%c%02Xh]", offset>0x7F?'-':'+', offset>0x7F?0x100-offset:offset);

@@ -96,7 +96,7 @@ void QuitGump::InitGump(Gump* newparent, bool take_focus)
 }
 
 
-void QuitGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void QuitGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	Gump::PaintThis(surf, lerp_factor, scaled);
 }
@@ -116,7 +116,7 @@ bool QuitGump::OnKeyDown(int key, int mod)
 	return true;
 }
 
-void QuitGump::ChildNotify(Gump *child, uint32 message)
+void QuitGump::ChildNotify(Gump *child, uint32_t message)
 {
 	ObjId cid = child->getObjId();
 	if (message == ButtonWidget::BUTTON_CLICK)

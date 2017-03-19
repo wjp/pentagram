@@ -182,7 +182,7 @@ bool CompileUnit::parse()
 		//parser->switch_streams(ifile, 0);
 	}
 
-	sint32 token=parser->yylex();
+	int32_t token=parser->yylex();
 	switch(token)
 	{
 		// #expect cases

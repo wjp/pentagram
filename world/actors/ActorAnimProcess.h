@@ -32,8 +32,8 @@ class ActorAnimProcess : public Process
 public:
 	ActorAnimProcess();
 	//! note: this probably needs some more parameters
-	ActorAnimProcess(Actor* actor, Animation::Sequence action, uint32 dir,
-					 uint32 steps=0);
+	ActorAnimProcess(Actor* actor, Animation::Sequence action, uint32_t dir,
+					 uint32_t steps=0);
 
 	// p_dynamic_cast stuff
 	ENABLE_RUNTIME_CLASSTYPE();
@@ -46,7 +46,7 @@ public:
 
 	Animation::Sequence getAction() const { return action; }
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
@@ -59,12 +59,12 @@ protected:
 	void doHitSpecial(Item* hit);
 
 	Animation::Sequence action;
-	uint32 dir;
-	uint32 steps;
+	uint32_t dir;
+	uint32_t steps;
 
 	AnimationTracker* tracker;
 	int repeatcounter;
-	uint32 currentstep;
+	uint32_t currentstep;
 
 	bool firstframe;
 

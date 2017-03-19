@@ -104,13 +104,13 @@ bool Container::CanAddItem(Item* item, bool checkwghtvol)
 
 	if (checkwghtvol) {
 
-		uint32 volume = getContentVolume();
-		uint32 capacity = getCapacity();
+		uint32_t volume = getContentVolume();
+		uint32_t capacity = getCapacity();
 
 		// Because Avatar should be able to remove backpack and haul a barrel
 		// or chest on his back instead, artificially increase backpack volume
 		// for chests or barrels.
-		uint32 shapeid = item->getShape();
+		uint32_t shapeid = item->getShape();
 		if(GAME_IS_U8 && (shapeid == 115 /*Barrel*/
 		   || shapeid == 78 || shapeid == 117 /*Chests*/))
 		{
@@ -218,7 +218,7 @@ void Container::destroyContents()
 	}
 }
 
-void Container::setFlagRecursively(uint32 mask)
+void Container::setFlagRecursively(uint32_t mask)
 {
 	setFlag(mask);
 
@@ -240,9 +240,9 @@ void Container::destroy(bool delnow)
 	Item::destroy(delnow);
 }
 
-uint32 Container::getTotalWeight()
+uint32_t Container::getTotalWeight()
 {
-	uint32 weight = Item::getTotalWeight();
+	uint32_t weight = Item::getTotalWeight();
 
 	// CONSTANT!
 	if (GAME_IS_U8 && getShape() == 79) {
@@ -265,16 +265,16 @@ uint32 Container::getTotalWeight()
 	return weight;
 }
 
-uint32 Container::getCapacity()
+uint32_t Container::getCapacity()
 {
-	uint32 volume = getShapeInfo()->volume;
+	uint32_t volume = getShapeInfo()->volume;
 
 	return (volume == 0) ? 32 : volume;
 }
 
-uint32 Container::getContentVolume()
+uint32_t Container::getContentVolume()
 {
-	uint32 volume = 0;
+	uint32_t volume = 0;
 
 	std::list<Item*>::iterator iter;
 	
@@ -285,17 +285,17 @@ uint32 Container::getContentVolume()
 	return volume;	
 }
 
-void Container::containerSearch(UCList* itemlist, const uint8* loopscript,
-								uint32 scriptsize, bool recurse)
+void Container::containerSearch(UCList* itemlist, const uint8_t* loopscript,
+								uint32_t scriptsize, bool recurse)
 {
 	std::list<Item*>::iterator iter;
 	for (iter = contents.begin(); iter != contents.end(); ++iter) {
 		// check item against loopscript
 		if ((*iter)->checkLoopScript(loopscript, scriptsize)) {
-			uint16 objid = (*iter)->getObjId();
-			uint8 buf[2];
-			buf[0] = static_cast<uint8>(objid);
-			buf[1] = static_cast<uint8>(objid >> 8);
+			uint16_t objid = (*iter)->getObjId();
+			uint8_t buf[2];
+			buf[0] = static_cast<uint8_t>(objid);
+			buf[1] = static_cast<uint8_t>(objid >> 8);
 			itemlist->append(buf);
 		}
 
@@ -320,18 +320,18 @@ void Container::dumpInfo()
 void Container::saveData(ODataSource* ods)
 {
 	Item::saveData(ods);
-	ods->write4(static_cast<uint32>(contents.size()));
+	ods->write4(static_cast<uint32_t>(contents.size()));
 	std::list<Item*>::iterator iter;
 	for (iter = contents.begin(); iter != contents.end(); ++iter) {
 		(*iter)->save(ods);
 	}
 }
 
-bool Container::loadData(IDataSource* ids, uint32 version)
+bool Container::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Item::loadData(ids, version)) return false;
 
-	uint32 contentcount = ids->read4();
+	uint32_t contentcount = ids->read4();
 
 	// read contents
 	for (unsigned int i = 0; i < contentcount; ++i)
@@ -348,7 +348,7 @@ bool Container::loadData(IDataSource* ids, uint32 version)
 }
 
 
-uint32 Container::I_removeContents(const uint8* args, unsigned int /*argsize*/)
+uint32_t Container::I_removeContents(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_CONTAINER_FROM_PTR(container);
 	if (!container) return 0;
@@ -357,7 +357,7 @@ uint32 Container::I_removeContents(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Container::I_destroyContents(const uint8* args,unsigned int /*argsize*/)
+uint32_t Container::I_destroyContents(const uint8_t* args,unsigned int /*argsize*/)
 {
 	ARG_CONTAINER_FROM_PTR(container);
 	if (!container) return 0;

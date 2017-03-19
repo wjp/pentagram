@@ -27,11 +27,11 @@ using std::strtol;
 using std::strtoul;
 #endif
 
-void Args::process(const sint32 argc, const char * const * const argv)
+void Args::process(const int32_t argc, const char * const * const argv)
 {
-	for(sint32 i=1; i<argc; ++i)
+	for(int32_t i=1; i<argc; ++i)
 	{
-		for(uint32 j=0; (j<options.size()) && (i<argc); ++j)
+		for(uint32_t j=0; (j<options.size()) && (i<argc); ++j)
 		{
 			switch(options[j].valuetype)
 			{

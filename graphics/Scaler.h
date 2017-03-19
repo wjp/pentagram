@@ -32,8 +32,8 @@ class Scaler
 
 protected:
 	// Basic scaler function template
-	typedef bool (*ScalerFunc) ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
+	typedef bool (*ScalerFunc) ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
 
 	//
 	// Basic scaler functions (filled in by the scalers constructor)
@@ -52,7 +52,7 @@ public:
 	// Scaler Capabilites
 	//
 
-	virtual const uint32	ScaleBits() const = 0;			//< bits for supported integer scaling
+	virtual const uint32_t	ScaleBits() const = 0;			//< bits for supported integer scaling
 	virtual const bool		ScaleArbitrary() const = 0;		//< supports arbitrary scaling of any degree 
 
 	virtual const char *	ScalerName() const = 0;			//< Name Of the Scaler (1 word)
@@ -64,13 +64,13 @@ public:
 	// virtual bool	SetDisplayFormat(const RenderSurface::Format &format);
 
 	// Call this to scale a section of the screen
-	inline bool Scale(	Texture *texture, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-						uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src) const
+	inline bool Scale(	Texture *texture, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+						uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src) const
 	{
 		// Check to see if we are doing valid integer scalings
 		if (!ScaleArbitrary())
 		{
-			uint32 scale_bits = ScaleBits();
+			uint32_t scale_bits = ScaleBits();
 			int x_factor = dw/sw;
 			int y_factor = dh/sh;
 

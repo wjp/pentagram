@@ -48,12 +48,12 @@ class Args
 			_str_default(defaultvalue?defaultvalue:""), valuetype(Option::type_str)
 		{ *_str_val=_str_default; };
 		// sint
-		Option(const char *option_cstr, sint32 *value, const sint32 defaultvalue=true)
+		Option(const char *option_cstr, int32_t *value, const int32_t defaultvalue=true)
 			: option(option_cstr), _sint_val(value), _sint_default(defaultvalue),
 			valuetype(Option::type_sint)
 		{ *_sint_val=_sint_default; };
 		// uint
-		Option(const char *option_cstr, uint32 *value, const uint32 defaultvalue=true)
+		Option(const char *option_cstr, uint32_t *value, const uint32_t defaultvalue=true)
 			: option(option_cstr), _uint_val(value), _uint_default(defaultvalue),
 			valuetype(Option::type_uint)
 		{ *_uint_val=_uint_default; };
@@ -64,13 +64,13 @@ class Args
 		
 		bool        *_bool_val;
 		std::string *_str_val;
-		sint32      *_sint_val;
-		uint32      *_uint_val;
+		int32_t      *_sint_val;
+		uint32_t      *_uint_val;
 
 		bool        _bool_default;
 		std::string _str_default;
-		sint32      _sint_default;
-		uint32      _uint_default;
+		int32_t      _sint_default;
+		uint32_t      _uint_default;
 		
 		enum { no_type=0, type_bool, type_str, type_sint, type_uint } valuetype;
 	};
@@ -84,13 +84,13 @@ class Args
 	inline void declare(const char *option_cstr, std::string *value, const char *defaultvalue=0)
 	{ options.push_back(Option(option_cstr, value, defaultvalue)); };
 	// sint
-	inline void declare(const char *option_cstr, sint32 *value, const sint32 defaultvalue=0)
+	inline void declare(const char *option_cstr, int32_t *value, const int32_t defaultvalue=0)
 	{ options.push_back(Option(option_cstr, value, defaultvalue)); };
 	// uint
-	inline void declare(const char *option_cstr, uint32 *value, const uint32 defaultvalue=0)
+	inline void declare(const char *option_cstr, uint32_t *value, const uint32_t defaultvalue=0)
 	{ options.push_back(Option(option_cstr, value, defaultvalue)); };
 
-	void process(const sint32 argc, const char * const * const argv);
+	void process(const int32_t argc, const char * const * const argv);
 };
 
 #endif

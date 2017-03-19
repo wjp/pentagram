@@ -27,7 +27,7 @@ typedef struct _TTF_Font TTF_Font;
 class TTFont : public Pentagram::Font
 {
 public:
-	TTFont(TTF_Font* font, uint32 rgb, int bordersize,
+	TTFont(TTF_Font* font, uint32_t rgb, int bordersize,
 		   bool antiAliased, bool SJIS);
 	virtual ~TTFont();
 
@@ -57,12 +57,12 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 protected:
 	TTF_Font* ttf_font;
-	uint32 rgb;
+	uint32_t rgb;
 	int bordersize;
 	bool antiAliased;
 	bool SJIS;
 
-	uint16 bullet;
+	uint16_t bullet;
 };
 
 

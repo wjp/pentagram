@@ -27,23 +27,23 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	MiniStatsGump();
-	MiniStatsGump(int x, int y, uint32 _Flags = FLAG_DRAGGABLE,
-				  sint32 layer = LAYER_NORMAL);
+	MiniStatsGump(int x, int y, uint32_t _Flags = FLAG_DRAGGABLE,
+				  int32_t layer = LAYER_NORMAL);
 	virtual ~MiniStatsGump(void);
 
 	// Init the gump, call after construction
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
 
 	// Paint this Gump
-	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
 
 	// Trace a click, and return ObjId
-	virtual uint16 TraceObjId(int mx, int my);
+	virtual uint16_t TraceObjId(int mx, int my);
 
 	virtual Gump* OnMouseDown(int button, int mx, int my);
 	virtual void OnMouseDouble(int button, int mx, int my);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

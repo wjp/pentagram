@@ -21,11 +21,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 struct ArmourInfo {
-	uint32 shape;
-	uint32 frame;
-	uint16 armour_class;
-	uint16 kick_attack_bonus;
-	uint16 defense_type; // see WeaponInfo struct
+	uint32_t shape;
+	uint32_t frame;
+	uint16_t armour_class;
+	uint16_t kick_attack_bonus;
+	uint16_t defense_type; // see WeaponInfo struct
 };
 
 

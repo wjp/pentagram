@@ -31,7 +31,7 @@
 namespace NS_TIMIDITY {
 #endif
 
-extern sample_t *resample_voice(int v, sint32 *countptr);
+extern sample_t *resample_voice(int v, int32_t *countptr);
 extern void pre_resample(Sample *sp);
 
 #ifdef NS_TIMIDITY

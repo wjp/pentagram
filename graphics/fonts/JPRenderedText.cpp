@@ -65,12 +65,12 @@ void JPRenderedText::draw(RenderSurface* surface, int x, int y, bool /*destmaske
 		std::size_t textsize = iter->text.size();
 
 		for (std::size_t i = 0; i < textsize; ++i) {
-			uint16 sjis = iter->text[i] & 0xFF;
+			uint16_t sjis = iter->text[i] & 0xFF;
 			if (sjis >= 0x80) {
-				uint16 t = iter->text[++i] & 0xFF;
+				uint16_t t = iter->text[++i] & 0xFF;
 				sjis += (t << 8);
 			}
-			uint16 u8char = Pentagram::shiftjis_to_ultima8(sjis);
+			uint16_t u8char = Pentagram::shiftjis_to_ultima8(sjis);
 			surface->Paint(font, u8char, line_x, line_y);
 
 			if (i == iter->cursor) {
@@ -91,7 +91,7 @@ void JPRenderedText::draw(RenderSurface* surface, int x, int y, bool /*destmaske
 }
 
 void JPRenderedText::drawBlended(RenderSurface* surface, int x, int y,
-								 uint32 col, bool /*destmasked*/)
+								 uint32_t col, bool /*destmasked*/)
 {
 	// TODO Support masking here??
 
@@ -112,12 +112,12 @@ void JPRenderedText::drawBlended(RenderSurface* surface, int x, int y,
 		std::size_t textsize = iter->text.size();
 
 		for (std::size_t i = 0; i < textsize; ++i) {
-			uint16 sjis = iter->text[i] & 0xFF;
+			uint16_t sjis = iter->text[i] & 0xFF;
 			if (sjis >= 0x80) {
-				uint16 t = iter->text[++i] & 0xFF;
+				uint16_t t = iter->text[++i] & 0xFF;
 				sjis += (t << 8);
 			}
-			uint16 u8char = Pentagram::shiftjis_to_ultima8(sjis);
+			uint16_t u8char = Pentagram::shiftjis_to_ultima8(sjis);
 
 			surface->PaintHighlight(font, u8char, line_x, line_y,
 									false, false, col);

@@ -118,8 +118,8 @@ static inline void scale2x_def(uintX* dst0, uintX* dst1, const uintS* src0, cons
 }
 
 
-static bool Scale( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
+static bool Scale( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
 {
 	// Must be at least 3 high
 	if (sh<3 && (clamp_src || tex->height<3)) return false;
@@ -214,7 +214,7 @@ static bool Scale( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh,
  *      %mm6 -> *current_upper
  *      %mm7 -> *current
  */
-static inline void scale2x_16_mmx_border(uint16* dst, const uint16* src0, const uint16* src1, const uint16* src2, unsigned count)
+static inline void scale2x_16_mmx_border(uint16_t* dst, const uint16_t* src0, const uint16_t* src1, const uint16_t* src2, unsigned count)
 {
 	/* always do the first and last run */
 	count -= 2*4;
@@ -588,7 +588,7 @@ label1:
 #endif
 }
 
-static inline void scale2x_32_mmx_border(uint32* dst, const uint32* src0, const uint32* src1, const uint32* src2, unsigned count)
+static inline void scale2x_32_mmx_border(uint32_t* dst, const uint32_t* src0, const uint32_t* src1, const uint32_t* src2, unsigned count)
 {
 	/* always do the first and last run */
 	count -= 2*2;
@@ -989,10 +989,10 @@ static inline void scale2x_mmx_emms(void)
  * \param dst0 First destination row, double length in pixels.
  * \param dst1 Second destination row, double length in pixels.
  */
-static void scale2x_16_mmx(uint16* dst0, uint16* dst1, const uint16* src0, const uint16* src1, const uint16* src2, unsigned count)
+static void scale2x_16_mmx(uint16_t* dst0, uint16_t* dst1, const uint16_t* src0, const uint16_t* src1, const uint16_t* src2, unsigned count)
 {
 	if (count % 4 != 0 || count < 8) {
-		Scale2xScalerInternal<uint16, Manip_Nat2Nat_16>::scale2x_def(dst0, dst1, src0, src1, src2, count);
+		Scale2xScalerInternal<uint16_t, Manip_Nat2Nat_16>::scale2x_def(dst0, dst1, src0, src1, src2, count);
 	} else {
 		scale2x_16_mmx_border(dst0, src0, src1, src2, count);
 		scale2x_16_mmx_border(dst1, src2, src1, src0, count);
@@ -1010,10 +1010,10 @@ static void scale2x_16_mmx(uint16* dst0, uint16* dst1, const uint16* src0, const
  * \param dst0 First destination row, double length in pixels.
  * \param dst1 Second destination row, double length in pixels.
  */
-static void scale2x_32_mmx(uint32* dst0, uint32* dst1, const uint32* src0, const uint32* src1, const uint32* src2, unsigned count)
+static void scale2x_32_mmx(uint32_t* dst0, uint32_t* dst1, const uint32_t* src0, const uint32_t* src1, const uint32_t* src2, unsigned count)
 {
 	if (count % 2 != 0 || count < 4) {
-		Scale2xScalerInternal<uint32, Manip_Nat2Nat_32>::scale2x_def(dst0, dst1, src0, src1, src2, count);
+		Scale2xScalerInternal<uint32_t, Manip_Nat2Nat_32>::scale2x_def(dst0, dst1, src0, src1, src2, count);
 	} else {
 		scale2x_32_mmx_border(dst0, src0, src1, src2, count);
 		scale2x_32_mmx_border(dst1, src2, src1, src0, count);
@@ -1024,17 +1024,17 @@ static void scale2x_32_mmx(uint32* dst0, uint32* dst1, const uint32* src0, const
 // Pentagram Scale2x Implementation
 //
 
-static bool Scale2x_16MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
+static bool Scale2x_16MMX( Texture *tex	, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
 {
 	// Must be at least 3 high
 	if (sh<3 && (clamp_src || tex->height<3)) return false;
 
 	// Source buffer pointers
-	uint16 *texel = reinterpret_cast<uint16*>(tex->buffer) + (sy * tex->width + sx);
+	uint16_t *texel = reinterpret_cast<uint16_t*>(tex->buffer) + (sy * tex->width + sx);
 	int tpitch = tex->width;
-//	uint16 *tline_end = texel + sw;
-	uint16 *tex_end = texel + (sh-1)*tex->width;
+//	uint16_t *tline_end = texel + sw;
+	uint16_t *tex_end = texel + (sh-1)*tex->width;
 
 	bool clip_y = true;
 	if (sh+sy < tex->height && clamp_src == false)
@@ -1044,8 +1044,8 @@ static bool Scale2x_16MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint3
 	}
 
 	if (sy == 0) {
-		scale2x_16_mmx(reinterpret_cast<uint16*>(pixel), 
-					reinterpret_cast<uint16*>(pixel+pitch), 
+		scale2x_16_mmx(reinterpret_cast<uint16_t*>(pixel), 
+					reinterpret_cast<uint16_t*>(pixel+pitch), 
 					texel, texel, texel+tpitch, sw);
 		pixel += pitch*2;
 		texel += tpitch;
@@ -1054,8 +1054,8 @@ static bool Scale2x_16MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint3
 	// Src Loop Y
 	if (texel != tex_end) do {
 
-		scale2x_16_mmx(reinterpret_cast<uint16*>(pixel), 
-					reinterpret_cast<uint16*>(pixel+pitch), 
+		scale2x_16_mmx(reinterpret_cast<uint16_t*>(pixel), 
+					reinterpret_cast<uint16_t*>(pixel+pitch), 
 					texel-tpitch, texel, texel+tpitch, sw);
 		pixel += pitch*2;
 		texel += tpitch;
@@ -1063,8 +1063,8 @@ static bool Scale2x_16MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint3
 	} while (texel != tex_end);
 
 	if (clip_y) {
-		scale2x_16_mmx(reinterpret_cast<uint16*>(pixel), 
-					reinterpret_cast<uint16*>(pixel+pitch), 
+		scale2x_16_mmx(reinterpret_cast<uint16_t*>(pixel), 
+					reinterpret_cast<uint16_t*>(pixel+pitch), 
 					texel-tpitch, texel, texel, sw);
 	}
 
@@ -1072,17 +1072,17 @@ static bool Scale2x_16MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint3
 	return true;
 }
 
-static bool Scale2x_32MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
+static bool Scale2x_32MMX( Texture *tex	, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
 {
 	// Must be at least 3 high
 	if (sh<3 && (clamp_src || tex->height<3)) return false;
 
 	// Source buffer pointers
-	uint32 *texel = reinterpret_cast<uint32*>(tex->buffer) + (sy * tex->width + sx);
+	uint32_t *texel = reinterpret_cast<uint32_t*>(tex->buffer) + (sy * tex->width + sx);
 	int tpitch = tex->width;
-//	uint32 *tline_end = texel + sw;
-	uint32 *tex_end = texel + (sh-1)*tex->width;
+//	uint32_t *tline_end = texel + sw;
+	uint32_t *tex_end = texel + (sh-1)*tex->width;
 
 	bool clip_y = true;
 	if (sh+sy < tex->height && clamp_src == false)
@@ -1092,8 +1092,8 @@ static bool Scale2x_32MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint3
 	}
 
 	if (sy == 0) {
-		scale2x_32_mmx(reinterpret_cast<uint32*>(pixel), 
-					reinterpret_cast<uint32*>(pixel+pitch), 
+		scale2x_32_mmx(reinterpret_cast<uint32_t*>(pixel), 
+					reinterpret_cast<uint32_t*>(pixel+pitch), 
 					texel, texel, texel+tpitch, sw);
 		pixel += pitch*2;
 		texel += tpitch;
@@ -1102,8 +1102,8 @@ static bool Scale2x_32MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint3
 	// Src Loop Y
 	if (texel != tex_end) do {
 
-		scale2x_32_mmx(reinterpret_cast<uint32*>(pixel), 
-					reinterpret_cast<uint32*>(pixel+pitch), 
+		scale2x_32_mmx(reinterpret_cast<uint32_t*>(pixel), 
+					reinterpret_cast<uint32_t*>(pixel+pitch), 
 					texel-tpitch, texel, texel+tpitch, sw);
 		pixel += pitch*2;
 		texel += tpitch;
@@ -1111,8 +1111,8 @@ static bool Scale2x_32MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint3
 	} while (texel != tex_end);
 
 	if (clip_y) {
-		scale2x_32_mmx(reinterpret_cast<uint32*>(pixel), 
-					reinterpret_cast<uint32*>(pixel+pitch), 
+		scale2x_32_mmx(reinterpret_cast<uint32_t*>(pixel), 
+					reinterpret_cast<uint32_t*>(pixel+pitch), 
 					texel-tpitch, texel, texel, sw);
 	}
 
@@ -1123,13 +1123,13 @@ static bool Scale2x_32MMX( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint3
 
 Scale2xScaler::Scale2xScaler() : Scaler()
 {
-	Scale16Nat = Scale2xScalerInternal<uint16, Manip_Nat2Nat_16, uint16>::Scale;
-	Scale16Sta = Scale2xScalerInternal<uint16, Manip_Sta2Nat_16, uint32>::Scale;
+	Scale16Nat = Scale2xScalerInternal<uint16_t, Manip_Nat2Nat_16, uint16_t>::Scale;
+	Scale16Sta = Scale2xScalerInternal<uint16_t, Manip_Sta2Nat_16, uint32_t>::Scale;
 
-	Scale32Nat = Scale2xScalerInternal<uint32, Manip_Nat2Nat_32, uint32>::Scale;
-	Scale32Sta = Scale2xScalerInternal<uint32, Manip_Sta2Nat_32, uint32>::Scale;
-	Scale32_A888 = Scale2xScalerInternal<uint32, Manip_Nat2Nat_32, uint32>::Scale;
-	Scale32_888A = Scale2xScalerInternal<uint32, Manip_Nat2Nat_32, uint32>::Scale;
+	Scale32Nat = Scale2xScalerInternal<uint32_t, Manip_Nat2Nat_32, uint32_t>::Scale;
+	Scale32Sta = Scale2xScalerInternal<uint32_t, Manip_Sta2Nat_32, uint32_t>::Scale;
+	Scale32_A888 = Scale2xScalerInternal<uint32_t, Manip_Nat2Nat_32, uint32_t>::Scale;
+	Scale32_888A = Scale2xScalerInternal<uint32_t, Manip_Nat2Nat_32, uint32_t>::Scale;
 
 #if (defined(__GNUC__) && defined(__i386__)) || (defined(_MSC_VER) && defined(_M_IX86))
 	if (SDL_HasMMX()) {
@@ -1142,7 +1142,7 @@ Scale2xScaler::Scale2xScaler() : Scaler()
 #endif
 }
 
-const uint32 Scale2xScaler::ScaleBits() const { return 1<<2; }
+const uint32_t Scale2xScaler::ScaleBits() const { return 1<<2; }
 const bool Scale2xScaler::ScaleArbitrary() const { return false; }
 
 const char *Scale2xScaler::ScalerName() const { return "scale2x"; }

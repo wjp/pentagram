@@ -36,7 +36,7 @@ SoundFlex::~SoundFlex()
 	delete [] samples;
 }
 
-void SoundFlex::cache(uint32 index)
+void SoundFlex::cache(uint32_t index)
 {
 	if (index >= count) return;
 
@@ -49,15 +49,15 @@ void SoundFlex::cache(uint32 index)
 	if (samples[index]) return;
 
 	// This will cache the data
-	uint32 size;
-	uint8 *buf = getRawObject(index, &size);
+	uint32_t size;
+	uint8_t *buf = getRawObject(index, &size);
 
 	if (!buf || !size) return;
 	
 	samples[index] = new Pentagram::SonarcAudioSample(buf,size);
 }
 
-void SoundFlex::uncache(uint32 index)
+void SoundFlex::uncache(uint32_t index)
 {
 	if (index >= count) return;
 	if (!samples) return;
@@ -66,7 +66,7 @@ void SoundFlex::uncache(uint32 index)
 	samples[index] = 0;
 }
 
-bool SoundFlex::isCached(uint32 index)
+bool SoundFlex::isCached(uint32_t index)
 {
 	if (index >= count) return false;
 	if (!samples) return false;

@@ -53,7 +53,7 @@ MiniMapGump::~MiniMapGump(void)
 	con.RemoveConsoleCommand(MiniMapGump::ConCmd_generateWholeMap);
 }
 
-void MiniMapGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void MiniMapGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	World *world = World::get_instance();
 	CurrentMap *currentmap = world->getCurrentMap();
@@ -88,7 +88,7 @@ void MiniMapGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled
 	int sx = 0, sy = 0, ox = 0, oy = 0, lx = 0, ly = 0;
 
 	MainActor *av = getMainActor();
-	sint32 ax,ay,az;
+	int32_t ax,ay,az;
 	av->getLocation(ax,ay,az);
 
 	ax = ax/(mapChunkSize/MINMAPGUMP_SCALE);
@@ -125,13 +125,13 @@ void MiniMapGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled
 	surf->Fill32(0xFFFFFF00,1+ax+0,1+ay+1,1,2);
 }
 
-uint32 MiniMapGump::sampleAtPoint(int x, int y, CurrentMap *currentmap)
+uint32_t MiniMapGump::sampleAtPoint(int x, int y, CurrentMap *currentmap)
 {
 	Item *item = currentmap->traceTopItem(x,y,1<<15,-1,0,ShapeInfo::SI_ROOF|ShapeInfo::SI_OCCL|ShapeInfo::SI_LAND|ShapeInfo::SI_SEA);
 
 	if (item) 
 	{
-		sint32 ix,iy,iz,idx,idy,idz;
+		int32_t ix,iy,iz,idx,idy,idz;
 		item->getLocation(ix,iy,iz);
 		item->getFootpadWorld(idx,idy,idz);
 
@@ -152,13 +152,13 @@ uint32 MiniMapGump::sampleAtPoint(int x, int y, CurrentMap *currentmap)
 		// Screenspace bounding box bottom extent  (RNB y coord)
 		int sy = (ix + iy)/8 + idz;
 
-		uint16 r=0, g=0, b=0, c=0;
+		uint16_t r=0, g=0, b=0, c=0;
 
 		for (int j = 0; j < 2; j++) for (int i = 0; i < 2; i++)
 		{
 			if (!frame->hasPoint(i-sx,j-sy)) continue;
 
-			uint16 r2, g2, b2;
+			uint16_t r2, g2, b2;
 			UNPACK_RGB8(pal->native_untransformed[frame->getPixelAtPoint(i-sx,j-sy)], r2, g2, b2);
 			r += RenderSurface::Gamma22toGamma10[r2]; g += RenderSurface::Gamma22toGamma10[g2]; b += RenderSurface::Gamma22toGamma10[b2];
 			c++;
@@ -194,9 +194,9 @@ void MiniMapGump::ConCmd_generateWholeMap(const Console::ArgvType &argv)
 	currentmap->setWholeMapFast();
 }
 
-uint16 MiniMapGump::TraceObjId(int mx, int my)
+uint16_t MiniMapGump::TraceObjId(int mx, int my)
 {
-	uint16 objid = Gump::TraceObjId(mx,my);
+	uint16_t objid = Gump::TraceObjId(mx,my);
 
 	if (!objid || objid == 65535)
 		if (PointOnGump(mx,my))
@@ -210,7 +210,7 @@ void MiniMapGump::saveData(ODataSource* ods)
 	Gump::saveData(ods);
 }
 
-bool MiniMapGump::loadData(IDataSource* ids, uint32 version)
+bool MiniMapGump::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Gump::loadData(ids, version)) return false;
 

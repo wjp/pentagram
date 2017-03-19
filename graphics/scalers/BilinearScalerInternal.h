@@ -166,41 +166,41 @@ namespace Pentagram {
 
 // Very very simple point scaler
 template<class uintX, class Manip, class uintS> 
-bool BilinearScalerInternal_2x(Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
+bool BilinearScalerInternal_2x(Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
 
 template<class uintX, class Manip, class uintS> 
-bool BilinearScalerInternal_X2Y24(Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
+bool BilinearScalerInternal_X2Y24(Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
 
 template<class uintX, class Manip, class uintS> 
-bool BilinearScalerInternal_X1Y12(Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
+bool BilinearScalerInternal_X1Y12(Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
 
 template<class uintX, class Manip, class uintS> 
-bool BilinearScalerInternal_Arb(Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
+bool BilinearScalerInternal_Arb(Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
 
 #ifdef COMPILE_GAMMA_CORRECT_SCALERS
 #define InstantiateFunc(func,a,b,c) \
-	template bool func<a,b,c> (Texture*,sint32,sint32,sint32,sint32,uint8*,sint32,sint32,sint32,bool); \
-	template bool func<a,b##_GC,c> (Texture*,sint32,sint32,sint32,sint32,uint8*,sint32,sint32,sint32,bool)
+	template bool func<a,b,c> (Texture*,int32_t,int32_t,int32_t,int32_t,uint8_t*,int32_t,int32_t,int32_t,bool); \
+	template bool func<a,b##_GC,c> (Texture*,int32_t,int32_t,int32_t,int32_t,uint8_t*,int32_t,int32_t,int32_t,bool)
 #else
 #define InstantiateFunc(func,a,b,c) \
-	template bool func<a,b,c> (Texture*,sint32,sint32,sint32,sint32,uint8*,sint32,sint32,sint32,bool)
+	template bool func<a,b,c> (Texture*,int32_t,int32_t,int32_t,int32_t,uint8_t*,int32_t,int32_t,int32_t,bool)
 #endif
 
 #ifdef COMPILE_ALL_BILINEAR_SCALERS
 #define InstantiateBilinearScalerFunc(func) \
-	InstantiateFunc(func,uint16,Manip_Nat2Nat_16,uint16); \
-	InstantiateFunc(func,uint16,Manip_Sta2Nat_16,uint32); \
-	InstantiateFunc(func,uint32,Manip_Nat2Nat_32,uint32); \
-	InstantiateFunc(func,uint32,Manip_Sta2Nat_32,uint32); \
-	InstantiateFunc(func,uint32,Manip_32_A888,uint32); \
-	InstantiateFunc(func,uint32,Manip_32_888A,uint32)
+	InstantiateFunc(func,uint16_t,Manip_Nat2Nat_16,uint16_t); \
+	InstantiateFunc(func,uint16_t,Manip_Sta2Nat_16,uint32_t); \
+	InstantiateFunc(func,uint32_t,Manip_Nat2Nat_32,uint32_t); \
+	InstantiateFunc(func,uint32_t,Manip_Sta2Nat_32,uint32_t); \
+	InstantiateFunc(func,uint32_t,Manip_32_A888,uint32_t); \
+	InstantiateFunc(func,uint32_t,Manip_32_888A,uint32_t)
 #else
 #define InstantiateBilinearScalerFunc(func) \
-	InstantiateFunc(func,uint32,Manip_Nat2Nat_32,uint32); \
-	InstantiateFunc(func,uint32,Manip_Sta2Nat_32,uint32)
+	InstantiateFunc(func,uint32_t,Manip_Nat2Nat_32,uint32_t); \
+	InstantiateFunc(func,uint32_t,Manip_Sta2Nat_32,uint32_t)
 #endif
 };

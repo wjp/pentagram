@@ -40,8 +40,8 @@ static const int manax = 13;
 static const int bary = 19;
 static const int barheight = 14;
 
-static const uint32 hpcolour[] = { 0x980404, 0xBC0C0C, 0xD43030 };
-static const uint32 manacolour[] = { 0x4050FC, 0x1C28FC, 0x0C0CCC };
+static const uint32_t hpcolour[] = { 0x980404, 0xBC0C0C, 0xD43030 };
+static const uint32_t manacolour[] = { 0x4050FC, 0x1C28FC, 0x0C0CCC };
 
 
 MiniStatsGump::MiniStatsGump() : Gump()
@@ -49,7 +49,7 @@ MiniStatsGump::MiniStatsGump() : Gump()
 
 }
 
-MiniStatsGump::MiniStatsGump(int x, int y, uint32 _Flags, sint32 layer)
+MiniStatsGump::MiniStatsGump(int x, int y, uint32_t _Flags, int32_t layer)
 	: Gump(x, y, 5, 5, 0, _Flags, layer)
 {
 
@@ -72,18 +72,18 @@ void MiniStatsGump::InitGump(Gump* newparent, bool take_focus)
 	dims.h = sf->height;
 }
 
-void MiniStatsGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void MiniStatsGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	Gump::PaintThis(surf, lerp_factor, scaled);
 
 	Actor *a = getMainActor();
 	assert(a);
 
-	sint16 maxmana = a->getMaxMana();
-	sint16 mana = a->getMana();
+	int16_t maxmana = a->getMaxMana();
+	int16_t mana = a->getMana();
 
-	uint16 maxhp = a->getMaxHP();
-	uint16 hp = a->getHP();
+	uint16_t maxhp = a->getMaxHP();
+	uint16_t hp = a->getHP();
 
 	int manaheight, hpheight;
 
@@ -104,9 +104,9 @@ void MiniStatsGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scal
 	}
 }
 
-uint16 MiniStatsGump::TraceObjId(int mx, int my)
+uint16_t MiniStatsGump::TraceObjId(int mx, int my)
 {
-	uint16 objid = Gump::TraceObjId(mx, my);
+	uint16_t objid = Gump::TraceObjId(mx, my);
 	if (objid && objid != 65535) return objid;
 
 	if (PointOnGump(mx, my)) return getObjId();
@@ -138,7 +138,7 @@ void MiniStatsGump::saveData(ODataSource* ods)
 	Gump::saveData(ods);
 }
 
-bool MiniStatsGump::loadData(IDataSource* ids, uint32 version)
+bool MiniStatsGump::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Gump::loadData(ids, version)) return false;
 

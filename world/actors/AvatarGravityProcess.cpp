@@ -57,7 +57,7 @@ void AvatarGravityProcess::run()
 
 	// right mouse button down, so see if we can cling to a ledge
 	MainActor* avatar = getMainActor();
-	sint32 direction = avatar->getDir();
+	int32_t direction = avatar->getDir();
 	if (avatar->tryAnim(Animation::climb40, direction) == Animation::SUCCESS) {
 
 		// we can, so perform a hang animation
@@ -81,7 +81,7 @@ void AvatarGravityProcess::saveData(ODataSource* ods)
 	GravityProcess::saveData(ods);
 }
 
-bool AvatarGravityProcess::loadData(IDataSource* ids, uint32 version)
+bool AvatarGravityProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!GravityProcess::loadData(ids, version)) return false;
 

@@ -37,7 +37,7 @@ namespace Pentagram {
 //
 // buf should be DWORD aligned
 //
-inline void memset_32_aligned(void *buf, uint32 val, uint32 dwords)
+inline void memset_32_aligned(void *buf, uint32_t val, uint32_t dwords)
 {
 	int u0, u1, u2;
     __asm__ __volatile__ (                                  \
@@ -59,13 +59,13 @@ inline void memset_32_aligned(void *buf, uint32 val, uint32 dwords)
 //
 // buf should be DWORD aligned
 //
-inline void memset_32_aligned(void *buf, uint32 val, uint32 dwords)
+inline void memset_32_aligned(void *buf, uint32_t val, uint32_t dwords)
 {
 	// Qword align
-	if ((uint32)(buf) & 4) 
+	if ((uint32_t)(buf) & 4) 
 	{
-		*(reinterpret_cast<uint32*>(buf)) = val;
-		buf = (reinterpret_cast<uint32*>(buf))+1;
+		*(reinterpret_cast<uint32_t*>(buf)) = val;
+		buf = (reinterpret_cast<uint32_t*>(buf))+1;
 		dwords--;
 	}
 
@@ -91,7 +91,7 @@ inline void memset_32_aligned(void *buf, uint32 val, uint32 dwords)
 	}
 
 	// Final dword
-	if (dwords & 1) *(reinterpret_cast<uint32*>(buf)) = val;
+	if (dwords & 1) *(reinterpret_cast<uint32_t*>(buf)) = val;
 }
 
 #else // USE_MMX_ASM
@@ -103,7 +103,7 @@ inline void memset_32_aligned(void *buf, uint32 val, uint32 dwords)
 //
 // buf should be DWORD aligned
 //
-inline void memset_32_aligned(void *buf, uint32 val, uint32 dwords)
+inline void memset_32_aligned(void *buf, uint32_t val, uint32_t dwords)
 {
 	__asm {
 		cld
@@ -123,12 +123,12 @@ inline void memset_32_aligned(void *buf, uint32 val, uint32 dwords)
 //
 // Can be used by all
 //
-inline void memset_32_aligned(void *buf, uint32 val, uint32 dwords)
+inline void memset_32_aligned(void *buf, uint32_t val, uint32_t dwords)
 {
 	do
 	{ 
-		*reinterpret_cast<uint32*>(buf) = val; 
-		buf = (reinterpret_cast<uint32*>(buf))+1;
+		*reinterpret_cast<uint32_t*>(buf) = val; 
+		buf = (reinterpret_cast<uint32_t*>(buf))+1;
 	} 
 	while (--dwords);
 }
@@ -140,7 +140,7 @@ inline void memset_32_aligned(void *buf, uint32 val, uint32 dwords)
 //
 // Can be used by all
 //
-inline void memset_32(void *buf, uint32 val, uint32 dwords)
+inline void memset_32(void *buf, uint32_t val, uint32_t dwords)
 {
 	// Fisrly we should dword Align it
 	int align = 0;
@@ -152,8 +152,8 @@ inline void memset_32(void *buf, uint32 val, uint32 dwords)
 		// Ok, shift along by 1 byte
 		if ((reinterpret_cast<uintptr>(buf) & 1))
 		{
-			*reinterpret_cast<uint8*>(buf) = static_cast<uint8>(val&0xFF); 
-			buf = (reinterpret_cast<uint8*>(buf))+1;
+			*reinterpret_cast<uint8_t*>(buf) = static_cast<uint8_t>(val&0xFF); 
+			buf = (reinterpret_cast<uint8_t*>(buf))+1;
 			val = ((val& 0xFF) << 24) || ((val& 0xFFFFFF00) >> 8);
 			align --;
 		}
@@ -161,8 +161,8 @@ inline void memset_32(void *buf, uint32 val, uint32 dwords)
 		// Ok, shift along by 2 bytes
 		if ((reinterpret_cast<uintptr>(buf) & 2))
 		{
-			*reinterpret_cast<uint16*>(buf) = static_cast<uint16>(val&0xFFFF); 
-			buf = (reinterpret_cast<uint16*>(buf))+1;
+			*reinterpret_cast<uint16_t*>(buf) = static_cast<uint16_t>(val&0xFFFF); 
+			buf = (reinterpret_cast<uint16_t*>(buf))+1;
 			val = ((val& 0xFFFF) << 16) || ((val& 0xFFFF0000) >> 16);
 			align-=2;
 		}
@@ -177,15 +177,15 @@ inline void memset_32(void *buf, uint32 val, uint32 dwords)
 		// Ok, shift along by 1 byte
 		if (align == 1)
 		{
-			*reinterpret_cast<uint8*>(buf) = static_cast<uint8>(val&0xFF); 
+			*reinterpret_cast<uint8_t*>(buf) = static_cast<uint8_t>(val&0xFF); 
 		}
 		// Ok, shift along by 2 bytes
 		else
 		{
-			*reinterpret_cast<uint16*>(buf) = static_cast<uint16>(val&0xFFFF); 
+			*reinterpret_cast<uint16_t*>(buf) = static_cast<uint16_t>(val&0xFFFF); 
 
 			// Ok, shift along by another byte
-			if (align & 1) *(reinterpret_cast<uint8*>(buf)+2) = static_cast<uint8>((val>>16)&0xFF); 
+			if (align & 1) *(reinterpret_cast<uint8_t*>(buf)+2) = static_cast<uint8_t>((val>>16)&0xFF); 
 		}
 	}
 }
@@ -195,13 +195,13 @@ inline void memset_32(void *buf, uint32 val, uint32 dwords)
 //
 // Can be used by all
 //
-inline void memset_16(void *buf, sint32 val, uint32 words)
+inline void memset_16(void *buf, int32_t val, uint32_t words)
 {
 	// Use memset_32
 	if (words > 1) memset_32(buf,val|val<<16,words>>1);
 
 	// Final word
-	if (words & 1) *(reinterpret_cast<uint16*>(buf)) = static_cast<uint16>(val&0xFFFF);
+	if (words & 1) *(reinterpret_cast<uint16_t*>(buf)) = static_cast<uint16_t>(val&0xFFFF);
 }
 
 }

@@ -25,9 +25,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "World.h"
 #include "getObject.h"
 
-MissileTracker::MissileTracker(Item* item, sint32 sx, sint32 sy, sint32 sz,
-							   sint32 tx, sint32 ty, sint32 tz,
-							   sint32 speed, sint32 gravity_)
+MissileTracker::MissileTracker(Item* item, int32_t sx, int32_t sy, int32_t sz,
+							   int32_t tx, int32_t ty, int32_t tz,
+							   int32_t speed, int32_t gravity_)
 {
 	objid = item->getObjId();
 	destx = tx;
@@ -38,8 +38,8 @@ MissileTracker::MissileTracker(Item* item, sint32 sx, sint32 sy, sint32 sz,
 	init(sx, sy, sz, speed);
 }
 
-MissileTracker::MissileTracker(Item* item, sint32 tx, sint32 ty, sint32 tz,
-							   sint32 speed, sint32 gravity_)
+MissileTracker::MissileTracker(Item* item, int32_t tx, int32_t ty, int32_t tz,
+							   int32_t speed, int32_t gravity_)
 {
 	assert(item->getParent() == 0);
 
@@ -49,13 +49,13 @@ MissileTracker::MissileTracker(Item* item, sint32 tx, sint32 ty, sint32 tz,
 	destz = tz;
 	gravity = gravity_;
 
-	sint32 x,y,z;
+	int32_t x,y,z;
 	item->getLocation(x,y,z);
 
 	init(x, y, z, speed);
 }
 
-void MissileTracker::init(sint32 x, sint32 y, sint32 z, sint32 speed)
+void MissileTracker::init(int32_t x, int32_t y, int32_t z, int32_t speed)
 {
 	int range = abs(x - destx) + abs(y - desty);
 
@@ -126,10 +126,10 @@ MissileTracker::~MissileTracker()
 
 bool MissileTracker::isPathClear()
 {
-	sint32 start[3];
-	sint32 end[3];
-	sint32 dims[3];
-	sint32 sx,sy,sz;
+	int32_t start[3];
+	int32_t end[3];
+	int32_t dims[3];
+	int32_t sx,sy,sz;
 
 	sx = speedx;
 	sy = speedy;
@@ -153,7 +153,7 @@ bool MissileTracker::isPathClear()
 		map->sweepTest(start, end, dims, item->getShapeInfo()->flags, objid,
 					   false, &collisions);
 
-		sint32 hit = 0x4000;
+		int32_t hit = 0x4000;
 		for (it = collisions.begin(); it != collisions.end(); it++)
 		{
 			if (it->blocking && !it->touching) {

@@ -37,12 +37,12 @@ public:
 	virtual bool PointOnGump(int mx, int my);
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
 	virtual void Close(bool no_del = false);
-	virtual void PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled);
 	virtual void OnMouseUp(int button, int mx, int my);
 
 	INTRINSIC(I_target);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 

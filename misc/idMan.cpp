@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "IDataSource.h"
 #include "ODataSource.h"
 
-idMan::idMan(uint16 Begin, uint16 MaxEnd, uint16 StartCount)
+idMan::idMan(uint16_t Begin, uint16_t MaxEnd, uint16_t StartCount)
 	: begin(Begin), max_end(MaxEnd), startcount(StartCount)
 {
 	// 0 is always reserved, as is 65535
@@ -42,7 +42,7 @@ idMan::~idMan()
 
 }
 
-void idMan::clearAll(uint16 new_max)
+void idMan::clearAll(uint16_t new_max)
 {
 	if (new_max)
 		max_end = new_max;
@@ -55,14 +55,14 @@ void idMan::clearAll(uint16 new_max)
 	last  = end;
 	usedcount = 0;
 
-	uint16 i;
+	uint16_t i;
 	for (i = 0; i < first; i++) ids[i] = 0;		// NPCs always used
 	for (     ; i < last;  i++) ids[i] = i+1;	// Free IDs
 	ids[last] = 0;								// Terminates the list
 
 }
 
-uint16 idMan::getNewID()
+uint16_t idMan::getNewID()
 {
 	// more than 75% used and room to expand?
 	if (usedcount * 4 > (end - begin + 1) * 3 && end < max_end)
@@ -78,7 +78,7 @@ uint16 idMan::getNewID()
 	}
 
 	// Get the next id
-	uint16 id = first;
+	uint16_t id = first;
 
 	// Set the first in the list to next
 	first = ids[id];
@@ -100,7 +100,7 @@ void idMan::expand()
 {
 	if (end == max_end) return;
 
-	uint16 old_end = end;
+	uint16_t old_end = end;
 	unsigned int new_end = end * 2;
 	if (new_end > max_end) new_end = max_end;
 	end = new_end;
@@ -112,14 +112,14 @@ void idMan::expand()
 #endif
 	
 	// insert the new free IDs at the start
-	for (uint16 i = old_end + 1; i < end; ++i) {
+	for (uint16_t i = old_end + 1; i < end; ++i) {
 		ids[i] = i+1;
 	}
 	ids[end] = first;
 	first = old_end + 1;
 }
 
-bool idMan::reserveID(uint16 id)
+bool idMan::reserveID(uint16_t id)
 {
 	if (id < begin || id > max_end) {
 		return false;
@@ -147,8 +147,8 @@ bool idMan::reserveID(uint16 id)
 		return true;
 	}
 
-	uint16 node = ids[first];
-	uint16 prev = first;
+	uint16_t node = ids[first];
+	uint16_t prev = first;
 
 	while (node != id && node != 0) {
 		prev = node;
@@ -163,7 +163,7 @@ bool idMan::reserveID(uint16 id)
 	return true;
 }
 
-void idMan::clearID(uint16 id)
+void idMan::clearID(uint16_t id)
 {
 	// Only clear IF it is used. We don't want to screw up the linked list
 	// if an id gets cleared twice
@@ -195,7 +195,7 @@ void idMan::save(ODataSource* ods)
 	ods->write2(max_end);
 	ods->write2(startcount);
 	ods->write2(usedcount);
-	uint16 cur = first;
+	uint16_t cur = first;
 	while (cur) {
 		ods->write2(cur);
 		cur = ids[cur];
@@ -203,13 +203,13 @@ void idMan::save(ODataSource* ods)
 	ods->write2(0); // terminator
 }
 
-bool idMan::load(IDataSource* ds, uint32 version)
+bool idMan::load(IDataSource* ds, uint32_t version)
 {
 	begin = ds->read2();
 	end = ds->read2();
 	max_end = ds->read2();
 	startcount = ds->read2();
-	uint16 realusedcount = ds->read2();
+	uint16_t realusedcount = ds->read2();
 
 	ids.resize(end+1);
 
@@ -218,7 +218,7 @@ bool idMan::load(IDataSource* ds, uint32 version)
 	}
 	first = last = 0;
 
-	uint16 cur = ds->read2();
+	uint16_t cur = ds->read2();
 	while (cur) {
 		clearID(cur);
 		cur = ds->read2();

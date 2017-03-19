@@ -52,7 +52,7 @@ void HealProcess::run()
 	healCounter++;
 
 	if (healCounter == 900) {
-		sint16 mana = avatar->getMana();
+		int16_t mana = avatar->getMana();
 		if (mana < avatar->getMaxMana()) {
 			mana++;
 			avatar->setMana(mana);
@@ -60,7 +60,7 @@ void HealProcess::run()
 	}
 
 	if (healCounter == 1800) {
-		uint16 hp = avatar->getHP();
+		uint16_t hp = avatar->getHP();
 		if (hp < avatar->getMaxHP()) {
 			hp++;
 			avatar->setHP(hp);
@@ -72,7 +72,7 @@ void HealProcess::run()
 	}
 }
 
-void HealProcess::feedAvatar(uint16 food)
+void HealProcess::feedAvatar(uint16_t food)
 {
 	MainActor *avatar = getMainActor();
 
@@ -87,18 +87,18 @@ void HealProcess::feedAvatar(uint16 food)
 
 	if (food == 0) return;
 
-	uint16 oldCounter = hungerCounter;
+	uint16_t oldCounter = hungerCounter;
 	hungerCounter -= food;
 
-	uint16 hp = avatar->getHP() - (hungerCounter / 4) + (oldCounter / 4);
+	uint16_t hp = avatar->getHP() - (hungerCounter / 4) + (oldCounter / 4);
 	if (hp > avatar->getMaxHP()) hp = avatar->getMaxHP();
 
 	avatar->setHP(hp);
 }
 
-uint32 HealProcess::I_feedAvatar(const uint8* args, unsigned int /*argsize*/)
+uint32_t HealProcess::I_feedAvatar(const uint8_t* args, unsigned int /*argsize*/)
 {
-	ARG_UINT16(food);
+	ARG_uint16_t(food);
 
 	Process* p = Kernel::get_instance()->findProcess(0, 0x222); // CONSTANT!
 	HealProcess* hp = p_dynamic_cast<HealProcess*>(p);
@@ -121,7 +121,7 @@ void HealProcess::saveData(ODataSource* ods)
 	ods->write2(hungerCounter);
 }
 
-bool HealProcess::loadData(IDataSource* ids, uint32 version)
+bool HealProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

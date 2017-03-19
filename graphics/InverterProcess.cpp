@@ -77,10 +77,10 @@ void InverterProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 	
-	ods->write2(static_cast<uint16>(targetstate));
+	ods->write2(static_cast<uint16_t>(targetstate));
 }
 
-bool InverterProcess::loadData(IDataSource* ids, uint32 version)
+bool InverterProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 	
@@ -108,7 +108,7 @@ ProcId InverterProcess::invertScreen()
 }
 
 
-uint32 InverterProcess::I_invertScreen(const uint8* args,
+uint32_t InverterProcess::I_invertScreen(const uint8_t* args,
 									   unsigned int /*argsize*/)
 {
 	return invertScreen();

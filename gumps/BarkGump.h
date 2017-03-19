@@ -25,17 +25,17 @@ class BarkGump : public ItemRelativeGump
 {
 protected:
 	std::string	barked;
-	sint32 counter;
+	int32_t counter;
 	ObjId textwidget;
-	uint32 speechshapenum;
-	uint32 speechlength;
-	uint32 totaltextheight;
+	uint32_t speechshapenum;
+	uint32_t speechlength;
+	uint32_t totaltextheight;
 
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	BarkGump();
-	BarkGump(uint16 owner, std::string msg, uint32 speechshapenum=0);
+	BarkGump(uint16_t owner, std::string msg, uint32_t speechshapenum=0);
 	virtual ~BarkGump(void);
 
 	// Run the gump (decrement the counter)
@@ -55,7 +55,7 @@ protected:
 	int textdelay;
 
 public:
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

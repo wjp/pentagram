@@ -36,10 +36,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 DEFINE_RUNTIME_CLASSTYPE_CODE(TTFont,Pentagram::Font);
 
 // various unicode characters which look like small black circles
-static const Uint16 bullets[] = { 0x2022, 0x30FB, 0x25CF, 0 };
+static const uint16_t bullets[] = { 0x2022, 0x30FB, 0x25CF, 0 };
 
 
-TTFont::TTFont(TTF_Font* font, uint32 rgb_, int bordersize_,
+TTFont::TTFont(TTF_Font* font, uint32_t rgb_, int bordersize_,
 			   bool antiAliased_, bool SJIS_)
 	: ttf_font(font), antiAliased(antiAliased_), SJIS(SJIS_)
 {
@@ -87,13 +87,13 @@ int TTFont::getBaselineSkip()
 
 
 template<class T>
-static uint16* toUnicode(const std::string& text, uint16 bullet)
+static uint16_t* toUnicode(const std::string& text, uint16_t bullet)
 {
 	std::string::size_type l = T::length(text);
-	uint16* unicodetext = new uint16[l+1];
+	uint16_t* unicodetext = new uint16_t[l+1];
 	std::string::const_iterator iter = text.begin();
 	for (unsigned int i = 0; i < l; ++i) {
-		uint32 u = T::unicode(iter);
+		uint32_t u = T::unicode(iter);
 		if (u > 0xFFFF) {
 			perr.printf("Warning: unicode character out of range for SDL_ttf: %x\n", u);
 			unicodetext[i] = '?';
@@ -111,7 +111,7 @@ static uint16* toUnicode(const std::string& text, uint16 bullet)
 void TTFont::getStringSize(const std::string& text, int& width, int& height)
 {
 	// convert to unicode
-	uint16* unicodetext;
+	uint16_t* unicodetext;
 	if (!SJIS)
 		unicodetext = toUnicode<Traits>(text, bullet);
 	else
@@ -167,7 +167,7 @@ RenderedText* TTFont::renderText(const std::string& text,
 										resultwidth, resultheight, cursor);
 
 	// create 32bit RGBA texture buffer
-	uint32* buf = new uint32[resultwidth*resultheight];
+	uint32_t* buf = new uint32_t[resultwidth*resultheight];
 	memset(buf, 0, 4*resultwidth*resultheight);
 
 	Texture* texture = new Texture;
@@ -183,7 +183,7 @@ RenderedText* TTFont::renderText(const std::string& text,
 	for (iter = lines.begin(); iter != lines.end(); ++iter)
 	{
 		// convert to unicode
-		uint16* unicodetext;
+		uint16_t* unicodetext;
 		if (!SJIS)
 			unicodetext = toUnicode<Traits>(iter->text, bullet);
 		else
@@ -216,9 +216,9 @@ RenderedText* TTFont::renderText(const std::string& text,
 
 			// render the text surface into our texture buffer
 			for (int y = 0; y < textsurf->h; y++) {
-				uint8* surfrow = static_cast<uint8*>(textsurf->pixels) + y * textsurf->pitch;
+				uint8_t* surfrow = static_cast<uint8_t*>(textsurf->pixels) + y * textsurf->pitch;
 				// CHECKME: bordersize!
-				uint32* bufrow = buf + (iter->dims.y+y+bordersize)*resultwidth;
+				uint32_t* bufrow = buf + (iter->dims.y+y+bordersize)*resultwidth;
 				for (int x = 0; x < textsurf->w; x++) {
 
 					if (!antiAliased && surfrow[x] == 1) {
@@ -256,7 +256,7 @@ RenderedText* TTFont::renderText(const std::string& text,
 					}
 					else if (antiAliased)
 					{
-						uint32 idx = surfrow[x];
+						uint32_t idx = surfrow[x];
 
 						if (idx == 0) continue;
 						SDL_Color pe = pal->colors[idx];
@@ -274,7 +274,7 @@ RenderedText* TTFont::renderText(const std::string& text,
 										x + 1 + iter->dims.x + dx < resultwidth &&
 										y + 1 + dy >= 0 && y + 1 + dy < resultheight)
 									{
-										uint32 alpha = TEX32_A(buf[(y+iter->dims.y+dy+1)*resultwidth + x+1+iter->dims.x+dx]);
+										uint32_t alpha = TEX32_A(buf[(y+iter->dims.y+dy+1)*resultwidth + x+1+iter->dims.x+dx]);
 										if (alpha != 0xFF) {
 											alpha = 255-(((255-alpha) * (255-idx))>>8);
 											buf[(y+iter->dims.y+dy+1)*resultwidth + x+1+iter->dims.x+dx] = alpha<<TEX32_A_SHIFT;
@@ -288,7 +288,7 @@ RenderedText* TTFont::renderText(const std::string& text,
 										x + bordersize + iter->dims.x + dx < resultwidth &&
 										y + bordersize + dy >= 0 && y + bordersize + dy < resultheight)
 									{
-										uint32 alpha = TEX32_A(buf[(y+iter->dims.y+dy+bordersize)*resultwidth + x+bordersize+iter->dims.x+dx]);
+										uint32_t alpha = TEX32_A(buf[(y+iter->dims.y+dy+bordersize)*resultwidth + x+bordersize+iter->dims.x+dx]);
 										if (alpha != 0xFF) {
 											alpha = 255-(((255-alpha) * (255-idx))>>8);
 											buf[(y+iter->dims.y+dy+bordersize)*resultwidth + x+bordersize+iter->dims.x+dx] = alpha<<TEX32_A_SHIFT;
@@ -311,7 +311,7 @@ RenderedText* TTFont::renderText(const std::string& text,
 			unicodetext[iter->cursor] = 0;
 			TTF_SizeUNICODE(ttf_font, unicodetext,&w,&h);
 			for (int y = 0; y < iter->dims.h; y++) {
-				uint32* bufrow = buf + (iter->dims.y+y)*resultwidth;
+				uint32_t* bufrow = buf + (iter->dims.y+y)*resultwidth;
 				bufrow[iter->dims.x+w+bordersize] = 0xFF000000;
 //				if (bordersize > 0)
 //					bufrow[iter->dims.x+w+bordersize-1] = 0xFF000000;

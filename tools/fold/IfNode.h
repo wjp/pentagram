@@ -28,7 +28,7 @@
 class EndNode : public Node
 {
 	public:
-		EndNode(const uint32 opcode, const uint32 offset, const uint32 newTargetOffset)
+		EndNode(const uint32_t opcode, const uint32_t offset, const uint32_t newTargetOffset)
 			: Node(opcode, offset, Type(Type::T_INVALID)), targetOffset(newTargetOffset)
 			{
 				assert(acceptOp(opcode, 0x52));
@@ -40,18 +40,18 @@ class EndNode : public Node
 			};
 		~EndNode() {};
 		
-		void print_unk(Console &o, const uint32 isize) const;
+		void print_unk(Console &o, const uint32_t isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 		bool fold(DCUnit *unit, std::deque<Node *> &nodes);
 		
-		inline uint32 TargetOffset() const { return targetOffset; };
+		inline uint32_t TargetOffset() const { return targetOffset; };
 		
 	protected:
 		enum endtype { JMP } etype;
 
 	private:
-		uint32 targetOffset; // jmp
+		uint32_t targetOffset; // jmp
 };
 
 class IfNode;
@@ -61,11 +61,11 @@ class IfNode : public UniNode
 	public:
 		enum iftype { I_IF=0, I_IF_ELSE, I_IF_ELSE_IF, I_ELSE_IF, I_ELSE_IF_ELSE, I_ELSE };
 		
-		IfNode(const iftype newItype, const uint32 newTargetOffset)
+		IfNode(const iftype newItype, const uint32_t newTargetOffset)
 			: UniNode(0x51, 0x0000, Type(Type::T_INVALID)), itype(newItype),
 			targetOffset(newTargetOffset), jmpnode(0), elsenode(0)
 			{};
-		IfNode(const uint32 opcode, const uint32 offset, const uint32 newTargetOffset)
+		IfNode(const uint32_t opcode, const uint32_t offset, const uint32_t newTargetOffset)
 			: UniNode(opcode, offset, Type(Type::T_INVALID)),
 			targetOffset(newTargetOffset), jmpnode(0), elsenode(0)
 			{
@@ -78,13 +78,13 @@ class IfNode : public UniNode
 			};
 		~IfNode() {};
 		
-		void print_unk(Console &o, const uint32 isize) const;
+		void print_unk(Console &o, const uint32_t isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 		bool fold(DCUnit *unit, std::deque<Node *> &nodes);
 		bool fold_else(DCUnit *unit, std::deque<Node *> &nodes);
 		
-		inline uint32 TargetOffset() const
+		inline uint32_t TargetOffset() const
 		{
 			if(jmpnode!=0)
 				return jmpnode->TargetOffset();
@@ -117,7 +117,7 @@ class IfNode : public UniNode
 		std::deque<Node *> ifnodes;
 
 	private:
-		uint32 targetOffset; // jne
+		uint32_t targetOffset; // jne
 		EndNode *jmpnode; // this is for when we're handling the pessimised if(true){code}->if(false){}else{code}
 		DCCallPostfixNode *addSP;
 	public:

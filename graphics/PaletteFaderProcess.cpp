@@ -48,7 +48,7 @@ PaletteFaderProcess::PaletteFaderProcess(Pentagram::PalTransforms trans,
 	pal->transform = trans;
 }
 
-PaletteFaderProcess::PaletteFaderProcess(uint32 col32, bool from,
+PaletteFaderProcess::PaletteFaderProcess(uint32_t col32, bool from,
 		int priority_, int frames, bool current) : priority(priority_), 
 		counter(frames), max_counter(frames)
 {
@@ -72,7 +72,7 @@ PaletteFaderProcess::PaletteFaderProcess(uint32 col32, bool from,
 	}
 }
 
-PaletteFaderProcess::PaletteFaderProcess(sint16 from[12], sint16 to[12],
+PaletteFaderProcess::PaletteFaderProcess(int16_t from[12], int16_t to[12],
 		int priority_, int frames) : priority(priority_), 
 		counter(frames), max_counter(frames)
 {
@@ -89,13 +89,13 @@ PaletteFaderProcess::~PaletteFaderProcess(void)
 
 void PaletteFaderProcess::run()
 {
-	sint16	matrix[12];
+	int16_t	matrix[12];
 
 	for (int i = 0; i < 12; i++)
 	{
-		sint32 o = old_matrix[i] * counter;
-		sint32 n = new_matrix[i] * (max_counter-counter);
-		matrix[i] = static_cast<sint16>((o + n)/max_counter);
+		int32_t o = old_matrix[i] * counter;
+		int32_t n = new_matrix[i] * (max_counter-counter);
+		matrix[i] = static_cast<int16_t>((o + n)/max_counter);
 	}
 
 	PaletteManager::get_instance()->transformPalette(
@@ -109,9 +109,9 @@ void PaletteFaderProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 	
-	ods->write4(static_cast<uint32>(priority));
-	ods->write4(static_cast<uint32>(counter));
-	ods->write4(static_cast<uint32>(max_counter));
+	ods->write4(static_cast<uint32_t>(priority));
+	ods->write4(static_cast<uint32_t>(counter));
+	ods->write4(static_cast<uint32_t>(max_counter));
 	unsigned int i;
 	for (i = 0; i < 12; ++i)
 		ods->write2(old_matrix[i]);
@@ -119,7 +119,7 @@ void PaletteFaderProcess::saveData(ODataSource* ods)
 		ods->write2(new_matrix[i]);
 }
 
-bool PaletteFaderProcess::loadData(IDataSource* ids, uint32 version)
+bool PaletteFaderProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 	
@@ -137,11 +137,11 @@ bool PaletteFaderProcess::loadData(IDataSource* ids, uint32 version)
 	return true;
 }
 
-uint32 PaletteFaderProcess::I_fadeToPaletteTransform(const uint8* args,
+uint32_t PaletteFaderProcess::I_fadeToPaletteTransform(const uint8_t* args,
 										unsigned int /*argsize*/)
 {
-	ARG_UINT16(transform);
-	ARG_UINT16(priority);	
+	ARG_uint16_t(transform);
+	ARG_uint16_t(priority);	
 	
 	// If current fader has higher priority, we do nothing
 	if (fader && fader->priority > priority) return 0;
@@ -153,7 +153,7 @@ uint32 PaletteFaderProcess::I_fadeToPaletteTransform(const uint8* args,
 	return Kernel::get_instance()->addProcess(fader);
 }
 
-uint32 PaletteFaderProcess::I_fadeToBlack(const uint8* /*args*/,
+uint32_t PaletteFaderProcess::I_fadeToBlack(const uint8_t* /*args*/,
 										unsigned int /*argsize*/)
 {
 	if (fader && fader->priority > 0x7FFF) return 0;
@@ -163,7 +163,7 @@ uint32 PaletteFaderProcess::I_fadeToBlack(const uint8* /*args*/,
 	return Kernel::get_instance()->addProcess(fader);
 }
 
-uint32 PaletteFaderProcess::I_fadeFromBlack(const uint8* /*args*/,
+uint32_t PaletteFaderProcess::I_fadeFromBlack(const uint8_t* /*args*/,
 										unsigned int /*argsize*/)
 {
 	if (fader && fader->priority > 0x7FFF) return 0;
@@ -173,7 +173,7 @@ uint32 PaletteFaderProcess::I_fadeFromBlack(const uint8* /*args*/,
 	return Kernel::get_instance()->addProcess(fader);
 }
 
-uint32 PaletteFaderProcess::I_fadeToWhite(const uint8* /*args*/,
+uint32_t PaletteFaderProcess::I_fadeToWhite(const uint8_t* /*args*/,
 										unsigned int /*argsize*/)
 {
 	if (fader && fader->priority > 0x7FFF) return 0;
@@ -183,7 +183,7 @@ uint32 PaletteFaderProcess::I_fadeToWhite(const uint8* /*args*/,
 	return Kernel::get_instance()->addProcess(fader);
 }
 
-uint32 PaletteFaderProcess::I_fadeFromWhite(const uint8* /*args*/,
+uint32_t PaletteFaderProcess::I_fadeFromWhite(const uint8_t* /*args*/,
 										unsigned int /*argsize*/)
 {
 	if (fader && fader->priority > 0x7FFF) return 0;
@@ -193,7 +193,7 @@ uint32 PaletteFaderProcess::I_fadeFromWhite(const uint8* /*args*/,
 	return Kernel::get_instance()->addProcess(fader);
 }
 
-uint32 PaletteFaderProcess::I_lightningBolt(const uint8* /*args*/,
+uint32_t PaletteFaderProcess::I_lightningBolt(const uint8_t* /*args*/,
 										unsigned int /*argsize*/)
 {
 	if (fader && fader->priority > -1) return 0;

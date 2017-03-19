@@ -29,7 +29,7 @@ class idMan;
 class IDataSource;
 class ODataSource;
 
-typedef Process* (*ProcessLoadFunc)(IDataSource*, uint32 version);
+typedef Process* (*ProcessLoadFunc)(IDataSource*, uint32_t version);
 typedef std::list<Process*>::const_iterator ProcessIter;
 
 class Kernel {
@@ -57,22 +57,22 @@ public:
 	Process* getRunningProcess() const { return runningprocess; }
 
 	// objid = 0 means any object, type = 6 means any type
-	uint32 getNumProcesses(ObjId objid, uint16 processtype);
+	uint32_t getNumProcesses(ObjId objid, uint16_t processtype);
 
 	//! find a (any) process of the given objid, processtype
-	Process* findProcess(ObjId objid, uint16 processtype);
+	Process* findProcess(ObjId objid, uint16_t processtype);
 
 	//! kill (fail) processes of a certain object and/or of a certain type
 	//! \param objid the object, or 0 for any object (except objid 0)
 	//! \param type the type, or 6 for any type
 	//! \param fail if true, fail the processes instead of terminating them
-	void killProcesses(ObjId objid, uint16 processtype, bool fail);
+	void killProcesses(ObjId objid, uint16_t processtype, bool fail);
 
 	//! kill (fail) processes of a certain object and not of a certain type
 	//! \param objid the object, or 0 for any object (except objid 0)
 	//! \param type the type not to kill
 	//! \param fail if true, fail the processes instead of terminating them
-	void killProcessesNotOfType(ObjId objid, uint16 processtype, bool fail);
+	void killProcessesNotOfType(ObjId objid, uint16_t processtype, bool fail);
 
 	//! get an iterator of the process list.
 	ProcessIter getProcessBeginIterator() { return processes.begin(); }
@@ -82,7 +82,7 @@ public:
 	void processTypes();
 
 	void save(ODataSource* ods);
-	bool load(IDataSource* ids, uint32 version);
+	bool load(IDataSource* ids, uint32_t version);
 
 	void pause() { paused++; }
 	void unpause() { if (paused > 0) paused--; }
@@ -94,7 +94,7 @@ public:
 	void addProcessLoader(std::string classname, ProcessLoadFunc func)
 		{ processloaders[classname] = func; }
 
-	uint32 getFrameNum() const { return framenum; };
+	uint32_t getFrameNum() const { return framenum; };
 
 	//! "Kernel::processTypes" console command
 	static void ConCmd_processTypes(const Console::ArgvType &argv);
@@ -111,7 +111,7 @@ public:
 	INTRINSIC(I_getNumProcesses);
 	INTRINSIC(I_resetRef);
 private:
-	Process* loadProcess(IDataSource* ids, uint32 version);
+	Process* loadProcess(IDataSource* ids, uint32_t version);
 
 	std::list<Process*> processes;
 	idMan	*pIDs;
@@ -122,7 +122,7 @@ private:
 
 	bool loading;
 
-	uint32 framenum;
+	uint32_t framenum;
 	unsigned int paused;
 	bool framebyframe;
 
@@ -135,7 +135,7 @@ private:
 // every process
 template<class T>
 struct ProcessLoader {
-	static Process* load(IDataSource* ids, uint32 version) {
+	static Process* load(IDataSource* ids, uint32_t version) {
 		T* p = new T();
 		bool ok = p->loadData(ids, version);
 		if (!ok) {

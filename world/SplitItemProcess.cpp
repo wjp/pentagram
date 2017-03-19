@@ -58,12 +58,12 @@ void SplitItemProcess::run()
 	assert(original->getShapeInfo()->hasQuantity());
 	assert(targetitem->getShapeInfo()->hasQuantity());
 
-	uint16 movecount = static_cast<uint16>(result);
+	uint16_t movecount = static_cast<uint16_t>(result);
 
 	assert(movecount <= original->getQuality());
 
-	uint16 origcount = original->getQuality() - movecount;
-	uint16 targetcount = targetitem->getQuality() + movecount;
+	uint16_t origcount = original->getQuality() - movecount;
+	uint16_t targetcount = targetitem->getQuality() + movecount;
 
 	pout << "SplitItemProcess splitting: " << movecount << ": "
 		 << origcount << "-" << targetcount << std::endl;
@@ -97,7 +97,7 @@ void SplitItemProcess::saveData(ODataSource* ods)
 	ods->write2(target);
 }
 
-bool SplitItemProcess::loadData(IDataSource* ids, uint32 version)
+bool SplitItemProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

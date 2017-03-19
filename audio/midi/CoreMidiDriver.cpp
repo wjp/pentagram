@@ -105,14 +105,14 @@ void CoreMidiDriver::close() {
 	}
 }
 
-void CoreMidiDriver::send(uint32 b) {
+void CoreMidiDriver::send(uint32_t b) {
 	assert(mOutPort != 0);
 	assert(mDest != 0);
 
 	// Extract the MIDI data
-	uint8 status_byte = (b & 0x000000FF);
-	uint8 first_byte = (b & 0x0000FF00) >> 8;
-	uint8 second_byte = (b & 0x00FF0000) >> 16;
+	uint8_t status_byte = (b & 0x000000FF);
+	uint8_t first_byte = (b & 0x0000FF00) >> 8;
+	uint8_t second_byte = (b & 0x00FF0000) >> 16;
 
 	// Generate a single MIDI packet with that data
 	MIDIPacketList packetList;
@@ -149,15 +149,15 @@ void CoreMidiDriver::send(uint32 b) {
 	MIDISend(mOutPort, mDest, &packetList);
 }
 
-void CoreMidiDriver::send_sysex(uint8 status, const uint8 *msg, uint16 length) {
+void CoreMidiDriver::send_sysex(uint8_t status, const uint8_t *msg, uint16_t length) {
 	assert(mOutPort != 0);
 	assert(mDest != 0);
 
-	uint8 buf[384];
+	uint8_t buf[384];
 	MIDIPacketList *packetList = (MIDIPacketList *)buf;
 	MIDIPacket *packet = packetList->packet;
 
-	assert(sizeof(buf) >= sizeof(UInt32) + sizeof(MIDITimeStamp) + sizeof(UInt16) + length + 2);
+	assert(sizeof(buf) >= sizeof(uint32_t) + sizeof(MIDITimeStamp) + sizeof(uint16_t) + length + 2);
 
 	packetList->numPackets = 1;
 

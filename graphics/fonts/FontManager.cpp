@@ -150,7 +150,7 @@ void FontManager::setOverride(unsigned int fontnum, Pentagram::Font* override)
 
 
 bool FontManager::addTTFOverride(unsigned int fontnum, std::string filename,
-								 int pointsize, uint32 rgb, int bordersize,
+								 int pointsize, uint32_t rgb, int bordersize,
 								 bool SJIS)
 {
 	TTF_Font* f = getTTF_Font(filename, pointsize);
@@ -173,7 +173,7 @@ bool FontManager::addTTFOverride(unsigned int fontnum, std::string filename,
 }
 
 bool FontManager::addJPOverride(unsigned int fontnum,
-								unsigned int jpfont, uint32 rgb)
+								unsigned int jpfont, uint32_t rgb)
 {
 	ShapeFont* jf = p_dynamic_cast<ShapeFont*>(GameData::get_instance()->getFonts()->getFont(jpfont));
 	if (!jf)
@@ -207,7 +207,7 @@ bool FontManager::addJPOverride(unsigned int fontnum,
 
 
 bool FontManager::loadTTFont(unsigned int fontnum, std::string filename,
-							 int pointsize, uint32 rgb, int bordersize)
+							 int pointsize, uint32_t rgb, int bordersize)
 {
 	TTF_Font* f = getTTF_Font(filename, pointsize);
 	if (!f)

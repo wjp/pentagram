@@ -28,11 +28,11 @@ class InverterGump : public DesktopGump
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
-	InverterGump(sint32 x, sint32 y, sint32 width, sint32 height);
+	InverterGump(int32_t x, int32_t y, int32_t width, int32_t height);
 	virtual ~InverterGump(void);
 
-	virtual void Paint(RenderSurface* surf, sint32 lerp_factor, bool scaled);
-	virtual void PaintChildren(RenderSurface* surf, sint32 lerp_factor, bool scaled);
+	virtual void Paint(RenderSurface* surf, int32_t lerp_factor, bool scaled);
+	virtual void PaintChildren(RenderSurface* surf, int32_t lerp_factor, bool scaled);
 
 	virtual void ParentToGump(int &px, int &py,
 							  PointRoundDir r = ROUND_TOPLEFT);

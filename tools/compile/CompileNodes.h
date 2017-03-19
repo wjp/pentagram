@@ -30,20 +30,20 @@
 class CompileNode
 {
 	public:
-		CompileNode(const uint32 _linenum) : linenum(_linenum) {};
+		CompileNode(const uint32_t _linenum) : linenum(_linenum) {};
 		virtual ~CompileNode() {}
 
 		virtual void print_unk(std::ostream &o)=0;
 		virtual bool isA(const LLCToken &tok)=0; // check if node is of particular type
 		
-		const uint32 linenum;
+		const uint32_t linenum;
 };
 
 // General stringy stuff *****************************************************
 class CStringNode : public CompileNode
 {
 	public:
-		CStringNode(const char * const _str, const uint32 _linenum) :
+		CStringNode(const char * const _str, const uint32_t _linenum) :
 			CompileNode(_linenum), str(_str) {};
 
 		virtual void print_unk(std::ostream &o) { o << str; }
@@ -54,7 +54,7 @@ class CStringNode : public CompileNode
 class VarIdentNode : public CStringNode
 {
 	public:
-		VarIdentNode(const char * const _idname, const uint32 _linenum) :
+		VarIdentNode(const char * const _idname, const uint32_t _linenum) :
 			CStringNode(_idname, _linenum) {};
 
 		virtual bool isA(const LLCToken &tok) { return tok==LLC_IDENT; }
@@ -66,7 +66,7 @@ class VarIdentNode : public CStringNode
 class FuncNode : public CompileNode
 {
 	public:
-		FuncNode(const uint32 _linenum) : CompileNode(_linenum) {}
+		FuncNode(const uint32_t _linenum) : CompileNode(_linenum) {}
 
 		void print_unk(std::ostream &o) {}
 		bool isA(const LLCToken &tok) { return false; } //FIXME:!
@@ -76,7 +76,7 @@ class FuncNode : public CompileNode
 class ClassNode : public CompileNode
 {
 	public:
-		ClassNode(const uint32 _linenum) : CompileNode(_linenum) {}
+		ClassNode(const uint32_t _linenum) : CompileNode(_linenum) {}
 
 		void print_unk(std::ostream &o)
 		{
@@ -98,7 +98,7 @@ class ClassNode : public CompileNode
 class FencePostNode : public CompileNode
 {
 	public:
-		FencePostNode(const LLCToken _tok, const uint32 _linenum) :
+		FencePostNode(const LLCToken _tok, const uint32_t _linenum) :
 			CompileNode(_linenum), iTok(_tok) {};
 
 		virtual void print_unk(std::ostream &o)

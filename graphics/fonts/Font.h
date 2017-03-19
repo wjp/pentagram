@@ -128,8 +128,8 @@ protected:
 		static std::string::size_type length(const std::string& t) {
 			return t.size();
 		}
-		static uint32 unicode(std::string::const_iterator& i) {
-			return Pentagram::encoding[static_cast<uint8>(*i++)];
+		static uint32_t unicode(std::string::const_iterator& i) {
+			return Pentagram::encoding[static_cast<uint8_t>(*i++)];
 		}
 	};
 	struct SJISTraits : public Traits
@@ -137,7 +137,7 @@ protected:
 		static bool canBreakAfter(std::string::const_iterator& i);
 		static void advance(std::string::const_iterator& i) {
 			// FIXME: this can advance past the end of a malformed string
-			uint8 c = *i;
+			uint8_t c = *i;
 			i++;
 			if (c >= 0x80) i++;
 		}
@@ -150,11 +150,11 @@ protected:
 			}
 			return l;
 		}
-		static uint32 unicode(std::string::const_iterator& i) {
-			uint16 s = static_cast<uint8>(*i);
+		static uint32_t unicode(std::string::const_iterator& i) {
+			uint16_t s = static_cast<uint8_t>(*i);
 			i++;
 			if (s >= 0x80) {
-				uint16 t = static_cast<uint8>(*i++);
+				uint16_t t = static_cast<uint8_t>(*i++);
 				s |= (t << 8);
 			}
 			return Pentagram::shiftjis_to_unicode(s);

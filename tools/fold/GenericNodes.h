@@ -33,29 +33,29 @@
 
 class DCUnit;
 
-inline bool acceptOp(const uint32 opcode, const uint32 want1)
+inline bool acceptOp(const uint32_t opcode, const uint32_t want1)
 	{ return ((opcode==want1) ? true : false); };
-inline bool acceptOp(const uint32 opcode, const uint32 want1, const uint32 want2)
+inline bool acceptOp(const uint32_t opcode, const uint32_t want1, const uint32_t want2)
 	{ return (acceptOp(opcode, want1) ? true :
 		(opcode==want2) ? true : false); };
-inline bool acceptOp(const uint32 opcode, const uint32 want1, const uint32 want2, const uint32 want3)
+inline bool acceptOp(const uint32_t opcode, const uint32_t want1, const uint32_t want2, const uint32_t want3)
 	{ return (acceptOp(opcode, want1, want2) ? true :
 			(opcode==want3) ? true : false); };
-inline bool acceptOp(const uint32 opcode, const uint32 want1, const uint32 want2, const uint32 want3, const uint32 want4)
+inline bool acceptOp(const uint32_t opcode, const uint32_t want1, const uint32_t want2, const uint32_t want3, const uint32_t want4)
 	{ return (acceptOp(opcode, want1, want2, want3) ? true :
 				(opcode==want4) ? true : false); };
 
-/*inline bool acceptOp(const uint32 opcode, const uint32 want1)
+/*inline bool acceptOp(const uint32_t opcode, const uint32_t want1)
 { return acceptIt(opcode, want1); }
-inline bool acceptOp(const uint32 opcode, const uint32 want1, const uint32 want2)
+inline bool acceptOp(const uint32_t opcode, const uint32_t want1, const uint32_t want2)
 { return acceptIt(opcode, want1, want2); }
-inline bool acceptOp(const uint32 opcode, const uint32 want1, const uint32 want2, const uint32 want3)
+inline bool acceptOp(const uint32_t opcode, const uint32_t want1, const uint32_t want2, const uint32_t want3)
 { return acceptIt(opcode, want1, want2, want3); }
-inline bool acceptOp(const uint32 opcode, const uint32 want1, const uint32 want2, const uint32 want3, const uint32 want4)
+inline bool acceptOp(const uint32_t opcode, const uint32_t want1, const uint32_t want2, const uint32_t want3, const uint32_t want4)
 { return acceptIt(opcode, want1, want2, want3, want4); }*/
 
 
-inline void indent(Console &o, uint32 size)
+inline void indent(Console &o, uint32_t size)
 {
 	switch(size) {
 		case 0: break;
@@ -75,11 +75,11 @@ inline void indent(Console &o, uint32 size)
 class PrintHelperNode
 {
 	public:
-		inline void print_asm_header(Console &o, const uint32 h_off, const uint32 h_op) const
+		inline void print_asm_header(Console &o, const uint32_t h_off, const uint32_t h_op) const
 		{
 			o.Printf("    %04X: %02X\t", h_off, h_op);
 		}
-		inline void print_mac_header(Console &o, const uint32 h_off, const uint32 h_op) const
+		inline void print_mac_header(Console &o, const uint32_t h_off, const uint32_t h_op) const
 		{
 			o.Printf("    (%04X: %02X)\t", h_off, h_op);
 		}
@@ -95,12 +95,12 @@ class Node;
 class Node : public PrintHelperNode
 {
 	public:
-		Node(const sint32 newOpcode=-1, const uint32 newOffset=0, const Type newRType=Type())
+		Node(const int32_t newOpcode=-1, const uint32_t newOffset=0, const Type newRType=Type())
 			: _opcode(newOpcode), _offset(newOffset), _rtype(newRType), linenum(0) {};
 		virtual ~Node() {};
 		
-		inline sint32 opcode() const { return _opcode; };
-		inline uint32 offset() const { return _offset; };
+		inline int32_t opcode() const { return _opcode; };
+		inline uint32_t offset() const { return _offset; };
 		
 		inline const Type &rtype() const { return _rtype; };
 		inline void rtype(const Type &newRType) { _rtype=newRType; };
@@ -115,7 +115,7 @@ class Node : public PrintHelperNode
 		virtual bool fold(DCUnit *unit, std::deque<Node *> &nodes)=0;
 		
 		// outputs 'unk' formatted script
-		virtual void print_unk(Console &o, const uint32 isize) const=0;
+		virtual void print_unk(Console &o, const uint32_t isize) const=0;
 		// outputs psuedo assembler code
 		virtual void print_asm(Console &o) const;
 		// outputs nothing interesting...
@@ -125,7 +125,7 @@ class Node : public PrintHelperNode
 		
 		inline void fold_linenum(std::deque<Node *> &nodes);
 		
-		inline void print_linenum_unk(Console &o, const uint32 isize) const;
+		inline void print_linenum_unk(Console &o, const uint32_t isize) const;
 		inline void print_linenum_asm(Console &o) const;
 		inline void print_linenum_bin(ODequeDataSource &o) const;
 
@@ -141,8 +141,8 @@ class Node : public PrintHelperNode
 			return n;
 		};
 		
-		sint32	_opcode;
-		uint32	_offset;
+		int32_t	_opcode;
+		uint32_t	_offset;
 		Type	_rtype;
 		Node *linenum;
 	
@@ -159,7 +159,7 @@ inline void Node::print_mac(Console &o) const
 	print_mac_header(o, _offset, _opcode);
 }
 
-inline void Node::print_linenum_unk(Console &o, const uint32 isize) const
+inline void Node::print_linenum_unk(Console &o, const uint32_t isize) const
 {
 	if(linenum!=0)
 	{
@@ -225,7 +225,7 @@ inline void Node::fold_linenum(std::deque<Node *> &nodes)
 class UniNode : public Node
 {
 	public:
-		UniNode(const sint32 newOpcode=-1, const uint32 newOffset=0,
+		UniNode(const int32_t newOpcode=-1, const uint32_t newOffset=0,
 			const Type newRType=Type())
 			: Node(newOpcode, newOffset, newRType), node(0) {};
 		virtual ~UniNode() { /* don't delete node */ };
@@ -245,7 +245,7 @@ class UniNode : public Node
 class BinNode : public Node
 {
 	public:
-		BinNode(const sint32 newOpcode=-1, const uint32 newOffset=0,
+		BinNode(const int32_t newOpcode=-1, const uint32_t newOffset=0,
 			const Type newRType=Type())
 			: Node(newOpcode, newOffset, newRType), lnode(0), rnode(0) {};
 		virtual ~BinNode() { /* don't delete lnode, rnode */ };
@@ -269,13 +269,13 @@ class BinNode : public Node
 class ColNode : public Node
 {
 	public:
-		ColNode(const sint32 newOpcode=-1, const uint32 newOffset=0,
+		ColNode(const int32_t newOpcode=-1, const uint32_t newOffset=0,
 			const Type newRType=Type())
 			: Node(newOpcode, newOffset, newRType), pnode(0) {};
 		virtual ~ColNode() {};
 
 	protected:
-		void grab_p(std::deque<Node *> &nodes, sint32 tempsize)
+		void grab_p(std::deque<Node *> &nodes, int32_t tempsize)
 		{
 			while(tempsize>0)
 			{
@@ -301,7 +301,7 @@ class ColNode : public Node
 class DCUnit;
 
 bool print_assert(const Node *n, const DCUnit *u=0);
-bool print_assert_nodes(std::deque<Node *> &nodes, uint32 index);
+bool print_assert_nodes(std::deque<Node *> &nodes, uint32_t index);
 
 #endif
 

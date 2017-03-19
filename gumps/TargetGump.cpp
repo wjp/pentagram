@@ -46,7 +46,7 @@ TargetGump::~TargetGump()
 
 }
 
-void TargetGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void TargetGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	// we're invisible
 }
@@ -102,7 +102,7 @@ void TargetGump::OnMouseUp(int button, int mx, int my)
 	target_tracing = false;
 }
 
-uint32 TargetGump::I_target(const uint8* /*args*/, unsigned int /*argsize*/)
+uint32_t TargetGump::I_target(const uint8_t* /*args*/, unsigned int /*argsize*/)
 {
 	TargetGump* targetgump = new TargetGump(0, 0);
 	targetgump->InitGump(0);
@@ -117,7 +117,7 @@ void TargetGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to save ModalGump");
 }
 
-bool TargetGump::loadData(IDataSource* ids, uint32 versin)
+bool TargetGump::loadData(IDataSource* ids, uint32_t versin)
 {
 	CANT_HAPPEN_MSG("Trying to load ModalGump");
 	return false;

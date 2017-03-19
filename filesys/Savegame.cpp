@@ -32,12 +32,12 @@ Savegame::~Savegame()
 	delete zipfile;
 }
 
-uint32 Savegame::getVersion()
+uint32_t Savegame::getVersion()
 {
 	IDataSource* ids = getDataSource("VERSION");
 	if (!ids || ids->getSize() != 4) return 0;
 
-	uint32 version = ids->read4();
+	uint32_t version = ids->read4();
 	delete ids;
 
 	return version;
@@ -50,7 +50,7 @@ std::string Savegame::getDescription()
 
 IDataSource* Savegame::getDataSource(const std::string& name)
 {
-	uint32 size;
-	uint8* data = zipfile->getObject(name, &size);
+	uint32_t size;
+	uint8_t* data = zipfile->getObject(name, &size);
 	return new IBufferDataSource(data, size, false, true);
 }

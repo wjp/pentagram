@@ -29,8 +29,8 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	PaperdollGump();
-	PaperdollGump(Shape* shape, uint32 framenum, uint16 owner,
-				  uint32 _Flags = FLAG_DRAGGABLE, sint32 layer = LAYER_NORMAL);
+	PaperdollGump(Shape* shape, uint32_t framenum, uint16_t owner,
+				  uint32_t _Flags = FLAG_DRAGGABLE, int32_t layer = LAYER_NORMAL);
 	virtual ~PaperdollGump(void);
 
 	// Init the gump, call after construction
@@ -40,28 +40,28 @@ public:
 	virtual void Close(bool no_del = false);
 
 	// Paint this Gump
-	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
 
-	virtual void ChildNotify(Gump *child, uint32 message);
+	virtual void ChildNotify(Gump *child, uint32_t message);
 
 	// Trace a click, and return ObjId
-	virtual uint16 TraceObjId(int mx, int my);
+	virtual uint16_t TraceObjId(int mx, int my);
 
 	// Get the location of an item in the gump (coords relative to this).
 	// Returns false on failure.
-	virtual bool GetLocationOfItem(uint16 itemid, int &gx, int &gy,
-								   sint32 lerp_factor = 256);
+	virtual bool GetLocationOfItem(uint16_t itemid, int &gx, int &gy,
+								   int32_t lerp_factor = 256);
 
 	virtual bool StartDraggingItem(Item* item, int mx, int my);
 	virtual bool DraggingItem(Item* item, int mx, int my);
 	virtual void DropItem(Item* item, int mx, int my);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
 	//! Paint the stats
-	void PaintStats(RenderSurface*, sint32 lerp_factor);
+	void PaintStats(RenderSurface*, int32_t lerp_factor);
 
 	//! Paint a single stat
 	void PaintStat(RenderSurface* surf, unsigned int n,
@@ -70,7 +70,7 @@ protected:
 	RenderedText* cached_text[14]; // constant!!
 	int cached_val[7]; // constant!!
 
-	uint16 statbuttongid;
+	uint16_t statbuttongid;
 };
 
 #endif

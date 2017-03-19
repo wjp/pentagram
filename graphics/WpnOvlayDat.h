@@ -35,8 +35,8 @@ public:
 	//! NB: anim.dat must have already been read
 	void load(RawArchive* overlaydat);
 
-	const AnimWeaponOverlay* getAnimOverlay(uint32 action) const;
-	const WeaponOverlayFrame* getOverlayFrame(uint32 action, int type,
+	const AnimWeaponOverlay* getAnimOverlay(uint32_t action) const;
+	const WeaponOverlayFrame* getOverlayFrame(uint32_t action, int type,
 										int direction, int frame) const;
 
 private:

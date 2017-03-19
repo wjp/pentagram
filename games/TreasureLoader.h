@@ -40,7 +40,7 @@ private:
 
 	bool internalParse(std::string desc, TreasureInfo& ti,bool loadingDefault);
 
-	bool parseUInt32Vector(std::string val, std::vector<uint32>& vec);
+	bool parseuint32_tVector(std::string val, std::vector<uint32_t>& vec);
 	bool parseUIntRange(std::string val, unsigned int& min, unsigned int& max);
 	bool parseDouble(std::string val, double& d);
 	bool parseInt(std::string val, int& i);

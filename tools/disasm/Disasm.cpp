@@ -54,66 +54,66 @@ using	std::string;
 class TempOp
 {
 	public:
-		TempOp(const uint32 offset_=0, const sint32 opcode_=0,
-			const uint32 nextoffset_=0,
-			const sint32 i0_=0, const sint32 i1_=0, const sint32 i2_=0,
-			const sint32 i3_=0, const sint32 i4_=0, const string &str_=string())
+		TempOp(const uint32_t offset_=0, const int32_t opcode_=0,
+			const uint32_t nextoffset_=0,
+			const int32_t i0_=0, const int32_t i1_=0, const int32_t i2_=0,
+			const int32_t i3_=0, const int32_t i4_=0, const string &str_=string())
 			: offset(offset_), nextoffset(nextoffset_), i0(i0_), i1(i1_), i2(i2_),
 			i3(i3_), i4(i4_), str(str_),
 			sp_size(0), ret_size(0), opcode(opcode_) {};
 
 		~TempOp() {};
 
-		void op(const uint32 opcode_) { opcode = opcode_; };
-		uint32 op() const { return opcode; };
+		void op(const uint32_t opcode_) { opcode = opcode_; };
+		uint32_t op() const { return opcode; };
 
-		uint32 offset;
-		uint32 nextoffset;
-		sint32 i0, i1, i2, i3, i4;
+		uint32_t offset;
+		uint32_t nextoffset;
+		int32_t i0, i1, i2, i3, i4;
 		string str;
 
 		// added for calli preprocessor
-		uint32 sp_size;
-		uint32 ret_size;
+		uint32_t sp_size;
+		uint32_t ret_size;
 
 	protected:
-		uint32 opcode;
+		uint32_t opcode;
 };
 
 /* curOffset is the current offset from the start of the current data section
    thus the specialised read functions */
 
-uint32 curOffset;
+uint32_t curOffset;
 
-inline uint32 read1(IDataSource *ucfile) { curOffset+=1; return ucfile->read1(); };
-inline uint32 read2(IDataSource *ucfile) { curOffset+=2; return ucfile->read2(); };
-inline uint32 read4(IDataSource *ucfile) { curOffset+=4; return ucfile->read4(); };
+inline uint32_t read1(IDataSource *ucfile) { curOffset+=1; return ucfile->read1(); };
+inline uint32_t read2(IDataSource *ucfile) { curOffset+=2; return ucfile->read2(); };
+inline uint32_t read4(IDataSource *ucfile) { curOffset+=4; return ucfile->read4(); };
 /* read string until null terninator */
 inline std::string readstr(IDataSource *ucfile)
 {
 	string s;
 	while(char c = static_cast<char>(read1(ucfile)))
 		s += c;
-//	for (uint32 i=0; i < 8; ++i)
+//	for (uint32_t i=0; i < 8; ++i)
 //			 op.str += static_cast<char>(read1(ucfile));
 //			if(read1(ucfile)!=0) assert(false); // trailing 0
 	return s;
 }
 /* read 'n' characters into a string */
-inline std::string readnstr(IDataSource *ucfile, uint32 n)
+inline std::string readnstr(IDataSource *ucfile, uint32_t n)
 {
 	string s;
 	while(n-->0)
 		s += static_cast<char>(read1(ucfile));
-//	for (uint32 i=0; i < 8; ++i)
+//	for (uint32_t i=0; i < 8; ++i)
 //			 op.str += static_cast<char>(read1(ucfile));
 //			if(read1(ucfile)!=0) assert(false); // trailing 0
 	return s;
 }
 
-std::map<sint32, string> ScriptExpressions;
+std::map<int32_t, string> ScriptExpressions;
 
-map<uint32, uint32> EventMap;
+map<uint32_t, uint32_t> EventMap;
 
 class UsecodeHeader
 {
@@ -121,21 +121,21 @@ class UsecodeHeader
 		UsecodeHeader()
 		: routines(0), maxOffset(0), offset(0), externTable(0), fixupTable(0) {};
 
-		uint32 routines;
-		uint32 maxOffset;
-		uint32 offset;
-		uint32 externTable;
-		uint32 fixupTable;
+		uint32_t routines;
+		uint32_t maxOffset;
+		uint32_t offset;
+		uint32_t externTable;
+		uint32_t fixupTable;
 };
 
-const char * const print_bp(const sint32 offset)
+const char * const print_bp(const int32_t offset)
 {
 	static char str[32];
 	snprintf(str, 32, "[BP%c%02Xh]", offset>0x7F?'-':'+', offset>0x7F?0x100-offset:offset);
 	return str;
 }
 
-const char * const print_sp(const sint32 offset)
+const char * const print_sp(const int32_t offset)
 {
 	static char str[32];
 	snprintf(str, 32, "[SP%c%02Xh]", offset>0x7F?'-':'+', offset>0x7F?0x100-offset:offset);
@@ -149,7 +149,7 @@ using std::endl;
 using std::pair;
 
 #ifndef HAVE_SNPRINTF
-extern sint32 snprintf(char *, size_t, const char *, /*args*/ ...);
+extern int32_t snprintf(char *, size_t, const char *, /*args*/ ...);
 namespace std {
 using ::snprintf;
 }
@@ -162,23 +162,23 @@ ConvertUsecode *convert = new ConvertUsecodeU8();
 
 
 // Overload Table
-void printoverloads(IDataSource *ucfile, uint32 endpos);
+void printoverloads(IDataSource *ucfile, uint32_t endpos);
 
 
 class GlobalName
 {
 	public:
-		GlobalName(const uint32 _offset=0, const uint32 _size=0,
+		GlobalName(const uint32_t _offset=0, const uint32_t _size=0,
 			const string _name=string())
 		: offset(_offset), size(_size), name(_name) {};
 
-		uint32	offset; //the offset into the char[]
-		uint32	size; //the number of bytes stored in the global
+		uint32_t	offset; //the offset into the char[]
+		uint32_t	size; //the number of bytes stored in the global
 		string	name; //the name of the global
 };
 
 /* Additional note: The maximum size of the globals array would be 64k. */
-map<uint32, GlobalName> GlobalNames;
+map<uint32_t, GlobalName> GlobalNames;
 
 map<string, string> FuncNames;
 
@@ -195,33 +195,33 @@ void readglobals(IDataSource *ucfile)
 	char buf[60];
 	char c;
 	ucfile->seek(0x80);
-	sint32 offset = read4(ucfile);
-	sint32 length = read4(ucfile);
+	int32_t offset = read4(ucfile);
+	int32_t length = read4(ucfile);
 
-	sint32 curoff = 0;
+	int32_t curoff = 0;
 
 	ucfile->seek(offset);
 	while (curoff < length-1) {
-		sint32 i = 0;
+		int32_t i = 0;
 		do {
 			c = read1(ucfile);
 			++curoff;
 			buf[i++] = c;
 		} while (c != 0);
-		uint32 i0 = read1(ucfile);
-		uint32 i1 = read1(ucfile);
-		uint32 i2 = read1(ucfile);
+		uint32_t i0 = read1(ucfile);
+		uint32_t i1 = read1(ucfile);
+		uint32_t i2 = read1(ucfile);
 		read1(ucfile);
 		curoff+=4;
 
-		uint32 flag = i0 + (i1<<8);
+		uint32_t flag = i0 + (i1<<8);
 		GlobalNames[flag] = GlobalName(flag, i2, buf);
 	}
 }
 
 void printglobals()
 {
-	for(std::map<uint32, GlobalName>::iterator i=GlobalNames.begin(); i!=GlobalNames.end(); ++i)
+	for(std::map<uint32_t, GlobalName>::iterator i=GlobalNames.begin(); i!=GlobalNames.end(); ++i)
 		con.Printf("[%04X %02X] (%s)\n", i->first, i->second.size, i->second.name.c_str());
 }
 
@@ -244,7 +244,7 @@ Folder *folder = new Folder();
 #endif
 
 void just_print(TempOp &op, IDataSource *ucfile);
-bool readfunction(IDataSource *ucfile, const char *name, const UsecodeHeader &uch, const uint32 func)
+bool readfunction(IDataSource *ucfile, const char *name, const UsecodeHeader &uch, const uint32_t func)
 {
 	std::string str;
 
@@ -252,7 +252,7 @@ bool readfunction(IDataSource *ucfile, const char *name, const UsecodeHeader &uc
 
 	con_Printf("Func_%X", curOffset);
 
-	std::map<uint32, uint32>::iterator it = EventMap.find(curOffset);
+	std::map<uint32_t, uint32_t>::iterator it = EventMap.find(curOffset);
 	if (it != EventMap.end())
 	{
 		if (it->second < 0x20)
@@ -266,7 +266,7 @@ bool readfunction(IDataSource *ucfile, const char *name, const UsecodeHeader &uc
 	con_Printf(":\n");
 
 	std::vector<DebugSymbol> debugSymbols;
-	uint32 dbg_symbol_offset=0;
+	uint32_t dbg_symbol_offset=0;
 	bool done = false;
 	
 	#ifdef FOLD
@@ -675,11 +675,11 @@ void just_print(TempOp &op, IDataSource *ucfile)
 }
 
 
-void printfunc(const uint32 func, const uint32 nameoffset, IDataSource *ucfile)
+void printfunc(const uint32_t func, const uint32_t nameoffset, IDataSource *ucfile)
 {
 	ucfile->seek(0x80 + 8*(func+2));
-	uint32 offset = read4(ucfile);
-	uint32 length = read4(ucfile);
+	uint32_t offset = read4(ucfile);
+	uint32_t length = read4(ucfile);
 
 	if (length == 0) return;
 
@@ -773,7 +773,7 @@ int main(int argc, char **argv)
 	char *stripped_filename = argv[1];
 
 	// Search for last ':', '/' or '\\'
-	for(uint32 i = 0; argv[1][i]; ++i)
+	for(uint32_t i = 0; argv[1][i]; ++i)
 		if (argv[1][i] == '\\' || argv[1][i] == '/' || argv[1][i] == ':') stripped_filename  = argv[1]+i+1;
 
 	if (gamelanguage=="unknown")  // try to determine game language from file name
@@ -825,8 +825,8 @@ int main(int argc, char **argv)
 	else if (gametype=="none")
 	{
 		ucfile->seek(0x80);
-		sint32 nameoffset = read4(ucfile);
-		sint32 namelength = read4(ucfile);
+		int32_t nameoffset = read4(ucfile);
+		int32_t namelength = read4(ucfile);
 
 		// Looks like Ultima8 (has a global section)
 		if (nameoffset && namelength) gametype="u8";
@@ -859,22 +859,22 @@ int main(int argc, char **argv)
 
 		// Read num entries
 		ucfile->seek( 0x54);
-		uint32 entries = read4(ucfile)-2;
+		uint32_t entries = read4(ucfile)-2;
 
 		ucfile->seek(0x80 + 8);
-		sint32 nameoffset = read4(ucfile);
-		/*sint32 namelength =*/ read4(ucfile);
+		int32_t nameoffset = read4(ucfile);
+		/*int32_t namelength =*/ read4(ucfile);
 
 		pout.setf(std::ios::uppercase);
 
 		con.Printf("Class         Name     Offset     Routines   MaxOffset  Offset     ExternTab  FixupTab\n");
 
-		sint32 actual_num = 0;
-		for(uint32 func = 0; func < entries; ++func)
+		int32_t actual_num = 0;
+		for(uint32_t func = 0; func < entries; ++func)
 		{
 			ucfile->seek(0x80 + 8*(func+2));
-			sint32 offset = read4(ucfile);
-			sint32 length = read4(ucfile);
+			int32_t offset = read4(ucfile);
+			int32_t length = read4(ucfile);
 
 			ucfile->seek(nameoffset + 4 + (13 * func));
 			char namebuf[9];
@@ -900,7 +900,7 @@ int main(int argc, char **argv)
 	}
 	// Overload Table
 	else if (!Pentagram::strcasecmp(argv[2], "-overload")) {
-		uint32 end;
+		uint32_t end;
 
 		// it's overload.dat
 		if (!Pentagram::strcasecmp(stripped_filename, "overload.dat"))
@@ -912,7 +912,7 @@ int main(int argc, char **argv)
 		else 
 		{
 			ucfile->seek(0x88);
-			uint32 offset = ucfile->read4();
+			uint32_t offset = ucfile->read4();
 			end = ucfile->read4();
 			ucfile->seek(offset);
 			end += offset;
@@ -955,19 +955,19 @@ int main(int argc, char **argv)
 	#endif
 
 	ucfile->seek(0x80 + 8);
-	uint32 nameoffset = read4(ucfile);
-	/*uint32 namelength =*/ read4(ucfile);
+	uint32_t nameoffset = read4(ucfile);
+	/*uint32_t namelength =*/ read4(ucfile);
 
 	if(std::strcmp(argv[2], "-a")==0)
 	{
 		ucfile->seek(0x54); // Seek to the 'start' of the FLEX
-		uint32 entries = read4(ucfile)-2;
+		uint32_t entries = read4(ucfile)-2;
 		
-		for(uint32 func=0; func<entries; ++func)
+		for(uint32_t func=0; func<entries; ++func)
 			printfunc(func, nameoffset, ucfile);
 	}
 	
-	uint32 func = std::strtol(argv[2], 0, 0);
+	uint32_t func = std::strtol(argv[2], 0, 0);
 	
 	printfunc(func, nameoffset, ucfile);
 	
@@ -975,15 +975,15 @@ int main(int argc, char **argv)
 }
 
 // Overload Table
-void printoverloads(IDataSource *ucfile, uint32 endpos)
+void printoverloads(IDataSource *ucfile, uint32_t endpos)
 {
 	con.Printf ("Overload Table:\n");
 
-	uint32 f, i = 0;
-	uint32 all_mask = 0;
+	uint32_t f, i = 0;
+	uint32_t all_mask = 0;
 
 	while ((ucfile->getPos()) < endpos) {
-		uint32 mask;
+		uint32_t mask;
 		char classname[9];
 
 		mask = ucfile->read4();

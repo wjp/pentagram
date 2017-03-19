@@ -34,16 +34,16 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	MessageBoxGump();
-	MessageBoxGump(const std::string &title, const std::string &message, uint32 title_colour, std::vector<std::string> *buttons);
+	MessageBoxGump(const std::string &title, const std::string &message, uint32_t title_colour, std::vector<std::string> *buttons);
 	virtual ~MessageBoxGump();
 
 	// Init the gump, call after construction
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
 	virtual void Close(bool no_del = false);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 
-	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
 
 	//! Create a Message Box
 	//! \param title Title of the message box 
@@ -51,10 +51,10 @@ public:
 	//! \param title_colour The colour to be displayed behind the title bar
 	//! \param buttons Array of button names to be displayed. Default is "Ok"
 	//! \return Pid of process that will have the result when finished
-	static ProcId Show(std::string title, std::string message, uint32 title_colour=0xFF30308F, std::vector<std::string> *buttons=0);
+	static ProcId Show(std::string title, std::string message, uint32_t title_colour=0xFF30308F, std::vector<std::string> *buttons=0);
 	static ProcId Show(std::string title, std::string message, std::vector<std::string> *buttons) { return Show(title,message,0xFF30308F,buttons); }
 
-	virtual void ChildNotify(Gump *child, uint32 message);
+	virtual void ChildNotify(Gump *child, uint32_t message);
 
 protected:
 	virtual void saveData(ODataSource* ods);

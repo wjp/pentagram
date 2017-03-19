@@ -25,8 +25,8 @@ DEFINE_RUNTIME_CLASSTYPE_CODE(SpeechFlex, SoundFlex);
 
 SpeechFlex::SpeechFlex(IDataSource* ds) : SoundFlex(ds)
 {
-	uint32 size = getRawSize(0);
-	uint8* buf = getRawObject(0);
+	uint32_t size = getRawSize(0);
+	uint8_t* buf = getRawObject(0);
 
 	Pentagram::istring strings(reinterpret_cast<char*>(buf), size);
 	std::vector<Pentagram::istring> s;
@@ -50,7 +50,7 @@ SpeechFlex::~SpeechFlex(void)
 }
 
 int	SpeechFlex::getIndexForPhrase(const std::string &phrase,
-								  uint32 start, uint32& end) const
+								  uint32_t start, uint32_t& end) const
 {
 	std::vector<Pentagram::istring>::const_iterator it;
 	int i = 1;
@@ -83,10 +83,10 @@ int	SpeechFlex::getIndexForPhrase(const std::string &phrase,
 	return 0;
 }
 
-uint32 SpeechFlex::getSpeechLength(const std::string &phrase)
+uint32_t SpeechFlex::getSpeechLength(const std::string &phrase)
 {
-	uint32 start = 0, end = 0;
-	uint32 length = 0;
+	uint32_t start = 0, end = 0;
+	uint32_t length = 0;
 
 	while (end < phrase.size()) {
 		start = end;
@@ -96,8 +96,8 @@ uint32 SpeechFlex::getSpeechLength(const std::string &phrase)
 		Pentagram::AudioSample* sample = getSample(index);
 		if (!sample) break;
 
-		uint32 samples = sample->getLength();
-		uint32 rate = sample->getRate();
+		uint32_t samples = sample->getLength();
+		uint32_t rate = sample->getRate();
 		bool stereo = sample->isStereo();
 		if (stereo) rate *= 2;
 

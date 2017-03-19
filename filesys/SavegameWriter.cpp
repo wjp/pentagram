@@ -70,7 +70,7 @@ bool SavegameWriter::finish()
 
 
 bool SavegameWriter::writeFile(const char* name,
-							   const uint8* data, uint32 size)
+							   const uint8_t* data, uint32_t size)
 {
 	PentZip::zipFile zfile = static_cast<PentZip::zipFile>(zipfile);
 	perr << name << ": " << size << std::endl;
@@ -98,9 +98,9 @@ bool SavegameWriter::writeFile(const char* name, OAutoBufferDataSource* ods)
 	return writeFile(name, ods->getBuf(), ods->getSize());
 }
 
-bool SavegameWriter::writeVersion(uint32 version)
+bool SavegameWriter::writeVersion(uint32_t version)
 {
-	uint8 buf[4];
+	uint8_t buf[4];
 	buf[0] = version & 0xFF;
 	buf[1] = (version >> 8) & 0xFF;
 	buf[2] = (version >> 16) & 0xFF;

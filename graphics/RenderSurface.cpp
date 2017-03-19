@@ -36,8 +36,8 @@ RenderSurface::Format	RenderSurface::format = {
 	0,	0,	0,	0
 };
 
-uint8 RenderSurface::Gamma10toGamma22[256];
-uint8 RenderSurface::Gamma22toGamma10[256];
+uint8_t RenderSurface::Gamma10toGamma22[256];
+uint8_t RenderSurface::Gamma22toGamma10[256];
 
 //
 // RenderSurface::SetVideoMode()
@@ -46,9 +46,9 @@ uint8 RenderSurface::Gamma22toGamma10[256];
 // Returns: Created RenderSurface or 0
 //
 
-RenderSurface *RenderSurface::SetVideoMode(uint32 width,		// Width of desired mode
-									uint32 height,		// Height of desired mode
-									uint32 bpp,			// Bits Per Pixel of desired mode
+RenderSurface *RenderSurface::SetVideoMode(uint32_t width,		// Width of desired mode
+									uint32_t height,		// Height of desired mode
+									uint32_t bpp,			// Bits Per Pixel of desired mode
 									bool fullscreen,	// Fullscreen if true, Windowed if false
 									bool use_opengl)	// Use OpenGL if true, Software if false
 {
@@ -69,16 +69,7 @@ RenderSurface *RenderSurface::SetVideoMode(uint32 width,		// Width of desired mo
 	}
 
 	// SDL Flags to set
-	uint32 flags = 0;
-
-	// Get Current Video Mode details
-	const SDL_VideoInfo *vinfo = SDL_GetVideoInfo();
-
-	if (!vinfo)
-	{
-		pout << "SDL_GetVideoInfo() failed: " << SDL_GetError() << std::endl;
-		return 0;
-	}
+	uint32_t flags = 0;
 
 	// Specific Windowed code
 	if (!fullscreen) 
@@ -98,18 +89,33 @@ RenderSurface *RenderSurface::SetVideoMode(uint32 width,		// Width of desired mo
 	else
 	{
 		// Enable Fullscreen
-		flags |= SDL_FULLSCREEN;
+		flags |= SDL_WINDOW_FULLSCREEN;
 	}
 
-	// Double buffered (sdl will emulate if we don't have)
-	// Um, no, it's been decided that this is a very bad idea
-	// Transparency is very very slow with hardware
-	//flags |= SDL_HWSURFACE|SDL_DOUBLEBUF;
-	flags |= SDL_SWSURFACE;
 
-	SDL_Surface *sdl_surf = SDL_SetVideoMode(width, height, bpp, flags);
+	SDL_Window *screen = SDL_CreateWindow("Pentagram",
+	                          SDL_WINDOWPOS_UNDEFINED,
+	                          SDL_WINDOWPOS_UNDEFINED,
+	                          width, height,
+	                          flags);
 	
-	if (!sdl_surf)
+	if (!screen)
+	{
+		// TODO: Set Error Code
+		return 0;
+	}
+
+	SDL_Renderer *renderer = SDL_CreateRenderer(screen, -1, 0);
+	if (!renderer)
+	{
+		// TODO: Set Error Code
+		return 0;
+	}
+
+
+	SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+			SDL_TEXTUREACCESS_STREAMING, width, height);
+	if (!texture)
 	{
 		// TODO: Set Error Code
 		return 0;
@@ -118,34 +124,28 @@ RenderSurface *RenderSurface::SetVideoMode(uint32 width,		// Width of desired mo
 	// Now create the SoftRenderSurface
 	RenderSurface *surf;
 
-	// TODO: Change this
-#if defined(WIN32) && defined(I_AM_COLOURLESS_EXPERIMENTING_WITH_D3D)
-	if (bpp == 32) surf = new D3D9SoftRenderSurface<uint32>(width,height,fullscreen);
-	else surf = new D3D9SoftRenderSurface<uint16>(width,height,fullscreen);
-#else
-	if (bpp == 32) surf = new SoftRenderSurface<uint32>(sdl_surf);
-	else surf = new SoftRenderSurface<uint16>(sdl_surf);
-#endif
+	if (bpp == 32) surf = new SoftRenderSurface<uint32_t>(renderer, texture, width, height, bpp);
+	else surf = new SoftRenderSurface<uint16_t>(renderer, texture, width, height, bpp);
 
 	// Initialize gamma correction tables
 	for (int i = 0; i < 256; i++)
 	{
-		Gamma22toGamma10[i] = static_cast<uint8>(0.5 + (std::pow (i/255.0, 2.2/1.0) * 255.0));
-		Gamma10toGamma22[i] = static_cast<uint8>(0.5 + (std::pow (i/255.0, 1.0/2.2) * 255.0));
+		Gamma22toGamma10[i] = static_cast<uint8_t>(0.5 + (std::pow (i/255.0, 2.2/1.0) * 255.0));
+		Gamma10toGamma22[i] = static_cast<uint8_t>(0.5 + (std::pow (i/255.0, 1.0/2.2) * 255.0));
 	}
 
 	return surf;
 }
 
 // Create a SecondaryRenderSurface with an associated Texture object
-RenderSurface *RenderSurface::CreateSecondaryRenderSurface(uint32 width, uint32 height)
+RenderSurface *RenderSurface::CreateSecondaryRenderSurface(uint32_t width, uint32_t height)
 {
 	// Now create the SoftRenderSurface
 	RenderSurface *surf;
 
 	// TODO: Change this
-	if (format.s_bpp == 32) surf = new SoftRenderSurface<uint32>(width,height);
-	else surf = new SoftRenderSurface<uint16>(width,height);
+	if (format.s_bpp == 32) surf = new SoftRenderSurface<uint32_t>(width,height);
+	else surf = new SoftRenderSurface<uint16_t>(width,height);
 	return surf;
 }
 

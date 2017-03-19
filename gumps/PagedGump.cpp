@@ -84,7 +84,7 @@ void PagedGump::InitGump(Gump* newparent, bool take_focus)
 	guiapp->setMouseCursor(GUIApp::MOUSE_HAND); // default cursor
 }
 
-void PagedGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void PagedGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	Gump::PaintThis(surf, lerp_factor, scaled);
 }
@@ -108,7 +108,7 @@ bool PagedGump::OnKeyDown(int key, int mod)
 	return true;
 }
 
-void PagedGump::ChildNotify(Gump *child, uint32 message)
+void PagedGump::ChildNotify(Gump *child, uint32_t message)
 {
 	if (!buttonsEnabled) return;
 	if (gumps.empty()) return;

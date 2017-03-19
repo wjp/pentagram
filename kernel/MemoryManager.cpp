@@ -199,7 +199,7 @@ void MemoryManager::ConCmd_test(const Console::ArgvType &argv)
 	int a[10] = {1000, 1231, 2423, 1233, 3213, 2554, 1123, 2432, 3311, 1022};
 	int b[10] = {900, 1111, 2321, 1000, 1321, 1432, 1123, 2144, 2443, 0};
 	int i, j, repeat;
-	uint32 pooled, unpooled;
+	uint32_t pooled, unpooled;
 	TestClassBase * t;
 
 	t = new TestClassBase();

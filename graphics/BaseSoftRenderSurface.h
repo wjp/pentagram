@@ -34,12 +34,12 @@ class BaseSoftRenderSurface : public RenderSurface
 {
 protected:
 	// Frame buffer
-	uint8			*pixels;				// Pointer to logical pixel 0,0
-	uint8			*pixels00;				// Pointer to physical pixel 0,0
+	uint8_t			*pixels;				// Pointer to logical pixel 0,0
+	uint8_t			*pixels00;				// Pointer to physical pixel 0,0
 
 	// Depth Buffer
-	uint16			*zbuffer;				// Pointer to logical pixel 0,0
-	uint8			*zbuffer00;				// Pointer to physical pixel 0,0
+	uint16_t			*zbuffer;				// Pointer to logical pixel 0,0
+	uint8_t			*zbuffer00;				// Pointer to physical pixel 0,0
 
 	// Pixel Format (also see 'Colour shifting values' later)
 	int				bytes_per_pixel;		// 2 or 4
@@ -47,17 +47,23 @@ protected:
 	int				format_type;			// 16, 555, 565, 32 or 888
 
 	// Dimensions
-	sint32			ox, oy;					// Physical Pixel for Logical Origin
-	sint32			width, height;			// Width and height
-	sint32			pitch;					// Frame buffer pitch (bytes) (could be negated)
-	sint32			zpitch;					// Z Buffer pitch (bytes) (could be negated)
+	int32_t			ox, oy;					// Physical Pixel for Logical Origin
+	int32_t			width, height;			// Width and height
+	int32_t			pitch;					// Frame buffer pitch (bytes) (could be negated)
+	int32_t			zpitch;					// Z Buffer pitch (bytes) (could be negated)
 	bool			flipped;
 
 	// Clipping Rectangle
 	Pentagram::Rect	clip_window;
 
 	// Locking count
-	uint32			lock_count;				// Number of locks on surface
+	uint32_t			lock_count;				// Number of locks on surface
+
+	// SDL_Renderer
+	SDL_Renderer    *sdl_rend;
+
+	// SDL_Texture
+	SDL_Texture     *sdl_tex;
 
 	// SDL_Surface
 	SDL_Surface		*sdl_surf;
@@ -65,23 +71,23 @@ protected:
 	// Renderint to a texture
 	Texture			*rtt_tex;
 
-	// Create from a SDL_Surface
-	BaseSoftRenderSurface(SDL_Surface *);
+	// Create from a SDL content
+	BaseSoftRenderSurface(SDL_Renderer *, SDL_Texture *, int width, int height, int bpp);
 
 	// Create with Texture
 	BaseSoftRenderSurface(int w, int h);
 
 	// Create Generic
 	BaseSoftRenderSurface(int w, int h, int bpp, int rsft, int gsft, int bsft, int asft);
-	BaseSoftRenderSurface(int w, int h, uint8 *buf);
+	BaseSoftRenderSurface(int w, int h, uint8_t *buf);
 	virtual ECode GenericLock()  { return P_NO_ERROR; }
 	virtual ECode GenericUnlock()  { return P_NO_ERROR; }
 
 	// Update the Pixels Pointer
 	void	SetPixelsPointer()
 	{
-		uint8 *pix00 = pixels00;
-		uint8 *zbuf00 = zbuffer00;
+		uint8_t *pix00 = pixels00;
+		uint8_t *zbuf00 = zbuffer00;
 
 		if (flipped)
 		{
@@ -90,7 +96,7 @@ protected:
 		}
 
 		pixels = pix00 + ox*bytes_per_pixel + oy*pitch;
-		zbuffer = reinterpret_cast<uint16*>(zbuf00 + ox + oy * zpitch);
+		zbuffer = reinterpret_cast<uint16_t*>(zbuf00 + ox + oy * zpitch);
 	}
 
 public:
@@ -120,10 +126,10 @@ public:
 	//
 
 	// Set the Origin of the Surface
-	virtual void SetOrigin(sint32 x, sint32 y);
+	virtual void SetOrigin(int32_t x, int32_t y);
 
 	// Set the Origin of the Surface
-	virtual void GetOrigin(sint32 &x, sint32 &y) const;
+	virtual void GetOrigin(int32_t &x, int32_t &y) const;
 
 	// Get the Surface Dimensions
 	virtual void GetSurfaceDims(Pentagram::Rect &) const;
@@ -135,7 +141,7 @@ public:
 	virtual void SetClippingRect(const Pentagram::Rect &);
 
 	// Check Clipped. -1 if off screen, 0 if not clipped, 1 if clipped
-	virtual sint16 CheckClipped(const Pentagram::Rect &) const;
+	virtual int16_t CheckClipped(const Pentagram::Rect &) const;
 
 	// Flip the surface
 	virtual void SetFlipped(bool flipped);
@@ -151,13 +157,13 @@ public:
 	//
 
 	// Set The Surface Palette
-	// virtual void SetPalette(uint8 palette[768]);
+	// virtual void SetPalette(uint8_t palette[768]);
 
 	// Set The Surface Palette to be the one used by another surface
 	// TODO: virtual void SetPalette(RenderSurface &);
 
 	// Get The Surface Palette
-	// TODO: virtual void GetPalette(uint8 palette[768]);
+	// TODO: virtual void GetPalette(uint8_t palette[768]);
 
 	virtual void CreateNativePalette(Pentagram::Palette* palette);
 

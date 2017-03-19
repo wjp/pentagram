@@ -52,16 +52,16 @@ public:
 	Usecode* getMainUsecode() const { return mainusecode; }
 	MainShapeArchive* getMainShapes() const { return mainshapes; }
 	RawArchive* getFixed() const { return fixed; }
-	MapGlob* getGlob(uint32 glob) const;
+	MapGlob* getGlob(uint32_t glob) const;
 	FontShapeArchive* getFonts() const { return fonts; }
 	GumpShapeArchive* getGumps() const { return gumps; }
 	Shape* getMouse() const { return mouse; }
 	MusicFlex* getMusic() const { return music; }
 	WpnOvlayDat* getWeaponOverlay() const { return weaponoverlay; }
 	SoundFlex* getSoundFlex() const { return soundflex; }
-	SpeechFlex* getSpeechFlex(uint32 shapenum);
+	SpeechFlex* getSpeechFlex(uint32_t shapenum);
 
-	ShapeArchive* getShapeFlex(uint16 flexId) const;
+	ShapeArchive* getShapeFlex(uint16_t flexId) const;
 	Shape* getShape(FrameID frameid) const;
 	ShapeFrame* getFrame(FrameID frameid) const;
 

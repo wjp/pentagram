@@ -29,12 +29,12 @@ FlexWriter::FlexWriter(FlexFile * f)
 {
 	if (f)
 	{
-		uint32 i;
-		uint32 count = f->getIndexCount();
+		uint32_t i;
+		uint32_t count = f->getIndexCount();
 		for (i = 0; i < count; ++i)
 		{
-			uint32 size;
-			uint8* data = f->getObject(i, &size);
+			uint32_t size;
+			uint8_t* data = f->getObject(i, &size);
 			if (!data) size = 0;
 			FlexObject o;
 			o.size = size;
@@ -55,10 +55,10 @@ FlexWriter::~FlexWriter()
 	objects.clear();
 }
 
-void FlexWriter::add_object(const uint8* obj, uint32 size)
+void FlexWriter::add_object(const uint8_t* obj, uint32_t size)
 {
 	FlexObject o;
-	o.obj = new uint8[size];
+	o.obj = new uint8_t[size];
 	o.size = size;
 	std::memcpy (o.obj, obj, size);
 	objects.push_back(o);
@@ -68,14 +68,14 @@ void FlexWriter::add_datasource(IDataSource* ds)
 {
 	FlexObject o;
 	o.size = ds->getSize();
-	o.obj = new uint8[o.size];
+	o.obj = new uint8_t[o.size];
 	ds->seek(0);
 	ds->read(o.obj, o.size);
 	objects.push_back(o);
 	delete ds;
 }
 
-void FlexWriter::set_object(uint32 index, const uint8* obj, uint32 size)
+void FlexWriter::set_object(uint32_t index, const uint8_t* obj, uint32_t size)
 {
 	if (index >= objects.size())
 	{ // just add instead
@@ -84,12 +84,12 @@ void FlexWriter::set_object(uint32 index, const uint8* obj, uint32 size)
 	FlexObject * o = &objects.at(index);
 
 	delete o->obj;
-	o->obj = new uint8[size];
+	o->obj = new uint8_t[size];
 	o->size = size;
 	std::memcpy (o->obj, obj, size);
 }
 
-void FlexWriter::set_datasource(uint32 index, IDataSource* ds)
+void FlexWriter::set_datasource(uint32_t index, IDataSource* ds)
 {
 	if (index >= objects.size())
 	{ // just add instead
@@ -99,7 +99,7 @@ void FlexWriter::set_datasource(uint32 index, IDataSource* ds)
 
 	delete o->obj;
 	o->size = ds->getSize();
-	o->obj = new uint8[o->size];
+	o->obj = new uint8_t[o->size];
 	ds->seek(0);
 	ds->read(o->obj, o->size);
 	delete ds;
@@ -118,7 +118,7 @@ void FlexWriter::write(ODataSource* ds)
 
 void FlexWriter::writeHead(ODataSource* ds)
 {
-	uint32 i;
+	uint32_t i;
 	ds->seek(0);
 	for (i = 0; i < (0x50 / 4); i++)
 	{

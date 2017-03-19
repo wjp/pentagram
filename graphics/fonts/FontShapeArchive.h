@@ -28,16 +28,16 @@ class FontShapeArchive : public ShapeArchive
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
-	FontShapeArchive(uint16 id_, Pentagram::Palette* pal_ = 0,
+	FontShapeArchive(uint16_t id_, Pentagram::Palette* pal_ = 0,
 			  const ConvertShapeFormat *format_ = 0)
 		: ShapeArchive(id_, pal_, format_) { }
-	FontShapeArchive(ArchiveFile* af, uint16 id_, Pentagram::Palette* pal_ = 0,
+	FontShapeArchive(ArchiveFile* af, uint16_t id_, Pentagram::Palette* pal_ = 0,
 			  const ConvertShapeFormat *format_ = 0)
 		: ShapeArchive(af, id_, pal_, format_) { }
-	FontShapeArchive(IDataSource* ds, uint16 id_, Pentagram::Palette* pal_ = 0,
+	FontShapeArchive(IDataSource* ds, uint16_t id_, Pentagram::Palette* pal_ = 0,
 			  const ConvertShapeFormat *format_ = 0)
 		: ShapeArchive(ds, id_, pal_, format_) { }
-	FontShapeArchive(const std::string& path, uint16 id_,
+	FontShapeArchive(const std::string& path, uint16_t id_,
 				 Pentagram::Palette* pal_ = 0,
 				 const ConvertShapeFormat *format_ = 0)
 		: ShapeArchive(path, id_, pal_, format_) { }
@@ -47,9 +47,9 @@ public:
 	//! load HVLeads from u8.ini
 	void setHVLeads();
 	
-	ShapeFont* getFont(uint32 fontnum);
+	ShapeFont* getFont(uint32_t fontnum);
 
-	virtual void cache(uint32 fontnum);
+	virtual void cache(uint32_t fontnum);
 };
 
 

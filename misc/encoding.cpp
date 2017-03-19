@@ -31,7 +31,7 @@ namespace Pentagram {
 
 // U8's encoding to unicode
 
-uint16 encoding[256] = {
+uint16_t encoding[256] = {
 	0x0000,0x0001,0x0002,0x0003, 0x0004,0x0005,0x0006,0x0007, //0x00
 	0x0008,0x0009,0x000A,0x000B, 0x000C,0x000D,0x000E,0x000F,
 	0x0010,0x0011,0x0012,0x0013, 0x0014,0x0015,0x0016,0x0017, //0x10
@@ -69,7 +69,7 @@ uint16 encoding[256] = {
 
 // first 256 unicode code points to U8's encoding
 
-uint8 reverse_encoding[256] = {
+uint8_t reverse_encoding[256] = {
 	0x00,0x01,0x02,0x03, 0x04,0x05,0x06,0x07,
 	0x08,0x09,0x0A,0x0B, 0x0C,0x0D,0x0E,0x0F,
 	0x10,0x11,0x12,0x13, 0x14,0x15,0x16,0x17,
@@ -107,7 +107,7 @@ uint8 reverse_encoding[256] = {
 
 // This table is a PARTIAL copy of the table of the same name in
 // libiconv's jisx0213.h
-static const uint16 jisx0213_to_ucs_main[94 * 94] = {
+static const uint16_t jisx0213_to_ucs_main[94 * 94] = {
   /* 0x12121..0x1217E */
   0x1000, 0x1001, 0x1002, 0x830c, 0x830e, 0x10fb, 0x831a, 0x831b,
   0x831f, 0x8301, 0x109b, 0x109c, 0x00b4, 0x8340, 0x00a8, 0x833e,
@@ -1334,7 +1334,7 @@ static const uint16 jisx0213_to_ucs_main[94 * 94] = {
 
 // This table is a copy of the table of the same name in
 // libiconv's jisx0213.h
-static const uint32 jisx0213_to_ucs_pagestart[] = {
+static const uint32_t jisx0213_to_ucs_pagestart[] = {
    0x0000,  0x0100,  0x0200,  0x0300,  0x0400,  0x1e00,  0x1f00,  0x2000,
    0x2100,  0x2200,  0x2300,  0x2400,  0x2500,  0x2600,  0x2700,  0x2900,
    0x3000,  0x3100,  0x3200,  0x3300,  0x3400,  0x3500,  0x3600,  0x3700,
@@ -1376,12 +1376,12 @@ static const uint32 jisx0213_to_ucs_pagestart[] = {
 // This function assumes the low ASCII characters have already been handled.
 // NB: This is not a full Shift_JIS decoder. It only decodes the
 // first 79 JIS rows.
-static inline bool shiftjis_to_JISX(uint16 sjis, uint8& jr, uint8& jc)
+static inline bool shiftjis_to_JISX(uint16_t sjis, uint8_t& jr, uint8_t& jc)
 {
 	// Step 1: extract two bytes
 
-	uint8 s1 = sjis & 0xFF;
-	uint8 s2 = sjis >> 8;
+	uint8_t s1 = sjis & 0xFF;
+	uint8_t s2 = sjis >> 8;
 
 	// Step 2: ignore everything past the level 1 kanji from JIS X 0208
 
@@ -1402,11 +1402,11 @@ static inline bool shiftjis_to_JISX(uint16 sjis, uint8& jr, uint8& jc)
 	return true;
 }
 
-uint16 shiftjis_to_ultima8(uint16 sjis)
+uint16_t shiftjis_to_ultima8(uint16_t sjis)
 {
 	if ((sjis & 0xFF) < 0x80) return (sjis & 0xFF);
 
-	uint8 jr, jc;
+	uint8_t jr, jc;
 	if (!shiftjis_to_JISX(sjis, jr, jc)) return 0;
 
 	// Map JISX rows into U8's font encoding
@@ -1426,16 +1426,16 @@ uint16 shiftjis_to_ultima8(uint16 sjis)
 	}
 }
 
-uint32 shiftjis_to_unicode(uint16 sjis)
+uint32_t shiftjis_to_unicode(uint16_t sjis)
 {
 	if ((sjis & 0xFF) < 0x80) return (sjis & 0xFF);
 
-	uint8 jr, jc;
+	uint8_t jr, jc;
 	if (!shiftjis_to_JISX(sjis, jr, jc)) return 0;
 
 	// Map JISX rows to unicode
 
-	uint32 val = jisx0213_to_ucs_main[(jr-33)*94 + (jc-33)];
+	uint32_t val = jisx0213_to_ucs_main[(jr-33)*94 + (jc-33)];
 	val = jisx0213_to_ucs_pagestart[val >> 8] + (val & 0xff);
 
 	if (val == 0xfffd)

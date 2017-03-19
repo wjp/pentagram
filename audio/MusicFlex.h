@@ -43,7 +43,7 @@ public:
 	~MusicFlex();
 
 	//! Get an xmidi
-	XMidiFile * getXMidi(uint32 index)
+	XMidiFile * getXMidi(uint32_t index)
 	{
 		if (index >= count) return 0;
 		cache(index);
@@ -51,7 +51,7 @@ public:
 	}
 
 	//! Get song info
-	const SongInfo * getSongInfo(uint32 index) const
+	const SongInfo * getSongInfo(uint32_t index) const
 	{
 		if (index > 127) return 0;
 		return info[index];
@@ -60,9 +60,9 @@ public:
 	//! Get the Adlib Timbres (index 259)
 	IDataSource * getAdlibTimbres();
 
-	virtual void cache(uint32 index);
-	virtual void uncache(uint32 index);
-	virtual bool isCached(uint32 index);
+	virtual void cache(uint32_t index);
+	virtual void uncache(uint32_t index);
+	virtual bool isCached(uint32_t index);
 
 private:
 	SongInfo		*info[128];

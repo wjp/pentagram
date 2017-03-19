@@ -62,7 +62,7 @@ bool DCCallPostfixNode::fold(DCUnit *unit, std::deque<Node *> &nodes)
 	return false;
 }
 
-void DCCallPostfixNode::print_unk(Console &o, const uint32 /*isize*/, const bool comment) const
+void DCCallPostfixNode::print_unk(Console &o, const uint32_t /*isize*/, const bool comment) const
 {
 	if(!comment) return; // handle debug output
 
@@ -146,7 +146,7 @@ void DCCallPostfixNode::print_bin(ODequeDataSource &o) const
 	DCCallMutatorNode
  ****************************************************************************/
 
-void DCCallMutatorNode::print_unk(Console &o, const uint32 isize, const bool comment) const
+void DCCallMutatorNode::print_unk(Console &o, const uint32_t isize, const bool comment) const
 {
 	if(!comment && mtype!=PROCESS_EXCLUDE) return;
 	
@@ -299,9 +299,9 @@ bool DCCallNode::fold(DCUnit *unit, std::deque<Node *> &nodes)
 		// if we're a SPAWN, we need to double this
 		if(ctype==SPAWN) {
 			if(spsize>0)
-				grab_p(nodes, std::abs(static_cast<sint32>(addSP->size()))/* * 2*/);
+				grab_p(nodes, std::abs(static_cast<int32_t>(addSP->size()))/* * 2*/);
 		} else
-			grab_p(nodes, std::abs(static_cast<sint32>(addSP->size())));
+			grab_p(nodes, std::abs(static_cast<int32_t>(addSP->size())));
 
 		// add us back to the stack
 		nodes.push_back(us);
@@ -331,7 +331,7 @@ bool DCCallNode::fold(DCUnit *unit, std::deque<Node *> &nodes)
 	return false;
 }
 
-void DCCallNode::print_extern_unk(Console &o, const uint32 /*isize*/) const
+void DCCallNode::print_extern_unk(Console &o, const uint32_t /*isize*/) const
 {
 	switch(ctype)
 	{
@@ -386,7 +386,7 @@ void DCCallNode::print_extern_unk(Console &o, const uint32 /*isize*/) const
 	}
 }
 
-void DCCallNode::print_unk(Console &o, const uint32 isize) const
+void DCCallNode::print_unk(Console &o, const uint32_t isize) const
 {
 	print_linenum_unk(o, isize);
 	switch(ctype)
@@ -601,7 +601,7 @@ void DCCallNode::print_bin(ODequeDataSource &o) const
 ///////////////////////////////////////////////////////
 
 /* Takes an opcode number and returns true if it's potential DCCallNode */
-/*bool is_call(uint32 op)
+/*bool is_call(uint32_t op)
 {
 	switch(op)
 	{
@@ -624,31 +624,31 @@ class DCCallNode : public ColNode
 		~DCCallNode() {};
 
 		void print() const;
-		void fold(const uint32 pos);
+		void fold(const uint32_t pos);
 
 	protected:
 
 	private:
-		void get_return(const uint32 end);
+		void get_return(const uint32_t end);
 
 		enum calltype { CALLI, CALL, SPAWN } ctype;
 
-		uint32 sp_size;
+		uint32_t sp_size;
 
 		// for CALLI
-		uint32 num_bytes; // technically should be the same as sp_size, but...
-		uint32 intrinsic_num;
+		uint32_t num_bytes; // technically should be the same as sp_size, but...
+		uint32_t intrinsic_num;
 
 		// for CALL and SPAWN
-		uint32 target_class;
-		uint32 target_func;
+		uint32_t target_class;
+		uint32_t target_func;
 
 		// for SPAWN
-		uint32 param_size;
-		uint32 this_size;
+		uint32_t param_size;
+		uint32_t this_size;
 };
 
-void DCCallNode::fold(const uint32 end)
+void DCCallNode::fold(const uint32_t end)
 {
 	PTRACE(("(Call)\t\tPOS: %4d\tOP: %04X offset: %04X\n", end, foldops[end].op(), foldops[end].offset));
 	assert(foldops[end].deleted==false);
@@ -659,7 +659,7 @@ void DCCallNode::fold(const uint32 end)
 	get_return(end); // grab us out return node
 
 	sp_size = foldops[end].sp_size;
-	sint32 tempsize;
+	int32_t tempsize;
 
 	switch(_opcode)
 	{
@@ -714,7 +714,7 @@ void DCCallNode::print() const
 	printf(")");
 }
 
-void DCCallNode::get_return(const uint32 end)
+void DCCallNode::get_return(const uint32_t end)
 {
 	// then do the same thing for the three return types.
 	for(unsigned int ret=end+1; ret<foldops.size(); ++ret)

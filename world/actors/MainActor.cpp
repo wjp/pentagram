@@ -84,7 +84,7 @@ bool MainActor::CanAddItem(Item* item, bool checkwghtvol)
 	// now check 'equipment slots'
 	// we can have one item of each equipment type, plus one backpack
 
-	uint32 equiptype = item->getShapeInfo()->equiptype;
+	uint32_t equiptype = item->getShapeInfo()->equiptype;
 	bool backpack = (item->getShape() == backpack_shape);
 
 	// valid item type?
@@ -93,7 +93,7 @@ bool MainActor::CanAddItem(Item* item, bool checkwghtvol)
 	std::list<Item*>::iterator iter;
 	for (iter = contents.begin(); iter != contents.end(); ++iter)
 	{
-		uint32 cet = (*iter)->getShapeInfo()->equiptype;
+		uint32_t cet = (*iter)->getShapeInfo()->equiptype;
 		bool cbackpack = ((*iter)->getShape() == backpack_shape);
 
 		// already have an item with the same equiptype
@@ -109,13 +109,13 @@ bool MainActor::addItem(Item* item, bool checkwghtvol)
 
 	item->setFlag(FLG_EQUIPPED);
 
-	uint32 equiptype = item->getShapeInfo()->equiptype;
+	uint32_t equiptype = item->getShapeInfo()->equiptype;
 	item->setZ(equiptype);
 
 	return true;
 }
 
-void MainActor::teleport(int mapnum, sint32 x, sint32 y, sint32 z)
+void MainActor::teleport(int mapnum, int32_t x, int32_t y, int32_t z)
 {
 	World* world = World::get_instance();
 
@@ -135,7 +135,7 @@ void MainActor::teleport(int mapnum, sint32 x, sint32 y, sint32 z)
 void MainActor::teleport(int mapnum, int teleport_id)
 {
 	int oldmap = getMapNum();
-	sint32 oldx, oldy, oldz;
+	int32_t oldx, oldy, oldz;
 	getLocation(oldx, oldy, oldz);
 
 	World* world = World::get_instance();
@@ -161,7 +161,7 @@ void MainActor::teleport(int mapnum, int teleport_id)
 		teleport(oldmap, oldx, oldy, oldz);
 		return;
 	}
-	sint32 x,y,z;
+	int32_t x,y,z;
 	egg->getLocation(x,y,z);
 
 	pout << "Found destination: " << x << "," << y << "," << z << std::endl;
@@ -171,14 +171,14 @@ void MainActor::teleport(int mapnum, int teleport_id)
 	justTeleported = true;
 }
 
-uint16 MainActor::getDefenseType()
+uint16_t MainActor::getDefenseType()
 {
-	uint16 type = 0;
+	uint16_t type = 0;
 
 	std::list<Item*>::iterator iter;
 	for (iter = contents.begin(); iter != contents.end(); ++iter)
 	{
-		uint32 frame = (*iter)->getFrame();
+		uint32_t frame = (*iter)->getFrame();
 		ShapeInfo* si = (*iter)->getShapeInfo();
 		if (si->armourinfo) {
 			type |= si->armourinfo[frame].defense_type;
@@ -188,14 +188,14 @@ uint16 MainActor::getDefenseType()
 	return type;
 }
 
-uint32 MainActor::getArmourClass()
+uint32_t MainActor::getArmourClass()
 {
-	uint32 armour = 0;
+	uint32_t armour = 0;
 
 	std::list<Item*>::iterator iter;
 	for (iter = contents.begin(); iter != contents.end(); ++iter)
 	{
-		uint32 frame = (*iter)->getFrame();
+		uint32_t frame = (*iter)->getFrame();
 		ShapeInfo* si = (*iter)->getShapeInfo();
 		if (si->armourinfo) {
 			armour += si->armourinfo[frame].armour_class;
@@ -208,9 +208,9 @@ uint32 MainActor::getArmourClass()
 	return armour;
 }
 
-sint16 MainActor::getDefendingDex()
+int16_t MainActor::getDefendingDex()
 {
-	sint16 dex = getDex();
+	int16_t dex = getDex();
 
 	Item* weapon = getItem(getEquip(ShapeInfo::SE_WEAPON));
 	if (weapon) {
@@ -224,9 +224,9 @@ sint16 MainActor::getDefendingDex()
 	return dex;
 }
 
-sint16 MainActor::getAttackingDex()
+int16_t MainActor::getAttackingDex()
 {
-	sint16 dex = getDex();
+	int16_t dex = getDex();
 
 	Item* weapon = getItem(getEquip(ShapeInfo::SE_WEAPON));
 	if (weapon) {
@@ -238,7 +238,7 @@ sint16 MainActor::getAttackingDex()
 	return dex;
 }
 
-uint16 MainActor::getDamageType()
+uint16_t MainActor::getDamageType()
 {
 	Item* weapon = getItem(getEquip(ShapeInfo::SE_WEAPON));
 
@@ -311,7 +311,7 @@ void MainActor::clearInCombat()
 	MusicProcess::get_instance()->restoreMusic();
 }
 
-ProcId MainActor::die(uint16 damageType)
+ProcId MainActor::die(uint16_t damageType)
 {
 	ProcId animprocid = Actor::die(damageType);
 
@@ -390,7 +390,7 @@ void MainActor::ConCmd_mark(const Console::ArgvType &argv)
 	SettingManager* settings = SettingManager::get_instance();
 	MainActor* mainactor = getMainActor();
 	int curmap = mainactor->getMapNum();
-	sint32 x,y,z;
+	int32_t x,y,z;
 	mainactor->getLocation(x,y,z);
 
 	Pentagram::istring confkey = "marks/" + argv[1];
@@ -523,7 +523,7 @@ void MainActor::accumulateInt(int n)
 }
 
 void MainActor::getWeaponOverlay(const WeaponOverlayFrame*& frame,
-								 uint32& shape)
+								 uint32_t& shape)
 {
 	shape = 0;
 	frame = 0;
@@ -552,28 +552,28 @@ void MainActor::getWeaponOverlay(const WeaponOverlayFrame*& frame,
 void MainActor::saveData(ODataSource* ods)
 {
 	Actor::saveData(ods);
-	uint8 jt = justTeleported ? 1 : 0;
+	uint8_t jt = justTeleported ? 1 : 0;
 	ods->write1(jt);
 	ods->write4(accumStr);
 	ods->write4(accumDex);
 	ods->write4(accumInt);
-	uint8 namelength = static_cast<uint8>(name.size());
+	uint8_t namelength = static_cast<uint8_t>(name.size());
 	ods->write1(namelength);
 	for (unsigned int i = 0; i < namelength; ++i)
-		ods->write1(static_cast<uint8>(name[i]));
+		ods->write1(static_cast<uint8_t>(name[i]));
 
 }
 
-bool MainActor::loadData(IDataSource* ids, uint32 version)
+bool MainActor::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Actor::loadData(ids, version)) return false;
 
 	justTeleported = (ids->read1() != 0);
-	accumStr = static_cast<sint32>(ids->read4());
-	accumDex = static_cast<sint32>(ids->read4());
-	accumInt = static_cast<sint32>(ids->read4());
+	accumStr = static_cast<int32_t>(ids->read4());
+	accumDex = static_cast<int32_t>(ids->read4());
+	accumInt = static_cast<int32_t>(ids->read4());
 
-	uint8 namelength = ids->read1();
+	uint8_t namelength = ids->read1();
 	name.resize(namelength);
 	for (unsigned int i = 0; i < namelength; ++i)
 		name[i] = ids->read1();
@@ -581,47 +581,47 @@ bool MainActor::loadData(IDataSource* ids, uint32 version)
 	return true;
 }
 
-uint32 MainActor::I_teleportToEgg(const uint8* args, unsigned int /*argsize*/)
+uint32_t MainActor::I_teleportToEgg(const uint8_t* args, unsigned int /*argsize*/)
 {
-	ARG_UINT16(mapnum);
-	ARG_UINT16(teleport_id);
-	ARG_UINT16(unknown); // 0/1
+	ARG_uint16_t(mapnum);
+	ARG_uint16_t(teleport_id);
+	ARG_uint16_t(unknown); // 0/1
 
 	return Kernel::get_instance()->addProcess(
 		new TeleportToEggProcess(mapnum, teleport_id));
 }
 
-uint32 MainActor::I_accumulateStrength(const uint8* args,
+uint32_t MainActor::I_accumulateStrength(const uint8_t* args,
 									   unsigned int /*argsize*/)
 {
-	ARG_SINT16(n);
+	ARG_int16_t(n);
 	MainActor* av = getMainActor();
 	av->accumulateStr(n);
 
 	return 0;
 }
 
-uint32 MainActor::I_accumulateDexterity(const uint8* args,
+uint32_t MainActor::I_accumulateDexterity(const uint8_t* args,
 									   unsigned int /*argsize*/)
 {
-	ARG_SINT16(n);
+	ARG_int16_t(n);
 	MainActor* av = getMainActor();
 	av->accumulateDex(n);
 
 	return 0;
 }
 
-uint32 MainActor::I_accumulateIntelligence(const uint8* args,
+uint32_t MainActor::I_accumulateIntelligence(const uint8_t* args,
 									   unsigned int /*argsize*/)
 {
-	ARG_SINT16(n);
+	ARG_int16_t(n);
 	MainActor* av = getMainActor();
 	av->accumulateInt(n);
 
 	return 0;
 }
 
-uint32 MainActor::I_clrAvatarInCombat(const uint8* /*args*/,
+uint32_t MainActor::I_clrAvatarInCombat(const uint8_t* /*args*/,
 									  unsigned int /*argsize*/)
 {
 	MainActor* av = getMainActor();	
@@ -630,7 +630,7 @@ uint32 MainActor::I_clrAvatarInCombat(const uint8* /*args*/,
 	return 0;
 }
 
-uint32 MainActor::I_setAvatarInCombat(const uint8* /*args*/,
+uint32_t MainActor::I_setAvatarInCombat(const uint8_t* /*args*/,
 									  unsigned int /*argsize*/)
 {
 	MainActor* av = getMainActor();	
@@ -639,7 +639,7 @@ uint32 MainActor::I_setAvatarInCombat(const uint8* /*args*/,
 	return 0;
 }
 
-uint32 MainActor::I_isAvatarInCombat(const uint8* /*args*/,
+uint32_t MainActor::I_isAvatarInCombat(const uint8_t* /*args*/,
 									  unsigned int /*argsize*/)
 {
 	MainActor* av = getMainActor();
@@ -682,7 +682,7 @@ void MainActor::ConCmd_useInventory(const Console::ArgvType &argv)
 	av->callUsecodeEvent_use();
 }
 
-void MainActor::useInventoryItem(uint32 shapenum)
+void MainActor::useInventoryItem(uint32_t shapenum)
 {
 	if (GUIApp::get_instance()->isAvatarInStasis())
 	{
@@ -695,7 +695,7 @@ void MainActor::useInventoryItem(uint32 shapenum)
 	if (uclist.getSize() < 1)
 		return;
 
-	uint16 objid = uclist.getuint16(0);
+	uint16_t objid = uclist.getuint16_t(0);
 	Item* item = getItem(objid);
 	item->callUsecodeEvent_use();
 

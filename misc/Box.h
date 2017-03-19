@@ -22,8 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Pentagram {
 
 struct Box {
-	sint32		x, y, z;
-	sint32		xd, yd, zd;
+	int32_t		x, y, z;
+	int32_t		xd, yd, zd;
 
 	Box() : x(0), y(0), z(0), xd(0), yd(0), zd(0) {}
 	Box(int nx, int ny, int nz, int nxd, int nyd, int nzd)
@@ -44,17 +44,17 @@ struct Box {
 				  px < x && py < y && pz < (z+zd)); }
 
 	// Move the Box (Relative)
-	void	MoveRel(sint32 dx, sint32 dy, sint32 dz) { x+=dx; y+=dy; z+=dz; }
+	void	MoveRel(int32_t dx, int32_t dy, int32_t dz) { x+=dx; y+=dy; z+=dz; }
 
 	// Move the Box (Absolute)
-	void	MoveAbs(sint32 nx, sint32 ny, sint32 nz) { x=nx; y=ny; z=nz; }
+	void	MoveAbs(int32_t nx, int32_t ny, int32_t nz) { x=nx; y=ny; z=nz; }
 
 	// Resize the Box (Relative)
-	void	ResizeRel(sint32 dxd, sint32 dyd, sint32 dzd)
+	void	ResizeRel(int32_t dxd, int32_t dyd, int32_t dzd)
 		{ xd+=dxd; yd+=dyd; zd+=dzd; }
 
 	// Resize the Box (Absolute)
-	void	ResizeAbs(sint32 nxd, sint32 nyd, sint32 nzd)
+	void	ResizeAbs(int32_t nxd, int32_t nyd, int32_t nzd)
 		{ xd=nxd; yd=nyd; zd=nzd; }
 
 	bool 	Overlaps(const Box& o) const

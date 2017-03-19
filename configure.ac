@@ -60,7 +60,7 @@ DATAPATH="$datadir/pentagram"
 
 # We define three sets of libraries/ldflags
 #   SYS_LIBS is used in all built applications
-#   GUI_LIBS is only for full GUI applications, including SDL, audio
+#   GUI_LIBS is only for full GUI applications, including SDL2, audio
 #   CON_LIBS is only for console applications
 
 AC_MSG_CHECKING(system)
@@ -74,7 +74,7 @@ case "$host_os" in
 	mingw32* )
 		AC_DEFINE(WIN32, 1, [Windows])
 		AC_MSG_RESULT(Win32 (mingw32))
-		# note that -mwindows is added by SDL_LIBS
+		# note that -mwindows is added by SDL2_LIBS
 		GUI_LIBS="$GUI_LIBS -lwinmm"
 		CON_LIBS="$CON_LIBS -mconsole"
 		enable_timidity="no"
@@ -217,11 +217,11 @@ fi
 
 
 # ---------------------------------------------------------------------
-# SDL
+# SDL2
 # ---------------------------------------------------------------------
-PENT_CHECK_SDL(:,AC_MSG_ERROR([[*** SDL version >= 1.2.0 not found!]]))
+PENT_CHECK_SDL2(:,AC_MSG_ERROR([[*** SDL2 version >= 2.0.0 not found!]]))
 if test x$with_macosx_static_lib_path == x -o x$HOST_SYSTEM != xMACOSX; then
-		GUI_LIBS="$GUI_LIBS $SDL_LIBS"
+		GUI_LIBS="$GUI_LIBS $SDL2_LIBS"
 	fi
 
 # -----
@@ -235,12 +235,12 @@ if test x$with_macosx_static_lib_path == x -o x$HOST_SYSTEM != xMACOSX; then
 	fi
 
 # --------
-# SDL_ttf
+# SDL2_ttf
 # --------
 
-PENT_CHECK_SDLTTF(:,AC_MSG_ERROR([*** SDL_ttf version >= 2.0.7 not found!]))
+PENT_CHECK_SDL2TTF(:,AC_MSG_ERROR([*** SDL2_ttf version >= 2.0.14 not found!]))
 if test x$with_macosx_static_lib_path == x -o x$HOST_SYSTEM != xMACOSX; then
-		GUI_LIBS="$GUI_LIBS $SDLTTF_LIBS"
+		GUI_LIBS="$GUI_LIBS $SDL2TTF_LIBS"
 	fi
 
 # --------
@@ -258,7 +258,7 @@ if test x$with_macosx_static_lib_path == x -o x$HOST_SYSTEM != xMACOSX; then
 # --------
 
 # only needs to be checked when static linking on OS X
-# since freetype itself is already checked in PENT_CHECK_SDLTTF
+# since freetype itself is already checked in PENT_CHECK_SDL2TTF
 # we check whether the user also built freetype himself
 # if not we link Apples freetype dynamically but warn 
 # that cross compiling might break with that
@@ -298,11 +298,11 @@ if test x$HOST_SYSTEM == xMACOSX; then
 		# static library and link to *that*.
 		# Damn you, Apple!
 
-		# SDL MacOS X readme lists this as needed.
+		# SDL2 MacOS X readme lists this as needed.
 		# We should have sdl-config by this point, or we would have
-		# died in PENT_CHECK_SDL.
-		GUI_LIBS="$GUI_LIBS `$SDL_CONFIG $sdl_config_args --static-libs`"
-		GUI_LIBS="$GUI_LIBS $with_macosx_static_lib_path/libSDL_ttf.a"
+		# died in PENT_CHECK_SDL2.
+		GUI_LIBS="$GUI_LIBS `$SDL2_CONFIG $sdl2_config_args --static-libs`"
+		GUI_LIBS="$GUI_LIBS $with_macosx_static_lib_path/libSDL2_ttf.a"
 		GUI_LIBS="$GUI_LIBS $with_macosx_static_lib_path/libpng.a"
 		SYS_LIBS="$SYS_LIBS $with_macosx_static_lib_path/libz.a"
 	fi

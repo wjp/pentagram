@@ -39,7 +39,7 @@ public:
 
 	void resetIdleTime() { idleTime = 0; }
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
@@ -53,13 +53,13 @@ protected:
 	bool checkTurn(int direction, bool moving);
 	bool canAttack();
 	
-	uint32 lastframe;
+	uint32_t lastframe;
 
 	// attack speed limiting
-	uint32 lastAttack;
+	uint32_t lastAttack;
 
 	// shake head when idle
-	sint32 idleTime;
+	int32_t idleTime;
 	Animation::Sequence lastHeadShakeAnim;
 
 	MButton mouseButton[2];

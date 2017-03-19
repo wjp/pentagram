@@ -88,8 +88,8 @@ PaperdollGump::PaperdollGump()
 		cached_text[i] = 0;
 }
 
-PaperdollGump::PaperdollGump(Shape* shape_, uint32 framenum_, uint16 owner,
-							 uint32 Flags_, sint32 layer)
+PaperdollGump::PaperdollGump(Shape* shape_, uint32_t framenum_, uint16_t owner,
+							 uint32_t Flags_, int32_t layer)
 	: ContainerGump(shape_, framenum_, owner, Flags_, layer)
 {
 	statbuttongid = 0;
@@ -151,7 +151,7 @@ void PaperdollGump::PaintStat(RenderSurface* surf, unsigned int n,
 
 	font = FontManager::get_instance()->getGameFont(statfont);
 	descfont = FontManager::get_instance()->getGameFont(statdescfont);
-	char buf[16]; // enough for uint32
+	char buf[16]; // enough for uint32_t
 	unsigned int remaining;
 
 	if (!cached_text[2*n])
@@ -171,7 +171,7 @@ void PaperdollGump::PaintStat(RenderSurface* surf, unsigned int n,
 	cached_text[2*n+1]->draw(surf, statcoords[n].x, statcoords[n].y);
 }
 
-void PaperdollGump::PaintStats(RenderSurface* surf, sint32 lerp_factor)
+void PaperdollGump::PaintStats(RenderSurface* surf, int32_t lerp_factor)
 {
 	Actor* a = getActor(owner);
 	assert(a);
@@ -185,7 +185,7 @@ void PaperdollGump::PaintStats(RenderSurface* surf, sint32 lerp_factor)
 	PaintStat(surf, 6, _TL_("WGHT"), a->getTotalWeight()/10);
 }
 
-void PaperdollGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void PaperdollGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	// paint self
 	ItemRelativeGump::PaintThis(surf, lerp_factor, scaled);
@@ -203,8 +203,8 @@ void PaperdollGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scal
 	for (int i = 6; i >= 1; --i) { // constants
 		Item* item = getItem(a->getEquip(i));
 		if (!item) continue;
-		sint32 itemx,itemy;
-		uint32 frame = item->getFrame() + 1;
+		int32_t itemx,itemy;
+		uint32_t frame = item->getFrame() + 1;
 
 		itemx = equipcoords[i].x;
 		itemy = equipcoords[i].y;
@@ -216,7 +216,7 @@ void PaperdollGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scal
 	}
 
 	if (display_dragging) {
-		sint32 itemx, itemy;
+		int32_t itemx, itemy;
 		itemx = dragging_x + itemarea.x;
 		itemy = dragging_y + itemarea.y;
 		Shape* s = GameData::get_instance()->getMainShapes()->
@@ -228,9 +228,9 @@ void PaperdollGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scal
 
 // Find object (if any) at (mx,my)
 // (mx,my) are relative to parent
-uint16 PaperdollGump::TraceObjId(int mx, int my)
+uint16_t PaperdollGump::TraceObjId(int mx, int my)
 {
-	uint16 objid = Gump::TraceObjId(mx,my);
+	uint16_t objid = Gump::TraceObjId(mx,my);
 	if (objid && objid != 65535) return objid;
 
 	ParentToGump(mx,my);
@@ -242,7 +242,7 @@ uint16 PaperdollGump::TraceObjId(int mx, int my)
 	for (int i = 1; i <= 6; ++i) {
 		Item* item = getItem(a->getEquip(i));
 		if (!item) continue;
-		sint32 itemx,itemy;
+		int32_t itemx,itemy;
 
 		itemx = equipcoords[i].x;
 		itemy = equipcoords[i].y;
@@ -270,8 +270,8 @@ uint16 PaperdollGump::TraceObjId(int mx, int my)
 }
 
 // get item coords relative to self
-bool PaperdollGump::GetLocationOfItem(uint16 itemid, int &gx, int &gy,
-									  sint32 lerp_factor)
+bool PaperdollGump::GetLocationOfItem(uint16_t itemid, int &gx, int &gy,
+									  int32_t lerp_factor)
 {
 
 	Item* item = getItem(itemid);
@@ -392,7 +392,7 @@ void PaperdollGump::DropItem(Item* item, int mx, int my)
 	}
 }
 
-void PaperdollGump::ChildNotify(Gump *child, uint32 message)
+void PaperdollGump::ChildNotify(Gump *child, uint32_t message)
 {
 	if (child->getObjId() == statbuttongid &&
 		message == ButtonWidget::BUTTON_CLICK)
@@ -430,7 +430,7 @@ void PaperdollGump::saveData(ODataSource* ods)
 	ods->write2(statbuttongid);
 }
 
-bool PaperdollGump::loadData(IDataSource* ids, uint32 version)
+bool PaperdollGump::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!ContainerGump::loadData(ids, version)) return false;
 

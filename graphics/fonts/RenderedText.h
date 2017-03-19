@@ -34,7 +34,7 @@ public:
 	virtual void draw(RenderSurface* surface, int x, int y, bool destmasked = false)=0;
 
 	//! Draw self to a rendersurface blended (0xAABBGGRR, alpha is blend level)
-	virtual void drawBlended(RenderSurface* surface, int x, int y, uint32 col, bool destmasked = false)=0;
+	virtual void drawBlended(RenderSurface* surface, int x, int y, uint32_t col, bool destmasked = false)=0;
 
 	//! Get dimensions.
 	//! \param x Returns the width

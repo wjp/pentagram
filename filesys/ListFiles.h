@@ -157,7 +157,7 @@ int FileSystem::ListFiles(const std::string mask, FileList& files)
 	
 	// calculate the difference in length between the real path, the 
 	// original path, and the root @whatever
-	uint32 newplen = name.size() - mask.size() + rootpath.size();
+	uint32_t newplen = name.size() - mask.size() + rootpath.size();
 	
 	int err = glob(name.c_str(), GLOB_NOSORT, 0, &globres);
 

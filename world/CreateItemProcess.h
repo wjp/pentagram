@@ -28,25 +28,25 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	CreateItemProcess();
-	CreateItemProcess(uint32 shape, uint32 frame, uint16 quality,
-					  uint16 flags, uint16 npcnum, uint16 mapnum,
-					  uint32 extendedflags, sint32 x, sint32 y, sint32 z);
+	CreateItemProcess(uint32_t shape, uint32_t frame, uint16_t quality,
+					  uint16_t flags, uint16_t npcnum, uint16_t mapnum,
+					  uint32_t extendedflags, int32_t x, int32_t y, int32_t z);
 	virtual ~CreateItemProcess(void);
 
 	virtual void run();
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
-	uint32 shape;
-	uint32 frame;
-	uint16 quality;
-	uint16 flags;
-	uint16 npcnum;
-	uint16 mapnum;
-	uint32 extendedflags;
-	sint32 x,y,z;
+	uint32_t shape;
+	uint32_t frame;
+	uint16_t quality;
+	uint16_t flags;
+	uint16_t npcnum;
+	uint16_t mapnum;
+	uint32_t extendedflags;
+	int32_t x,y,z;
 };
 
 #endif

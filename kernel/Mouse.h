@@ -23,9 +23,9 @@ const unsigned int DOUBLE_CLICK_TIMEOUT = 200;
 
 struct MButton
 {
-	uint16 downGump;
-	uint32 lastDown;
-	uint32 curDown;
+	uint16_t downGump;
+	uint32_t lastDown;
+	uint32_t curDown;
 	int downX, downY;
 	int state;
 };

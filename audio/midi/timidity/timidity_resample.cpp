@@ -68,7 +68,7 @@ extern sample_t *resample_buffer;
 
 /*************** resampling with fixed increment *****************/
 
-static sample_t *rs_plain(int v, sint32 *countptr)
+static sample_t *rs_plain(int v, int32_t *countptr)
 {
 
   /* Play sample until end, then free the voice. */
@@ -79,14 +79,14 @@ static sample_t *rs_plain(int v, sint32 *countptr)
   sample_t 
     *dest=resample_buffer,
     *src=vp->sample->data;
-  sint32 
+  int32_t 
     ofs=vp->sample_offset,
     incr=vp->sample_increment,
     le=vp->sample->data_length,
     count=*countptr;
 
 #ifdef PRECALC_LOOPS
-  sint32 i;
+  int32_t i;
 
   if (incr<0) incr = -incr; /* In case we're coming out of a bidir loop */
 
@@ -135,13 +135,13 @@ static sample_t *rs_plain(int v, sint32 *countptr)
   return resample_buffer;
 }
 
-static sample_t *rs_loop(Voice *vp, sint32 count)
+static sample_t *rs_loop(Voice *vp, int32_t count)
 {
 
   /* Play sample until end-of-loop, skip back and continue. */
 
   INTERPVARS;
-  sint32 
+  int32_t 
     ofs=vp->sample_offset, 
     incr=vp->sample_increment,
     le=vp->sample->loop_end, 
@@ -151,7 +151,7 @@ static sample_t *rs_loop(Voice *vp, sint32 count)
     *src=vp->sample->data;
 
 #ifdef PRECALC_LOOPS
-  sint32 i;
+  int32_t i;
   
   while (count) 
     {
@@ -186,10 +186,10 @@ static sample_t *rs_loop(Voice *vp, sint32 count)
   return resample_buffer;
 }
 
-static sample_t *rs_bidir(Voice *vp, sint32 count)
+static sample_t *rs_bidir(Voice *vp, int32_t count)
 {
   INTERPVARS;
-  sint32 
+  int32_t 
     ofs=vp->sample_offset,
     incr=vp->sample_increment,
     le=vp->sample->loop_end,
@@ -199,7 +199,7 @@ static sample_t *rs_bidir(Voice *vp, sint32 count)
     *src=vp->sample->data;
 
 #ifdef PRECALC_LOOPS
-  sint32
+  int32_t
     le2 = le<<1, 
     ls2 = ls<<1,
     i;
@@ -306,9 +306,9 @@ static int vib_phase_to_inc_ptr(int phase)
     return phase-VIBRATO_SAMPLE_INCREMENTS/2;
 }
 
-static sint32 update_vibrato(Voice *vp, int sign)
+static int32_t update_vibrato(Voice *vp, int sign)
 {
-  sint32 depth;
+  int32_t depth;
   int phase, pb;
   double a;
 
@@ -362,15 +362,15 @@ static sint32 update_vibrato(Voice *vp, int sign)
   
   /* If the sweep's over, we can store the newly computed sample_increment */
   if (!vp->vibrato_sweep)
-    vp->vibrato_sample_increment[phase]=(sint32) a;
+    vp->vibrato_sample_increment[phase]=(int32_t) a;
 
   if (sign)
     a = -a; /* need to preserve the loop direction */
 
-  return (sint32) a;
+  return (int32_t) a;
 }
 
-static sample_t *rs_vib_plain(int v, sint32 *countptr)
+static sample_t *rs_vib_plain(int v, int32_t *countptr)
 {
 
   /* Play sample until end, then free the voice. */
@@ -380,7 +380,7 @@ static sample_t *rs_vib_plain(int v, sint32 *countptr)
   sample_t 
     *dest=resample_buffer, 
     *src=vp->sample->data;
-  sint32 
+  int32_t 
     le=vp->sample->data_length,
     ofs=vp->sample_offset, 
     incr=vp->sample_increment, 
@@ -417,13 +417,13 @@ static sample_t *rs_vib_plain(int v, sint32 *countptr)
   return resample_buffer;
 }
 
-static sample_t *rs_vib_loop(Voice *vp, sint32 count)
+static sample_t *rs_vib_loop(Voice *vp, int32_t count)
 {
 
   /* Play sample until end-of-loop, skip back and continue. */
   
   INTERPVARS;
-  sint32 
+  int32_t 
     ofs=vp->sample_offset, 
     incr=vp->sample_increment, 
     le=vp->sample->loop_end,
@@ -435,7 +435,7 @@ static sample_t *rs_vib_loop(Voice *vp, sint32 count)
     cc=vp->vibrato_control_counter;
 
 #ifdef PRECALC_LOOPS
-  sint32 i;
+  int32_t i;
   int
     vibflag=0;
 
@@ -489,10 +489,10 @@ static sample_t *rs_vib_loop(Voice *vp, sint32 count)
   return resample_buffer;
 }
 
-static sample_t *rs_vib_bidir(Voice *vp, sint32 count)
+static sample_t *rs_vib_bidir(Voice *vp, int32_t count)
 {
   INTERPVARS;
-  sint32 
+  int32_t 
     ofs=vp->sample_offset, 
     incr=vp->sample_increment,
     le=vp->sample->loop_end, 
@@ -504,7 +504,7 @@ static sample_t *rs_vib_bidir(Voice *vp, sint32 count)
     cc=vp->vibrato_control_counter;
 
 #ifdef PRECALC_LOOPS
-  sint32
+  int32_t
     le2=le<<1,
     ls2=ls<<1,
     i;
@@ -625,10 +625,10 @@ static sample_t *rs_vib_bidir(Voice *vp, sint32 count)
   return resample_buffer;
 }
 
-sample_t *resample_voice(int v, sint32 *countptr)
+sample_t *resample_voice(int v, int32_t *countptr)
 {
-  sint32 ofs;
-  uint8 modes;
+  int32_t ofs;
+  uint8_t modes;
   Voice *vp=&voice[v];
   
   if (!(vp->sample->sample_rate))
@@ -688,9 +688,9 @@ sample_t *resample_voice(int v, sint32 *countptr)
 void pre_resample(Sample * sp)
 {
   double a, xdiff;
-  sint32 incr, ofs, newlen, count;
-  sint16 *newdata, *dest, *src = (sint16 *) sp->data;
-  sint16 v1, v2, v3, v4, *vptr;
+  int32_t incr, ofs, newlen, count;
+  int16_t *newdata, *dest, *src = (int16_t *) sp->data;
+  int16_t v1, v2, v3, v4, *vptr;
   static const char note_name[12][3] =
   {
     "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
@@ -703,9 +703,9 @@ void pre_resample(Sample * sp)
   a = ((double) (sp->sample_rate) * freq_table[(int) (sp->note_to_use)]) /
     ((double) (sp->root_freq) * play_mode->rate);
   if (a <= 0) return;
-  newlen = (sint32)(sp->data_length / a);
+  newlen = (int32_t)(sp->data_length / a);
   if (newlen < 0 || (newlen >> FRACTION_BITS) > MAX_SAMPLE_SIZE) return;
-  dest = newdata = safe_Malloc<sint16>(newlen >> FRACTION_BITS);
+  dest = newdata = safe_Malloc<int16_t>(newlen >> FRACTION_BITS);
 
   count = (newlen >> FRACTION_BITS) - 1;
   ofs = incr = (sp->data_length - (1 << FRACTION_BITS)) / count;
@@ -723,7 +723,7 @@ void pre_resample(Sample * sp)
       v3 = *(vptr + 1);
       v4 = *(vptr + 2);
       xdiff = FSCALENEG(ofs & FRACTION_MASK, FRACTION_BITS);
-      *dest++ = (sint16)(v2 + (xdiff / 6.0) * (-2 * v1 - 3 * v2 + 6 * v3 - v4 +
+      *dest++ = (int16_t)(v2 + (xdiff / 6.0) * (-2 * v1 - 3 * v2 + 6 * v3 - v4 +
       xdiff * (3 * (v1 - 2 * v2 + v3) + xdiff * (-v1 + 3 * (v2 - v3) + v4))));
       ofs += incr;
     }
@@ -732,14 +732,14 @@ void pre_resample(Sample * sp)
     {
       v1 = src[ofs >> FRACTION_BITS];
       v2 = src[(ofs >> FRACTION_BITS) + 1];
-      *dest++ = static_cast<uint16>(v1 + (((v2 - v1) * (ofs & FRACTION_MASK)) >> FRACTION_BITS));
+      *dest++ = static_cast<uint16_t>(v1 + (((v2 - v1) * (ofs & FRACTION_MASK)) >> FRACTION_BITS));
     }
   else
     *dest++ = src[ofs >> FRACTION_BITS];
 
   sp->data_length = newlen;
-  sp->loop_start = (sint32)(sp->loop_start / a);
-  sp->loop_end = (sint32)(sp->loop_end / a);
+  sp->loop_start = (int32_t)(sp->loop_start / a);
+  sp->loop_end = (int32_t)(sp->loop_end / a);
   free(sp->data);
   sp->data = (sample_t *) newdata;
   sp->sample_rate = 0;

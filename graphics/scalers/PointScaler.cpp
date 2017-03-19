@@ -26,8 +26,8 @@ namespace Pentagram {
 template<class uintX, class Manip, class uintS=uintX> class PointScalerInternal
 {
 public:
-	static bool Scale( Texture *tex	, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-						uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
+	static bool Scale( Texture *tex	, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+						uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
 	{
 		// Source buffer pointers
 		uintS *texel = reinterpret_cast<uintS*>(tex->buffer) + (sy * tex->width + sx);
@@ -46,7 +46,7 @@ public:
 		//
 		if ((sw*2 == dw) && (sh*2 == dh))
 		{
-			uint8 *pixel2 = pixel+pitch;
+			uint8_t *pixel2 = pixel+pitch;
 			int p_diff    = (pitch*2)-(dw*sizeof(uintX));
 
 			// Src Loop Y
@@ -80,8 +80,8 @@ public:
 			int xf = dw/sw;
 			int yf = dh/sh;
 
-			uint8 *px_end = pixel + xf*sizeof(uintX);
-			uint8 *py_end = pixel + yf*pitch;
+			uint8_t *px_end = pixel + xf*sizeof(uintX);
+			uint8_t *py_end = pixel + yf*pitch;
 
 			int block_w = xf*sizeof(uintX);
 			int block_h = pitch*yf;
@@ -131,10 +131,10 @@ public:
 		//
 		else if ((sw*2 == dw) && (dh >= sh))
 		{
-			uint32 pos_y;
-			uint32 end_y = dh;
-			uint32 dst_y = 0;
-			uint8* next_block = 0;
+			uint32_t pos_y;
+			uint32_t end_y = dh;
+			uint32_t dst_y = 0;
+			uint8_t* next_block = 0;
 
 			// Src Loop Y
 			do 
@@ -180,10 +180,10 @@ public:
 		//
 		else if ((sw == dw) && (dh >= sh))
 		{
-			uint32 pos_y;
-			uint32 end_y = dh;
-			uint32 dst_y = 0;
-			uint8* next_block = 0;
+			uint32_t pos_y;
+			uint32_t end_y = dh;
+			uint32_t dst_y = 0;
+			uint8_t* next_block = 0;
 
 			// Src Loop Y
 			do 
@@ -227,17 +227,17 @@ public:
 		//
 		else
 		{
-			uint32 pos_y = 0, pos_x = 0;
-			uint32 end_y = dh;
-			uint32 dst_y = 0;
-			uint8* blockline_start = 0;
-			uint8* next_block = 0;
+			uint32_t pos_y = 0, pos_x = 0;
+			uint32_t end_y = dh;
+			uint32_t dst_y = 0;
+			uint8_t* blockline_start = 0;
+			uint8_t* next_block = 0;
 
 			// Src Loop Y
 			do 
 			{
-				uint32 end_x = dw;
-				uint32 dst_x = 0;
+				uint32_t end_x = dw;
+				uint32_t dst_x = 0;
 
 				next_block = pixel;
 
@@ -298,16 +298,16 @@ public:
 
 PointScaler::PointScaler() : Scaler()
 {
-	Scale16Nat = PointScalerInternal<uint16, Manip_Nat2Nat_16, uint16>::Scale;
-	Scale16Sta = PointScalerInternal<uint16, Manip_Sta2Nat_16, uint32>::Scale;
+	Scale16Nat = PointScalerInternal<uint16_t, Manip_Nat2Nat_16, uint16_t>::Scale;
+	Scale16Sta = PointScalerInternal<uint16_t, Manip_Sta2Nat_16, uint32_t>::Scale;
 
-	Scale32Nat = PointScalerInternal<uint32, Manip_Nat2Nat_32, uint32>::Scale;
-	Scale32Sta = PointScalerInternal<uint32, Manip_Sta2Nat_32, uint32>::Scale;
-	Scale32_A888 = PointScalerInternal<uint32, Manip_32_A888, uint32>::Scale;
-	Scale32_888A = PointScalerInternal<uint32, Manip_32_888A, uint32>::Scale;
+	Scale32Nat = PointScalerInternal<uint32_t, Manip_Nat2Nat_32, uint32_t>::Scale;
+	Scale32Sta = PointScalerInternal<uint32_t, Manip_Sta2Nat_32, uint32_t>::Scale;
+	Scale32_A888 = PointScalerInternal<uint32_t, Manip_32_A888, uint32_t>::Scale;
+	Scale32_888A = PointScalerInternal<uint32_t, Manip_32_888A, uint32_t>::Scale;
 }
 
-const uint32 PointScaler::ScaleBits() const { return 0xFFFFFFFF; }
+const uint32_t PointScaler::ScaleBits() const { return 0xFFFFFFFF; }
 const bool PointScaler::ScaleArbitrary() const { return true; }
 
 const char *PointScaler::ScalerName() const { return "point"; }

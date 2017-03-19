@@ -35,7 +35,7 @@ public:
 	//! \param repeat Specifies if repeating is enabled or disabled
 	//! \param volume Volume level to play at
 	//! \param branch The Branch index to start playing at
-	XMidiSequence(XMidiSequenceHandler *handler, uint16 sequence_id, XMidiEventList *events, 
+	XMidiSequence(XMidiSequenceHandler *handler, uint16_t sequence_id, XMidiEventList *events, 
 						bool repeat, int volume, int branch);
 
 	//! Destructor
@@ -49,7 +49,7 @@ public:
 
 	//! Get the time till the next event
 	//! \return ms till next event (can be negative if running behind time). 
-	sint32				timeTillNext();
+	int32_t				timeTillNext();
 
 	//! Set a new volume to use
 	//! \param new_vol the new volume level (0-255)
@@ -79,7 +79,7 @@ public:
 
 	//! Get the channel used mask
 	//! \return the mask of used channels
-	uint16				getChanMask() { return evntlist->chan_mask; }
+	uint16_t				getChanMask() { return evntlist->chan_mask; }
 
 	//! Pause the sequence
 	void				pause();
@@ -98,13 +98,13 @@ public:
 private:
 
 	XMidiSequenceHandler	*handler;		//!< The handler the events are sent to
-	uint16					sequence_id;	//!< The sequence id of this sequence
+	uint16_t					sequence_id;	//!< The sequence id of this sequence
 	XMidiEventList			*evntlist;		//!< The Midi event list that is being played
 	XMidiEvent				*event;			//!< The next event to be played
 	bool					repeat;			//!< Specifies if repeating is enabled
 	XMidiNoteStack			notes_on;		//!< Note stack of notes currently playing, and time to stop
-	uint32					last_tick;		//!< The tick of the previously played notes
-	uint32					start;			//!< XMidi Clock (in 1/6000 seconds)
+	uint32_t					last_tick;		//!< The tick of the previously played notes
+	uint32_t					start;			//!< XMidi Clock (in 1/6000 seconds)
 	int						loop_num;		//!< The level of the loop we are currently in
 	int						vol_multi;		//!< Volume multiplier (0-255)
 	bool					paused;			//!< Is the sequence paused
@@ -117,10 +117,10 @@ private:
 	int						loop_count[XMIDI_MAX_FOR_LOOP_COUNT];
 
 	struct ChannelShadow {
-		static const uint16	centre_value;
-		static const uint8	fine_value;
-		static const uint8	coarse_value;
-		static const uint16	combined_value;
+		static const uint16_t	centre_value;
+		static const uint8_t	fine_value;
+		static const uint8_t	coarse_value;
+		static const uint16_t	combined_value;
 
         int		pitchWheel;
 		int		program;
@@ -152,19 +152,19 @@ private:
 	{ start = handler->getTickCount(sequence_id)+24; }
 
 	//! Add an offset to the XMidi clock
-	inline void addOffset (uint32 offset)
+	inline void addOffset (uint32_t offset)
 	{ start += offset; }
 
 	//! Get the current time of the XMidi clock
-	inline uint32 getTime ()
+	inline uint32_t getTime ()
 	{ return handler->getTickCount(sequence_id) - start; }
 
 	//! Get the start time of the XMidi clock
-	inline uint32 getStart ()
+	inline uint32_t getStart ()
 	{ return start; }
 
 	//! Get the real time of the XMidi clock
-	inline uint32 getRealTime ()
+	inline uint32_t getRealTime ()
 	{ return handler->getTickCount(sequence_id); }
 };
 

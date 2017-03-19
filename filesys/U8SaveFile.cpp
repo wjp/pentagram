@@ -60,9 +60,9 @@ bool U8SaveFile::readMetadata()
 
 	for (unsigned int i = 0; i < count; ++i)
 	{
-		uint32 namelen = ds->read4();
+		uint32_t namelen = ds->read4();
 		char* buf = new char[namelen];
-		ds->read(buf, static_cast<sint32>(namelen));
+		ds->read(buf, static_cast<int32_t>(namelen));
 		std::string filename = buf;
 		indices[filename] = i;
 		storeIndexedName(filename);
@@ -75,9 +75,9 @@ bool U8SaveFile::readMetadata()
 	return true;
 }
 
-bool U8SaveFile::findIndex(const std::string& name, uint32& index)
+bool U8SaveFile::findIndex(const std::string& name, uint32_t& index)
 {
-	std::map<std::string, uint32>::iterator iter;
+	std::map<std::string, uint32_t>::iterator iter;
 	iter = indices.find(name);
 	if (iter == indices.end()) return false;
 	index = iter->second;
@@ -86,20 +86,20 @@ bool U8SaveFile::findIndex(const std::string& name, uint32& index)
 
 bool U8SaveFile::exists(const std::string& name)
 {
-	uint32 index;
+	uint32_t index;
 	return findIndex(name, index);
 }
 
-uint8* U8SaveFile::getObject(const std::string& name, uint32* sizep)
+uint8_t* U8SaveFile::getObject(const std::string& name, uint32_t* sizep)
 {
-	uint32 index;
+	uint32_t index;
 	if (!findIndex(name, index)) return 0;
 
-	uint32 size = sizes[index];
+	uint32_t size = sizes[index];
 	if (size == 0) return 0;
 
-	uint8 *object = new uint8[size];
-	uint32 offset = offsets[index];
+	uint8_t *object = new uint8_t[size];
+	uint32_t offset = offsets[index];
 
 	ds->seek(offset);
 	ds->read(object, size);
@@ -110,9 +110,9 @@ uint8* U8SaveFile::getObject(const std::string& name, uint32* sizep)
 }
 
 
-uint32 U8SaveFile::getSize(const std::string& name)
+uint32_t U8SaveFile::getSize(const std::string& name)
 {
-	uint32 index;
+	uint32_t index;
 	if (!findIndex(name, index)) return 0;
 
 	return sizes[index];

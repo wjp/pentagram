@@ -24,14 +24,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "IDataSource.h"
 #include "ODataSource.h"
 
-uint16 UCList::getStringIndex(uint32 index)
+uint16_t UCList::getStringIndex(uint32_t index)
 {
 	return elements[index*2] + (elements[index*2+1]<<8);
 }
 
-std::string& UCList::getString(uint32 index)
+std::string& UCList::getString(uint32_t index)
 {
-	uint16 sindex = getStringIndex(index);
+	uint16_t sindex = getStringIndex(index);
 	return UCMachine::get_instance()->getString(sindex);
 }
 
@@ -49,10 +49,10 @@ void UCList::copyStringList(UCList& l)
 	UCMachine *ucm = UCMachine::get_instance();
 	freeStrings();
 	for (unsigned int i = 0; i < l.size; i++) {
-		uint16 s = ucm->duplicateString(l.getStringIndex(i));
-		uint8 tmp[2]; // ugly...
-		tmp[0] = static_cast<uint8>(s & 0xFF);
-		tmp[1] = static_cast<uint8>(s >> 8);
+		uint16_t s = ucm->duplicateString(l.getStringIndex(i));
+		uint8_t tmp[2]; // ugly...
+		tmp[0] = static_cast<uint8_t>(s & 0xFF);
+		tmp[1] = static_cast<uint8_t>(s >> 8);
 		append(tmp);
 	}
 }
@@ -79,7 +79,7 @@ void UCList::substractStringList(UCList& l)
 		removeString(l.getStringIndex(i));
 }
 
-bool UCList::stringInList(uint16 s)
+bool UCList::stringInList(uint16_t s)
 {
 	std::string str = UCMachine::get_instance()->getString(s);
 	for (unsigned int i = 0; i < size; i++)
@@ -89,17 +89,17 @@ bool UCList::stringInList(uint16 s)
 	return false;
 }
 
-void UCList::assignString(uint32 index, uint16 str)
+void UCList::assignString(uint32_t index, uint16_t str)
 {
 	// assign string str to element index
 	// free old contents of element index; take ownership of str(?)
 
 	UCMachine::get_instance()->freeString(getStringIndex(index));
-	elements[index*elementsize] = static_cast<uint8>(str & 0xFF);
-	elements[index*elementsize+1] = static_cast<uint8>(str >> 8);
+	elements[index*elementsize] = static_cast<uint8_t>(str & 0xFF);
+	elements[index*elementsize+1] = static_cast<uint8_t>(str >> 8);
 }
 
-void UCList::removeString(uint16 s, bool nodel)
+void UCList::removeString(uint16_t s, bool nodel)
 {
 	// do we need to erase all occurences of str or just the first one?
 	// (deleting all, currently)
@@ -127,7 +127,7 @@ void UCList::save(ODataSource* ods)
 }
 
 
-bool UCList::load(IDataSource* ids, uint32 version)
+bool UCList::load(IDataSource* ids, uint32_t version)
 {
 	elementsize = ids->read4();
 	size = ids->read4();

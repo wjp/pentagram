@@ -44,13 +44,13 @@ struct SortItem
 	SortItem				*next;
 	SortItem				*prev;
 
-	uint16					item_num;	// Owner item number
+	uint16_t					item_num;	// Owner item number
 
 	Shape					*shape;
-	uint32					shape_num;
-	uint32					frame;
-	uint32					flags;		// Item flags
-	uint32					ext_flags;	// Item extended flags
+	uint32_t					shape_num;
+	uint32_t					frame;
+	uint32_t					flags;		// Item flags
+	uint32_t					ext_flags;	// Item extended flags
 
 	int						sx, sx2;	// Screenspace X coords
 	int						sy, sy2;	// Screenspace Y coords
@@ -73,18 +73,18 @@ struct SortItem
 
 	*/
 
-	sint32	x, xleft;	// Worldspace bounding box x (xright = x)
-	sint32	y, yfar;	// Worldspace bounding box y (ynear = y)
-	sint32	z, ztop;	// Worldspace bounding box z (ztop = z)
+	int32_t	x, xleft;	// Worldspace bounding box x (xright = x)
+	int32_t	y, yfar;	// Worldspace bounding box y (ynear = y)
+	int32_t	z, ztop;	// Worldspace bounding box z (ztop = z)
 
-	sint32	sxleft;		// Screenspace bounding box left extent    (LNT x coord)
-	sint32	sxright;	// Screenspace bounding box right extent   (RFT x coord)
+	int32_t	sxleft;		// Screenspace bounding box left extent    (LNT x coord)
+	int32_t	sxright;	// Screenspace bounding box right extent   (RFT x coord)
 
-	sint32	sxtop;		// Screenspace bounding box top x coord    (LFT x coord)
-	sint32	sytop;		// Screenspace bounding box top extent     (LFT y coord)
+	int32_t	sxtop;		// Screenspace bounding box top x coord    (LFT x coord)
+	int32_t	sytop;		// Screenspace bounding box top extent     (LFT y coord)
 
-	sint32	sxbot;		// Screenspace bounding box bottom x coord (RNB x coord) ss origin
-	sint32	sybot;		// Screenspace bounding box bottom extent  (RNB y coord) ss origin
+	int32_t	sxbot;		// Screenspace bounding box bottom x coord (RNB x coord) ss origin
+	int32_t	sybot;		// Screenspace bounding box bottom extent  (RNB y coord) ss origin
 
 	bool	f32x32 : 1;			// Needs 1 bit	0
 	bool	flat : 1;			// Needs 1 bit	1
@@ -100,9 +100,9 @@ struct SortItem
 
 	bool	occluded : 1;		// Set true if occluded
 
-	sint16	clipped;			// Clipped to RenderSurface
+	int16_t	clipped;			// Clipped to RenderSurface
 
-	sint32	order;		// Rendering order. -1 is not yet drawn
+	int32_t	order;		// Rendering order. -1 is not yet drawn
 
 	// Note that std::priority_queue could be used here, BUT there is no guarentee that it's implementation
 	// will be friendly to insertions
@@ -237,16 +237,16 @@ inline bool SortItem::overlap(const SortItem &si2) const
 	// important
 
 	// 'normal' of top  left line ( 2,-1) of the bounding box
-	const sint32 dot_top_left = point_top_diff[0] + point_top_diff[1] * 2;
+	const int32_t dot_top_left = point_top_diff[0] + point_top_diff[1] * 2;
 
 	// 'normal' of top right line ( 2, 1) of the bounding box
-	const sint32 dot_top_right = -point_top_diff[0] + point_top_diff[1] * 2;
+	const int32_t dot_top_right = -point_top_diff[0] + point_top_diff[1] * 2;
 
 	// 'normal' of bot  left line (-2,-1) of the bounding box
-	const sint32 dot_bot_left =  point_bot_diff[0] - point_bot_diff[1] * 2;
+	const int32_t dot_bot_left =  point_bot_diff[0] - point_bot_diff[1] * 2;
 
 	// 'normal' of bot right line (-2, 1) of the bounding box
-	const sint32 dot_bot_right = -point_bot_diff[0] - point_bot_diff[1] * 2;
+	const int32_t dot_bot_right = -point_bot_diff[0] - point_bot_diff[1] * 2;
 
 	const bool right_clear = sxright <= si2.sxleft;
 	const bool left_clear = sxleft >= si2.sxright;
@@ -273,16 +273,16 @@ inline bool SortItem::occludes(const SortItem &si2) const
 	// important
 
 	// 'normal' of top left line ( 2, -1) of the bounding box
-	const sint32 dot_top_left = point_top_diff[0] + point_top_diff[1] * 2;
+	const int32_t dot_top_left = point_top_diff[0] + point_top_diff[1] * 2;
 
 	// 'normal' of top right line ( 2, 1) of the bounding box
-	const sint32 dot_top_right = -point_top_diff[0] + point_top_diff[1] * 2;
+	const int32_t dot_top_right = -point_top_diff[0] + point_top_diff[1] * 2;
 
 	// 'normal' of bot  left line (-2,-1) of the bounding box
-	const sint32 dot_bot_left =  point_bot_diff[0] - point_bot_diff[1] * 2;
+	const int32_t dot_bot_left =  point_bot_diff[0] - point_bot_diff[1] * 2;
 
 	// 'normal' of bot right line (-2, 1) of the bounding box
-	const sint32 dot_bot_right = -point_bot_diff[0] - point_bot_diff[1] * 2;
+	const int32_t dot_bot_right = -point_bot_diff[0] - point_bot_diff[1] * 2;
 
 
 	const bool right_res = sxright >= si2.sxright;
@@ -623,7 +623,7 @@ ItemSorter::~ItemSorter()
 }
 
 void ItemSorter::BeginDisplayList(RenderSurface *rs,
-								  sint32 camx, sint32 camy, sint32 camz)
+								  int32_t camx, int32_t camy, int32_t camz)
 {
 	// Get the shapes, if required
 	if (!shapes) shapes = GameData::get_instance()->getMainShapes();
@@ -646,7 +646,7 @@ void ItemSorter::BeginDisplayList(RenderSurface *rs,
 	cam_sy = (camx + camy)/8 - camz;
 }
 
-void ItemSorter::AddItem(sint32 x, sint32 y, sint32 z, uint32 shape_num, uint32 frame_num, uint32 flags, uint32 ext_flags, uint16 item_num)
+void ItemSorter::AddItem(int32_t x, int32_t y, int32_t z, uint32_t shape_num, uint32_t frame_num, uint32_t flags, uint32_t ext_flags, uint16_t item_num)
 {
 	//if (z > skip_lift) return;
 	//if (Application::tgwds && shape == 538) return;
@@ -672,7 +672,7 @@ void ItemSorter::AddItem(sint32 x, sint32 y, sint32 z, uint32 shape_num, uint32 
 	//if (info->z > shape_max_height) return;
 
 	// Dimensions
-	sint32 xd, yd, zd;
+	int32_t xd, yd, zd;
 	si->flags = flags;
 	si->ext_flags = ext_flags;
 
@@ -830,7 +830,7 @@ void ItemSorter::AddItem(Item *add)
 {
 #if 0
 
-	sint32 x, y, z;
+	int32_t x, y, z;
 	add->getLerped(x, y, z);
 	AddItem(x,y,z,add->getShape(), add->getFrame(), add->getFlags(), add->getObjId());
 
@@ -860,7 +860,7 @@ void ItemSorter::AddItem(Item *add)
 	//if (info->z > shape_max_height) return;
 
 	// Dimensions
-	sint32 xd, yd, zd;
+	int32_t xd, yd, zd;
 	si->flags = add->getFlags();
 	si->ext_flags = add->getExtFlags();
 
@@ -1102,7 +1102,7 @@ bool ItemSorter::PaintSortItem(SortItem	*si)
 	if (si->shape_num == 1 && si->item_num == 1) {
 		MainActor* av = getMainActor();
 		const WeaponOverlayFrame* wo_frame = 0;
-		uint32 wo_shapenum;
+		uint32_t wo_shapenum;
 		av->getWeaponOverlay(wo_frame, wo_shapenum);
 		if (wo_frame) {
 			Shape* wo_shape = GameData::get_instance()->getMainShapes()->getShape(wo_shapenum);
@@ -1114,7 +1114,7 @@ bool ItemSorter::PaintSortItem(SortItem	*si)
 
 	if (sort_limit) {
 		if (order_counter == sort_limit) {
-			static uint32 previt = 0;
+			static uint32_t previt = 0;
 			int x1 = si->xleft;
 			int y1 = si->yfar;
 			int z2 = si->ztop;
@@ -1162,7 +1162,7 @@ bool ItemSorter::NullPaintSortItem(SortItem	*si)
 	return false;
 }
 
-uint16 ItemSorter::Trace(sint32 x, sint32 y, HitFace* face, bool item_highlight)
+uint16_t ItemSorter::Trace(int32_t x, int32_t y, HitFace* face, bool item_highlight)
 {
 	SortItem *it;
 	SortItem *selected;
@@ -1257,8 +1257,8 @@ uint16 ItemSorter::Trace(sint32 x, sint32 y, HitFace* face, bool item_highlight)
 				// determine face that was hit
 
 				// RNT coordinates
-				sint32 RNTx = selected->sxbot;
-				sint32 RNTy = selected->sybot - selected->ztop + selected->z;
+				int32_t RNTx = selected->sxbot;
+				int32_t RNTy = selected->sybot - selected->ztop + selected->z;
 				
 	/*
 				Bounding Box layout (top part)

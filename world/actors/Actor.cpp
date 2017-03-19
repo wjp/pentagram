@@ -70,7 +70,7 @@ Actor::~Actor()
 
 }
 
-uint16 Actor::assignObjId()
+uint16_t Actor::assignObjId()
 {
 	if (objid == 0xFFFF)
 		objid = ObjectManager::get_instance()->assignActorObjId(this);
@@ -84,14 +84,14 @@ uint16 Actor::assignObjId()
 	return objid;
 }
 
-sint16 Actor::getMaxMana() const
+int16_t Actor::getMaxMana() const
 {
-	return static_cast<sint16>(2 * getInt());
+	return static_cast<int16_t>(2 * getInt());
 }
 
-uint16 Actor::getMaxHP() const
+uint16_t Actor::getMaxHP() const
 {
-	return static_cast<uint16>(2 * getStr());
+	return static_cast<uint16_t>(2 * getStr());
 }
 
 bool Actor::loadMonsterStats()
@@ -102,21 +102,21 @@ bool Actor::loadMonsterStats()
 	if (!mi)
 		return false;
 
-	uint16 hp;
+	uint16_t hp;
 	if (mi->max_hp <= mi->min_hp)
 		hp = mi->min_hp;
 	else
 		hp = mi->min_hp + std::rand() % (mi->max_hp - mi->min_hp);
 	setHP(hp);
 	
-	uint16 dex;
+	uint16_t dex;
 	if (mi->max_dex <= mi->min_dex)
 		dex = mi->min_dex;
 	else
 		dex = mi->min_dex + std::rand() % (mi->max_dex - mi->min_dex);
 	setDex(dex);
 	
-	uint8 alignment = mi->alignment;
+	uint8_t alignment = mi->alignment;
 	setAlignment(alignment & 0x0F);
 	setEnemyAlignment((alignment & 0xF0) >> 4); // !! CHECKME
 
@@ -194,7 +194,7 @@ bool Actor::giveTreasure()
 				// CONSTANTS! (and lots of them...)
 				int shape = 397;
 				int frame;
-				uint16 quality;
+				uint16_t quality;
 
 				if (std::rand() % 10 < 8)
 				{
@@ -242,7 +242,7 @@ bool Actor::giveTreasure()
 					if (std::rand() % 10 < 5) {
 						// charged
 						frame = 12;
-						uint8 spell = 1 + (std::rand()%11);
+						uint8_t spell = 1 + (std::rand()%11);
 						quality = spell<<8;
 						if (spell < 4) {
 							quality += 3 + (std::rand()%4);
@@ -294,7 +294,7 @@ bool Actor::giveTreasure()
 		// then produce a stack of that shape (ignoring frame)
 
 		if (ti.shapes.size() == 1) {
-			uint32 shape = ti.shapes[0];
+			uint32_t shape = ti.shapes[0];
 			ShapeInfo* si = mainshapes->getShapeInfo(shape);
 			if (!si) {
 				perr << "Trying to create treasure with an invalid shape ("
@@ -326,11 +326,11 @@ bool Actor::giveTreasure()
 		for (int i = 0; i < count; ++i) {
 			// pick shape
 			int n = std::rand() % ti.shapes.size();
-			uint32 shape = ti.shapes[n];
+			uint32_t shape = ti.shapes[n];
 
 			// pick frame
 			n = std::rand() % ti.frames.size();
-			uint32 frame = ti.frames[n];
+			uint32_t frame = ti.frames[n];
 
 			ShapeInfo* si = GameData::get_instance()->getMainShapes()->
 				getShapeInfo(shape);
@@ -339,7 +339,7 @@ bool Actor::giveTreasure()
 					 << shape << ")" << std::endl;
 				continue;
 			}
-			uint16 qual = 0;
+			uint16_t qual = 0;
 			if (si->hasQuantity())
 				qual = 1;
 
@@ -371,7 +371,7 @@ bool Actor::removeItem(Item* item)
 bool Actor::setEquip(Item* item, bool checkwghtvol)
 {
 	const unsigned int backpack_shape = 529; //!! *cough* constant
-	uint32 equiptype = item->getShapeInfo()->equiptype;
+	uint32_t equiptype = item->getShapeInfo()->equiptype;
 	bool backpack = (item->getShape() == backpack_shape);
 
 	// valid item type?
@@ -384,7 +384,7 @@ bool Actor::setEquip(Item* item, bool checkwghtvol)
 	{
 		if ((*iter)->getObjId() == item->getObjId()) continue;
 
-		uint32 cet = (*iter)->getShapeInfo()->equiptype;
+		uint32_t cet = (*iter)->getShapeInfo()->equiptype;
 		bool cbackpack = ((*iter)->getShape() == backpack_shape);
 
 		// already have an item with the same equiptype
@@ -399,14 +399,14 @@ bool Actor::setEquip(Item* item, bool checkwghtvol)
 	return true;
 }
 
-uint16 Actor::getEquip(uint32 type)
+uint16_t Actor::getEquip(uint32_t type)
 {
 	const unsigned int backpack_shape = 529; //!! *cough* constant
 
 	std::list<Item*>::iterator iter;
 	for (iter = contents.begin(); iter != contents.end(); ++iter)
 	{
-		uint32 cet = (*iter)->getShapeInfo()->equiptype;
+		uint32_t cet = (*iter)->getShapeInfo()->equiptype;
 		bool cbackpack = ((*iter)->getShape() == backpack_shape);
 
 		if (((*iter)->getFlags() & FLG_EQUIPPED) &&
@@ -419,9 +419,9 @@ uint16 Actor::getEquip(uint32 type)
 	return 0;
 }
 
-void Actor::teleport(int newmap, sint32 newx, sint32 newy, sint32 newz)
+void Actor::teleport(int newmap, int32_t newx, int32_t newy, int32_t newz)
 {
-	uint16 newmapnum = static_cast<uint16>(newmap);
+	uint16_t newmapnum = static_cast<uint16_t>(newmap);
 
 	// Set the mapnum
 	setMapNum(newmapnum);
@@ -448,7 +448,7 @@ void Actor::teleport(int newmap, sint32 newx, sint32 newy, sint32 newz)
 	}
 } 
 
-uint16 Actor::doAnim(Animation::Sequence anim, int dir, unsigned int steps)
+uint16_t Actor::doAnim(Animation::Sequence anim, int dir, unsigned int steps)
 {
 	if (dir < 0 || dir > 8) {
 		perr << "Actor::doAnim: Invalid direction (" << dir << ")" <<std::endl;
@@ -516,7 +516,7 @@ Animation::Result Actor::tryAnim(Animation::Sequence anim, int dir,
 	}
 
 	// isUnsupported only checks for AFF_ONGROUND, we need either
-	sint32 end[3], dims[3];
+	int32_t end[3], dims[3];
 	getFootpadWorld(dims[0], dims[1], dims[2]);
 	tracker.getPosition(end[0], end[1], end[2]);
 
@@ -527,9 +527,9 @@ Animation::Result Actor::tryAnim(Animation::Sequence anim, int dir,
 	cm->surfaceSearch(&uclist, script, sizeof(script),
 					  getObjId(), end, dims,
 					  false, true, false);
-	for (uint32 i = 0; i < uclist.getSize(); i++)
+	for (uint32_t i = 0; i < uclist.getSize(); i++)
 	{
-		Item *item = getItem(uclist.getuint16(i));
+		Item *item = getItem(uclist.getuint16_t(i));
 		if (item->getShapeInfo()->is_land())
 			return Animation::SUCCESS;
 	}
@@ -537,7 +537,7 @@ Animation::Result Actor::tryAnim(Animation::Sequence anim, int dir,
 	return Animation::END_OFF_LAND;
 }
 
-uint16 Actor::cSetActivity(int activity)
+uint16_t Actor::cSetActivity(int activity)
 {
 	switch (activity) {
 	case 0: // loiter
@@ -559,7 +559,7 @@ uint16 Actor::cSetActivity(int activity)
 	return 0;
 }
 
-uint32 Actor::getArmourClass()
+uint32_t Actor::getArmourClass()
 {
 	ShapeInfo* si = getShapeInfo();
 	if (si->monsterinfo)
@@ -568,7 +568,7 @@ uint32 Actor::getArmourClass()
 		return 0;
 }
 
-uint16 Actor::getDefenseType()
+uint16_t Actor::getDefenseType()
 {
 	ShapeInfo* si = getShapeInfo();
 	if (si->monsterinfo)
@@ -577,17 +577,17 @@ uint16 Actor::getDefenseType()
 		return 0;
 }
 
-sint16 Actor::getDefendingDex()
+int16_t Actor::getDefendingDex()
 {
 	return getDex();
 }
 
-sint16 Actor::getAttackingDex()
+int16_t Actor::getAttackingDex()
 {
 	return getDex();
 }
 
-uint16 Actor::getDamageType()
+uint16_t Actor::getDamageType()
 {
 	ShapeInfo* si = getShapeInfo();
 	if (si->monsterinfo)
@@ -614,7 +614,7 @@ int Actor::getDamageAmount()
 }
 
 
-void Actor::receiveHit(uint16 other, int dir, int damage, uint16 damage_type)
+void Actor::receiveHit(uint16_t other, int dir, int damage, uint16_t damage_type)
 {
 	if (isDead())
 		return; // already dead, so don't bother
@@ -655,7 +655,7 @@ void Actor::receiveHit(uint16 other, int dir, int damage, uint16 damage_type)
 			start = 13; end = 25;
 		}
 
-		sint32 x,y,z;
+		int32_t x,y,z;
 		getLocation(x,y,z);
 		z += (std::rand() % 24);
 		Process *sp = new SpriteProcess(620, start, end, 1, 1, x, y, z);
@@ -680,7 +680,7 @@ void Actor::receiveHit(uint16 other, int dir, int damage, uint16 damage_type)
 		}
 
 		// not dead yet
-		setHP(static_cast<uint16>(hitpoints - damage));
+		setHP(static_cast<uint16_t>(hitpoints - damage));
 	}
 
 	ProcId fallingprocid = 0;
@@ -752,7 +752,7 @@ void Actor::receiveHit(uint16 other, int dir, int damage, uint16 damage_type)
 	}
 }
 
-ProcId Actor::die(uint16 damageType)
+ProcId Actor::die(uint16_t damageType)
 {
 	setHP(0);
 	setActorFlag(ACT_DEAD);
@@ -853,7 +853,7 @@ void Actor::killAllButCombatProcesses()
 		if (p->getItemNum() != objid) continue;
 		if (p->is_terminated()) continue;
 
-		uint16 type = p->getType();
+		uint16_t type = p->getType();
 
 		if (type != 0xF0 && type != 0xF2 && type != 0x208 && type != 0x21D &&
 			type != 0x220 && type != 0x238 && type != 0x243)
@@ -903,11 +903,11 @@ ProcId Actor::killAllButFallAnims(bool death)
 	return fallproc;
 }
 
-int Actor::calculateAttackDamage(uint16 other, int damage, uint16 damage_type)
+int Actor::calculateAttackDamage(uint16_t other, int damage, uint16_t damage_type)
 {
 	Actor* attacker = getActor(other);
 
-	uint16 defense_type = getDefenseType();
+	uint16_t defense_type = getDefenseType();
 
 	// most damage types are blocked straight away by defense types
 	damage_type &= ~(defense_type & ~(WeaponInfo::DMG_MAGIC  |
@@ -980,8 +980,8 @@ int Actor::calculateAttackDamage(uint16 other, int damage, uint16 damage_type)
 	if (damage && !(damage_type & WeaponInfo::DMG_PIERCE) && attacker)
 	{
 		bool hit = false;
-		sint16 attackdex = attacker->getAttackingDex();
-		sint16 defenddex = getDefendingDex();
+		int16_t attackdex = attacker->getAttackingDex();
+		int16_t defenddex = getDefendingDex();
 		if (attackdex < 0) attackdex = 0;
 		if (defenddex <= 0) defenddex = 1;
 
@@ -1060,7 +1060,7 @@ bool Actor::areEnemiesNear()
 	currentmap->areaSearch(&uclist, script,sizeof(script), this, 0x800, false);
 
 	for (unsigned int i = 0; i < uclist.getSize(); ++i) {
-		Actor *npc = getActor(uclist.getuint16(i));
+		Actor *npc = getActor(uclist.getuint16_t(i));
 		if (!npc) continue;
 		if (npc == this) continue;
 
@@ -1079,25 +1079,25 @@ bool Actor::areEnemiesNear()
 	return false;
 }
 
-uint16 Actor::schedule(uint32 time)
+uint16_t Actor::schedule(uint32_t time)
 {
 	if (isDead())
 		return 0;
 
-	uint32 ret = callUsecodeEvent_schedule(time);
+	uint32_t ret = callUsecodeEvent_schedule(time);
 
-	return static_cast<uint16>(ret);
+	return static_cast<uint16_t>(ret);
 }
 
 //static
-Actor* Actor::createActor(uint32 shape, uint32 frame)
+Actor* Actor::createActor(uint32_t shape, uint32_t frame)
 {
 	Actor* newactor = ItemFactory::createActor(shape, frame, 0,
 											   Item::FLG_IN_NPC_LIST,
 											   0, 0, 0, true);
 	if (!newactor)
 		return 0;
-	uint16 objID = newactor->getObjId();
+	uint16_t objID = newactor->getObjId();
 
 	// set stats
 	if (!newactor->loadMonsterStats()) {
@@ -1145,15 +1145,15 @@ void Actor::saveData(ODataSource* ods)
 	ods->write1(unk0C);
 }
 
-bool Actor::loadData(IDataSource* ids, uint32 version)
+bool Actor::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Container::loadData(ids, version)) return false;
 
-	strength = static_cast<sint16>(ids->read2());
-	dexterity = static_cast<sint16>(ids->read2());
-	intelligence = static_cast<sint16>(ids->read2());
+	strength = static_cast<int16_t>(ids->read2());
+	dexterity = static_cast<int16_t>(ids->read2());
+	intelligence = static_cast<int16_t>(ids->read2());
 	hitpoints = ids->read2();
-	mana = static_cast<sint16>(ids->read2());
+	mana = static_cast<int16_t>(ids->read2());
 	alignment = ids->read2();
 	enemyalignment = ids->read2();
 	lastanim = static_cast<Animation::Sequence>(ids->read2());
@@ -1167,14 +1167,14 @@ bool Actor::loadData(IDataSource* ids, uint32 version)
 }
 
 
-uint32 Actor::I_isNPC(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_isNPC(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
 	return 1;
 }
 
-uint32 Actor::I_getMap(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getMap(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1182,33 +1182,33 @@ uint32 Actor::I_getMap(const uint8* args, unsigned int /*argsize*/)
 	return actor->getMapNum();
 }
 
-uint32 Actor::I_teleport(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_teleport(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(newx);
-	ARG_UINT16(newy);
-	ARG_UINT16(newz);
-	ARG_UINT16(newmap);
+	ARG_uint16_t(newx);
+	ARG_uint16_t(newy);
+	ARG_uint16_t(newz);
+	ARG_uint16_t(newmap);
 	if (!actor) return 0;
 
 	actor->teleport(newmap,newx,newy,newz);
 	return 0;
 }
 
-uint32 Actor::I_doAnim(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_doAnim(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(anim);
-	ARG_UINT16(dir); // seems to be 0-8
-	ARG_UINT16(unk1); // this is almost always 10000 in U8.Maybe speed-related?
-	ARG_UINT16(unk2); // appears to be 0 or 1. Some flag?
+	ARG_uint16_t(anim);
+	ARG_uint16_t(dir); // seems to be 0-8
+	ARG_uint16_t(unk1); // this is almost always 10000 in U8.Maybe speed-related?
+	ARG_uint16_t(unk2); // appears to be 0 or 1. Some flag?
 
 	if (!actor) return 0;
 
 	return actor->doAnim(static_cast<Animation::Sequence>(anim), dir);
 }
 
-uint32 Actor::I_getDir(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getDir(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1216,7 +1216,7 @@ uint32 Actor::I_getDir(const uint8* args, unsigned int /*argsize*/)
 	return actor->getDir();
 }
 
-uint32 Actor::I_getLastAnimSet(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getLastAnimSet(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1224,7 +1224,7 @@ uint32 Actor::I_getLastAnimSet(const uint8* args, unsigned int /*argsize*/)
 	return actor->getLastAnim();
 }
 
-uint32 Actor::I_getStr(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getStr(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1232,7 +1232,7 @@ uint32 Actor::I_getStr(const uint8* args, unsigned int /*argsize*/)
 	return actor->getStr();
 }
 
-uint32 Actor::I_getDex(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getDex(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1240,7 +1240,7 @@ uint32 Actor::I_getDex(const uint8* args, unsigned int /*argsize*/)
 	return actor->getDex();
 }
 
-uint32 Actor::I_getInt(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getInt(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1248,7 +1248,7 @@ uint32 Actor::I_getInt(const uint8* args, unsigned int /*argsize*/)
 	return actor->getInt();
 }
 
-uint32 Actor::I_getHp(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getHp(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1256,7 +1256,7 @@ uint32 Actor::I_getHp(const uint8* args, unsigned int /*argsize*/)
 	return actor->getHP();
 }
 
-uint32 Actor::I_getMana(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getMana(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1264,7 +1264,7 @@ uint32 Actor::I_getMana(const uint8* args, unsigned int /*argsize*/)
 	return actor->getMana();
 }
 
-uint32 Actor::I_getAlignment(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getAlignment(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1272,7 +1272,7 @@ uint32 Actor::I_getAlignment(const uint8* args, unsigned int /*argsize*/)
 	return actor->getAlignment();
 }
 
-uint32 Actor::I_getEnemyAlignment(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getEnemyAlignment(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1280,77 +1280,77 @@ uint32 Actor::I_getEnemyAlignment(const uint8* args, unsigned int /*argsize*/)
 	return actor->getEnemyAlignment();
 }
 
-uint32 Actor::I_setStr(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setStr(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_SINT16(str);
+	ARG_int16_t(str);
 	if (!actor) return 0;
 
 	actor->setStr(str);
 	return 0;
 }
 
-uint32 Actor::I_setDex(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setDex(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_SINT16(dex);
+	ARG_int16_t(dex);
 	if (!actor) return 0;
 
 	actor->setDex(dex);
 	return 0;
 }
 
-uint32 Actor::I_setInt(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setInt(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_SINT16(int_);
+	ARG_int16_t(int_);
 	if (!actor) return 0;
 
 	actor->setStr(int_);
 	return 0;
 }
 
-uint32 Actor::I_setHp(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setHp(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(hp);
+	ARG_uint16_t(hp);
 	if (!actor) return 0;
 
 	actor->setHP(hp);
 	return 0;
 }
 
-uint32 Actor::I_setMana(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setMana(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_SINT16(mp);
+	ARG_int16_t(mp);
 	if (!actor) return 0;
 
 	actor->setMana(mp);
 	return 0;
 }
 
-uint32 Actor::I_setAlignment(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setAlignment(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(a);
+	ARG_uint16_t(a);
 	if (!actor) return 0;
 
 	actor->setAlignment(a);
 	return 0;
 }
 
-uint32 Actor::I_setEnemyAlignment(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setEnemyAlignment(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(a);
+	ARG_uint16_t(a);
 	if (!actor) return 0;
 
 	actor->setEnemyAlignment(a);
 	return 0;
 }
 
-uint32 Actor::I_isInCombat(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_isInCombat(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1361,7 +1361,7 @@ uint32 Actor::I_isInCombat(const uint8* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32 Actor::I_setInCombat(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setInCombat(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1371,7 +1371,7 @@ uint32 Actor::I_setInCombat(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_clrInCombat(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_clrInCombat(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1381,10 +1381,10 @@ uint32 Actor::I_clrInCombat(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_setTarget(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setTarget(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(target);
+	ARG_uint16_t(target);
 	if (!actor) return 0;
 
 	CombatProcess* cp = actor->getCombatProcess();
@@ -1403,7 +1403,7 @@ uint32 Actor::I_setTarget(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_getTarget(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getTarget(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1412,11 +1412,11 @@ uint32 Actor::I_getTarget(const uint8* args, unsigned int /*argsize*/)
 
 	if (!cp) return 0;
 
-	return static_cast<uint32>(cp->getTarget());
+	return static_cast<uint32_t>(cp->getTarget());
 }
 
 
-uint32 Actor::I_isEnemy(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_isEnemy(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	ARG_ACTOR_FROM_ID(other);
@@ -1429,7 +1429,7 @@ uint32 Actor::I_isEnemy(const uint8* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32 Actor::I_isDead(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_isDead(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1440,7 +1440,7 @@ uint32 Actor::I_isDead(const uint8* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32 Actor::I_setDead(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setDead(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1450,7 +1450,7 @@ uint32 Actor::I_setDead(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_clrDead(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_clrDead(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1460,7 +1460,7 @@ uint32 Actor::I_clrDead(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_isImmortal(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_isImmortal(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1471,7 +1471,7 @@ uint32 Actor::I_isImmortal(const uint8* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32 Actor::I_setImmortal(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setImmortal(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1482,7 +1482,7 @@ uint32 Actor::I_setImmortal(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_clrImmortal(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_clrImmortal(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1492,7 +1492,7 @@ uint32 Actor::I_clrImmortal(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_isWithstandDeath(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_isWithstandDeath(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1503,7 +1503,7 @@ uint32 Actor::I_isWithstandDeath(const uint8* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32 Actor::I_setWithstandDeath(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setWithstandDeath(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1513,7 +1513,7 @@ uint32 Actor::I_setWithstandDeath(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_clrWithstandDeath(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_clrWithstandDeath(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1523,7 +1523,7 @@ uint32 Actor::I_clrWithstandDeath(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_isFeignDeath(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_isFeignDeath(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1534,7 +1534,7 @@ uint32 Actor::I_isFeignDeath(const uint8* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32 Actor::I_setFeignDeath(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setFeignDeath(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1567,7 +1567,7 @@ uint32 Actor::I_setFeignDeath(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_clrFeignDeath(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_clrFeignDeath(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1577,7 +1577,7 @@ uint32 Actor::I_clrFeignDeath(const uint8* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32 Actor::I_pathfindToItem(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_pathfindToItem(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	ARG_OBJID(id2);
@@ -1589,12 +1589,12 @@ uint32 Actor::I_pathfindToItem(const uint8* args, unsigned int /*argsize*/)
 		new PathfinderProcess(actor,id2));
 }
 
-uint32 Actor::I_pathfindToPoint(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_pathfindToPoint(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(x);
-	ARG_UINT16(y);
-	ARG_UINT16(z);
+	ARG_uint16_t(x);
+	ARG_uint16_t(y);
+	ARG_uint16_t(z);
 	ARG_NULL16(); // unknown. Only one instance of this in U8, value is 5.
 	if (!actor) return 0;
 
@@ -1602,7 +1602,7 @@ uint32 Actor::I_pathfindToPoint(const uint8* args, unsigned int /*argsize*/)
 		new PathfinderProcess(actor,x,y,z));
 }
 
-uint32 Actor::I_areEnemiesNear(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_areEnemiesNear(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1613,23 +1613,23 @@ uint32 Actor::I_areEnemiesNear(const uint8* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32 Actor::I_isBusy(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_isBusy(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_UC_PTR(ptr);
-	uint16 id = UCMachine::ptrToObject(ptr);
+	uint16_t id = UCMachine::ptrToObject(ptr);
 
-	uint32 count = Kernel::get_instance()->getNumProcesses(id, 0x00F0);
+	uint32_t count = Kernel::get_instance()->getNumProcesses(id, 0x00F0);
 	if (count > 0)
 		return 1;
 	else
 		return 0;
 }
 
-uint32 Actor::I_createActor(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_createActor(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_UC_PTR(ptr);
-	ARG_UINT16(shape);
-	ARG_UINT16(frame);
+	ARG_uint16_t(shape);
+	ARG_uint16_t(frame);
 
 	//!! do we need to flag actor as temporary?
 
@@ -1639,11 +1639,11 @@ uint32 Actor::I_createActor(const uint8* args, unsigned int /*argsize*/)
 			 <<	")." << std::endl;
 		return 0;
 	}
-	uint16 objID = newactor->getObjId();
+	uint16_t objID = newactor->getObjId();
 
-	uint8 buf[2];
-	buf[0] = static_cast<uint8>(objID);
-	buf[1] = static_cast<uint8>(objID >> 8);
+	uint8_t buf[2];
+	buf[0] = static_cast<uint8_t>(objID);
+	buf[1] = static_cast<uint8_t>(objID >> 8);
 	UCMachine::get_instance()->assignPointer(ptr, buf, 2);
 
 #if 0
@@ -1653,19 +1653,19 @@ uint32 Actor::I_createActor(const uint8* args, unsigned int /*argsize*/)
 	return objID;
 }
 
-uint32 Actor::I_cSetActivity(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_cSetActivity(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(activity);
+	ARG_uint16_t(activity);
 	if (!actor) return 0;
 
 	return actor->cSetActivity(activity);
 }
 
-uint32 Actor::I_setAirWalkEnabled(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setAirWalkEnabled(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(enabled);
+	ARG_uint16_t(enabled);
 	if (!actor) return 0;
 
 	if (enabled)
@@ -1677,7 +1677,7 @@ uint32 Actor::I_setAirWalkEnabled(const uint8* args, unsigned int /*argsize*/)
 }
 
 
-uint32 Actor::I_getAirWalkEnabled(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getAirWalkEnabled(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
 	if (!actor) return 0;
@@ -1688,29 +1688,29 @@ uint32 Actor::I_getAirWalkEnabled(const uint8* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32 Actor::I_schedule(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_schedule(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT32(time);
+	ARG_uint32_t(time);
 	if (!actor) return 0;
 
 	return actor->schedule(time);
 }
 
 
-uint32 Actor::I_getEquip(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_getEquip(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(type);
+	ARG_uint16_t(type);
 	if (!actor) return 0;
 
 	return actor->getEquip(type+1);
 }
 
-uint32 Actor::I_setEquip(const uint8* args, unsigned int /*argsize*/)
+uint32_t Actor::I_setEquip(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ACTOR_FROM_PTR(actor);
-	ARG_UINT16(type);
+	ARG_uint16_t(type);
 	ARG_ITEM_FROM_ID(item);
 	if (!actor) return 0;
 	if (!item) return 0;

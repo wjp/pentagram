@@ -39,7 +39,7 @@ MovieGump::MovieGump()
 }
 
 MovieGump::MovieGump(int width, int height, RawArchive* movie,
-					 bool introMusicHack, uint32 _Flags, sint32 layer)
+					 bool introMusicHack, uint32_t _Flags, int32_t layer)
 	: ModalGump(50, 50, width, height, 0, _Flags, layer)
 {
 	player = new SKFPlayer(movie, width, height, introMusicHack);
@@ -76,7 +76,7 @@ void MovieGump::run()
 	}
 }
 
-void MovieGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void MovieGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	player->paint(surf, lerp_factor);
 }

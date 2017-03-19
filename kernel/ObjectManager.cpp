@@ -56,7 +56,7 @@ ObjectManager* ObjectManager::objectmanager = 0;
 // every object separately
 template<class T>
 struct ObjectLoader {
-	static Object* load(IDataSource* ids, uint32 version) {
+	static Object* load(IDataSource* ids, uint32_t version) {
 		T* p = new T();
 		bool ok = p->loadData(ids, version);
 		if (!ok) {
@@ -192,7 +192,7 @@ void ObjectManager::ConCmd_objectInfo(const Console::ArgvType& argv)
 }
 
 
-uint16 ObjectManager::assignObjId(Object* obj, ObjId new_objid)
+uint16_t ObjectManager::assignObjId(Object* obj, ObjId new_objid)
 {
 	if (new_objid == 0xFFFF)
 		new_objid = objIDs->getNewID();
@@ -207,7 +207,7 @@ uint16 ObjectManager::assignObjId(Object* obj, ObjId new_objid)
 	return new_objid;
 }
 
-uint16 ObjectManager::assignActorObjId(Actor* actor, ObjId new_objid)
+uint16_t ObjectManager::assignActorObjId(Actor* actor, ObjId new_objid)
 {
 	if (new_objid == 0xFFFF)
 		new_objid = actorIDs->getNewID();
@@ -279,14 +279,14 @@ void ObjectManager::save(ODataSource* ods)
 }
 
 
-bool ObjectManager::load(IDataSource* ids, uint32 version)
+bool ObjectManager::load(IDataSource* ids, uint32_t version)
 {
 	if (!objIDs->load(ids, version)) return false;
 	if (!actorIDs->load(ids, version)) return false;
 
 	do {
 		// peek ahead for terminator
-		uint16 classlen = ids->read2();
+		uint16_t classlen = ids->read2();
 		if (classlen == 0) break;
 		char* buf = new char[classlen+1];
 		ids->read(buf, classlen);
@@ -334,9 +334,9 @@ bool ObjectManager::load(IDataSource* ids, uint32 version)
 	return true;
 }
 
-Object* ObjectManager::loadObject(IDataSource* ids, uint32 version)
+Object* ObjectManager::loadObject(IDataSource* ids, uint32_t version)
 {
-	uint16 classlen = ids->read2();
+	uint16_t classlen = ids->read2();
 	char* buf = new char[classlen+1];
 	ids->read(buf, classlen);
 	buf[classlen] = 0;
@@ -348,7 +348,7 @@ Object* ObjectManager::loadObject(IDataSource* ids, uint32 version)
 }
 
 Object* ObjectManager::loadObject(IDataSource* ids, std::string classname,
-								  uint32 version)
+								  uint32_t version)
 {
 	std::map<std::string, ObjectLoadFunc>::iterator iter;
 	iter = objectloaders.find(classname);
@@ -364,7 +364,7 @@ Object* ObjectManager::loadObject(IDataSource* ids, std::string classname,
 		perr << "Error loading object of type " << classname << std::endl;
 		return 0;
 	}
-	uint16 objid = obj->getObjId();
+	uint16_t objid = obj->getObjId();
 
 	if (objid != 0xFFFF) {
 		objects[objid] = obj;

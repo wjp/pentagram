@@ -33,11 +33,11 @@ CreateItemProcess::CreateItemProcess()
 
 }
 
-CreateItemProcess::CreateItemProcess(uint32 shape_, uint32 frame_,
-									 uint16 quality_, uint16 flags_,
-									 uint16 npcnum_, uint16 mapnum_,
-									 uint32 extendedflags_,
-									 sint32 x_, sint32 y_, sint32 z_)
+CreateItemProcess::CreateItemProcess(uint32_t shape_, uint32_t frame_,
+									 uint16_t quality_, uint16_t flags_,
+									 uint16_t npcnum_, uint16_t mapnum_,
+									 uint32_t extendedflags_,
+									 int32_t x_, int32_t y_, int32_t z_)
 	: shape(shape_), frame(frame_), quality(quality_), flags(flags_),
 	  npcnum(npcnum_), mapnum(mapnum_), extendedflags(extendedflags_),
 	  x(x_), y(y_), z(z_)
@@ -72,12 +72,12 @@ void CreateItemProcess::saveData(ODataSource* ods)
 	ods->write2(npcnum);
 	ods->write2(mapnum);
 	ods->write4(extendedflags);
-	ods->write4(static_cast<uint32>(x));
-	ods->write4(static_cast<uint32>(y));
-	ods->write4(static_cast<uint32>(z));
+	ods->write4(static_cast<uint32_t>(x));
+	ods->write4(static_cast<uint32_t>(y));
+	ods->write4(static_cast<uint32_t>(z));
 }
 
-bool CreateItemProcess::loadData(IDataSource* ids, uint32 version)
+bool CreateItemProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 
@@ -88,8 +88,8 @@ bool CreateItemProcess::loadData(IDataSource* ids, uint32 version)
 	npcnum = ids->read2();
 	mapnum = ids->read2();
 	extendedflags = ids->read4();
-	x = static_cast<sint32>(ids->read4());
-	y = static_cast<sint32>(ids->read4());
-	z = static_cast<sint32>(ids->read4());
+	x = static_cast<int32_t>(ids->read4());
+	y = static_cast<int32_t>(ids->read4());
+	z = static_cast<int32_t>(ids->read4());
 	return true;
 }

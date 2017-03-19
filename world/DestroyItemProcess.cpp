@@ -78,7 +78,7 @@ void DestroyItemProcess::saveData(ODataSource* ods)
 	Process::saveData(ods);
 }
 
-bool DestroyItemProcess::loadData(IDataSource* ids, uint32 version)
+bool DestroyItemProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

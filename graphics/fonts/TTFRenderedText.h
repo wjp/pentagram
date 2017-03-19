@@ -34,7 +34,7 @@ public:
 
 	virtual void draw(RenderSurface* surface, int x, int y,
 					  bool destmasked = false);
-	virtual void drawBlended(RenderSurface* surface, int x, int y, uint32 col,
+	virtual void drawBlended(RenderSurface* surface, int x, int y, uint32_t col,
 							 bool destmasked = false);
 
 	ENABLE_RUNTIME_CLASSTYPE();

@@ -37,7 +37,7 @@ BarkGump::BarkGump()
 
 }
 
-BarkGump::BarkGump(uint16 owner, std::string msg, uint32 speechshapenum_) :
+BarkGump::BarkGump(uint16_t owner, std::string msg, uint32_t speechshapenum_) :
 	ItemRelativeGump(0, 0, 100, 100, owner,
 					 FLAG_KEEP_VISIBLE, LAYER_ABOVE_NORMAL),
 	barked(msg), counter(100), speechshapenum(speechshapenum_),
@@ -185,26 +185,26 @@ void BarkGump::saveData(ODataSource* ods)
 {
 	ItemRelativeGump::saveData(ods);
 
-	ods->write4(static_cast<uint32>(counter));
+	ods->write4(static_cast<uint32_t>(counter));
 	ods->write2(textwidget);
 	ods->write4(speechshapenum);
 	ods->write4(speechlength);
 	ods->write4(totaltextheight);
-	ods->write4(static_cast<uint32>(barked.size()));
+	ods->write4(static_cast<uint32_t>(barked.size()));
 	ods->write(barked.c_str(), barked.size());
 }
 
-bool BarkGump::loadData(IDataSource* ids, uint32 version)
+bool BarkGump::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!ItemRelativeGump::loadData(ids, version)) return false;
 
-	counter = static_cast<sint32>(ids->read4());
+	counter = static_cast<int32_t>(ids->read4());
 	textwidget = ids->read2();
 	speechshapenum = ids->read4();
 	speechlength = ids->read4();
 	totaltextheight = ids->read4();
 
-	uint32 slen = ids->read4();
+	uint32_t slen = ids->read4();
 	if (slen > 0) {
 		char* buf = new char[slen+1];
 		ids->read(buf, slen);

@@ -24,11 +24,11 @@ class Item;
 class MissileTracker
 {
 public:
-	MissileTracker(Item* item, sint32 sx, sint32 sy, sint32 sz,
-				   sint32 tx, sint32 ty, sint32 tz,
-				   sint32 speed, sint32 gravity);
-	MissileTracker(Item* item, sint32 tx, sint32 ty, sint32 tz,
-				   sint32 speed, sint32 gravity);
+	MissileTracker(Item* item, int32_t sx, int32_t sy, int32_t sz,
+				   int32_t tx, int32_t ty, int32_t tz,
+				   int32_t speed, int32_t gravity);
+	MissileTracker(Item* item, int32_t tx, int32_t ty, int32_t tz,
+				   int32_t speed, int32_t gravity);
 	~MissileTracker();
 
 	bool isPathClear();
@@ -36,13 +36,13 @@ public:
 	void launchItem();
 
 protected:
-	void init(sint32 sx, sint32 sy, sint32 sz, sint32 speed);
+	void init(int32_t sx, int32_t sy, int32_t sz, int32_t speed);
 
 private:
 	ObjId objid;
-	sint32 destx, desty, destz;
-	sint32 speedx, speedy, speedz;
-	sint32 gravity;
+	int32_t destx, desty, destz;
+	int32_t speedx, speedy, speedz;
+	int32_t gravity;
 	int frames;
 };
 

@@ -133,10 +133,10 @@ void MusicProcess::playMusic_internal(int track)
 	{
 		const MusicFlex::SongInfo *info = GameData::get_instance()->getMusic()->getSongInfo(current_track);
 
-		uint32 measure = driver->getSequenceCallbackData(0);
+		uint32_t measure = driver->getSequenceCallbackData(0);
 
 		// No transition info, or invalid measure, so fast change
-		if (!info || (measure >= (uint32)info->num_measures) ||
+		if (!info || (measure >= (uint32_t)info->num_measures) ||
 			!info->transitions[track] || !info->transitions[track][measure])
 		{
 			current_track = 0;
@@ -262,20 +262,20 @@ void MusicProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 
-	ods->write4(static_cast<uint32>(wanted_track));
-	ods->write4(static_cast<uint32>(last_request));
-	ods->write4(static_cast<uint32>(queued_track));
+	ods->write4(static_cast<uint32_t>(wanted_track));
+	ods->write4(static_cast<uint32_t>(last_request));
+	ods->write4(static_cast<uint32_t>(queued_track));
 }
 
-bool MusicProcess::loadData(IDataSource* ids, uint32 version)
+bool MusicProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 
-	wanted_track = static_cast<sint32>(ids->read4());
+	wanted_track = static_cast<int32_t>(ids->read4());
 
 	if (version >= 4) {
-		last_request = static_cast<sint32>(ids->read4());
-		queued_track = static_cast<sint32>(ids->read4());
+		last_request = static_cast<int32_t>(ids->read4());
+		queued_track = static_cast<int32_t>(ids->read4());
 	} else {
 		last_request = wanted_track;
 		queued_track = 0;
@@ -290,17 +290,17 @@ bool MusicProcess::loadData(IDataSource* ids, uint32 version)
 	return true;
 }
 
-uint32 MusicProcess::I_musicStop(const uint8* /*args*/,
+uint32_t MusicProcess::I_musicStop(const uint8_t* /*args*/,
 										unsigned int /*argsize*/)
 {
 	if (the_music_process) the_music_process->playMusic_internal(0);
 	return 0;
 }
 
-uint32 MusicProcess::I_playMusic(const uint8* args,
+uint32_t MusicProcess::I_playMusic(const uint8_t* args,
 										unsigned int /*argsize*/)
 {
-	ARG_UINT8(song);
+	ARG_uint8_t(song);
 	if (the_music_process) the_music_process->playMusic(song&0x7F);
 	return 0;
 }

@@ -22,19 +22,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "TreasureInfo.h"
 
 struct MonsterInfo {
-	uint32 shape;
-	uint16 min_hp, max_hp;
-	uint16 min_dex, max_dex;
-	uint16 min_dmg, max_dmg;
-	uint16 armour_class;
-	uint8 alignment;
+	uint32_t shape;
+	uint16_t min_hp, max_hp;
+	uint16_t min_dex, max_dex;
+	uint16_t min_dmg, max_dmg;
+	uint16_t armour_class;
+	uint8_t alignment;
 	bool unk;
-	uint16 damage_type;
-	uint16 defense_type;
+	uint16_t damage_type;
+	uint16_t defense_type;
 	bool resurrection; // auto-resurrection after being killed
 	bool ranged; // ranged attack
 	bool shifter; // shapeshifter
-	uint32 explode; // shape to hurl around after being killed (or 0)
+	uint32_t explode; // shape to hurl around after being killed (or 0)
 
 	std::vector<TreasureInfo> treasure;
 };

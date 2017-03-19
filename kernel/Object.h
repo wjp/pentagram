@@ -58,10 +58,10 @@ public:
 	//! \param args Optional arguments to the spawned process
 	//! \param argsize The size (in bytes) of the optional arguments
 	//! \return the PID of the spawned process
-	ProcId callUsecode(uint16 classid, uint16 offset,
-					   const uint8* args=0, int argsize=0);
+	ProcId callUsecode(uint16_t classid, uint16_t offset,
+					   const uint8_t* args=0, int argsize=0);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 
 protected:
 	//! write the Object savegame header (mainly consisting of the classname)

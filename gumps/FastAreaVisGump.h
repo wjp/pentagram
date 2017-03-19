@@ -29,8 +29,8 @@ public:
 	FastAreaVisGump(void);
 	virtual ~FastAreaVisGump(void);
 
-	virtual void		PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled);
-	virtual uint16		TraceObjId(int mx, int my);
+	virtual void		PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled);
+	virtual uint16_t		TraceObjId(int mx, int my);
 
 	static void			ConCmd_toggle(const Console::ArgvType &argv);	//!< "FastAreaVisGump::toggle" console command
 

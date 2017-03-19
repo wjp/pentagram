@@ -23,7 +23,7 @@ class IDataSource;
 
 namespace Pentagram {
 
-bool md5_file(IDataSource* input, uint8 digest[16], uint32 length = 0);
+bool md5_file(IDataSource* input, uint8_t digest[16], uint32_t length = 0);
 
 }
 

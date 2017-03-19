@@ -28,11 +28,11 @@ class UsecodeFlex : public Usecode, protected RawArchive {
 	UsecodeFlex(IDataSource* ds) : RawArchive(ds) { }
 	virtual ~UsecodeFlex() { }
 
-	virtual const uint8* get_class(uint32 classid);
-	virtual uint32 get_class_size(uint32 classid);
-	virtual const char* get_class_name(uint32 classid);
-	virtual uint32 get_class_base_offset(uint32 classid);
-	virtual uint32 get_class_event_count(uint32 classid);
+	virtual const uint8_t* get_class(uint32_t classid);
+	virtual uint32_t get_class_size(uint32_t classid);
+	virtual const char* get_class_name(uint32_t classid);
+	virtual uint32_t get_class_base_offset(uint32_t classid);
+	virtual uint32_t get_class_event_count(uint32_t classid);
 };
 
 #endif

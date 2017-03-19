@@ -35,7 +35,7 @@ DesktopGump::DesktopGump()
 {
 }
 
-DesktopGump::DesktopGump(sint32 _x, sint32 _y, sint32 _width, sint32 _height) :
+DesktopGump::DesktopGump(int32_t _x, int32_t _y, int32_t _width, int32_t _height) :
 	Gump(_x, _y, _width, _height, 0, FLAG_DONT_SAVE | FLAG_CORE_GUMP,
 		 LAYER_DESKTOP)
 {
@@ -45,7 +45,7 @@ DesktopGump::~DesktopGump(void)
 {
 }
 
-void DesktopGump::PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled)
+void DesktopGump::PaintThis(RenderSurface *surf, int32_t lerp_factor, bool scaled)
 {
 	// Just fill it (only if console showing, or in debug mode)
 
@@ -57,7 +57,7 @@ void DesktopGump::PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled
 		//surf->Fill32(0x3f3f3f, 0, 0, dims.w, dims.h);
 }
 
-void DesktopGump::PaintChildren(RenderSurface *surf, sint32 lerp_factor, bool scaled)
+void DesktopGump::PaintChildren(RenderSurface *surf, int32_t lerp_factor, bool scaled)
 {
 	// Iterate all children
 	std::list<Gump*>::iterator it = children.begin();
@@ -130,7 +130,7 @@ void DesktopGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to save DesktopGump");
 }
 
-bool DesktopGump::loadData(IDataSource* ids, uint32 version)
+bool DesktopGump::loadData(IDataSource* ids, uint32_t version)
 {
 	CANT_HAPPEN_MSG("Trying to save DesktopGump");
 

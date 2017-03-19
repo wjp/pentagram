@@ -32,28 +32,28 @@ public:
 	// Parse data, create frames.
 	// NB: Shape uses data without copying it. It is deleted on destruction
 	// If format is not specified it will be autodetected
-	Shape(const uint8* data, uint32 size, const ConvertShapeFormat *format,
-		const uint16 flexId, const uint32 shapenum);
+	Shape(const uint8_t* data, uint32_t size, const ConvertShapeFormat *format,
+		const uint16_t flexId, const uint32_t shapenum);
 	Shape(IDataSource *src, const ConvertShapeFormat *format);
 	virtual ~Shape();
 	void setPalette(const Pentagram::Palette* pal) { palette = pal; }
 	const Pentagram::Palette* getPalette() const { return palette; }
 
-	uint32 frameCount() const { return static_cast<uint32>(frames.size()); }
+	uint32_t frameCount() const { return static_cast<uint32_t>(frames.size()); }
 
 	//! Returns the dimensions of all frames combined
 	//! (w,h) = size of smallest rectangle covering all frames
 	//! (x,y) = coordinates of origin relative to top-left point of rectangle
-	void getTotalDimensions(sint32& w, sint32& h, sint32& x, sint32& y) const;
+	void getTotalDimensions(int32_t& w, int32_t& h, int32_t& x, int32_t& y) const;
 
 	ShapeFrame* getFrame(unsigned int frame)
 		{ if (frame < frames.size()) return frames[frame]; else return 0; }
 		
-	void getShapeId(uint16 & flexId, uint32 & shapenum);
+	void getShapeId(uint16_t & flexId, uint32_t & shapenum);
 
 	// This will detect the format of a shape
-	static const ConvertShapeFormat *DetectShapeFormat(const uint8* data, uint32 size);
-	static const ConvertShapeFormat *DetectShapeFormat(IDataSource *ds, uint32 size);
+	static const ConvertShapeFormat *DetectShapeFormat(const uint8_t* data, uint32_t size);
+	static const ConvertShapeFormat *DetectShapeFormat(IDataSource *ds, uint32_t size);
 
 	ENABLE_RUNTIME_CLASSTYPE();
 
@@ -62,23 +62,23 @@ public:
 protected:
 
 	// This will load a u8 style shape 'optimized'.
-	void LoadU8Format(const uint8* data, uint32 size, const ConvertShapeFormat* format);
+	void LoadU8Format(const uint8_t* data, uint32_t size, const ConvertShapeFormat* format);
 
 	// This will load a pentagram style shape 'optimized'.
-	void LoadPentagramFormat(const uint8* data, uint32 size, const ConvertShapeFormat* format);
+	void LoadPentagramFormat(const uint8_t* data, uint32_t size, const ConvertShapeFormat* format);
 
 	// This will load any sort of shape via a ConvertShapeFormat struct
 	// Crusader shapes must be loaded this way
-	void LoadGenericFormat(const uint8* data, uint32 size, const ConvertShapeFormat* format);
+	void LoadGenericFormat(const uint8_t* data, uint32_t size, const ConvertShapeFormat* format);
 
 	std::vector<ShapeFrame*> frames;
 
 	const Pentagram::Palette* palette;
 
-	const uint8* data;
-	uint32 size;
-	const uint16 flexId;
-	const uint32 shapenum;
+	const uint8_t* data;
+	uint32_t size;
+	const uint16_t flexId;
+	const uint32_t shapenum;
 };
 
 

@@ -114,12 +114,12 @@ void FluidSynthMidiDriver::close() {
 	_settings = 0;
 }
 
-void FluidSynthMidiDriver::send(uint32 b) {
-	//uint8 param3 = (uint8) ((b >> 24) & 0xFF);
-	uint32 param2 = (uint8) ((b >> 16) & 0xFF);
-	uint32 param1 = (uint8) ((b >>  8) & 0xFF);
-	uint8 cmd    = (uint8) (b & 0xF0);
-	uint8 chan   = (uint8) (b & 0x0F);
+void FluidSynthMidiDriver::send(uint32_t b) {
+	//uint8_t param3 = (uint8_t) ((b >> 24) & 0xFF);
+	uint32_t param2 = (uint8_t) ((b >> 16) & 0xFF);
+	uint32_t param1 = (uint8_t) ((b >>  8) & 0xFF);
+	uint8_t cmd    = (uint8_t) (b & 0xF0);
+	uint8_t chan   = (uint8_t) (b & 0x0F);
 
 	switch (cmd) {
 	case 0x80:	// Note Off
@@ -152,7 +152,7 @@ void FluidSynthMidiDriver::send(uint32 b) {
 	}
 }
 
-void FluidSynthMidiDriver::lowLevelProduceSamples(sint16 *samples, uint32 num_samples) {
+void FluidSynthMidiDriver::lowLevelProduceSamples(int16_t *samples, uint32_t num_samples) {
 	fluid_synth_write_s16(_synth, num_samples, samples, 0, 2, samples, 1, 2);
 }
 

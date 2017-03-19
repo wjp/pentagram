@@ -33,7 +33,7 @@ class ConsoleGump : public Gump
 	};
 
 	ConsoleScrollState	scroll_state;
-	uint32 scroll_frame;
+	uint32_t scroll_frame;
 
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
@@ -52,7 +52,7 @@ public:
 
 	virtual void run();
 
-	virtual void PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface *surf, int32_t lerp_factor, bool scaled);
 
 	virtual void RenderSurfaceChanged();
 
@@ -62,7 +62,7 @@ public:
 
 	static void			ConCmd_toggle(const Console::ArgvType &argv);	//!< "ConsoleGump::toggle" console command
 
-	bool	loadData(IDataSource* ids, uint32 version);
+	bool	loadData(IDataSource* ids, uint32_t version);
 
 protected:
 	virtual void saveData(ODataSource* ods);

@@ -37,7 +37,7 @@ public:
 
 protected:
 	// just a quick way to get it to run for a little before dying.
-	uint32 termCounter;
+	uint32_t termCounter;
 
 	CompileUnit *cu;
 };

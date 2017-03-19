@@ -48,13 +48,13 @@
 namespace NS_TIMIDITY {
 #endif
 
-void (*s32tobuf)(void *dp, sint32 *lp, sint32 c);
+void (*s32tobuf)(void *dp, int32_t *lp, int32_t c);
 int free_instruments_afterwards=0;
 static char def_instr_name[256]="";
 
 int AUDIO_BUFFER_SIZE;
 sample_t *resample_buffer=0;
-sint32 *common_buffer=0;
+int32_t *common_buffer=0;
 
 #define MAXWORDS 10
 
@@ -348,7 +348,7 @@ int Timidity_Init(int rate, int format, int channels, int samples)
 
   /* Allocate memory for mixing (WARNING:  Memory leak!) */
   resample_buffer = safe_Malloc<sample_t>(AUDIO_BUFFER_SIZE);
-  common_buffer = safe_Malloc<sint32>(AUDIO_BUFFER_SIZE*2);
+  common_buffer = safe_Malloc<int32_t>(AUDIO_BUFFER_SIZE*2);
 
   init_tables();
 
@@ -370,7 +370,7 @@ int Timidity_Init(int rate, int format, int channels, int samples)
 }
 #endif
 
-int Timidity_Init_Simple(int rate, int samples, sint32 encoding)
+int Timidity_Init_Simple(int rate, int samples, int32_t encoding)
 {
   std::string configfile;
   /* see if the pentagram config file specifies an alternate timidity.cfg */
@@ -444,7 +444,7 @@ int Timidity_Init_Simple(int rate, int samples, sint32 encoding)
 
   /* Allocate memory for mixing (WARNING:  Memory leak!) */
   resample_buffer = safe_Malloc<sample_t>(AUDIO_BUFFER_SIZE);
-  common_buffer = safe_Malloc<sint32>(AUDIO_BUFFER_SIZE*2);
+  common_buffer = safe_Malloc<int32_t>(AUDIO_BUFFER_SIZE*2);
 
   init_tables();
 

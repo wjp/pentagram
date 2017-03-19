@@ -40,17 +40,17 @@ extern float sine(int x);
 #endif
 
 #define SINE_CYCLE_LENGTH 1024
-extern sint32 freq_table[];
+extern int32_t freq_table[];
 extern double vol_table[];
 extern double bend_fine[];
 extern double bend_coarse[];
-extern uint8 *_l2u; /* 13-bit PCM to 8-bit u-law */
-extern uint8 _l2u_[]; /* used in LOOKUP_HACK */
+extern uint8_t *_l2u; /* 13-bit PCM to 8-bit u-law */
+extern uint8_t _l2u_[]; /* used in LOOKUP_HACK */
 #ifdef LOOKUP_HACK
-extern sint16 _u2l[];
-extern sint32 *mixup;
+extern int16_t _u2l[];
+extern int32_t *mixup;
 #ifdef LOOKUP_INTERPOLATION
-extern sint8 *iplookup;
+extern int8_t *iplookup;
 #endif
 #endif
 

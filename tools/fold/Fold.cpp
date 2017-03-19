@@ -30,7 +30,7 @@ using	std::string;
 
 class Node;
 
-Node *newNode(uint32 pos);
+Node *newNode(uint32_t pos);
 
 vector<bool> ismember; // tells if the 'intrinsic' call is a call to a member function or not
 bool print_disasm=false;

@@ -25,9 +25,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 DEFINE_RUNTIME_CLASSTYPE_CODE_MULTI2(ShapeFont,Pentagram::Font,Shape);
 
 
-ShapeFont::ShapeFont(const uint8* data,uint32 size,
+ShapeFont::ShapeFont(const uint8_t* data,uint32_t size,
 					 const ConvertShapeFormat *format,
-					 const uint16 flexId, const uint32 shapenum)
+					 const uint16_t flexId, const uint32_t shapenum)
 	: Font(), Shape(data,size,format, flexId, shapenum),
 	  height(0), baseline(0), vlead(-1), hlead(0)
 {
@@ -49,7 +49,7 @@ int ShapeFont::getHeight()
 {
 	if (height == 0)
 	{
-		for (uint32 i = 0; i < frameCount(); i++) 
+		for (uint32_t i = 0; i < frameCount(); i++) 
 		{
 			int h = getFrame(i)->height;
 			
@@ -64,7 +64,7 @@ int ShapeFont::getBaseline()
 {
 	if (baseline == 0)
 	{
-		for (uint32 i = 0; i < frameCount(); i++) 
+		for (uint32_t i = 0; i < frameCount(); i++) 
 		{
 			int b = getFrame(i)->yoff;
 			

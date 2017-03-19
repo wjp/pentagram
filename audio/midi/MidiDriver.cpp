@@ -116,7 +116,7 @@ int MidiDriver::getDriverCount()
 }
 
 // Get the name of a driver
-std::string MidiDriver::getDriverName(uint32 index)
+std::string MidiDriver::getDriverName(uint32_t index)
 {
 	InitMidiDriverVector();
 
@@ -126,7 +126,7 @@ std::string MidiDriver::getDriverName(uint32 index)
 }
 
 // Create an Instance of a MidiDriver
-MidiDriver *MidiDriver::createInstance(std::string desired_driver,uint32 sample_rate,bool stereo)
+MidiDriver *MidiDriver::createInstance(std::string desired_driver,uint32_t sample_rate,bool stereo)
 {
 	InitMidiDriverVector();
 

@@ -33,36 +33,36 @@ namespace NS_TIMIDITY {
 #endif
 
 struct PlayMode {
-  sint32 rate, encoding;
+  int32_t rate, encoding;
   const char *id_name;
 };
 
 extern PlayMode *play_mode_list[], *play_mode;
 extern int init_buffers(int kbytes);
 
-/* Conversion functions -- These overwrite the sint32 data in *lp with
+/* Conversion functions -- These overwrite the int32_t data in *lp with
    data in another format */
 
 /* The size of the output buffers */
 extern int AUDIO_BUFFER_SIZE;
 
 /* Actual copy function */
-extern void (*s32tobuf)(void *dp, sint32 *lp, sint32 c);
+extern void (*s32tobuf)(void *dp, int32_t *lp, int32_t c);
 
 /* 8-bit signed and unsigned*/
-extern void s32tos8(void *dp, sint32 *lp, sint32 c);
-extern void s32tou8(void *dp, sint32 *lp, sint32 c);
+extern void s32tos8(void *dp, int32_t *lp, int32_t c);
+extern void s32tou8(void *dp, int32_t *lp, int32_t c);
 
 /* 16-bit */
-extern void s32tos16(void *dp, sint32 *lp, sint32 c);
-extern void s32tou16(void *dp, sint32 *lp, sint32 c);
+extern void s32tos16(void *dp, int32_t *lp, int32_t c);
+extern void s32tou16(void *dp, int32_t *lp, int32_t c);
 
 /* byte-exchanged 16-bit */
-extern void s32tos16x(void *dp, sint32 *lp, sint32 c);
-extern void s32tou16x(void *dp, sint32 *lp, sint32 c);
+extern void s32tos16x(void *dp, int32_t *lp, int32_t c);
+extern void s32tou16x(void *dp, int32_t *lp, int32_t c);
 
 /* uLaw (8 bits) */
-extern void s32toulaw(void *dp, sint32 *lp, sint32 c);
+extern void s32toulaw(void *dp, int32_t *lp, int32_t c);
 
 /* little-endian and big-endian specific */
 #ifdef TIMIDITY_LITTLE_ENDIAN

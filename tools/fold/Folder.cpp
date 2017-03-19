@@ -32,7 +32,7 @@ using	std::set;
 	Unit
  ****************************************************************************/
 
-void Unit::print_extern_unk(Console &o, const uint32 isize) const
+void Unit::print_extern_unk(Console &o, const uint32_t isize) const
 {
 	o.Print("// External Functions:\n");
 	FOR_CONST_SET(DCCallNode, externFuncs, i)
@@ -54,7 +54,7 @@ void Unit::print_extern_unk(Console &o, const uint32 isize) const
 	}
 }
 
-void Unit::print_unk(Console &o, const uint32 isize) const
+void Unit::print_unk(Console &o, const uint32_t isize) const
 {
 	FOR_CONST_DEQUE(DCFuncNode, functions, i)
 	{
@@ -91,7 +91,7 @@ void Unit::print_bin(ODequeDataSource &o) const
 		(*i)->print_bin(o);
 		// FIXME: The following is a bit of a hack, just so we get some 'real' output
 		for(std::deque<char>::const_iterator i=o.buf().begin(); i!=o.buf().end(); ++i)
-			con.Printf("%02X ", static_cast<uint8>(*i));
+			con.Printf("%02X ", static_cast<uint8_t>(*i));
 		con.Putchar('\n');
 	}
 }
@@ -303,7 +303,7 @@ void Folder::print_bin(ODequeDataSource &o) const
 	Useful Funcs
  ****************************************************************************/
 
-bool print_assert_nodes(std::deque<Node *> &nodes, uint32 index)
+bool print_assert_nodes(std::deque<Node *> &nodes, uint32_t index)
 {
 	indent(con, index);
 	con.Printf("Nodes:");

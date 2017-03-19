@@ -27,13 +27,13 @@ public:
 	PNGWriter(ODataSource* ods);
 	~PNGWriter();
 
-	bool init(uint32 width, uint32 height, const std::string& comment);
+	bool init(uint32_t width, uint32_t height, const std::string& comment);
 	bool writeRows(unsigned int nrows, Texture* img);
 	bool finish();
 
 private:
 	ODataSource* ds;
-	uint32 width;
+	uint32_t width;
 	void* png;
 	void* info;
 };

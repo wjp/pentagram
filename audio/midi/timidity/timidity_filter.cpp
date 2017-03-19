@@ -111,10 +111,10 @@ static void designfir(float *g , float fc)
  * Note that we simulate leading and trailing 0 at the border of the 
  * data buffer
  */
-static void filter(sample_t *result,sample_t *data, sint32 length,float coef[])
+static void filter(sample_t *result,sample_t *data, int32_t length,float coef[])
 {
-    sint32 sample,i,sample_window;
-    sint16 peak = 0;
+    int32_t sample,i,sample_window;
+    int16_t peak = 0;
     float sum;
 
     /* Simulate leading 0 at the begining of the buffer */
@@ -175,7 +175,7 @@ static void filter(sample_t *result,sample_t *data, sint32 length,float coef[])
 /* I don't worry about looping point -> they will remain soft if they  */
 /* were already                                                        */
 /***********************************************************************/
-void antialiasing(Sample *sp, sint32 output_rate )
+void antialiasing(Sample *sp, int32_t output_rate )
 {
     sample_t *temp;
     int i;

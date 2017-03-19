@@ -50,7 +50,7 @@ struct GameInfo {
 		GAMELANG_JAPANESE
 	} language;
 
-	uint8 md5[16];
+	uint8_t md5[16];
 
 	char getLanguageFileLetter() const;
 	char getLanguageUsecodeLetter() const;
@@ -64,7 +64,7 @@ struct GameInfo {
 	bool match(GameInfo& other, bool ignoreMD5=false) const;
 
 	void save(ODataSource* ods);
-	bool load(IDataSource* ids, uint32 version);
+	bool load(IDataSource* ids, uint32_t version);
 };
 
 #endif

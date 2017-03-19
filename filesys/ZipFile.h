@@ -36,11 +36,11 @@ public:
 
 	virtual bool exists(const std::string& name);
 
-	virtual uint8* getObject(const std::string& name, uint32* size=0);
+	virtual uint8_t* getObject(const std::string& name, uint32_t* size=0);
 
-	virtual uint32 getSize(const std::string& name);
+	virtual uint32_t getSize(const std::string& name);
 
-	virtual uint32 getCount() { return count; }
+	virtual uint32_t getCount() { return count; }
 
 	static bool isZipFile(IDataSource* ds);
 
@@ -51,8 +51,8 @@ protected:
 
 
 	IDataSource* ds;
-	uint32 count;
-	std::map<std::string, uint32> sizes;
+	uint32_t count;
+	std::map<std::string, uint32_t> sizes;
 
 	std::string globalComment;
 

@@ -86,7 +86,7 @@ int recompute_envelope(int v)
 void apply_envelope_to_amp(int v)
 {
   float lamp=voice[v].left_amp, ramp;
-  sint32 la,ra;
+  int32_t la,ra;
   if (voice[v].panned == PANNED_MYSTERY)
     {
       ramp=voice[v].right_amp;
@@ -101,12 +101,12 @@ void apply_envelope_to_amp(int v)
 	  ramp *= (float)vol_table[voice[v].envelope_volume>>23];
 	}
 
-      la = (sint32)FSCALE(lamp,AMP_BITS);
+      la = (int32_t)FSCALE(lamp,AMP_BITS);
       
       if (la>MAX_AMP_VALUE)
 	la=MAX_AMP_VALUE;
 
-      ra = (sint32)FSCALE(ramp,AMP_BITS);
+      ra = (int32_t)FSCALE(ramp,AMP_BITS);
       if (ra>MAX_AMP_VALUE)
 	ra=MAX_AMP_VALUE;
 
@@ -121,7 +121,7 @@ void apply_envelope_to_amp(int v)
       if (voice[v].sample->modes & MODES_ENVELOPE)
 	lamp *= (float)vol_table[voice[v].envelope_volume>>23];
 
-      la = (sint32)FSCALE(lamp,AMP_BITS);
+      la = (int32_t)FSCALE(lamp,AMP_BITS);
 
       if (la>MAX_AMP_VALUE)
 	la=MAX_AMP_VALUE;
@@ -148,7 +148,7 @@ static int update_envelope(int v)
 
 static void update_tremolo(int v)
 {
-  sint32 depth=voice[v].sample->tremolo_depth<<7;
+  int32_t depth=voice[v].sample->tremolo_depth<<7;
 
   if (voice[v].tremolo_sweep)
     {
@@ -193,12 +193,12 @@ static int update_signal(int v)
 }
 
 #ifdef LOOKUP_HACK
-#  define MIXATION(a)	*lp++ += mixup[(a<<8) | (uint8)s];
+#  define MIXATION(a)	*lp++ += mixup[(a<<8) | (uint8_t)s];
 #else
 #  define MIXATION(a)	*lp++ += (a)*s;
 #endif
 
-static void mix_mystery_signal(sample_t *sp, sint32 *lp, int v, int count)
+static void mix_mystery_signal(sample_t *sp, int32_t *lp, int v, int count)
 {
   Voice *vp = voice + v;
   final_volume_t 
@@ -245,7 +245,7 @@ static void mix_mystery_signal(sample_t *sp, sint32 *lp, int v, int count)
       }
 }
 
-static void mix_center_signal(sample_t *sp, sint32 *lp, int v, int count)
+static void mix_center_signal(sample_t *sp, int32_t *lp, int v, int count)
 {
   Voice *vp = voice + v;
   final_volume_t 
@@ -289,7 +289,7 @@ static void mix_center_signal(sample_t *sp, sint32 *lp, int v, int count)
       }
 }
 
-static void mix_single_signal(sample_t *sp, sint32 *lp, int v, int count)
+static void mix_single_signal(sample_t *sp, int32_t *lp, int v, int count)
 {
   Voice *vp = voice + v;
   final_volume_t 
@@ -333,7 +333,7 @@ static void mix_single_signal(sample_t *sp, sint32 *lp, int v, int count)
       }
 }
 
-static void mix_mono_signal(sample_t *sp, sint32 *lp, int v, int count)
+static void mix_mono_signal(sample_t *sp, int32_t *lp, int v, int count)
 {
   Voice *vp = voice + v;
   final_volume_t 
@@ -375,7 +375,7 @@ static void mix_mono_signal(sample_t *sp, sint32 *lp, int v, int count)
       }
 }
 
-static void mix_mystery(sample_t *sp, sint32 *lp, int v, int count)
+static void mix_mystery(sample_t *sp, int32_t *lp, int v, int count)
 {
   final_volume_t 
     left=voice[v].left_mix, 
@@ -390,7 +390,7 @@ static void mix_mystery(sample_t *sp, sint32 *lp, int v, int count)
     }
 }
 
-static void mix_center(sample_t *sp, sint32 *lp, int v, int count)
+static void mix_center(sample_t *sp, int32_t *lp, int v, int count)
 {
   final_volume_t 
     left=voice[v].left_mix;
@@ -404,7 +404,7 @@ static void mix_center(sample_t *sp, sint32 *lp, int v, int count)
     }
 }
 
-static void mix_single(sample_t *sp, sint32 *lp, int v, int count)
+static void mix_single(sample_t *sp, int32_t *lp, int v, int count)
 {
   final_volume_t 
     left=voice[v].left_mix;
@@ -418,7 +418,7 @@ static void mix_single(sample_t *sp, sint32 *lp, int v, int count)
     }
 }
 
-static void mix_mono(sample_t *sp, sint32 *lp, int v, int count)
+static void mix_mono(sample_t *sp, int32_t *lp, int v, int count)
 {
   final_volume_t 
     left=voice[v].left_mix;
@@ -432,11 +432,11 @@ static void mix_mono(sample_t *sp, sint32 *lp, int v, int count)
 }
 
 /* Ramp a note out in c samples */
-static void ramp_out(sample_t *sp, sint32 *lp, int v, sint32 c)
+static void ramp_out(sample_t *sp, int32_t *lp, int v, int32_t c)
 {
 
-  /* should be final_volume_t, but uint8 gives trouble. */
-  sint32 left, right, li, ri;
+  /* should be final_volume_t, but uint8_t gives trouble. */
+  int32_t left, right, li, ri;
 
   sample_t s=0; /* silly warning about uninitialized s */
 
@@ -522,7 +522,7 @@ static void ramp_out(sample_t *sp, sint32 *lp, int v, sint32 c)
 
 /**************** interface function ******************/
 
-void mix_voice(sint32 *buf, int v, sint32 c)
+void mix_voice(int32_t *buf, int v, int32_t c)
 {
   Voice *vp=voice+v;
   sample_t *sp;

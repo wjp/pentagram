@@ -28,17 +28,17 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	DesktopGump();
-	DesktopGump(sint32 x, sint32 y, sint32 width, sint32 height);
+	DesktopGump(int32_t x, int32_t y, int32_t width, int32_t height);
 	virtual ~DesktopGump(void);
 
-	virtual void PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled);
-	virtual void PaintChildren(RenderSurface *surf, sint32 lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface *surf, int32_t lerp_factor, bool scaled);
+	virtual void PaintChildren(RenderSurface *surf, int32_t lerp_factor, bool scaled);
 
 	virtual bool StartDraggingChild(Gump* gump, int mx, int my);
 	virtual void DraggingChild(Gump* gump, int mx, int my);
 	virtual void StopDraggingChild(Gump* gump);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 
 	void RenderSurfaceChanged(RenderSurface *surf);
 

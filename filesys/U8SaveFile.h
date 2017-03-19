@@ -36,25 +36,25 @@ public:
 
 	virtual bool exists(const std::string& name);
 
-	virtual uint8* getObject(const std::string& name, uint32* size=0);
+	virtual uint8_t* getObject(const std::string& name, uint32_t* size=0);
 
-	virtual uint32 getSize(const std::string& name);
+	virtual uint32_t getSize(const std::string& name);
 
-	virtual uint32 getCount() { return count; }
+	virtual uint32_t getCount() { return count; }
 
 	static bool isU8SaveFile(IDataSource* ds);
 
 protected:
 	IDataSource* ds;
-	uint32 count;
+	uint32_t count;
 
-	std::map<std::string, uint32> indices;
-	std::vector<uint32> offsets;
-	std::vector<uint32> sizes;
+	std::map<std::string, uint32_t> indices;
+	std::vector<uint32_t> offsets;
+	std::vector<uint32_t> sizes;
 
 private:
 	bool readMetadata();
-	bool findIndex(const std::string& name, uint32& index);
+	bool findIndex(const std::string& name, uint32_t& index);
 };
 
 

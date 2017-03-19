@@ -25,20 +25,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 DEFINE_RUNTIME_CLASSTYPE_CODE(FontShapeArchive,ShapeArchive);
 
-ShapeFont* FontShapeArchive::getFont(uint32 fontnum)
+ShapeFont* FontShapeArchive::getFont(uint32_t fontnum)
 {
 	return p_dynamic_cast<ShapeFont*>(getShape(fontnum));
 }
 
-void FontShapeArchive::cache(uint32 shapenum)
+void FontShapeArchive::cache(uint32_t shapenum)
 {
 	if (shapenum >= count) return;
 	if (shapes.empty()) shapes.resize(count);
 
 	if (shapes[shapenum]) return;
 
-	uint32 shpsize;
-	uint8 *data = getRawObject(shapenum, &shpsize);
+	uint32_t shpsize;
+	uint8_t *data = getRawObject(shapenum, &shpsize);
 
 	if (!data || shpsize == 0) return;
 

@@ -30,30 +30,30 @@ class ShapeArchive : public Pentagram::Archive
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
-	ShapeArchive(uint16 id_, Pentagram::Palette* pal_ = 0,
+	ShapeArchive(uint16_t id_, Pentagram::Palette* pal_ = 0,
 			  const ConvertShapeFormat *format_ = 0)
 		: Archive(), id(id_), format(format_), palette(pal_) { }
-	ShapeArchive(ArchiveFile* af, uint16 id_, Pentagram::Palette* pal_ = 0,
+	ShapeArchive(ArchiveFile* af, uint16_t id_, Pentagram::Palette* pal_ = 0,
 			  const ConvertShapeFormat *format_ = 0)
 		: Archive(af), id(id_), format(format_), palette(pal_) { }
-	ShapeArchive(IDataSource* ds, uint16 id_, Pentagram::Palette* pal_ = 0,
+	ShapeArchive(IDataSource* ds, uint16_t id_, Pentagram::Palette* pal_ = 0,
 			  const ConvertShapeFormat *format_ = 0)
 		: Archive(ds), id(id_), format(format_), palette(pal_) { }
-	ShapeArchive(const std::string& path, uint16 id_,
+	ShapeArchive(const std::string& path, uint16_t id_,
 				 Pentagram::Palette* pal_ = 0,
 				 const ConvertShapeFormat *format_ = 0)
 		: Archive(path), id(id_), format(format_), palette(pal_) { }
 
 	virtual ~ShapeArchive();
 
-	Shape* getShape(uint32 shapenum);
+	Shape* getShape(uint32_t shapenum);
 
-	virtual void cache(uint32 shapenum);
-	virtual void uncache(uint32 shapenum);
-	virtual bool isCached(uint32 shapenum);
+	virtual void cache(uint32_t shapenum);
+	virtual void uncache(uint32_t shapenum);
+	virtual bool isCached(uint32_t shapenum);
 
 protected:
-	uint16 id;
+	uint16_t id;
 	const ConvertShapeFormat *format;
 	Pentagram::Palette* palette;
 	std::vector<Shape*> shapes;

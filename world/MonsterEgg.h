@@ -35,9 +35,9 @@ public:
 	int getMonsterShape() const { return quality & 0x7FF; }
 	int getActivity() const { return mapnum & 0x07; }
 
-	uint16 hatch();
+	uint16_t hatch();
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 
 	INTRINSIC(I_monsterEggHatch);
 	INTRINSIC(I_getMonId);

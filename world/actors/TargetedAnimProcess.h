@@ -27,19 +27,19 @@ class TargetedAnimProcess : public ActorAnimProcess
 public:
 	TargetedAnimProcess();
 	//! note: this probably needs some more parameters
-	TargetedAnimProcess(Actor* actor, Animation::Sequence action, uint32 dir,
-						sint32 coords[3]);
+	TargetedAnimProcess(Actor* actor, Animation::Sequence action, uint32_t dir,
+						int32_t coords[3]);
 
 	// p_dynamic_cast stuff
 	ENABLE_RUNTIME_CLASSTYPE();
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
 	virtual bool init();
 
-	sint32 x,y,z;
+	int32_t x,y,z;
 };
 
 

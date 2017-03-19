@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Usecode.h"
 #include "CoreApp.h"
 
-uint32 Usecode::get_class_event(uint32 classid, uint32 eventid)
+uint32_t Usecode::get_class_event(uint32_t classid, uint32_t eventid)
 {
 	if (get_class_size(classid) == 0) return 0;
 
@@ -30,9 +30,9 @@ uint32 Usecode::get_class_event(uint32 classid, uint32 eventid)
 		CANT_HAPPEN();
 	}
 
-	const uint8* data = get_class(classid);
+	const uint8_t* data = get_class(classid);
 
-	uint32 offset;
+	uint32_t offset;
 	if (GAME_IS_U8) {
 		offset = data[12 + (eventid*4) + 0];
 		offset += data[12 + (eventid*4) + 1] << 8;

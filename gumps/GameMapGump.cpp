@@ -81,7 +81,7 @@ GameMapGump::~GameMapGump()
 	delete display_list;
 }
 
-void GameMapGump::GetCameraLocation(sint32& lx, sint32& ly, sint32& lz,
+void GameMapGump::GetCameraLocation(int32_t& lx, int32_t& ly, int32_t& lz,
 									int lerp_factor)
 {
 	CameraProcess *camera = CameraProcess::GetCameraProcess();
@@ -95,7 +95,7 @@ void GameMapGump::GetCameraLocation(sint32& lx, sint32& ly, sint32& lz,
 	}
 }
 
-void GameMapGump::PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled)
+void GameMapGump::PaintThis(RenderSurface *surf, int32_t lerp_factor, bool scaled)
 {
 	World *world = World::get_instance();
 	if (!world) return;	// Is it possible the world doesn't exist?
@@ -110,14 +110,14 @@ void GameMapGump::PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled
 
 	CameraProcess *camera = CameraProcess::GetCameraProcess();
 
-	uint16 roofid = 0;
+	uint16_t roofid = 0;
 	int zlimit = 1 << 16; // should be high enough
 
 	if (!camera)
 	{
 		// Check roof
 		//!! This is _not_ the right place for this...
-		sint32 ax, ay, az, axd, ayd, azd;
+		int32_t ax, ay, az, axd, ayd, azd;
 		Actor* av = getMainActor();
 		av->getLocation(ax, ay, az);
 		av->getFootpadWorld(axd, ayd, azd);
@@ -133,7 +133,7 @@ void GameMapGump::PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled
 
 	display_list->BeginDisplayList(surf, lx, ly, lz);
 
-	uint32 gametick = Kernel::get_instance()->getFrameNum();
+	uint32_t gametick = Kernel::get_instance()->getFrameNum();
 
 	bool paintEditorItems = GUIApp::get_instance()->isPaintEditorItems();
 
@@ -172,7 +172,7 @@ void GameMapGump::PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled
 						if (item->getExtFlags() & Item::EXT_TRANSPARENT)
 							continue;
 
-						sint32 x, y, z;
+						int32_t x, y, z;
 						item->getLerped(x, y, z);
 						display_list->AddItem(x,y,z,item->getShape(),item->getFrame(), item->getFlags() & ~Item::FLG_INVISIBLE, item->getExtFlags() | Item::EXT_TRANSPARENT, 1);
 					}
@@ -197,23 +197,23 @@ void GameMapGump::PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled
 }
 
 // Trace a click, and return ObjId
-uint16 GameMapGump::TraceObjId(int mx, int my)
+uint16_t GameMapGump::TraceObjId(int mx, int my)
 {
-	uint16 objid = Gump::TraceObjId(mx,my);
+	uint16_t objid = Gump::TraceObjId(mx,my);
 	if (objid && objid != 65535) return objid;
 
 	ParentToGump(mx,my);
 	return display_list->Trace(mx,my,0,highlightItems);
 }
 
-uint16 GameMapGump::TraceCoordinates(int mx, int my, sint32 coords[3],
+uint16_t GameMapGump::TraceCoordinates(int mx, int my, int32_t coords[3],
 									 int offsetx, int offsety, Item* item)
 {
-	sint32 dxd = 0,dyd = 0,dzd = 0;
+	int32_t dxd = 0,dyd = 0,dzd = 0;
 	if (item)
 		item->getFootpadWorld(dxd,dyd,dzd);
 
-	sint32 cx, cy, cz;
+	int32_t cx, cy, cz;
 	GetCameraLocation(cx, cy, cz);
 
 	ItemSorter::HitFace face;
@@ -223,8 +223,8 @@ uint16 GameMapGump::TraceCoordinates(int mx, int my, sint32 coords[3],
 	if (!hit) // strange...
 		return 0;
 
-	sint32 hx,hy,hz;
-	sint32 hxd,hyd,hzd;
+	int32_t hx,hy,hz;
+	int32_t hxd,hyd,hzd;
 	hit->getLocation(hx,hy,hz);
 	hit->getFootpadWorld(hxd,hyd,hzd);
 
@@ -259,8 +259,8 @@ uint16 GameMapGump::TraceCoordinates(int mx, int my, sint32 coords[3],
 	return trace;
 }
 
-bool GameMapGump::GetLocationOfItem(uint16 itemid, int &gx, int &gy,
-									sint32 lerp_factor)
+bool GameMapGump::GetLocationOfItem(uint16_t itemid, int &gx, int &gy,
+									int32_t lerp_factor)
 {
 	Item *item = getItem(itemid);
 
@@ -268,7 +268,7 @@ bool GameMapGump::GetLocationOfItem(uint16 itemid, int &gx, int &gy,
 
 	while (item->getParentAsContainer()) item = item->getParentAsContainer();
 
-	sint32 ix, iy, iz;
+	int32_t ix, iy, iz;
 
 	// Hacks be us. Force the item into the fast area
 	item->setupLerp(Kernel::get_instance()->getFrameNum());
@@ -276,7 +276,7 @@ bool GameMapGump::GetLocationOfItem(uint16 itemid, int &gx, int &gy,
 	item->getLerped(ix,iy,iz);
 
 	// Get the camera's location
-	sint32 cx, cy, cz;
+	int32_t cx, cy, cz;
 		CameraProcess *cam = CameraProcess::GetCameraProcess();
 	if (!cam) CameraProcess::GetCameraLocation(cx,cy,cz);
 	else cam->GetLerped(cx,cy,cz,lerp_factor);
@@ -338,10 +338,10 @@ void GameMapGump::OnMouseClick(int button, int mx, int my)
 			break;
 		}
 
-		uint16 objID = TraceObjId(mx, my);
+		uint16_t objID = TraceObjId(mx, my);
 		Item *item = getItem(objID);
 		if (item) {
-			sint32 x,y,z;
+			int32_t x,y,z;
 			item->getLocation(x,y,z);
 			item->dumpInfo();
 			
@@ -352,10 +352,10 @@ void GameMapGump::OnMouseClick(int button, int mx, int my)
 	}
 	case BUTTON_MIDDLE:
 	{
-		uint16 objID = TraceObjId(mx, my);
+		uint16_t objID = TraceObjId(mx, my);
 		Item *item = getItem(objID);
 		if (item) {
-			sint32 x,y,z;
+			int32_t x,y,z;
 			item->getLocation(x,y,z);
 			item->dumpInfo();
 
@@ -377,9 +377,9 @@ void GameMapGump::OnMouseClick(int button, int mx, int my)
 			world->getCurrentMap()->surfaceSearch(&uclist, script,
 												  sizeof(script),
 												  item, true, false, true);
-			for (uint32 i = 0; i < uclist.getSize(); i++)
+			for (uint32_t i = 0; i < uclist.getSize(); i++)
 			{
-				Item *item2 = getItem(uclist.getuint16(i));
+				Item *item2 = getItem(uclist.getuint16_t(i));
 				if (!item2) continue;
 				item2->setExtFlag(Item::EXT_HIGHLIGHT);
 			}
@@ -410,10 +410,10 @@ void GameMapGump::OnMouseDouble(int button, int mx, int my)
 			break;
 		}
 
-		uint16 objID = TraceObjId(mx, my);
+		uint16_t objID = TraceObjId(mx, my);
 		Item *item = getItem(objID);
 		if (item) {
-			sint32 x,y,z;
+			int32_t x,y,z;
 			item->getLocation(x,y,z);
 			item->dumpInfo();
 
@@ -491,7 +491,7 @@ bool GameMapGump::DraggingItem(Item* item, int mx, int my)
 		{
 			int speed = 64 - item->getTotalWeight() + avatar->getStr();
 			if (speed < 1) speed = 1;
-			sint32 ax,ay,az;
+			int32_t ax,ay,az;
 			avatar->getLocation(ax,ay,az);
 			MissileTracker t(item, ax, ay, az,
 							 dragging_pos[0], dragging_pos[1], dragging_pos[2],
@@ -557,12 +557,12 @@ void GameMapGump::DropItem(Item* item, int mx, int my)
 			 << dragging_pos[1] << "," << dragging_pos[2] << ")" << std::endl;
 		int speed = 64 - item->getTotalWeight() + avatar->getStr();
 		if (speed < 1) speed = 1;
-		sint32 ax,ay,az;
+		int32_t ax,ay,az;
 		avatar->getLocation(ax,ay,az);
 		// CHECKME: correct position to throw from?
 		// CHECKME: correct events triggered when doing this move?
 		item->move(ax, ay, az+24);
-		sint32 tx, ty;
+		int32_t tx, ty;
 		tx = dragging_pos[0];
 		ty = dragging_pos[1];
 		int inaccuracy = 4 * (30 - avatar->getDex());
@@ -612,24 +612,24 @@ void GameMapGump::ConCmd_dumpMap(const Console::ArgvType &)
 	ObjectManager::get_instance()->allow64kObjects();
 
 	// Actual size 
-	sint32 awidth = 8192;
-	sint32 aheight = 8192;
+	int32_t awidth = 8192;
+	int32_t aheight = 8192;
 
-	sint32 xpos = 0;
-	sint32 ypos = 0;
+	int32_t xpos = 0;
+	int32_t ypos = 0;
 
-	sint32 left = 16384;
-	sint32 right = -16384;
-	sint32 top = 16384;
-	sint32 bot = -16384;
+	int32_t left = 16384;
+	int32_t right = -16384;
+	int32_t top = 16384;
+	int32_t bot = -16384;
 
-	sint32 camheight = 256;
+	int32_t camheight = 256;
 
 	// Work out the map limit we do this very coarsly
 	// Now render the map
-	for (sint32 y = 0; y < 64; y++)
+	for (int32_t y = 0; y < 64; y++)
 	{
-		for (sint32 x = 0; x < 64; x++)
+		for (int32_t x = 0; x < 64; x++)
 		{
 			const std::list<Item *> *list =
 				World::get_instance()->getCurrentMap()->getItemList(x,y);
@@ -638,10 +638,10 @@ void GameMapGump::ConCmd_dumpMap(const Console::ArgvType &)
 			// (items could extend outside of this chunk and they have height)
 			if (list && list->size() != 0) 
 			{
-				sint32 l = (x*512 - y*512)/4 - 128;
-				sint32 r = (x*512 - y*512)/4 + 128;
-				sint32 t = (x*512 + y*512)/8 - 256;
-				sint32 b = (x*512 + y*512)/8;
+				int32_t l = (x*512 - y*512)/4 - 128;
+				int32_t r = (x*512 - y*512)/4 + 128;
+				int32_t t = (x*512 + y*512)/8 - 256;
+				int32_t b = (x*512 + y*512)/8;
 
 				t -= 256; // approx. adjustment for height of items in chunk
 
@@ -666,12 +666,12 @@ void GameMapGump::ConCmd_dumpMap(const Console::ArgvType &)
 	xpos = left;
 
 	// Buffer Size
-	sint32 bwidth = awidth;
-	sint32 bheight = 256;
+	int32_t bwidth = awidth;
+	int32_t bheight = 256;
 
 	// Tile size
-	sint32 twidth = bwidth/8;
-	sint32 theight = bheight;
+	int32_t twidth = bwidth/8;
+	int32_t theight = bheight;
 
 
 	GameMapGump* g = new GameMapGump(0, 0, twidth, theight);
@@ -704,15 +704,15 @@ void GameMapGump::ConCmd_dumpMap(const Console::ArgvType &)
 	pngw->init(awidth, aheight, pngcomment);
 
 	// Now render the map
-	for (sint32 y = 0; y < aheight; y+=theight)
+	for (int32_t y = 0; y < aheight; y+=theight)
 	{
-		for (sint32 x = 0; x < awidth; x+=twidth)
+		for (int32_t x = 0; x < awidth; x+=twidth)
 		{
 			// Work out 'effective' and world coords
-			sint32 ex = xpos+x+twidth/2;
-			sint32 ey = ypos+y+theight/2;
-			sint32 wx = ex*2 + ey*4;
-			sint32 wy = ey*4 - ex*2;
+			int32_t ex = xpos+x+twidth/2;
+			int32_t ey = ypos+y+theight/2;
+			int32_t wx = ex*2 + ey*4;
+			int32_t wy = ey*4 - ex*2;
 
 			s->SetOrigin(x,y%bheight);
 			CameraProcess::SetCameraProcess(
@@ -725,9 +725,9 @@ void GameMapGump::ConCmd_dumpMap(const Console::ArgvType &)
 		if (((y+theight)%bheight) == 0) {
 			for (int i = 0; i < bwidth*bheight; ++i) {
 				// Convert to correct pixel format
-				uint8 r, g, b;
+				uint8_t r, g, b;
 				UNPACK_RGB8(t->buffer[i],r,g,b);
-				uint8 *buf = reinterpret_cast<uint8*>(&t->buffer[i]);
+				uint8_t *buf = reinterpret_cast<uint8_t*>(&t->buffer[i]);
 				buf[0] = b; buf[1] = g; buf[2] = r; buf[3] = 0xFF;
 			}
 
@@ -790,7 +790,7 @@ void GameMapGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to save GameMapGump");
 }
 
-bool GameMapGump::loadData(IDataSource* ids, uint32 version)
+bool GameMapGump::loadData(IDataSource* ids, uint32_t version)
 {
 	CANT_HAPPEN_MSG("Trying to load GameMapGump");
 

@@ -36,7 +36,7 @@ public:
 	//! If the Flex has named objects, only objects with numerical names will
 	//!  be returned (the filename without the extension must be an integer)
 	//! \param index index of object to check for
-	virtual bool exists(uint32 index)=0;
+	virtual bool exists(uint32_t index)=0;
 
 	//! Check if named object exists
 	//! If the Flex is not named, name must be an integer with
@@ -47,32 +47,32 @@ public:
 
 	//! Get object from file; returns NULL if index is invalid.
 	//! Must delete the returned buffer afterwards.
-	//! See also exists(uint32 index)
+	//! See also exists(uint32_t index)
 	//! \param index index of object to fetch
 	//! \param size if non-NULL, size of object is stored in *size
-	virtual uint8* getObject(uint32 index, uint32* size=0)=0;
+	virtual uint8_t* getObject(uint32_t index, uint32_t* size=0)=0;
 
 	//! Get named object from file; returns NULL if name is invalid.
 	//! Must delete the returned buffer afterwards.
 	//! See also exists(std::string name)
 	//! \param name name of object to fetch
 	//! \param size if non-NULL, size of object is stored in *size
-	virtual uint8* getObject(const std::string& name, uint32* size=0)=0;
+	virtual uint8_t* getObject(const std::string& name, uint32_t* size=0)=0;
 
 
 	//! Get size of object; returns zero if index is invalid.
-	//! See also exists(uint32 index)
+	//! See also exists(uint32_t index)
 	//! \param index index of object to get size of
-	virtual uint32 getSize(uint32 index)=0;
+	virtual uint32_t getSize(uint32_t index)=0;
 
 	//! Get size of named object; returns zero if name is invalid
 	//! See also exists(std::string name)
 	//! \param index index of object to get size of
-	virtual uint32 getSize(const std::string& name)=0;
+	virtual uint32_t getSize(const std::string& name)=0;
 
 	//! Get object as an IDataSource
 	//! Delete the IDataSource afterwards; that will delete the data as well
-	IDataSource* getDataSource(uint32 index, bool is_text = false);
+	IDataSource* getDataSource(uint32_t index, bool is_text = false);
 
 	//! Get named object as an IDataSource
 	//! Delete the IDataSource afterwards; that will delete the data as well
@@ -81,12 +81,12 @@ public:
 	//! Get upper bound for number of objects.
 	//! In an indexed file this is (probably) the highest index plus one,
 	//! while in a named file it's (probably) the actual count
-	virtual uint32 getCount()=0;
+	virtual uint32_t getCount()=0;
 
 	//! Get the highest index in the file
 	//! Guaranteed to be sufficiently large for a vector that needs to
 	//!  store the indexed entries of this file
-	virtual uint32 getIndexCount()=0;
+	virtual uint32_t getIndexCount()=0;
 
 	//! is archive indexed?
 	virtual bool isIndexed() const =0;
@@ -95,7 +95,7 @@ public:
 	virtual bool isNamed() const =0;
 
 protected:
-	static bool extractIndexFromName(const std::string& name, uint32& index);
+	static bool extractIndexFromName(const std::string& name, uint32_t& index);
 
 	bool valid;
 };

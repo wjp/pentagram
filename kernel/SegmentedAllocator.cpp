@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 DEFINE_RUNTIME_CLASSTYPE_CODE(SegmentedAllocator,Allocator);
 
-SegmentedAllocator::SegmentedAllocator(size_t nodeCapacity_, uint32 nodes_): Allocator(), nodes(nodes_)
+SegmentedAllocator::SegmentedAllocator(size_t nodeCapacity_, uint32_t nodes_): Allocator(), nodes(nodes_)
 {
 	pools.push_back(new SegmentedPool(nodeCapacity_, nodes_));
 	nodeCapacity = pools[0]->getNodeCapacity();

@@ -48,20 +48,20 @@ public:
 	}
 
 	//! Adds a scaler, returns the index
-	uint32 AddScaler(const Pentagram::Scaler *scaler);
+	uint32_t AddScaler(const Pentagram::Scaler *scaler);
 
 
 	//! Get the total Number of scalers
-	uint32 GetNumScalers();
+	uint32_t GetNumScalers();
 
 	//! Get the Scaler Index from its name
-	uint32 GetIndexForName(const Pentagram::istring name);
+	uint32_t GetIndexForName(const Pentagram::istring name);
 
 	//! Get Name of a Scaler from its Index
-	const char *GetNameForIndex(uint32 index);
+	const char *GetNameForIndex(uint32_t index);
 
 	//! Get a Scaler from its Index
-	const Pentagram::Scaler	*GetScaler(uint32 index);
+	const Pentagram::Scaler	*GetScaler(uint32_t index);
 
 	//! Get a Scaler from its name
 	const Pentagram::Scaler	*GetScaler(const Pentagram::istring name);

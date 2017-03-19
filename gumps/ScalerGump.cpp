@@ -28,7 +28,7 @@
 
 DEFINE_RUNTIME_CLASSTYPE_CODE(ScalerGump,DesktopGump);
 
-ScalerGump::ScalerGump(sint32 _x, sint32 _y, sint32 _width, sint32 _height) :
+ScalerGump::ScalerGump(int32_t _x, int32_t _y, int32_t _width, int32_t _height) :
 	  DesktopGump(_x, _y, _width, _height),
 	  swidth1(_width), sheight1(_height), scaler1(0), buffer1(0),
 	  swidth2(_width), sheight2(_height), scaler2(0), buffer2(0),
@@ -49,7 +49,7 @@ ScalerGump::~ScalerGump()
 	FORGET_OBJECT(buffer2);
 }
 
-void ScalerGump::Paint(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void ScalerGump::Paint(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	// Skip the clipping rect/origin setting, since they will already be set
 	// correctly by our parent.
@@ -81,8 +81,8 @@ void ScalerGump::Paint(RenderSurface* surf, sint32 lerp_factor, bool scaled)
 		DoScalerBlit(buffer2->GetSurfaceAsTexture(),swidth2,sheight2,surf,width,height,scaler2);
 	}
 
-	sint32 scalex = (width<<16)/swidth1;
-	sint32 scaley = (height<<16)/sheight1;
+	int32_t scalex = (width<<16)/swidth1;
+	int32_t scaley = (height<<16)/sheight1;
 
 	// Iterate all children
 	std::list<Gump*>::reverse_iterator it = children.rbegin();
@@ -305,9 +305,9 @@ void ScalerGump::ConCmd_changeScaler(const Console::ArgvType &argv)
 void ScalerGump::ConCmd_listScalers(const Console::ArgvType &argv)
 {
 	ScalerManager *scaleman = ScalerManager::get_instance();
-	uint32 numScalers = scaleman->GetNumScalers();
+	uint32_t numScalers = scaleman->GetNumScalers();
 
-	for (uint32 i = 0; i < numScalers; i++) {
+	for (uint32_t i = 0; i < numScalers; i++) {
 		const Pentagram::Scaler *s = scaleman->GetScaler(i);
 
 		pout << s->ScalerName() << ": " << s->ScalerDesc() << " -";

@@ -31,7 +31,7 @@ using	std::deque;
 	FuncMutatorNode
  ****************************************************************************/
 
-void FuncMutatorNode::print_unk(Console &o, const uint32 isize, const bool comment) const
+void FuncMutatorNode::print_unk(Console &o, const uint32_t isize, const bool comment) const
 {
 	/* if we're in a comment, then we're actually going to output, else we silently
 		do nothing. This is to handle the cases where we don't want this data
@@ -134,7 +134,7 @@ bool FuncMutatorNode::fold(DCUnit *unit, std::deque<Node *> &nodes)
  ****************************************************************************/
 #define DEBUG_COMMENTS
 
-void DCFuncNode::print_unk_funcheader(Console &o, const uint32 isize) const
+void DCFuncNode::print_unk_funcheader(Console &o, const uint32_t isize) const
 {
 	// do the obvious and spit out 'process'
 	// for obvious reason's we're just assuming if a function has a 'process exclude'
@@ -146,7 +146,7 @@ void DCFuncNode::print_unk_funcheader(Console &o, const uint32 isize) const
 	o.Putchar('\n');
 }
 
-void DCFuncNode::print_unk(Console &o, const uint32 isize) const
+void DCFuncNode::print_unk(Console &o, const uint32_t isize) const
 {
 	#ifdef DEBUG_COMMENTS
 	indent(o, isize); o.Print("/*"); // prelude
@@ -251,7 +251,7 @@ void DCFuncNode::print_bin(ODequeDataSource &o) const
 		(*i)->print_bin(o);
 		// FIXME: The following is a bit of a hack, just so we get some 'real' output
 		for(std::deque<char>::const_iterator i=o.buf().begin(); i!=o.buf().end(); ++i)
-			con.Printf("%02X ", static_cast<uint8>(*i));
+			con.Printf("%02X ", static_cast<uint8_t>(*i));
 		con.Putchar('\n');
 	}
 	

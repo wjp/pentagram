@@ -30,7 +30,7 @@ public:
 
 	virtual void run() = 0;
 
-	Process(ObjId item_num=0, uint16 type=0);
+	Process(ObjId item_num=0, uint16_t type=0);
 	virtual ~Process() { }
 
 	// p_dynamic_cast stuff
@@ -39,7 +39,7 @@ public:
 	// memory pooling stuff
 	ENABLE_CUSTOM_MEMORY_ALLOCATION();
 
-	uint32 getProcessFlags() const { return flags; }
+	uint32_t getProcessFlags() const { return flags; }
 	bool is_active() const { return (flags & PROC_ACTIVE); }
 	bool is_terminated() const { return (flags & (PROC_TERMINATED |
 												  PROC_TERM_DEFERRED))!=0; }
@@ -63,14 +63,14 @@ public:
 	//! suspend process
 	void suspend();
 
-	void wakeUp(uint32 result);
+	void wakeUp(uint32_t result);
 
 	void setItemNum(ObjId it) { item_num = it; }
-	void setType(uint16 ty) { type = ty; }
+	void setType(uint16_t ty) { type = ty; }
 
 	ProcId getPid() const { return pid; }
 	ObjId getItemNum() const { return item_num; }
-	uint16 getType() const { return type; }
+	uint16_t getType() const { return type; }
 
 	//! dump some info about this process to pout
 	virtual void dumpInfo();
@@ -79,7 +79,7 @@ public:
 	void save(ODataSource* ods);
 
 	//! load Process data
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 
 protected:
 	//! save the Process data 
@@ -90,14 +90,14 @@ protected:
 	//! process id
 	ProcId pid;
 
-	uint32 flags;
+	uint32_t flags;
 
 	//! item we are assigned to
 	ObjId item_num;
-	uint16 type;
+	uint16_t type;
 
 	//! process result
-	uint32 result;
+	uint32_t result;
 
 	//! Processes waiting for this one to finish.
 	//! When this process terminates, awaken them and pass them the result val.

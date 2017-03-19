@@ -48,12 +48,12 @@ void BitSet::setSize(unsigned int size_)
 	bytes = size / 8;
 	if (size % 8 != 0) bytes++;
 
-	data = new uint8[bytes];
+	data = new uint8_t[bytes];
 	for (unsigned int i = 0; i < bytes; ++i)
 		data[i] = 0;
 }
 
-uint32 BitSet::getBits(unsigned int pos, unsigned int n)
+uint32_t BitSet::getBits(unsigned int pos, unsigned int n)
 {
 	assert(n <= 32);
 	assert(pos + n <= size);
@@ -72,7 +72,7 @@ uint32 BitSet::getBits(unsigned int pos, unsigned int n)
 	unsigned int firstmask = ((1 << firstbits) - 1) << (8 - firstbits);
 	unsigned int lastmask = ((1 << lastbits) - 1);
 
-	uint32 ret = 0;
+	uint32_t ret = 0;
 
 	ret |= (data[firstbyte] & firstmask) >> (8 - firstbits);
 	unsigned int shift = firstbits;
@@ -85,7 +85,7 @@ uint32 BitSet::getBits(unsigned int pos, unsigned int n)
 	return ret;
 }
 
-void BitSet::setBits(unsigned int pos, unsigned int n, uint32 bits)
+void BitSet::setBits(unsigned int pos, unsigned int n, uint32_t bits)
 {
 	assert(n <= 32);
 	assert(pos + n <= size);
@@ -123,9 +123,9 @@ void BitSet::save(ODataSource* ods)
 	ods->write(data, bytes);
 }
 
-bool BitSet::load(IDataSource* ids, uint32 version)
+bool BitSet::load(IDataSource* ids, uint32_t version)
 {
-	uint32 s = ids->read4();
+	uint32_t s = ids->read4();
 	setSize(s);
 	ids->read(data, bytes);
 

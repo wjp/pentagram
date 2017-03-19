@@ -67,7 +67,7 @@ void UnixSeqMidiDriver::close()
 	isOpen = false;
 }
 
-void UnixSeqMidiDriver::send(uint32 b) {
+void UnixSeqMidiDriver::send(uint32_t b) {
 	unsigned char buf[256];
 	int position = 0;
 
@@ -110,7 +110,7 @@ void UnixSeqMidiDriver::send(uint32 b) {
 	::write(device, buf, position);
 }
 
-void UnixSeqMidiDriver::send_sysex(uint8 status,const uint8 *msg,uint16 length)
+void UnixSeqMidiDriver::send_sysex(uint8_t status,const uint8_t *msg,uint16_t length)
 {
 	if (length > 511) {
 		perr << "UnixSeqMidiDriver: "
@@ -120,7 +120,7 @@ void UnixSeqMidiDriver::send_sysex(uint8 status,const uint8 *msg,uint16 length)
 
 	unsigned char buf [2048];
 	int position = 0;
-	const uint8 *chr = msg;
+	const uint8_t *chr = msg;
 
 	buf[position++] = SEQ_MIDIPUTC;
 	buf[position++] = status;

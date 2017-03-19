@@ -32,24 +32,24 @@ class AudioProcess :
 	public Process
 {
 	struct SampleInfo {
-		sint32		sfxnum;
-		sint32		priority;
+		int32_t		sfxnum;
+		int32_t		priority;
 		ObjId		objid;
-		sint32		loops;
-		sint32		channel;
+		int32_t		loops;
+		int32_t		channel;
 		std::string barked;
-		uint32		curspeech_start, curspeech_end;
-		uint32		pitch_shift;	// 0x10000 is normal
-		uint16		volume;			// 0-256
-		sint16		lvol;
-		sint16		rvol;
+		uint32_t		curspeech_start, curspeech_end;
+		uint32_t		pitch_shift;	// 0x10000 is normal
+		uint16_t		volume;			// 0-256
+		int16_t		lvol;
+		int16_t		rvol;
 		
 		SampleInfo() : sfxnum(-1) { }
-		SampleInfo(sint32 s,sint32 p,ObjId o,sint32 l,sint32 c,uint32 ps,uint16 v, sint16 lv, sint16 rv) : 
+		SampleInfo(int32_t s,int32_t p,ObjId o,int32_t l,int32_t c,uint32_t ps,uint16_t v, int16_t lv, int16_t rv) : 
 			sfxnum(s),priority(p),objid(o),loops(l),channel(c),
 			pitch_shift(ps), volume(v), lvol(lv), rvol(rv) { }
-		SampleInfo(std::string &b,sint32 shpnum,ObjId o,sint32 c,
-				   uint32 s,uint32 e,uint32 ps,uint16 v, sint16 lv, sint16 rv) : 
+		SampleInfo(std::string &b,int32_t shpnum,ObjId o,int32_t c,
+				   uint32_t s,uint32_t e,uint32_t ps,uint16_t v, int16_t lv, int16_t rv) : 
 			sfxnum(-1),priority(shpnum),objid(o),loops(0),channel(c),barked(b),
 			curspeech_start(s), curspeech_end(e), pitch_shift(ps), volume(v), 
 			lvol(lv), rvol(rv) { }
@@ -81,31 +81,31 @@ public:
 	virtual void run();
 
 	void playSFX(int sfxnum, int priority, ObjId objid, int loops,
-				 bool no_duplicates, uint32 pitch_shift,
-				 uint16 volume, sint16 lvol, sint16 rvol);
+				 bool no_duplicates, uint32_t pitch_shift,
+				 uint16_t volume, int16_t lvol, int16_t rvol);
 
 	void playSFX(int sfxnum, int priority, ObjId objid, int loops,
-				 bool no_duplicates=false, uint32 pitch_shift=0x10000,
-				 uint16 volume=0x80) {
+				 bool no_duplicates=false, uint32_t pitch_shift=0x10000,
+				 uint16_t volume=0x80) {
 		 playSFX(sfxnum, priority, objid, loops, no_duplicates, pitch_shift, volume, -1, -1);
 	}
 
 	void stopSFX(int sfxnum, ObjId objid);
 	bool isSFXPlaying(int sfxnum);
-	void setVolumeSFX(int sfxnum, uint8 volume);
+	void setVolumeSFX(int sfxnum, uint8_t volume);
 
 	bool playSpeech(std::string &barked, int shapenum, ObjId objid, 
-					uint32 pitch_shift=0x10000,uint16 volume=256);
+					uint32_t pitch_shift=0x10000,uint16_t volume=256);
 	void stopSpeech(std::string &barked, int shapenum, ObjId objid);
 	bool isSpeechPlaying(std::string &barked, int shapenum);
 
 	//! get length (in milliseconds) of speech
-	uint32 getSpeechLength(std::string &barked, int shapenum) const;
+	uint32_t getSpeechLength(std::string &barked, int shapenum) const;
 
 	//! play a sample (without storing a SampleInfo)
 	//! returns channel sample is played on, or -1
 	int playSample(Pentagram::AudioSample* sample, int priority, int loops, 
-				   uint32 pitch_shift=0x10000, sint16 lvol=256, sint16 rvol=256);
+				   uint32_t pitch_shift=0x10000, int16_t lvol=256, int16_t rvol=256);
 
 	//! pause all currently playing samples
 	void pauseAllSamples();
@@ -118,18 +118,18 @@ public:
 	// AudioProcess::playSound console command
 	//static void ConCmd_playSound(const Console::ArgvType &argv);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 
 private:
 	virtual void saveData(ODataSource* ods);
-	uint32 paused;
+	uint32_t paused;
 
 	//! play the next speech sample for the text in this SampleInfo
 	//! note: si is reused if successful
 	//! returns true if there was speech left to play, or false if finished
 	bool continueSpeech(SampleInfo& si);
 
-	bool calculateSoundVolume(ObjId objid, sint16 &lvol, sint16 &rvol) const;
+	bool calculateSoundVolume(ObjId objid, int16_t &lvol, int16_t &rvol) const;
 
 	static AudioProcess	*	the_audio_process;
 };

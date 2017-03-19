@@ -28,7 +28,7 @@
 class PopVarNode : public UniNode
 {
 	public:
-		PopVarNode(const uint32 opcode, const uint32 offset, const uint32 newValue)
+		PopVarNode(const uint32_t opcode, const uint32_t offset, const uint32_t newValue)
 			: UniNode(opcode, offset)
 		{
 			assert(acceptOp(opcode, 0x01));
@@ -41,7 +41,7 @@ class PopVarNode : public UniNode
 			}
 			rtype(_dtype.type());
 		};
-		PopVarNode(const uint32 opcode, const uint32 offset)
+		PopVarNode(const uint32_t opcode, const uint32_t offset)
 			: UniNode(opcode, offset)
 		{
 			assert(acceptOp(opcode, 0x12));
@@ -56,7 +56,7 @@ class PopVarNode : public UniNode
 		};
 		~PopVarNode() { /*FORGET_OBJECT(lnode);*/ /* don't delete rnode */ };
 
-		void print_unk(Console &o, const uint32 isize) const;
+		void print_unk(Console &o, const uint32_t isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 
@@ -71,7 +71,7 @@ class PopVarNode : public UniNode
 class PushVarNode : public Node
 {
 	public:
-		PushVarNode(const uint32 opcode, const uint32 offset, const uint32 newValue)
+		PushVarNode(const uint32_t opcode, const uint32_t offset, const uint32_t newValue)
 			: Node(opcode, offset)
 		{
 			assert(acceptOp(opcode, 0x0B, 0x3F, 0x40, 0x4B) || acceptOp(opcode, 0x0C, 0x0A));
@@ -99,7 +99,7 @@ class PushVarNode : public Node
 			}
 			rtype(_dtype.type());
 		};
-		PushVarNode(const uint32 opcode, const uint32 offset, const uint32 strSize, const std::string &str)
+		PushVarNode(const uint32_t opcode, const uint32_t offset, const uint32_t strSize, const std::string &str)
 			: Node(opcode, offset)
 		{
 			assert(acceptOp(opcode, 0x0D));
@@ -113,14 +113,14 @@ class PushVarNode : public Node
 			}
 			rtype(_dtype.type());
 		};
-		PushVarNode(const uint32 opcode, const uint32 offset, const uint32 variable, const uint32 varindex)
+		PushVarNode(const uint32_t opcode, const uint32_t offset, const uint32_t variable, const uint32_t varindex)
 			: Node(opcode, offset)
 		{
 			assert(acceptOp(opcode, 0x4E));
 			_dtype = DataType(Type::T_WORD, DataType::DT_GLOBAL, variable, varindex);
 			rtype(_dtype.type());
 		};
-		PushVarNode(const uint32 opcode, const uint32 offset)
+		PushVarNode(const uint32_t opcode, const uint32_t offset)
 			: Node(opcode, offset)
 		{
 			assert(acceptOp(opcode, 0x59));
@@ -136,7 +136,7 @@ class PushVarNode : public Node
 
 		~PushVarNode() {};
 
-		void print_unk(Console &o, const uint32 isize) const;
+		void print_unk(Console &o, const uint32_t isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 
@@ -154,14 +154,14 @@ class PushVarNode : public Node
 	private:
 		DataType	_dtype;
 
-/*		sint32		value;
+/*		int32_t		value;
 		// for list use only
-		uint32		value2;
+		uint32_t		value2;
 		// for string use only
 		std::string		strval;
 		// for global use only
-		uint32 global_offset;
-		uint32 global_size;*/
+		uint32_t global_offset;
+		uint32_t global_size;*/
 };
 
 #endif

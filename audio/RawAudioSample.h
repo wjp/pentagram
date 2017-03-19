@@ -25,18 +25,18 @@ namespace Pentagram {
 class RawAudioSample : public AudioSample
 {
 public:
-	RawAudioSample(uint8* buffer, uint32 size,
-				   uint32 rate, bool signeddata, bool stereo);
+	RawAudioSample(uint8_t* buffer, uint32_t size,
+				   uint32_t rate, bool signeddata, bool stereo);
 	virtual ~RawAudioSample();
 
 	virtual void initDecompressor(void *DecompData) const;
-	virtual uint32 decompressFrame(void *DecompData, void *samples) const;
+	virtual uint32_t decompressFrame(void *DecompData, void *samples) const;
 	virtual void rewind(void *DecompData) const;
 
 protected:
 
 	struct RawDecompData {
-		uint32 pos;
+		uint32_t pos;
 	};
 
 	bool signeddata;

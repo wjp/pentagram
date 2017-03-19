@@ -65,7 +65,7 @@ AvatarMoverProcess::~AvatarMoverProcess()
 void AvatarMoverProcess::run()
 {
 	Kernel * kernel = Kernel::get_instance();
-	uint32 framenum = kernel->getFrameNum();
+	uint32_t framenum = kernel->getFrameNum();
 
 	// only run once per frame
 	if (framenum == lastframe)
@@ -104,7 +104,7 @@ void AvatarMoverProcess::handleHangingMode()
 {
 	GUIApp* guiapp = GUIApp::get_instance();
 	MainActor* avatar = getMainActor();
-	uint32 now = SDL_GetTicks();
+	uint32_t now = SDL_GetTicks();
 	bool stasis = guiapp->isAvatarInStasis();
 
 	idleTime = 0;
@@ -152,8 +152,8 @@ void AvatarMoverProcess::handleCombatMode()
 	MainActor* avatar = getMainActor();
 	Animation::Sequence lastanim = avatar->getLastAnim();
 	Animation::Sequence nextanim = Animation::walk;
-	sint32 direction = avatar->getDir();
-	uint32 now = SDL_GetTicks();
+	int32_t direction = avatar->getDir();
+	uint32_t now = SDL_GetTicks();
 	bool stasis = guiapp->isAvatarInStasis();
 
 	int mx, my;
@@ -161,7 +161,7 @@ void AvatarMoverProcess::handleCombatMode()
 	unsigned int mouselength = guiapp->getMouseLength(mx,my);
 
 	// adjust to world direction
-	sint32 mousedir = (guiapp->getMouseDirection(mx,my)+7)%8;
+	int32_t mousedir = (guiapp->getMouseDirection(mx,my)+7)%8;
 
 	// never idle when in combat
 	idleTime = 0;
@@ -289,7 +289,7 @@ void AvatarMoverProcess::handleCombatMode()
 
 		if (checkTurn(mousedir, true)) return;
 
-		sint32 nextdir = mousedir;
+		int32_t nextdir = mousedir;
 
 		if (lastanim == Animation::run) {
 			// want to run while in combat mode?
@@ -334,8 +334,8 @@ void AvatarMoverProcess::handleNormalMode()
 	MainActor* avatar = getMainActor();
 	Animation::Sequence lastanim = avatar->getLastAnim();
 	Animation::Sequence nextanim = Animation::walk;
-	sint32 direction = avatar->getDir();
-	uint32 now = SDL_GetTicks();
+	int32_t direction = avatar->getDir();
+	uint32_t now = SDL_GetTicks();
 	bool stasis = guiapp->isAvatarInStasis();
 	bool combatRun = (avatar->getActorFlags() & Actor::ACT_COMBATRUN) != 0;
 
@@ -344,10 +344,10 @@ void AvatarMoverProcess::handleNormalMode()
 	unsigned int mouselength = guiapp->getMouseLength(mx,my);
 
 	// adjust to world direction
-	sint32 mousedir = (guiapp->getMouseDirection(mx,my)+7)%8;
+	int32_t mousedir = (guiapp->getMouseDirection(mx,my)+7)%8;
 
 	// Store current idle time. (Also see end of function.)
-	sint32 currentIdleTime = idleTime;
+	int32_t currentIdleTime = idleTime;
 	idleTime = 0;
 
 	// User toggled combat while in combatRun
@@ -447,7 +447,7 @@ void AvatarMoverProcess::handleNormalMode()
 		!(mouseButton[1].state & MBS_HANDLED))
 	{
 		// notice these are all unsigned.
-		uint32 down = mouseButton[1].curDown;
+		uint32_t down = mouseButton[1].curDown;
 		if (mouseButton[0].curDown < down)
 		{
 			down = down - mouseButton[0].curDown;
@@ -700,19 +700,19 @@ void AvatarMoverProcess::jump(Animation::Sequence action, int direction)
 	SettingManager::get_instance()->get("targetedjump", targeting);
 
 	if (targeting) {
-		sint32 coords[3];
+		int32_t coords[3];
 		GameMapGump * gameMap = guiapp->getGameMapGump();
 		// We need the Gump's x/y for TraceCoordinates
 		gameMap->ScreenSpaceToGump(mx,my);
 		ObjId targetId = gameMap->TraceCoordinates(mx,my,coords);
 		Item * target = getItem(targetId);
 
-		sint32 ax,ay,az;
+		int32_t ax,ay,az;
 		avatar->getCentre(ax,ay,az);
 
-		sint32 xrange = ax-coords[0];
+		int32_t xrange = ax-coords[0];
 		if (xrange < 0) xrange = -xrange;
-		sint32 yrange = ay-coords[1];
+		int32_t yrange = ay-coords[1];
 		if (yrange < 0) yrange = -yrange;
 		int maxrange = avatar->getStr() * 32;
 	
@@ -871,10 +871,10 @@ void AvatarMoverProcess::saveData(ODataSource* ods)
 
 	ods->write4(lastAttack);
 	ods->write4(idleTime);
-	ods->write2(static_cast<uint8>(lastHeadShakeAnim));
+	ods->write2(static_cast<uint8_t>(lastHeadShakeAnim));
 }
 
-bool AvatarMoverProcess::loadData(IDataSource* ids, uint32 version)
+bool AvatarMoverProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

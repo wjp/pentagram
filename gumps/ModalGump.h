@@ -27,8 +27,8 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	ModalGump();
-	ModalGump(int x, int y, int width, int height, uint16 owner = 0,
-			  uint32 _Flags = 0, sint32 layer = LAYER_MODAL);
+	ModalGump(int x, int y, int width, int height, uint16_t owner = 0,
+			  uint32_t _Flags = 0, int32_t layer = LAYER_MODAL);
 
 	~ModalGump();
 
@@ -38,11 +38,11 @@ public:
 
 	virtual bool PointOnGump(int mx, int my);
 	virtual Gump* FindGump(int mx, int my);
-	virtual uint16 TraceObjId(int mx, int my);
+	virtual uint16_t TraceObjId(int mx, int my);
 
 	virtual Gump* OnMouseDown(int button, int mx, int my);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

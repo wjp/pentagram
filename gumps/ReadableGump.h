@@ -24,14 +24,14 @@
 
 class ReadableGump : public ModalGump
 {
-	uint16 shapenum;
+	uint16_t shapenum;
 	int fontnum;
 	std::string	text;
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	ReadableGump();
-	ReadableGump(ObjId owner, uint16 shape, int font, std::string msg);
+	ReadableGump(ObjId owner, uint16_t shape, int font, std::string msg);
 	virtual ~ReadableGump();
 
 	// Close on mouse click on key press
@@ -44,7 +44,7 @@ public:
 	INTRINSIC(I_readGrave);
 	INTRINSIC(I_readPlaque);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

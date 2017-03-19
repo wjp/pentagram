@@ -34,8 +34,8 @@ ModalGump::ModalGump() : Gump()
 }
 
 
-ModalGump::ModalGump(int x, int y, int width, int height, uint16 owner,
-					 uint32 _Flags, sint32 layer)
+ModalGump::ModalGump(int x, int y, int width, int height, uint16_t owner,
+					 uint32_t _Flags, int32_t layer)
 	: Gump(x, y, width, height, owner, _Flags, layer)
 {
 
@@ -71,9 +71,9 @@ bool ModalGump::PointOnGump(int mx, int my)
 	return true; // we take all mouse input
 }
 
-uint16 ModalGump::TraceObjId(int mx, int my)
+uint16_t ModalGump::TraceObjId(int mx, int my)
 {
-	uint16 objid = Gump::TraceObjId(mx, my);
+	uint16_t objid = Gump::TraceObjId(mx, my);
 	if (!objid) objid = getObjId();
 
 	return objid;
@@ -105,7 +105,7 @@ void ModalGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to save ModalGump");
 }
 
-bool ModalGump::loadData(IDataSource* ids, uint32 version)
+bool ModalGump::loadData(IDataSource* ids, uint32_t version)
 {
 	CANT_HAPPEN_MSG("Trying to load ModalGump");
 	return false;

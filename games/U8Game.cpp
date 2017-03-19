@@ -97,7 +97,7 @@ bool U8Game::startGame()
 	ObjectManager* objman = ObjectManager::get_instance();
 
 	// reserve a number of objids just in case we'll need them sometime
-	for (uint16 i = 384; i < 512; ++i)
+	for (uint16_t i = 384; i < 512; ++i)
 		objman->reserveObjId(i);
 
 	// reserve ObjId 666 for the Guardian Bark hack
@@ -446,19 +446,19 @@ void U8Game::playQuotes()
 void U8Game::writeSaveInfo(ODataSource* ods)
 {
 	MainActor* av = getMainActor();
-	sint32 x,y,z;
+	int32_t x,y,z;
 
 	std::string avname = av->getName();
-	uint8 namelength = static_cast<uint8>(avname.size());
+	uint8_t namelength = static_cast<uint8_t>(avname.size());
 	ods->write1(namelength);
 	for (unsigned int i = 0; i < namelength; ++i)
-		ods->write1(static_cast<uint8>(avname[i]));
+		ods->write1(static_cast<uint8_t>(avname[i]));
 
 	av->getLocation(x,y,z);
 	ods->write2(av->getMapNum());
-	ods->write4(static_cast<uint32>(x));
-	ods->write4(static_cast<uint32>(y));
-	ods->write4(static_cast<uint32>(z));
+	ods->write4(static_cast<uint32_t>(x));
+	ods->write4(static_cast<uint32_t>(y));
+	ods->write4(static_cast<uint32_t>(z));
 
 	ods->write2(av->getStr());
 	ods->write2(av->getInt());
@@ -472,7 +472,7 @@ void U8Game::writeSaveInfo(ODataSource* ods)
 
 	for (unsigned int i = 1; i <= 6; i++)
 	{
-		uint16 objid = av->getEquip(i);
+		uint16_t objid = av->getEquip(i);
 		Item* item = getItem(objid);
 		if (item) {
 			ods->write4(item->getShape());
@@ -491,7 +491,7 @@ std::string U8Game::getCreditText(IDataSource* ids)
 	unsigned int size = ids->getSize();
 	text.resize(size);
 	for (unsigned int i = 0; i < size; ++i) {
-		uint8 c = ids->read1();
+		uint8_t c = ids->read1();
 		int x;
 		switch(i) {
 	    case 0: case 1:

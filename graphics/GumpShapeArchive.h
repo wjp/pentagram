@@ -28,16 +28,16 @@ class GumpShapeArchive : public ShapeArchive
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
-	GumpShapeArchive(uint16 id_, Pentagram::Palette* pal_ = 0,
+	GumpShapeArchive(uint16_t id_, Pentagram::Palette* pal_ = 0,
 			  const ConvertShapeFormat *format_ = 0)
 		: ShapeArchive(id_, pal_, format_) { }
-	GumpShapeArchive(ArchiveFile* af, uint16 id_, Pentagram::Palette* pal_ = 0,
+	GumpShapeArchive(ArchiveFile* af, uint16_t id_, Pentagram::Palette* pal_ = 0,
 			  const ConvertShapeFormat *format_ = 0)
 		: ShapeArchive(af, id_, pal_, format_) { }
-	GumpShapeArchive(IDataSource* ds, uint16 id_, Pentagram::Palette* pal_ = 0,
+	GumpShapeArchive(IDataSource* ds, uint16_t id_, Pentagram::Palette* pal_ = 0,
 			  const ConvertShapeFormat *format_ = 0)
 		: ShapeArchive(ds, id_, pal_, format_) { }
-	GumpShapeArchive(const std::string& path, uint16 id_,
+	GumpShapeArchive(const std::string& path, uint16_t id_,
 				 Pentagram::Palette* pal_ = 0,
 				 const ConvertShapeFormat *format_ = 0)
 		: ShapeArchive(path, id_, pal_, format_) { }
@@ -45,7 +45,7 @@ public:
 	virtual ~GumpShapeArchive();
 	
 	void loadGumpage(IDataSource *ds);
-	Pentagram::Rect* getGumpItemArea(uint32 shapenum);
+	Pentagram::Rect* getGumpItemArea(uint32_t shapenum);
 	
 protected:
 	std::vector<Pentagram::Rect*> gumpItemArea;

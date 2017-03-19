@@ -26,7 +26,7 @@
 /****************************************************************************
 	NonOperatorNode
  ****************************************************************************/
-/*void TempNode::fold(const uint32 end)
+/*void TempNode::fold(const uint32_t end)
 {
 	PTRACE(("(Temp)\t\tPOS: %4d\tOP: %04X offset: %04X\n", end, foldops[end].op(), foldops[end].offset));
 	assert(foldops[end].deleted==false);
@@ -258,7 +258,7 @@ void TempNode::print() const
 	UniOperatorNode
  ****************************************************************************/
 
-void UniOperatorNode::print_unk(Console &o, const uint32 isize) const
+void UniOperatorNode::print_unk(Console &o, const uint32_t isize) const
 {
 	assert(rtype().type()!=Type::T_INVALID);
 	switch(otype)
@@ -338,7 +338,7 @@ bool UniOperatorNode::fold(DCUnit * /*unit*/, std::deque<Node *> &nodes)
 	return true;
 };
 
-/*void UniOperatorNode::fold(const uint32 end)
+/*void UniOperatorNode::fold(const uint32_t end)
 {
 	assert(foldops[end].deleted==false);
 
@@ -351,7 +351,7 @@ bool UniOperatorNode::fold(DCUnit * /*unit*/, std::deque<Node *> &nodes)
 		default: assert(false); // can't happen
 	}
 
-	sint32 tempsize = 2;
+	int32_t tempsize = 2;
 	grab_n(tempsize, end);
 	assert(tempsize==0);
 
@@ -375,7 +375,7 @@ bool UniOperatorNode::fold(DCUnit * /*unit*/, std::deque<Node *> &nodes)
 	printf(")");
 }*/
 
-/*void ConvertNode::fold(const uint32 end)
+/*void ConvertNode::fold(const uint32_t end)
 {
 	assert(foldops[end].deleted==false);
 
@@ -390,7 +390,7 @@ bool UniOperatorNode::fold(DCUnit * /*unit*/, std::deque<Node *> &nodes)
 		default:   assert(false); // can't happen
 	}
 
-	sint32 tempsize;
+	int32_t tempsize;
 
 	switch(ctype)
 	{
@@ -432,7 +432,7 @@ void ConvertNode::print() const
 	BinOperatorNode
  ****************************************************************************/
 
-void BinOperatorNode::print_unk(Console &o, const uint32 isize) const
+void BinOperatorNode::print_unk(Console &o, const uint32_t isize) const
 {
 	assert(rtype().type()!=Type::T_INVALID);
 	assert(lnode!=0);

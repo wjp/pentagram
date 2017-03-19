@@ -79,27 +79,27 @@ bool DirFile::exists(const std::string& name)
 	return true;
 }
 
-uint32 DirFile::getSize(const std::string& name)
+uint32_t DirFile::getSize(const std::string& name)
 {
 	FileSystem* filesys = FileSystem::get_instance();
 	IDataSource* ids = filesys->ReadFile(path + name);
 	if (!ids) return 0;
 
-	uint32 size = ids->getSize();
+	uint32_t size = ids->getSize();
 	delete ids;
 	return size;
 }
 
-uint8* DirFile::getObject(const std::string& name, uint32* sizep)
+uint8_t* DirFile::getObject(const std::string& name, uint32_t* sizep)
 {
 	FileSystem* filesys = FileSystem::get_instance();
 	IDataSource* ids = filesys->ReadFile(path + name);
 	if (!ids) return 0;
 
-	uint32 size = ids->getSize();
+	uint32_t size = ids->getSize();
 	if (size == 0) return 0;
 
-	uint8* buf = new uint8[size];
+	uint8_t* buf = new uint8_t[size];
 	ids->read(buf, size);
 	delete ids;
 

@@ -92,7 +92,7 @@ SKFPlayer::~SKFPlayer()
 
 void SKFPlayer::parseEventList(IDataSource* eventlist)
 {
-	uint16 frame = eventlist->read2();
+	uint16_t frame = eventlist->read2();
 	while (frame != 0xFFFF) {
 		SKFEvent* ev = new SKFEvent;
 		ev->frame = frame;
@@ -133,7 +133,7 @@ void SKFPlayer::paint(RenderSurface* surf, int /*lerp*/)
 		if (subs)
 			subs->draw(surf, 60, subtitley);
 	} else {
-		uint32 fade = TEX32_PACK_RGBA(fadecolour,fadecolour,fadecolour,
+		uint32_t fade = TEX32_PACK_RGBA(fadecolour,fadecolour,fadecolour,
 									  (fadelevel*255)/FADESTEPS);
 		surf->FadedBlit(tex, 0, 0, width, height, 0, 0, fade);
 		if (subs)
@@ -159,7 +159,7 @@ void SKFPlayer::run()
 	}
 
 	// CHECKME: this timing may not be accurate enough...
-	uint32 now = SDL_GetTicks();
+	uint32_t now = SDL_GetTicks();
 	if (lastupdate + (1000/framerate) > now) return;
 
 	lastupdate += (1000/framerate);
@@ -228,10 +228,10 @@ void SKFPlayer::run()
 //			pout << "PlaySound " << events[curevent]->data << std::endl;
 
 			if (audioproc) {
-				uint8* buffer = skf->get_object(events[curevent]->data);
-				uint32 bufsize = skf->get_size(events[curevent]->data);
+				uint8_t* buffer = skf->get_object(events[curevent]->data);
+				uint32_t bufsize = skf->get_size(events[curevent]->data);
 				Pentagram::AudioSample* s;
-				uint32 rate = buffer[6] + (buffer[7]<<8);
+				uint32_t rate = buffer[6] + (buffer[7]<<8);
 				bool stereo = (buffer[8] == 2);
 				s = new Pentagram::RawAudioSample(buffer+34, bufsize-34,
 												  rate, true, stereo);
@@ -242,7 +242,7 @@ void SKFPlayer::run()
 			// subtitles
 			char* textbuf = reinterpret_cast<char*>(
 				skf->get_object(events[curevent]->data-1));
-			uint32 textsize = skf->get_size(events[curevent]->data-1);
+			uint32_t textsize = skf->get_size(events[curevent]->data-1);
 			if (textsize > 7) {
 				std::string subtitle = (textbuf+6);
 				delete subs;
@@ -274,7 +274,7 @@ void SKFPlayer::run()
 	PaletteManager* palman = PaletteManager::get_instance();
 	IDataSource* object;
 
-	uint16 objecttype = 0;
+	uint16_t objecttype = 0;
 	do {
 		curobject++;
 		if (curobject >= skf->getCount()) {

@@ -93,7 +93,7 @@ void ScrollGump::OnMouseDouble(int button, int mx, int my)
 	Close();
 }
 
-uint32 ScrollGump::I_readScroll(const uint8* args, unsigned int /*argsize*/)
+uint32_t ScrollGump::I_readScroll(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_STRING(str);
@@ -111,7 +111,7 @@ void ScrollGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to save ModalGump");
 }
 
-bool ScrollGump::loadData(IDataSource* ids, uint32 version)
+bool ScrollGump::loadData(IDataSource* ids, uint32_t version)
 {
 	CANT_HAPPEN_MSG("Trying to load ModalGump");
 

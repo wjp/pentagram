@@ -26,8 +26,8 @@
 /*
   parse data and fill class
  */
-ShapeFrame::ShapeFrame(const uint8* data, uint32 size, const ConvertShapeFormat* format,
-					   const uint8 special[256], ConvertShapeFrame *prev) : line_offsets(0)
+ShapeFrame::ShapeFrame(const uint8_t* data, uint32_t size, const ConvertShapeFormat* format,
+					   const uint8_t special[256], ConvertShapeFrame *prev) : line_offsets(0)
 {
 	// Load it as u8
 	if (!format || format == &U8ShapeFormat || format == &U82DShapeFormat)
@@ -51,20 +51,20 @@ ShapeFrame::~ShapeFrame()
 #define READ4(data,offset) (data[offset] + (data[offset+1] << 8) + (data[offset+2] << 16) + (data[offset+3] << 24))
 
 // This will load a u8 style shape 'optimzed'.
-void ShapeFrame::LoadU8Format(const uint8* data, uint32 /*size*/)
+void ShapeFrame::LoadU8Format(const uint8_t* data, uint32_t /*size*/)
 {
 	compressed = READ1(data,8);
-	width = static_cast<sint16>(READ2(data,10));
-	height = static_cast<sint16>(READ2(data,12));
-	xoff = static_cast<sint16>(READ2(data,14));
-	yoff = static_cast<sint16>(READ2(data,16));
+	width = static_cast<int16_t>(READ2(data,10));
+	height = static_cast<int16_t>(READ2(data,12));
+	xoff = static_cast<int16_t>(READ2(data,14));
+	yoff = static_cast<int16_t>(READ2(data,16));
 
 	if (height == 0) return;
 
-	line_offsets = new uint32[height];
+	line_offsets = new uint32_t[height];
 
 	data += 18;
-	for (sint32 i = 0; i < height; i++)
+	for (int32_t i = 0; i < height; i++)
 	{
 		line_offsets[i] = READ2(data,0) - ((height-i)*2);
 		data+=2;
@@ -74,20 +74,20 @@ void ShapeFrame::LoadU8Format(const uint8* data, uint32 /*size*/)
 }
 
 // This will load a pentagram style shape 'optimzed'.
-void ShapeFrame::LoadPentagramFormat(const uint8* data, uint32 /*size*/)
+void ShapeFrame::LoadPentagramFormat(const uint8_t* data, uint32_t /*size*/)
 {
 	compressed = READ1(data,0);
-	width = static_cast<sint32>(READ4(data,4));
-	height = static_cast<sint32>(READ4(data,8));
-	xoff = static_cast<sint32>(READ4(data,12));
-	yoff = static_cast<sint32>(READ4(data,16));
+	width = static_cast<int32_t>(READ4(data,4));
+	height = static_cast<int32_t>(READ4(data,8));
+	xoff = static_cast<int32_t>(READ4(data,12));
+	yoff = static_cast<int32_t>(READ4(data,16));
 
 	if (height == 0) return;
 
-	line_offsets = new uint32[height];
+	line_offsets = new uint32_t[height];
 
 	data += 20;
-	for (sint32 i = 0; i < height; i++)
+	for (int32_t i = 0; i < height; i++)
 	{
 		line_offsets[i] = READ4(data,0);
 		data+=4;
@@ -97,7 +97,7 @@ void ShapeFrame::LoadPentagramFormat(const uint8* data, uint32 /*size*/)
 }
 
 // This will load any sort of shape via a ConvertShapeFormat struct
-void ShapeFrame::LoadGenericFormat(const uint8* data, uint32 size, const ConvertShapeFormat* format)
+void ShapeFrame::LoadGenericFormat(const uint8_t* data, uint32_t size, const ConvertShapeFormat* format)
 {
 	IBufferDataSource ds(data,size);
 
@@ -110,13 +110,13 @@ void ShapeFrame::LoadGenericFormat(const uint8* data, uint32 size, const Convert
 
 	if (height == 0) return;
 
-	line_offsets = new uint32[height];
+	line_offsets = new uint32_t[height];
 
-	if (format->line_offset_absolute) for (sint32 i = 0; i < height; i++) 
+	if (format->line_offset_absolute) for (int32_t i = 0; i < height; i++) 
 	{
 		line_offsets[i] = ds.readX(format->bytes_line_offset);
 	}
-	else for (sint32 i = 0; i < height; i++) 
+	else for (int32_t i = 0; i < height; i++) 
 	{
 		line_offsets[i] = ds.readX(format->bytes_line_offset) - ((height-i)*format->bytes_line_offset);
 	}
@@ -125,7 +125,7 @@ void ShapeFrame::LoadGenericFormat(const uint8* data, uint32 size, const Convert
 }
 
 // This will load an U8-compressed shape
-void ShapeFrame::LoadU8CMPFormat(const uint8* data, uint32 size, const ConvertShapeFormat* format, const uint8 special[256], ConvertShapeFrame *prev)
+void ShapeFrame::LoadU8CMPFormat(const uint8_t* data, uint32_t size, const ConvertShapeFormat* format, const uint8_t special[256], ConvertShapeFrame *prev)
 {
 	IBufferDataSource ds(data,size);
 
@@ -133,9 +133,9 @@ void ShapeFrame::LoadU8CMPFormat(const uint8* data, uint32 size, const ConvertSh
 
 	f.ReadCmpFrame(&ds,format,special,prev);
 
-	uint32 to_alloc = f.height + (f.bytes_rle+3)/4;
-	line_offsets = new uint32[to_alloc];
-	rle_data = reinterpret_cast<uint8*>(line_offsets+f.height);
+	uint32_t to_alloc = f.height + (f.bytes_rle+3)/4;
+	line_offsets = new uint32_t[to_alloc];
+	rle_data = reinterpret_cast<uint8_t*>(line_offsets+f.height);
 
 	compressed = f.compression;
 	height = f.height;
@@ -144,13 +144,13 @@ void ShapeFrame::LoadU8CMPFormat(const uint8* data, uint32 size, const ConvertSh
 	yoff = f.yoff;
 
 	std::memcpy (line_offsets, f.line_offsets, f.height*4);
-	std::memcpy (const_cast<uint8*>(rle_data), f.rle_data, f.bytes_rle);
+	std::memcpy (const_cast<uint8_t*>(rle_data), f.rle_data, f.bytes_rle);
 
 	f.Free();
 }
 
 // Checks to see if the frame has a pixel at the point
-bool ShapeFrame::hasPoint(sint32 x, sint32 y) const
+bool ShapeFrame::hasPoint(int32_t x, int32_t y) const
 {
 	// Add the offset
 	x += xoff;
@@ -166,15 +166,15 @@ bool ShapeFrame::hasPoint(sint32 x, sint32 y) const
 	// is a pixel at the location.
 	// 
 
-	sint32 xpos = 0;
-	const uint8 * linedata = rle_data + line_offsets[y];
+	int32_t xpos = 0;
+	const uint8_t * linedata = rle_data + line_offsets[y];
 
 	do {
 		xpos += *linedata++;
 	  
 		if (xpos == width) break;
 
-		sint32 dlen = *linedata++;
+		int32_t dlen = *linedata++;
 		int type = 0;
 		
 		if (compressed) 
@@ -194,7 +194,7 @@ bool ShapeFrame::hasPoint(sint32 x, sint32 y) const
 }
 
 // Get the pixel at the point 
-uint8 ShapeFrame::getPixelAtPoint(sint32 x, sint32 y) const
+uint8_t ShapeFrame::getPixelAtPoint(int32_t x, int32_t y) const
 {
 	// Add the offset
 	x += xoff;
@@ -210,15 +210,15 @@ uint8 ShapeFrame::getPixelAtPoint(sint32 x, sint32 y) const
 	// is a pixel at the location. And if there is, return it
 	// 
 
-	sint32 xpos = 0;
-	const uint8 * linedata = rle_data + line_offsets[y];
+	int32_t xpos = 0;
+	const uint8_t * linedata = rle_data + line_offsets[y];
 
 	do {
 		xpos += *linedata++;
 	  
 		if (xpos == width) break;
 
-		sint32 dlen = *linedata++;
+		int32_t dlen = *linedata++;
 		int type = 0;
 		
 		if (compressed) 
@@ -250,6 +250,6 @@ void ShapeFrame::getConvertShapeFrame(ConvertShapeFrame &csf, bool need_bytes_rl
 	csf.yoff = yoff;
 	csf.line_offsets = line_offsets;
 	csf.bytes_rle = 0;
-	csf.rle_data = const_cast<uint8*>(rle_data);
+	csf.rle_data = const_cast<uint8_t*>(rle_data);
 }
 

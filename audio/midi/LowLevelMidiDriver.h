@@ -47,7 +47,7 @@ public:
 	virtual ~LowLevelMidiDriver();
 
 	// MidiDriver Implementation
-	virtual int			initMidiDriver(uint32 sample_rate, bool stereo);
+	virtual int			initMidiDriver(uint32_t sample_rate, bool stereo);
 	virtual void		destroyMidiDriver();
 	virtual int			maxSequences();
 	virtual void		setGlobalVolume(int vol);
@@ -59,16 +59,16 @@ public:
 	virtual void		setSequenceVolume(int seq_num, int vol);
 	virtual void		setSequenceSpeed(int seq_num, int speed);
 	virtual bool		isSequencePlaying(int seq_num);
-	virtual uint32		getSequenceCallbackData(int seq_num);
+	virtual uint32_t		getSequenceCallbackData(int seq_num);
 
-	virtual void		produceSamples(sint16 *samples, uint32 bytes);
+	virtual void		produceSamples(int16_t *samples, uint32_t bytes);
 
 	virtual void		loadTimbreLibrary(IDataSource*, TimbreLibraryType type);
 
 protected:
 
 	// Will be wanted by software drivers
-	uint32			sample_rate;
+	uint32_t			sample_rate;
 	bool			stereo;
 
 	//! Open the Midi Device
@@ -79,7 +79,7 @@ protected:
 	virtual void		close()=0;
 
 	//! Send a message to the Midi Device
-	virtual void		send(uint32 message)=0;
+	virtual void		send(uint32_t message)=0;
 
 	//! Send a SysEX message to the Midi Device
 	//
@@ -89,13 +89,13 @@ protected:
 	// differences is because the midi specifications can have SysEx messages that does 
 	// start with 0xF0 and don't end with 0xF7. Chances are though they will never be
 	// encountered.
-	virtual void		send_sysex(uint8 status, const uint8 *msg, uint16 length) { };
+	virtual void		send_sysex(uint8_t status, const uint8_t *msg, uint16_t length) { };
 
 	//! Increate the Thread Priority of the Play (current) thread
 	virtual void		increaseThreadPriority() { };
 
 	//! Allows LowLevelMidiDrivers to produce samples
-	virtual void		lowLevelProduceSamples(sint16 *samples, uint32 num_samples) { };
+	virtual void		lowLevelProduceSamples(int16_t *samples, uint32_t num_samples) { };
 
 	//! Yield execution of the current thread
 	virtual void		yield() { SDL_Delay(1); }
@@ -158,7 +158,7 @@ private:
 	SDL_mutex				*mutex;
 	SDL_mutex				*cbmutex;
 	SDL_cond                *cond;
-	sint32					peekComMessageType();
+	int32_t					peekComMessageType();
 	void					sendComMessage(ComMessage& message);
 	void					waitTillNoComMessages();
 	void					lockComMessage();
@@ -166,47 +166,47 @@ private:
 
 	// State
 	bool					playing[LLMD_NUM_SEQ];			// Only set by thread
-	sint32					callback_data[LLMD_NUM_SEQ];	// Only set by thread
+	int32_t					callback_data[LLMD_NUM_SEQ];	// Only set by thread
 
 	// Shared Data
 	int						global_volume;
-	uint32					xmidi_clock;					// Xmidi clock, returned by getTickCount
+	uint32_t					xmidi_clock;					// Xmidi clock, returned by getTickCount
 	int						chan_locks[16];					// Which seq a chan has been locked by
 	int						chan_map[LLMD_NUM_SEQ][16];		// Maps from locked logical chan to phyiscal
 	XMidiSequence			*sequences[LLMD_NUM_SEQ];
 	int						next_sysex;						// Time we can next send sysex at (is SDL_GetTick() value)
 
 	// Software Synth only Data
-	uint32					total_seconds;					// xmidi_clock = total_seconds*6000 
-	uint32					samples_this_second;			//		+ samples_this_second*6000/sample_rate;
-	uint32					samples_per_iteration;
+	uint32_t					total_seconds;					// xmidi_clock = total_seconds*6000 
+	uint32_t					samples_this_second;			//		+ samples_this_second*6000/sample_rate;
+	uint32_t					samples_per_iteration;
 
 	// Thread Based Only Data
 	SDL_Thread				*thread;
 
 	// Timbre Banks
 	struct MT32Timbre {
-		uint32		time_uploaded;
+		uint32_t		time_uploaded;
 		int			index;
 		bool		protect;
-		uint8		timbre[246];
+		uint8_t		timbre[246];
 	};
 	struct MT32Patch {
-		sint8		timbre_bank;			// 0-3	(group A, group B, Memory, Rhythm)
-		sint8		timbre_num;				// 0-63
-		uint8		key_shift;				// 0-48
-		uint8		fine_tune;				// 0-100 (-50 - +50)
-		uint8		bender_range;			// 0-24
-		uint8		assign_mode;			// 0-3 (POLY1, POLY2, POLY3, POLY4)
-		uint8		reverb_switch;			// 0-1 (off,on)
-		uint8		dummy;
+		int8_t		timbre_bank;			// 0-3	(group A, group B, Memory, Rhythm)
+		int8_t		timbre_num;				// 0-63
+		uint8_t		key_shift;				// 0-48
+		uint8_t		fine_tune;				// 0-100 (-50 - +50)
+		uint8_t		bender_range;			// 0-24
+		uint8_t		assign_mode;			// 0-3 (POLY1, POLY2, POLY3, POLY4)
+		uint8_t		reverb_switch;			// 0-1 (off,on)
+		uint8_t		dummy;
 	};
 	static const MT32Patch	mt32_patch_template;
 	struct MT32Rhythm {
-		uint8		timbre;					// 0-94 (M1-M64,R1-30,OFF)
-		uint8		output_level;			// 0-100
-		uint8		panpot;					// 0-14 (L-R)
-		uint8		reverb_switch;			// 0-1 (off,on)
+		uint8_t		timbre;					// 0-94 (M1-M64,R1-30,OFF)
+		uint8_t		output_level;			// 0-100
+		uint8_t		panpot;					// 0-14 (L-R)
+		uint8_t		reverb_switch;			// 0-1 (off,on)
 	};
 
 
@@ -222,7 +222,7 @@ private:
     void					uploadTimbre(int bank, int timbre);
 	void					setPatchBank(int bank, int patch);
 	void					loadRhythmTemp(int temp);
-	void					sendMT32SystemMessage(uint32 address_base, uint16 address_offset, uint32 len, const void *data);
+	void					sendMT32SystemMessage(uint32_t address_base, uint16_t address_offset, uint32_t len, const void *data);
 
 	// Shared Methods
 
@@ -241,15 +241,15 @@ private:
 	void					destroySoftwareSynth();
 
 	// XMidiSequenceHandler implementation
-	virtual void			sequenceSendEvent(uint16 sequence_id, uint32 message);
-	virtual void			sequenceSendSysEx(uint16 sequence_id, uint8 status, const uint8 *msg, uint16 length);
-	virtual uint32			getTickCount(uint16 sequence_id);
-	virtual void			handleCallbackTrigger(uint16 sequence_id, uint8 data);
+	virtual void			sequenceSendEvent(uint16_t sequence_id, uint32_t message);
+	virtual void			sequenceSendSysEx(uint16_t sequence_id, uint8_t status, const uint8_t *msg, uint16_t length);
+	virtual uint32_t			getTickCount(uint16_t sequence_id);
+	virtual void			handleCallbackTrigger(uint16_t sequence_id, uint8_t data);
 
-	int						protectChannel(uint16 sequence_id, int chan, bool protect);
-	int						lockChannel(uint16 sequence_id, int chan, bool lock);
+	int						protectChannel(uint16_t sequence_id, int chan, bool protect);
+	int						lockChannel(uint16_t sequence_id, int chan, bool lock);
 
-	int						unlockAndUnprotectChannel(uint16 sequence_id);
+	int						unlockAndUnprotectChannel(uint16_t sequence_id);
 
 	//! Mute all phyisical channels
 	void					muteAllChannels();

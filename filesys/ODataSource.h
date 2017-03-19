@@ -32,19 +32,19 @@ class ODataSource
 		ODataSource() {}
 		virtual ~ODataSource() {}
 
-		virtual void write1(uint32)=0;
-		virtual void write2(uint16)=0;
-		virtual void write2high(uint16)=0;
-		virtual void write3(uint32)=0;
-		virtual void write4(uint32)=0;
-		virtual void write4high(uint32)=0;
-		virtual void write(const void *str, uint32 num_bytes)=0;
+		virtual void write1(uint32_t)=0;
+		virtual void write2(uint16_t)=0;
+		virtual void write2high(uint16_t)=0;
+		virtual void write3(uint32_t)=0;
+		virtual void write4(uint32_t)=0;
+		virtual void write4high(uint32_t)=0;
+		virtual void write(const void *str, uint32_t num_bytes)=0;
 
-		void writeX(uint32 val, uint32 num_bytes)
+		void writeX(uint32_t val, uint32_t num_bytes)
 		{
 			assert(num_bytes > 0 && num_bytes <= 4);
-			if (num_bytes == 1) write1(static_cast<uint8>(val));
-			else if (num_bytes == 2) write2(static_cast<uint16>(val));
+			if (num_bytes == 1) write1(static_cast<uint8_t>(val));
+			else if (num_bytes == 2) write2(static_cast<uint16_t>(val));
 			else if (num_bytes == 3) write3(val);
 			else write4(val);
 		}
@@ -53,17 +53,17 @@ class ODataSource
 		{
 			// FIXME: dubious...
 			union {
-				uint32	i;
+				uint32_t	i;
 				float	f;
 			} int_float;
 			int_float.f = f;
 			write4(int_float.i);
 		}
 		
-		virtual void seek(uint32 pos)=0;
-		virtual void skip(sint32 delta)=0;
-		virtual uint32 getSize()=0;
-		virtual uint32 getPos()=0;
+		virtual void seek(uint32_t pos)=0;
+		virtual void skip(int32_t delta)=0;
+		virtual uint32_t getSize()=0;
+		virtual uint32_t getPos()=0;
 };
 
 
@@ -85,31 +85,31 @@ class OFileDataSource : public ODataSource
 
 	bool good() const { return out->good(); }
 
-	virtual void write1(uint32 val)         
+	virtual void write1(uint32_t val)         
 	{ 
 		out->put(static_cast<char> (val&0xff));
 	}
 
-	virtual void write2(uint16 val)         
+	virtual void write2(uint16_t val)         
 	{ 
 		out->put(static_cast<char> (val&0xff));
 		out->put(static_cast<char> ((val>>8)&0xff));
 	}
 
-	virtual void write2high(uint16 val)     
+	virtual void write2high(uint16_t val)     
 	{ 
 		out->put(static_cast<char> ((val>>8)&0xff));
 		out->put(static_cast<char> (val&0xff));
 	}
 
-	virtual void write3(uint32 val)         
+	virtual void write3(uint32_t val)         
 	{ 
 		out->put(static_cast<char> (val&0xff));
 		out->put(static_cast<char> ((val>>8)&0xff));
 		out->put(static_cast<char> ((val>>16)&0xff));
 	}
 
-	virtual void write4(uint32 val)         
+	virtual void write4(uint32_t val)         
 	{ 
 		out->put(static_cast<char> (val&0xff));
 		out->put(static_cast<char> ((val>>8)&0xff));
@@ -117,7 +117,7 @@ class OFileDataSource : public ODataSource
 		out->put(static_cast<char> ((val>>24)&0xff));
 	}
 
-	virtual void write4high(uint32 val)     
+	virtual void write4high(uint32_t val)     
 	{ 
 		out->put(static_cast<char> ((val>>24)&0xff));
 		out->put(static_cast<char> ((val>>16)&0xff));
@@ -125,16 +125,16 @@ class OFileDataSource : public ODataSource
 		out->put(static_cast<char> (val&0xff));
 	}
 
-	virtual void write(const void *b, uint32 len) 
+	virtual void write(const void *b, uint32_t len) 
 	{ 
 		out->write(static_cast<const char *>(b), len); 
 	}
 
-	virtual void seek(uint32 pos) { out->seekp(pos); }
+	virtual void seek(uint32_t pos) { out->seekp(pos); }
 
-	virtual void skip(sint32 pos) { out->seekp(pos, std::ios::cur); }
+	virtual void skip(int32_t pos) { out->seekp(pos, std::ios::cur); }
 
-	virtual uint32 getSize()
+	virtual uint32_t getSize()
 	{
 		long pos = out->tellp();
 		out->seekp(0, std::ios::end);
@@ -143,57 +143,57 @@ class OFileDataSource : public ODataSource
 		return len;
 	}
 
-	virtual uint32 getPos() { return out->tellp(); }
+	virtual uint32_t getPos() { return out->tellp(); }
 };
 
 class OBufferDataSource: public ODataSource
 {
 protected:
-	uint8 *buf;
-	uint8 *buf_ptr;
-	uint32 size;
+	uint8_t *buf;
+	uint8_t *buf_ptr;
+	uint32_t size;
 public:
-	OBufferDataSource(void *data, uint32 len)
+	OBufferDataSource(void *data, uint32_t len)
 	{
 		assert(data==0 || len==0);
-		buf = buf_ptr = reinterpret_cast<uint8*>(data);
+		buf = buf_ptr = reinterpret_cast<uint8_t*>(data);
 		size = len;
 	};
 	
-	void load(char *data, uint32 len)
+	void load(char *data, uint32_t len)
 	{
 		assert(data==0 || len==0);
-		buf = buf_ptr = reinterpret_cast<uint8*>(data);
+		buf = buf_ptr = reinterpret_cast<uint8_t*>(data);
 		size = len;
 	};
 	
 	virtual ~OBufferDataSource() {};
 	
-	virtual void write1(uint32 val)
+	virtual void write1(uint32_t val)
 	{
 		*buf_ptr++ = val & 0xff;
 	};
 	
-	virtual void write2(uint16 val)
+	virtual void write2(uint16_t val)
 	{
 		*buf_ptr++ = val & 0xff;
 		*buf_ptr++ = (val>>8) & 0xff;
 	};
 
-	virtual void write2high(uint16 val)
+	virtual void write2high(uint16_t val)
 	{
 		*buf_ptr++ = (val>>8) & 0xff;
 		*buf_ptr++ = val & 0xff;
 	};
 	
-	virtual void write3(uint32 val)
+	virtual void write3(uint32_t val)
 	{
 		*buf_ptr++ = val & 0xff;
 		*buf_ptr++ = (val>>8) & 0xff;
 		*buf_ptr++ = (val>>16)&0xff;
 	};
 	
-	virtual void write4(uint32 val)
+	virtual void write4(uint32_t val)
 	{
 		*buf_ptr++ = val & 0xff;
 		*buf_ptr++ = (val>>8) & 0xff;
@@ -201,7 +201,7 @@ public:
 		*buf_ptr++ = (val>>24)&0xff;
 	};
 	
-	virtual void write4high(uint32 val)
+	virtual void write4high(uint32_t val)
 	{
 		*buf_ptr++ = (val>>24)&0xff;
 		*buf_ptr++ = (val>>16)&0xff;
@@ -209,19 +209,19 @@ public:
 		*buf_ptr++ = val & 0xff;
 	};
 
-	virtual void write(const void *b, uint32 len)
+	virtual void write(const void *b, uint32_t len)
 	{
 		std::memcpy(buf_ptr, b, len);
 		buf_ptr += len;
 	};
 	
-	virtual void seek(uint32 pos) { buf_ptr = const_cast<unsigned char *>(buf)+pos; };
+	virtual void seek(uint32_t pos) { buf_ptr = const_cast<unsigned char *>(buf)+pos; };
 	
-	virtual void skip(sint32 pos) { buf_ptr += pos; };
+	virtual void skip(int32_t pos) { buf_ptr += pos; };
 	
-	virtual uint32 getSize() { return size; };
+	virtual uint32_t getSize() { return size; };
 	
-	virtual uint32 getPos() { return static_cast<uint32>(buf_ptr-buf); };
+	virtual uint32_t getPos() { return static_cast<uint32_t>(buf_ptr-buf); };
 };
 
 class ODequeDataSource : public ODataSource
@@ -236,31 +236,31 @@ class ODequeDataSource : public ODataSource
 
 	const std::deque<char> &buf() const { return out; }
 
-	virtual void write1(uint32 val)
+	virtual void write1(uint32_t val)
 	{
 		out.push_back(static_cast<char> (val&0xff));
 	}
 
-	virtual void write2(uint16 val)
+	virtual void write2(uint16_t val)
 	{
 		out.push_back(static_cast<char> (val&0xff));
 		out.push_back(static_cast<char> ((val>>8)&0xff));
 	}
 
-	virtual void write2high(uint16 val)
+	virtual void write2high(uint16_t val)
 	{
 		out.push_back(static_cast<char> ((val>>8)&0xff));
 		out.push_back(static_cast<char> (val&0xff));
 	}
 
-	virtual void write3(uint32 val)
+	virtual void write3(uint32_t val)
 	{
 		out.push_back(static_cast<char> (val&0xff));
 		out.push_back(static_cast<char> ((val>>8)&0xff));
 		out.push_back(static_cast<char> ((val>>16)&0xff));
 	}
 
-	virtual void write4(uint32 val)
+	virtual void write4(uint32_t val)
 	{
 		out.push_back(static_cast<char> (val&0xff));
 		out.push_back(static_cast<char> ((val>>8)&0xff));
@@ -268,7 +268,7 @@ class ODequeDataSource : public ODataSource
 		out.push_back(static_cast<char> ((val>>24)&0xff));
 	}
 
-	virtual void write4high(uint32 val)
+	virtual void write4high(uint32_t val)
 	{
 		out.push_back(static_cast<char> ((val>>24)&0xff));
 		out.push_back(static_cast<char> ((val>>16)&0xff));
@@ -276,14 +276,14 @@ class ODequeDataSource : public ODataSource
 		out.push_back(static_cast<char> (val&0xff));
 	}
 
-	virtual void write(const void *b, uint32 length)
+	virtual void write(const void *b, uint32_t length)
 	{
 		write(b, length, length);
 	}
 	
-	virtual void write(const void *b, uint32 length, uint32 pad_length)
+	virtual void write(const void *b, uint32_t length, uint32_t pad_length)
 	{
-		for(uint32 i=0; i<length; i++)
+		for(uint32_t i=0; i<length; i++)
 			out.push_back(static_cast<const char *>(b)[i]);
 		if(pad_length>length)
 			for(pad_length-=length; pad_length>0; --pad_length)
@@ -292,25 +292,25 @@ class ODequeDataSource : public ODataSource
 
 	virtual void clear()          { out.clear(); }
 
-	virtual void seek(uint32 /*pos*/) { /*out->seekp(pos); FIXME: Do something here. */ }
-	virtual void skip(sint32 /*pos*/) { /*out->seekp(pos, std::ios::cur); FIXME: Do something here. */ }
+	virtual void seek(uint32_t /*pos*/) { /*out->seekp(pos); FIXME: Do something here. */ }
+	virtual void skip(int32_t /*pos*/) { /*out->seekp(pos, std::ios::cur); FIXME: Do something here. */ }
 
-	virtual uint32 getSize()      { return static_cast<uint32>(out.size()); }
+	virtual uint32_t getSize()      { return static_cast<uint32_t>(out.size()); }
 	
-	virtual uint32 getPos() { return static_cast<uint32>(out.size()); /*return out->tellp(); FIXME: Do something here. */ }
+	virtual uint32_t getPos() { return static_cast<uint32_t>(out.size()); /*return out->tellp(); FIXME: Do something here. */ }
 
 };
 
 class OAutoBufferDataSource: public ODataSource
 {
 protected:
-	uint8 *buf;
-	uint8 *buf_ptr;
-	uint32 size;
-	uint32 loc;
-	uint32 allocated;
+	uint8_t *buf;
+	uint8_t *buf_ptr;
+	uint32_t size;
+	uint32_t loc;
+	uint32_t allocated;
 
-	void checkResize(uint32 num_bytes)
+	void checkResize(uint32_t num_bytes)
 	{
 		// Increment loc
 		loc+=num_bytes;
@@ -322,11 +322,11 @@ protected:
 		if (loc > allocated)
 		{
 			// The old pointer position
-			uint32 pos = static_cast<uint32>(buf_ptr-buf);
+			uint32_t pos = static_cast<uint32_t>(buf_ptr-buf);
 
 			// The new buffer and size (2 times what is needed)
 			allocated = loc*2;
-			uint8 *new_buf = new uint8[allocated];
+			uint8_t *new_buf = new uint8_t[allocated];
 
 			memcpy(new_buf, buf, size);
 			delete [] buf;
@@ -340,46 +340,46 @@ protected:
 	}
 
 public:
-	OAutoBufferDataSource(uint32 initial_len)
+	OAutoBufferDataSource(uint32_t initial_len)
 	{
 		allocated = initial_len;
 		size = 0;
 
 		// Make the min allocated size 16 bytes
 		if (allocated < 16) allocated = 16;
-		buf = buf_ptr = new uint8[allocated];
+		buf = buf_ptr = new uint8_t[allocated];
 		loc = 0;
 	};
 
 	//! Get a pointer to the data buffer.
-	const uint8 * getBuf() { return buf; }
+	const uint8_t * getBuf() { return buf; }
 
 	virtual ~OAutoBufferDataSource()
 	{
 		delete [] buf_ptr;
 	}
 	
-	virtual void write1(uint32 val)
+	virtual void write1(uint32_t val)
 	{
 		checkResize(1);
 		*buf_ptr++ = val & 0xff;
 	};
 	
-	virtual void write2(uint16 val)
+	virtual void write2(uint16_t val)
 	{
 		checkResize(2);
 		*buf_ptr++ = val & 0xff;
 		*buf_ptr++ = (val>>8) & 0xff;
 	};
 
-	virtual void write2high(uint16 val)
+	virtual void write2high(uint16_t val)
 	{
 		checkResize(2);
 		*buf_ptr++ = (val>>8) & 0xff;
 		*buf_ptr++ = val & 0xff;
 	};
 	
-	virtual void write3(uint32 val)
+	virtual void write3(uint32_t val)
 	{
 		checkResize(3);
 		*buf_ptr++ = val & 0xff;
@@ -387,7 +387,7 @@ public:
 		*buf_ptr++ = (val>>16)&0xff;
 	};
 	
-	virtual void write4(uint32 val)
+	virtual void write4(uint32_t val)
 	{
 		checkResize(4);
 		*buf_ptr++ = val & 0xff;
@@ -396,7 +396,7 @@ public:
 		*buf_ptr++ = (val>>24)&0xff;
 	};
 	
-	virtual void write4high(uint32 val)
+	virtual void write4high(uint32_t val)
 	{
 		checkResize(4);
 		*buf_ptr++ = (val>>24)&0xff;
@@ -405,14 +405,14 @@ public:
 		*buf_ptr++ = val & 0xff;
 	};
 
-	virtual void write(const void *b, uint32 len)
+	virtual void write(const void *b, uint32_t len)
 	{
 		checkResize(len);
 		std::memcpy(buf_ptr, b, len);
 		buf_ptr += len;
 	};
 	
-	virtual void seek(uint32 pos) 
+	virtual void seek(uint32_t pos) 
 	{ 
 		// No seeking past the end of the buffer
 		if (pos<=size) loc = pos;
@@ -421,7 +421,7 @@ public:
 		buf_ptr = const_cast<unsigned char *>(buf)+loc;
 	};
 	
-	virtual void skip(sint32 pos) 
+	virtual void skip(int32_t pos) 
 	{ 
 		// No seeking past the end
 		if (pos>=0)
@@ -432,16 +432,16 @@ public:
 		// No seeking past the start
 		else
 		{
-			uint32 invpos = -pos;
+			uint32_t invpos = -pos;
 			if (invpos > loc) invpos = loc;
 			loc -= invpos;
 		}
 		buf_ptr = const_cast<unsigned char *>(buf)+loc;
 	};
 	
-	virtual uint32 getSize() { return size; };
+	virtual uint32_t getSize() { return size; };
 	
-	virtual uint32 getPos() { return static_cast<uint32>(buf_ptr-buf); };
+	virtual uint32_t getPos() { return static_cast<uint32_t>(buf_ptr-buf); };
 
 	// Don't actually do anything substantial
 	virtual void clear()          

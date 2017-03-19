@@ -123,10 +123,10 @@ class FileSystem
 
 	struct MemoryFile
 	{
-		MemoryFile(const uint8* _data, const uint32 _len)
+		MemoryFile(const uint8_t* _data, const uint32_t _len)
 			: data(_data), len(_len) { } 
-		const uint8		*data;
-		const uint32	len;
+		const uint8_t		*data;
+		const uint32_t	len;
 	};
 	std::map<std::string, MemoryFile*> memoryfiles;	// Files mounted in memory
 

@@ -30,7 +30,7 @@ public:
 
 	CreditsGump();
 	CreditsGump(const std::string& text, int parskip=24,
-				uint32 _Flags = 0, sint32 layer = LAYER_MODAL);
+				uint32_t _Flags = 0, int32_t layer = LAYER_MODAL);
 	virtual ~CreditsGump(void);
 
 	// Init the gump, call after construction
@@ -44,7 +44,7 @@ public:
 	virtual void run();
 
 	// Paint the Gump
-	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
 
 	virtual bool OnKeyDown(int key, int mod);
 

@@ -24,12 +24,12 @@ class ODataSource;
 
 struct FrameID
 {
-	uint16 flexid;
-	uint32 shapenum;
-	uint32 framenum;
+	uint16_t flexid;
+	uint32_t shapenum;
+	uint32_t framenum;
 
 	FrameID() { }
-	FrameID(uint16 flex, uint32 shape, uint32 frame)
+	FrameID(uint16_t flex, uint32_t shape, uint32_t frame)
 		: flexid(flex), shapenum(shape), framenum(frame)
 		{ }
 

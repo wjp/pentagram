@@ -77,7 +77,7 @@ bool HIDManager::handleEvent(const HID_Key key, const HID_Event evn)
 
 void HIDManager::resetBindings()
 {
-	uint16 key, event;
+	uint16_t key, event;
 	std::vector<Console::ArgvType *>::iterator it;
 
 	for (key=0; key < HID_LAST; ++key)
@@ -135,7 +135,7 @@ void HIDManager::loadBindings()
 
 void HIDManager::saveBindings()
 {
-	uint16 key, event;
+	uint16_t key, event;
 	SettingManager* settings = SettingManager::get_instance();
 	Pentagram::istring section = "keys/";
 	Pentagram::istring confkey;
@@ -288,7 +288,7 @@ void HIDManager::ConCmd_save(const Console::ArgvType &argv)
 
 void HIDManager::listBindings()
 {
-	uint16 key, event;
+	uint16_t key, event;
 	Console::ArgsType command;
 
 	for (key=0; key < HID_LAST; ++key)

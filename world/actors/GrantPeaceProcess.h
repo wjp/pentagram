@@ -37,7 +37,7 @@ public:
 
 	INTRINSIC(I_castGrantPeace);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 

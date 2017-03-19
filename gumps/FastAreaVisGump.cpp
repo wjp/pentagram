@@ -33,7 +33,7 @@ FastAreaVisGump::~FastAreaVisGump(void)
 {
 }
 
-void FastAreaVisGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void FastAreaVisGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	World *world = World::get_instance();
 	CurrentMap *currentmap = world->getCurrentMap();
@@ -63,9 +63,9 @@ void FastAreaVisGump::ConCmd_toggle(const Console::ArgvType &argv)
 	}
 }
 
-uint16 FastAreaVisGump::TraceObjId(int mx, int my)
+uint16_t FastAreaVisGump::TraceObjId(int mx, int my)
 {
-	uint16 objid = Gump::TraceObjId(mx,my);
+	uint16_t objid = Gump::TraceObjId(mx,my);
 
 	if (!objid || objid == 65535)
 		if (PointOnGump(mx,my))

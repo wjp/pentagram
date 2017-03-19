@@ -29,12 +29,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // later resumed.
 #define XMIDISEQUENCER_NO_CATCHUP_WAIT_OVER 1200
 
-const uint16	XMidiSequence::ChannelShadow::centre_value = 0x2000;
-const uint8		XMidiSequence::ChannelShadow::fine_value = centre_value & 127;
-const uint8		XMidiSequence::ChannelShadow::coarse_value = centre_value >> 7;
-const uint16	XMidiSequence::ChannelShadow::combined_value = (coarse_value << 8) | fine_value;
+const uint16_t	XMidiSequence::ChannelShadow::centre_value = 0x2000;
+const uint8_t		XMidiSequence::ChannelShadow::fine_value = centre_value & 127;
+const uint8_t		XMidiSequence::ChannelShadow::coarse_value = centre_value >> 7;
+const uint16_t	XMidiSequence::ChannelShadow::combined_value = (coarse_value << 8) | fine_value;
 
-XMidiSequence::XMidiSequence(XMidiSequenceHandler *Handler, uint16 seq_id, XMidiEventList *events, 
+XMidiSequence::XMidiSequence(XMidiSequenceHandler *Handler, uint16_t seq_id, XMidiEventList *events, 
 						bool Repeat, int volume, int branch) :
 	handler(Handler), sequence_id(seq_id), evntlist(events), event(0), 
 	repeat(Repeat),  notes_on(), last_tick(0), loop_num(-1), vol_multi(volume),
@@ -151,8 +151,8 @@ int XMidiSequence::playEvent()
 	if (speed <= 0 || paused) return 1;
 
 	// Play all waiting notes;
-	sint32 aim = ((event->time-last_tick)*5000)/speed;
-	sint32 diff = aim - getTime ();
+	int32_t aim = ((event->time-last_tick)*5000)/speed;
+	int32_t diff = aim - getTime ();
 
 	if (diff > 5) return 1;
 
@@ -261,23 +261,23 @@ int XMidiSequence::playEvent()
 	return 1; 
 }
 
-sint32 XMidiSequence::timeTillNext()
+int32_t XMidiSequence::timeTillNext()
 {
-	sint32 sixthoToNext = 0x7FFFFFFF; // Int max
+	int32_t sixthoToNext = 0x7FFFFFFF; // Int max
 
 	// Time remaining on notes currently being played
 	XMidiEvent *note;
 	note = notes_on.GetNotes();
 	if (note) {
-		sint32 diff = note->ex.note_on.note_time - getRealTime();
+		int32_t diff = note->ex.note_on.note_time - getRealTime();
 		if (diff < sixthoToNext) sixthoToNext = diff; 
 	}
 
 	// Time till the next event, if we are playing
 	if (speed > 0 && event && !paused)
 	{
-		sint32 aim = ((event->time-last_tick)*5000)/speed;
-		sint32 diff = aim - getTime ();
+		int32_t aim = ((event->time-last_tick)*5000)/speed;
+		int32_t diff = aim - getTime ();
 
 		if (diff < sixthoToNext) sixthoToNext = diff;
 	}
@@ -288,7 +288,7 @@ void XMidiSequence::updateShadowForEvent(XMidiEvent *event)
 {
 	unsigned int chan = event->status & 0xF;
 	unsigned int type = event->status >> 4;
-	uint32 data = event->data[0] | (event->data[1] << 8);
+	uint32_t data = event->data[0] | (event->data[1] << 8);
 
 	// Shouldn't be required. XMidi should automatically detect all anyway
 	//evntlist->chan_mask |= 1 << chan; 
@@ -358,7 +358,7 @@ void XMidiSequence::sendEvent()
 {
 	//unsigned int chan = event->status & 0xF;
 	unsigned int type = event->status >> 4;
-	uint32 data = event->data[0] | (event->data[1] << 8);
+	uint32_t data = event->data[0] | (event->data[1] << 8);
 
 	// Shouldn't be required. XMidi should automatically detect all anyway
 	//evntlist->chan_mask |= 1 << chan; 
@@ -447,7 +447,7 @@ void XMidiSequence::setVolume(int new_volume)
 
 	// Only update used channels
 	for (int i = 0; i < 16; i++) if (evntlist->chan_mask & (1 << i)) {
-		uint32 message = i;
+		uint32_t message = i;
 		message |= MIDI_STATUS_CONTROLLER << 4;
 		message |= 7 << 8;
 		message |= ((shadows[i].volumes[0] * vol_multi)/0xFF)<<16;

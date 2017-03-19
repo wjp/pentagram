@@ -26,8 +26,8 @@ namespace Pentagram {
 
 template<class uintX, class Manip, class uintS> class BilinearScalerInternal {
 public:
-static bool ScaleBilinear( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
-				uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
+static bool ScaleBilinear( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
+				uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
 {
 	// Must be multiples of 4!!!
 	if ((sh&3) || (sw&3)) return false;
@@ -51,25 +51,25 @@ static bool ScaleBilinear( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32
 BilinearScaler::BilinearScaler() : Scaler()
 {
 #ifdef COMPILE_ALL_BILINEAR_SCALERS
-	Scale16Nat = BilinearScalerInternal<uint16, Manip_Nat2Nat_16, uint16>::ScaleBilinear;
-	Scale16Sta = BilinearScalerInternal<uint16, Manip_Sta2Nat_16, uint32>::ScaleBilinear;
+	Scale16Nat = BilinearScalerInternal<uint16_t, Manip_Nat2Nat_16, uint16_t>::ScaleBilinear;
+	Scale16Sta = BilinearScalerInternal<uint16_t, Manip_Sta2Nat_16, uint32_t>::ScaleBilinear;
 
-	Scale32Nat = BilinearScalerInternal<uint32, Manip_Nat2Nat_32, uint32>::ScaleBilinear;
-	Scale32Sta = BilinearScalerInternal<uint32, Manip_Sta2Nat_32, uint32>::ScaleBilinear;
-	Scale32_A888 = BilinearScalerInternal<uint32, Manip_32_A888, uint32>::ScaleBilinear;
-	Scale32_888A = BilinearScalerInternal<uint32, Manip_32_888A, uint32>::ScaleBilinear;
+	Scale32Nat = BilinearScalerInternal<uint32_t, Manip_Nat2Nat_32, uint32_t>::ScaleBilinear;
+	Scale32Sta = BilinearScalerInternal<uint32_t, Manip_Sta2Nat_32, uint32_t>::ScaleBilinear;
+	Scale32_A888 = BilinearScalerInternal<uint32_t, Manip_32_A888, uint32_t>::ScaleBilinear;
+	Scale32_888A = BilinearScalerInternal<uint32_t, Manip_32_888A, uint32_t>::ScaleBilinear;
 #else
 	Scale16Nat = 0;
 	Scale16Sta = 0;
 
-	Scale32Nat = BilinearScalerInternal<uint32, Manip_Nat2Nat_32, uint32>::ScaleBilinear;
-	Scale32Sta = BilinearScalerInternal<uint32, Manip_Sta2Nat_32, uint32>::ScaleBilinear;
+	Scale32Nat = BilinearScalerInternal<uint32_t, Manip_Nat2Nat_32, uint32_t>::ScaleBilinear;
+	Scale32Sta = BilinearScalerInternal<uint32_t, Manip_Sta2Nat_32, uint32_t>::ScaleBilinear;
 	Scale32_A888 = Scale32Nat;
 	Scale32_888A = Scale32Nat;
 #endif
 }
 
-const uint32 BilinearScaler::ScaleBits() const { return 0xFFFFFFFF; }
+const uint32_t BilinearScaler::ScaleBits() const { return 0xFFFFFFFF; }
 const bool BilinearScaler::ScaleArbitrary() const { return true; }
 
 const char *BilinearScaler::ScalerName() const { return "bilinear"; }
@@ -82,25 +82,25 @@ const BilinearScaler bilinear_scaler;
 GC_BilinearScaler::GC_BilinearScaler() : Scaler()
 {
 #ifdef COMPILE_ALL_BILINEAR_SCALERS
-	Scale16Nat = BilinearScalerInternal<uint16, Manip_Nat2Nat_16_GC, uint16>::ScaleBilinear;
-	Scale16Sta = BilinearScalerInternal<uint16, Manip_Sta2Nat_16_GC, uint32>::ScaleBilinear;
+	Scale16Nat = BilinearScalerInternal<uint16_t, Manip_Nat2Nat_16_GC, uint16_t>::ScaleBilinear;
+	Scale16Sta = BilinearScalerInternal<uint16_t, Manip_Sta2Nat_16_GC, uint32_t>::ScaleBilinear;
 
-	Scale32Nat = BilinearScalerInternal<uint32, Manip_Nat2Nat_32_GC, uint32>::ScaleBilinear;
-	Scale32Sta = BilinearScalerInternal<uint32, Manip_Sta2Nat_32_GC, uint32>::ScaleBilinear;
-	Scale32_A888 = BilinearScalerInternal<uint32, Manip_32_A888_GC, uint32>::ScaleBilinear;
-	Scale32_888A = BilinearScalerInternal<uint32, Manip_32_888A_GC, uint32>::ScaleBilinear;
+	Scale32Nat = BilinearScalerInternal<uint32_t, Manip_Nat2Nat_32_GC, uint32_t>::ScaleBilinear;
+	Scale32Sta = BilinearScalerInternal<uint32_t, Manip_Sta2Nat_32_GC, uint32_t>::ScaleBilinear;
+	Scale32_A888 = BilinearScalerInternal<uint32_t, Manip_32_A888_GC, uint32_t>::ScaleBilinear;
+	Scale32_888A = BilinearScalerInternal<uint32_t, Manip_32_888A_GC, uint32_t>::ScaleBilinear;
 #else
 	Scale16Nat = 0;
 	Scale16Sta = 0;
 
-	Scale32Nat = BilinearScalerInternal<uint32, Manip_Nat2Nat_32_GC, uint32>::ScaleBilinear;
-	Scale32Sta = BilinearScalerInternal<uint32, Manip_Sta2Nat_32_GC, uint32>::ScaleBilinear;
+	Scale32Nat = BilinearScalerInternal<uint32_t, Manip_Nat2Nat_32_GC, uint32_t>::ScaleBilinear;
+	Scale32Sta = BilinearScalerInternal<uint32_t, Manip_Sta2Nat_32_GC, uint32_t>::ScaleBilinear;
 	Scale32_A888 = Scale32Nat;
 	Scale32_888A = Scale32Nat;
 #endif
 }
 
-const uint32 GC_BilinearScaler::ScaleBits() const { return 0xFFFFFFFF; }
+const uint32_t GC_BilinearScaler::ScaleBits() const { return 0xFFFFFFFF; }
 const bool GC_BilinearScaler::ScaleArbitrary() const { return true; }
 
 const char *GC_BilinearScaler::ScalerName() const { return "gc-bilinear"; }

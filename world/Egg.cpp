@@ -39,7 +39,7 @@ Egg::~Egg()
 
 }
 
-uint16 Egg::hatch()
+uint16_t Egg::hatch()
 {
 	if (hatched) return 0;
 	hatched = true;
@@ -63,11 +63,11 @@ void Egg::saveData(ODataSource* ods)
 {
 	Item::saveData(ods);
 
-	uint8 h = hatched ? 1 :  0;
+	uint8_t h = hatched ? 1 :  0;
 	ods->write1(h);
 }
 
-bool Egg::loadData(IDataSource* ids, uint32 version)
+bool Egg::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!Item::loadData(ids, version)) return false;
 
@@ -76,43 +76,43 @@ bool Egg::loadData(IDataSource* ids, uint32 version)
 	return true;
 }
 
-uint32 Egg::I_getEggXRange(const uint8* args, unsigned int /*argsize*/)
+uint32_t Egg::I_getEggXRange(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_EGG_FROM_PTR(egg);
 	if (!egg) return 0;
 
-	return static_cast<uint32>(egg->getXRange());
+	return static_cast<uint32_t>(egg->getXRange());
 }
 
-uint32 Egg::I_getEggYRange(const uint8* args, unsigned int /*argsize*/)
+uint32_t Egg::I_getEggYRange(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_EGG_FROM_PTR(egg);
 	if (!egg) return 0;
 
-	return static_cast<uint32>(egg->getYRange());
+	return static_cast<uint32_t>(egg->getYRange());
 }
 
-uint32 Egg::I_setEggXRange(const uint8* args, unsigned int /*argsize*/)
+uint32_t Egg::I_setEggXRange(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_EGG_FROM_PTR(egg);
-	ARG_UINT16(xr);
+	ARG_uint16_t(xr);
 	if (!egg) return 0;
 
 	egg->setXRange(xr);
 	return 0;
 }
 
-uint32 Egg::I_setEggYRange(const uint8* args, unsigned int /*argsize*/)
+uint32_t Egg::I_setEggYRange(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_EGG_FROM_PTR(egg);
-	ARG_UINT16(yr);
+	ARG_uint16_t(yr);
 	if (!egg) return 0;
 
 	egg->setYRange(yr);
 	return 0;
 }
 
-uint32 Egg::I_getEggId(const uint8* args, unsigned int /*argsize*/)
+uint32_t Egg::I_getEggId(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_EGG_FROM_PTR(egg);
 	if (!egg) return 0;
@@ -120,10 +120,10 @@ uint32 Egg::I_getEggId(const uint8* args, unsigned int /*argsize*/)
 	return egg->getMapNum();
 }
 
-uint32 Egg::I_setEggId(const uint8* args, unsigned int /*argsize*/)
+uint32_t Egg::I_setEggId(const uint8_t* args, unsigned int /*argsize*/)
 {
 	ARG_EGG_FROM_PTR(egg);
-	ARG_UINT16(eggid);
+	ARG_uint16_t(eggid);
 	if (!egg) return 0;
 
 	egg->setMapNum(eggid);

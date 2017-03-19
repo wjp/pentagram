@@ -105,7 +105,7 @@ bool TexturePNG::Read(IDataSource *ds)
 		return false;
 	}
 
-	buffer = new uint32[width*height];
+	buffer = new uint32_t[width*height];
 	if (!buffer) {
 		png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
 		return false;	   

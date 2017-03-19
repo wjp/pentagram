@@ -35,7 +35,7 @@ AskGump::AskGump()
 
 }
 
-AskGump::AskGump(uint16 owner, UCList *answers_) : 
+AskGump::AskGump(uint16_t owner, UCList *answers_) : 
 	ItemRelativeGump(0, 0, 0, 0, owner, FLAG_KEEP_VISIBLE, LAYER_ABOVE_NORMAL),
 	answers(new UCList(2))
 {
@@ -105,11 +105,11 @@ void AskGump::InitGump(Gump* newparent, bool take_focus)
 	ItemRelativeGump::InitGump(newparent, take_focus);
 }
 
-void AskGump::ChildNotify(Gump *child, uint32 message)
+void AskGump::ChildNotify(Gump *child, uint32_t message)
 {
 	if (message == ButtonWidget::BUTTON_CLICK) 
 	{
-		uint16 s = answers->getStringIndex(child->GetIndex());
+		uint16_t s = answers->getStringIndex(child->GetIndex());
 		process_result = s;
 
 		// answers' strings are going to be deleted, so make sure
@@ -127,7 +127,7 @@ void AskGump::saveData(ODataSource* ods)
 	answers->save(ods);
 }
 
-bool AskGump::loadData(IDataSource* ids, uint32 version)
+bool AskGump::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!ItemRelativeGump::loadData(ids, version)) return false;
 

@@ -35,9 +35,9 @@ class CameraProcess : public Process
 {
 public:
 	CameraProcess();
-	CameraProcess(uint16 itemnum);							// Follow item/Do nothing
-	CameraProcess(sint32 x, sint32 y, sint32 z);				// Goto location
-	CameraProcess(sint32 x, sint32 y, sint32 z, sint32 time);	// Scroll to location
+	CameraProcess(uint16_t itemnum);							// Follow item/Do nothing
+	CameraProcess(int32_t x, int32_t y, int32_t z);				// Goto location
+	CameraProcess(int32_t x, int32_t y, int32_t z, int32_t time);	// Scroll to location
 
 	virtual ~CameraProcess();
 
@@ -47,12 +47,12 @@ public:
 	virtual void run();
 
 	// You will notice that this isn't the same as how Item::GetLerped works
-	void GetLerped(sint32 &x, sint32 &y, sint32 &z, sint32 factor, bool noupdate=false);
+	void GetLerped(int32_t &x, int32_t &y, int32_t &z, int32_t factor, bool noupdate=false);
 
 	//! Find the roof above the camera. 
 	//! \param factor Interpolation factor for this frame
 	//! \return 0 if no roof found, objid of roof if found
-	uint16 FindRoof(sint32 factor);
+	uint16_t FindRoof(int32_t factor);
 
 	INTRINSIC(I_setCenterOn);
 	INTRINSIC(I_move_to);
@@ -60,12 +60,12 @@ public:
 	INTRINSIC(I_startQuake);
 	INTRINSIC(I_stopQuake);
 
-	static void				GetCameraLocation(sint32 &x, sint32 &y, sint32 &z);
+	static void				GetCameraLocation(int32_t &x, int32_t &y, int32_t &z);
 	static CameraProcess*	GetCameraProcess() { return camera; }
-	static uint16			SetCameraProcess(CameraProcess *);	// Set the current camera process. Adds process. Return PID
+	static uint16_t			SetCameraProcess(CameraProcess *);	// Set the current camera process. Adds process. Return PID
 	static void				ResetCameraProcess();
 
-	static void				SetEarthquake(sint32 e) { 
+	static void				SetEarthquake(int32_t e) { 
 		earthquake = e; 
 		if (!e)  eq_x = eq_y = 0;
 	}
@@ -74,21 +74,21 @@ public:
 
 	virtual void terminate();	// Terminate NOW!
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 private:
 	virtual void saveData(ODataSource* ods);
 
-	sint32 sx, sy, sz;
-	sint32 ex, ey, ez;
-	sint32 time;
-	sint32 elapsed;
-	uint16 itemnum;
+	int32_t sx, sy, sz;
+	int32_t ex, ey, ez;
+	int32_t time;
+	int32_t elapsed;
+	uint16_t itemnum;
 
-	sint32 last_framenum;
+	int32_t last_framenum;
 
 	static CameraProcess	*camera;
-	static sint32 earthquake;
-	static sint32 eq_x, eq_y;
+	static int32_t earthquake;
+	static int32_t eq_x, eq_y;
 };
 
 #endif //CAMERAPROCESS_H

@@ -31,15 +31,15 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	AskGump();
-	AskGump(uint16 owner, UCList *answers);
+	AskGump(uint16_t owner, UCList *answers);
 	virtual	~AskGump();
 
 	// Init the gump, call after construction
 	virtual void		InitGump(Gump* newparent, bool take_focus=true);
 
-	virtual void		ChildNotify(Gump *child, uint32 message);
+	virtual void		ChildNotify(Gump *child, uint32_t message);
 
-	bool loadData(IDataSource* ids, uint32 version);
+	bool loadData(IDataSource* ids, uint32_t version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

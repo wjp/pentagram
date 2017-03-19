@@ -32,7 +32,7 @@ TargetedAnimProcess::TargetedAnimProcess() : ActorAnimProcess()
 
 }
 
-TargetedAnimProcess::TargetedAnimProcess(Actor* actor_, Animation::Sequence action, uint32 dir_, sint32 coords[3]) : ActorAnimProcess(actor_, action, dir_)
+TargetedAnimProcess::TargetedAnimProcess(Actor* actor_, Animation::Sequence action, uint32_t dir_, int32_t coords[3]) : ActorAnimProcess(actor_, action, dir_)
 {
 	x = coords[0];
 	y = coords[1];
@@ -53,13 +53,13 @@ void TargetedAnimProcess::saveData(ODataSource* ods)
 {
 	ActorAnimProcess::saveData(ods);
 
-	ods->write4(static_cast<uint32>(x));
-	ods->write4(static_cast<uint32>(y));
-	ods->write4(static_cast<uint32>(z));
+	ods->write4(static_cast<uint32_t>(x));
+	ods->write4(static_cast<uint32_t>(y));
+	ods->write4(static_cast<uint32_t>(z));
 
 }
 
-bool TargetedAnimProcess::loadData(IDataSource* ids, uint32 version)
+bool TargetedAnimProcess::loadData(IDataSource* ids, uint32_t version)
 {
 	if (!ActorAnimProcess::loadData(ids, version)) return false;
 

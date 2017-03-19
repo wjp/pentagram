@@ -37,7 +37,7 @@ CreditsGump::CreditsGump()
 }
 
 CreditsGump::CreditsGump(const std::string& text_, int parskip_,
-						 uint32 _Flags, sint32 layer)
+						 uint32_t _Flags, int32_t layer)
 	: ModalGump(0, 0, 320, 200, 0, _Flags, layer)
 {
 	text = text_;
@@ -343,7 +343,7 @@ void CreditsGump::run()
 	}
 }
 
-void CreditsGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
+void CreditsGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 {
 	surf->Fill32(0xFF000000,0,0,320,200); // black background
 	surf->Fill32(0xFFD43030,64,41,192,1); // line between title and scroller

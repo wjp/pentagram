@@ -49,17 +49,17 @@ public:
 
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
 
-	virtual void PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled);
-	virtual void PaintChildren(RenderSurface *surf, sint32 lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface *surf, int32_t lerp_factor, bool scaled);
+	virtual void PaintChildren(RenderSurface *surf, int32_t lerp_factor, bool scaled);
 
-	virtual void ChildNotify(Gump *child, uint32 message);
+	virtual void ChildNotify(Gump *child, uint32_t message);
 
 	virtual bool OnKeyDown(int key, int mod);
 
 	virtual void run();
 
 #if 0
-	virtual uint16 TraceObjId(int mx, int my);
+	virtual uint16_t TraceObjId(int mx, int my);
 
 	virtual bool StartDraggingChild(Gump* gump, int mx, int my);
 	virtual void DraggingChild(Gump* gump, int mx, int my);
