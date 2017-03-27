@@ -116,6 +116,13 @@ class IDataSource
 
 		/* SDL_RWops functions: */
 
+		static int64_t rw_size(SDL_RWops *context)
+		{
+			IDataSource*ids = static_cast<IDataSource*>
+				(context->hidden.unknown.data1);
+			return ids->getSize();
+		}
+
 		static int64_t rw_seek(SDL_RWops *context, int64_t offset, int whence)
 		{
 			IDataSource*ids = static_cast<IDataSource*>
@@ -162,6 +169,7 @@ class IDataSource
 		//! It will delete the IDataSource (and itself) when closed.
 		SDL_RWops* getRWops() {
 			SDL_RWops* rwops = SDL_AllocRW();
+			rwops->size = rw_size;
 			rwops->seek = rw_seek;
 			rwops->read = rw_read;
 			rwops->write = rw_write;
