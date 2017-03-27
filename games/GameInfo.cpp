@@ -194,7 +194,7 @@ void GameInfo::save(ODataSource* ods)
 	ods->write(d.c_str(), d.size());
 }
 
-bool GameInfo::load(IDataSource* ids, uint32_t version)
+bool GameInfo::load(IDataSource* ids, uint32 version)
 {
 	std::string s;
 	std::vector<std::string> parts;
@@ -231,7 +231,7 @@ bool GameInfo::load(IDataSource* ids, uint32_t version)
 		buf[1] = parts[3][2*i+1];
 		buf[2] = 0;
 		long x = std::strtol(buf, 0, 16);
-		md5[i] = static_cast<uint8_t>(x);
+		md5[i] = static_cast<uint8>(x);
 	}
 
 	return true;

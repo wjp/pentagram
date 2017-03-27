@@ -96,7 +96,7 @@ void PentagramMenuGump::InitGump(Gump* newparent, bool take_focus)
 	delete ds;
 }
 
-void PentagramMenuGump::PaintThis(RenderSurface *surf, int32_t lerp_factor, bool /*scaled*/)
+void PentagramMenuGump::PaintThis(RenderSurface *surf, sint32 lerp_factor, bool /*scaled*/)
 {
 	int w = dims.w, h = dims.h;
 #if 1
@@ -104,7 +104,7 @@ void PentagramMenuGump::PaintThis(RenderSurface *surf, int32_t lerp_factor, bool
 	for (int i = 0; i < h; i+=4) {
 		unsigned int r = (140 * i)/h;
 		unsigned int gb = (21 * i)/h;
-		uint32_t col = 0xFF000000 + (r << 16) + (gb << 8) + gb;
+		uint32 col = 0xFF000000 + (r << 16) + (gb << 8) + gb;
 		surf->Fill32(col, 0, i, w, 4);
 	}
 #else
@@ -118,7 +118,7 @@ void PentagramMenuGump::PaintThis(RenderSurface *surf, int32_t lerp_factor, bool
 	surf->Blit(titleImage, 0,0, titleImage->width, titleImage->height, 200, 6);
 }
 
-void PentagramMenuGump::PaintChildren(RenderSurface *surf, int32_t lerp_factor, bool scaled)
+void PentagramMenuGump::PaintChildren(RenderSurface *surf, sint32 lerp_factor, bool scaled)
 {
 	// Iterate all children
 	std::list<Gump*>::iterator it = children.begin();
@@ -147,7 +147,7 @@ void PentagramMenuGump::PaintChildren(RenderSurface *surf, int32_t lerp_factor, 
 }
 
 
-void PentagramMenuGump::ChildNotify(Gump *child, uint32_t message)
+void PentagramMenuGump::ChildNotify(Gump *child, uint32 message)
 {
 	if (child->IsOfType<GameWidget>()) {
 

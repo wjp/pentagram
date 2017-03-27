@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class SegmentedAllocator: public Allocator
 {
 public:
-	SegmentedAllocator(size_t nodeCapacity, uint32_t nodes);
+	SegmentedAllocator(size_t nodeCapacity, uint32 nodes);
 	virtual ~SegmentedAllocator();
 
 	ENABLE_RUNTIME_CLASSTYPE();
@@ -45,7 +45,7 @@ private:
 	std::vector<SegmentedPool *> pools;
 
 	size_t nodeCapacity;
-	uint32_t nodes;
+	uint32 nodes;
 };
 
 #endif

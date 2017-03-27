@@ -66,10 +66,10 @@ void ConsoleGump::RenderSurfaceChanged()
 	Gump::RenderSurfaceChanged();
 }
 
-void ConsoleGump::PaintThis(RenderSurface *surf, int32_t lerp_factor, bool scaled)
+void ConsoleGump::PaintThis(RenderSurface *surf, sint32 lerp_factor, bool scaled)
 {
 	int h = dims.h;
-	uint32_t next_frame = scroll_frame + 1;
+	uint32 next_frame = scroll_frame + 1;
 	Gump::PaintThis(surf,lerp_factor, scaled);
 
 	switch (scroll_state)
@@ -243,7 +243,7 @@ void ConsoleGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to save ConsoleGump");
 }
 
-bool ConsoleGump::loadData(IDataSource* ids, uint32_t version)
+bool ConsoleGump::loadData(IDataSource* ids, uint32 version)
 {
 	CANT_HAPPEN_MSG("Trying to save ConsoleGump");
 

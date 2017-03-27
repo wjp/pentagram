@@ -34,16 +34,16 @@ public:
 	~SoundFlex();
 
 	//! Get an audiosample
-	Pentagram::AudioSample * getSample(uint32_t index)
+	Pentagram::AudioSample * getSample(uint32 index)
 	{
 		if (index >= count) return 0;
 		cache(index);
 		return samples[index];
 	}
 
-	virtual void cache(uint32_t index);
-	virtual void uncache(uint32_t index);
-	virtual bool isCached(uint32_t index);
+	virtual void cache(uint32 index);
+	virtual void uncache(uint32 index);
+	virtual bool isCached(uint32 index);
 
 private:
 	Pentagram::AudioSample		**samples;

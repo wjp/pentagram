@@ -28,36 +28,36 @@ public:
 	NamedArchiveFile() : indexCount(0) { }
 	virtual ~NamedArchiveFile() { }
 
-	virtual bool exists(uint32_t index) {
+	virtual bool exists(uint32 index) {
 		std::string name;
 		return (indexToName(index, name));
 	}
 	virtual bool exists(const std::string& name)=0;
 
-	virtual uint8_t* getObject(uint32_t index, uint32_t* size=0) {
+	virtual uint8* getObject(uint32 index, uint32* size=0) {
 		std::string name;
 		if (!indexToName(index, name)) return 0;
 		return getObject(name, size);
 	}
-	virtual uint8_t* getObject(const std::string& name, uint32_t* size=0)=0;
+	virtual uint8* getObject(const std::string& name, uint32* size=0)=0;
 
-	virtual uint32_t getSize(uint32_t index) {
+	virtual uint32 getSize(uint32 index) {
 		std::string name;
 		if (!indexToName(index, name)) return 0;
 		return getSize(name);
 	}
-	virtual uint32_t getSize(const std::string& name)=0;
+	virtual uint32 getSize(const std::string& name)=0;
 
-	virtual uint32_t getCount()=0;
+	virtual uint32 getCount()=0;
 
-	virtual uint32_t getIndexCount() { return indexCount; }
+	virtual uint32 getIndexCount() { return indexCount; }
 
 	virtual bool isIndexed() const { return false; }
 	virtual bool isNamed() const { return true; }
 
 protected:
-	bool indexToName(uint32_t index, std::string& name) {
-		std::map<uint32_t, std::string>::iterator iter;
+	bool indexToName(uint32 index, std::string& name) {
+		std::map<uint32, std::string>::iterator iter;
 		iter = indexedNames.find(index);
 		if (iter == indexedNames.end()) return false;
 		name = iter->second;
@@ -65,7 +65,7 @@ protected:
 	}
 
 	void storeIndexedName(const std::string& name) {
-		uint32_t index;
+		uint32 index;
 		bool hasIndex = extractIndexFromName(name, index);
 		if (hasIndex) {
 			indexedNames[index] = name;
@@ -73,8 +73,8 @@ protected:
 		}
 	}
 
-	std::map<uint32_t, std::string> indexedNames;
-	uint32_t indexCount;
+	std::map<uint32, std::string> indexedNames;
+	uint32 indexCount;
 };
 
 

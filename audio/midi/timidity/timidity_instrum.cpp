@@ -93,20 +93,20 @@ static void free_bank(int dr, int b)
       }
 }
 
-static int32_t convert_envelope_rate(uint8_t rate)
+static sint32 convert_envelope_rate(uint8 rate)
 {
-  int32_t r;
+  sint32 r;
 
   r=3-((rate>>6) & 0x3);
   r*=3;
-  r = (int32_t)(rate & 0x3f) << r; /* 6.9 fixed point */
+  r = (sint32)(rate & 0x3f) << r; /* 6.9 fixed point */
 
   /* 15.15 fixed point. */
   return (((r * 44100) / play_mode->rate) * control_ratio) 
     << ((fast_decay) ? 10 : 9);
 }
 
-static int32_t convert_envelope_offset(uint8_t offset)
+static sint32 convert_envelope_offset(uint8 offset)
 {
   /* This is not too good... Can anyone tell me what these values mean?
      Are they GUS-style "exponential" volumes? And what does that mean? */
@@ -115,7 +115,7 @@ static int32_t convert_envelope_offset(uint8_t offset)
   return offset << (7+15);
 }
 
-static int32_t convert_tremolo_sweep(uint8_t sweep)
+static sint32 convert_tremolo_sweep(uint8 sweep)
 {
   if (!sweep)
     return 0;
@@ -125,13 +125,13 @@ static int32_t convert_tremolo_sweep(uint8_t sweep)
       (play_mode->rate * sweep);
 }
 
-static int32_t convert_vibrato_sweep(uint8_t sweep, int32_t vib_control_ratio)
+static sint32 convert_vibrato_sweep(uint8 sweep, sint32 vib_control_ratio)
 {
   if (!sweep)
     return 0;
 
   return
-    (int32_t) (FSCALE((double) (vib_control_ratio) * SWEEP_TUNING, SWEEP_SHIFT)
+    (sint32) (FSCALE((double) (vib_control_ratio) * SWEEP_TUNING, SWEEP_SHIFT)
 	     / (double)(play_mode->rate * sweep));
 
   /* this was overflowing with seashore.pat
@@ -140,14 +140,14 @@ static int32_t convert_vibrato_sweep(uint8_t sweep, int32_t vib_control_ratio)
       (play_mode->rate * sweep); */
 }
 
-static int32_t convert_tremolo_rate(uint8_t rate)
+static sint32 convert_tremolo_rate(uint8 rate)
 {
   return
     ((SINE_CYCLE_LENGTH * control_ratio * rate) << RATE_SHIFT) /
       (TREMOLO_RATE_TUNING * play_mode->rate);
 }
 
-static int32_t convert_vibrato_rate(uint8_t rate)
+static sint32 convert_vibrato_rate(uint8 rate)
 {
   /* Return a suitable vibrato_control_ratio value */
   return
@@ -155,9 +155,9 @@ static int32_t convert_vibrato_rate(uint8_t rate)
       (rate * 2 * VIBRATO_SAMPLE_INCREMENTS);
 }
 
-static void reverse_data(int16_t *sp, int32_t ls, int32_t le)
+static void reverse_data(sint16 *sp, sint32 ls, sint32 le)
 {
-  int16_t s, *ep=sp+le;
+  sint16 s, *ep=sp+le;
   sp+=ls;
   le-=ls;
   le/=2;
@@ -187,7 +187,7 @@ static Instrument *load_instrument(char *name, int percussion,
   Instrument *ip;
   Sample *sp;
   FILE *fp;
-  uint8_t tmp[1024];
+  uint8 tmp[1024];
   int i,j,noluck=0;
 #ifdef PATCH_EXT_LIST
   static const char *patch_ext[] = PATCH_EXT_LIST;
@@ -260,10 +260,10 @@ static Instrument *load_instrument(char *name, int percussion,
   for (i=0; i<ip->samples; i++)
     {
 
-      uint8_t fractions;
-      int32_t tmplong;
-      uint16_t tmpshort;
-      uint8_t tmpchar;
+      uint8 fractions;
+      sint32 tmplong;
+      uint16 tmpshort;
+      uint8 tmpchar;
 
 #define READ_CHAR(thing) \
       if (1 != fread(&tmpchar, 1, 1, fp)) goto fail; \
@@ -304,7 +304,7 @@ static Instrument *load_instrument(char *name, int percussion,
       if (panning==-1)
 	sp->panning = (tmp[0] * 8 + 4) & 0x7f;
       else
-	sp->panning=(uint8_t)(panning & 0x7F);
+	sp->panning=(uint8)(panning & 0x7F);
 
       /* envelope, tremolo, and vibrato */
       if (18 != fread(tmp, 1, 18, fp)) goto fail; 
@@ -352,7 +352,7 @@ static Instrument *load_instrument(char *name, int percussion,
 
       /* Mark this as a fixed-pitch instrument if such a deed is desired. */
       if (note_to_use!=-1)
-	sp->note_to_use=(uint8_t)(note_to_use);
+	sp->note_to_use=(uint8)(note_to_use);
       else
 	sp->note_to_use=0;
       
@@ -426,13 +426,13 @@ static Instrument *load_instrument(char *name, int percussion,
       
       if (!(sp->modes & MODES_16BIT)) /* convert to 16-bit data */
 	{
-	  int32_t i=sp->data_length;
-	  uint8_t *cp=(uint8_t *)(sp->data);
-	  uint16_t *tmp,*new_dat;
-	  tmp=new_dat=safe_Malloc<uint16_t>(sp->data_length);
+	  sint32 i=sp->data_length;
+	  uint8 *cp=(uint8 *)(sp->data);
+	  uint16 *tmp,*new_dat;
+	  tmp=new_dat=safe_Malloc<uint16>(sp->data_length);
 	  while (i--)
-	    *tmp++ = (uint16_t)(*cp++) << 8;
-	  cp=(uint8_t *)(sp->data);
+	    *tmp++ = (uint16)(*cp++) << 8;
+	  cp=(uint8 *)(sp->data);
 	  sp->data = (sample_t *)new_dat;
 	  free(cp);
 	  sp->data_length *= 2;
@@ -443,8 +443,8 @@ static Instrument *load_instrument(char *name, int percussion,
       else
 	/* convert to machine byte order */
 	{
-	  int32_t i=sp->data_length/2;
-	  int16_t *tmp=(int16_t *)sp->data,s;
+	  sint32 i=sp->data_length/2;
+	  sint16 *tmp=(sint16 *)sp->data,s;
 	  while (i--)
 	    { 
 	      s=LE_SHORT(*tmp);
@@ -455,8 +455,8 @@ static Instrument *load_instrument(char *name, int percussion,
       
       if (sp->modes & MODES_UNSIGNED) /* convert to signed data */
 	{
-	  int32_t i=sp->data_length/2;
-	  int16_t *tmp=(int16_t *)sp->data;
+	  sint32 i=sp->data_length/2;
+	  sint16 *tmp=(sint16 *)sp->data;
 	  while (i--)
 	    *tmp++ ^= 0x8000;
 	}
@@ -464,12 +464,12 @@ static Instrument *load_instrument(char *name, int percussion,
       /* Reverse reverse loops and pass them off as normal loops */
       if (sp->modes & MODES_REVERSE)
 	{
-	  int32_t t;
+	  sint32 t;
 	  /* The GUS apparently plays reverse loops by reversing the
 	     whole sample. We do the same because the GUS does not SUCK. */
 
 	  ctl->cmsg(CMSG_WARNING, VERB_NORMAL, "Reverse loop in %s", name);
-	  reverse_data((int16_t *)sp->data, 0, sp->data_length/2);
+	  reverse_data((sint16 *)sp->data, 0, sp->data_length/2);
 
 	  t=sp->loop_start;
 	  sp->loop_start=sp->data_length - sp->loop_end;
@@ -492,9 +492,9 @@ static Instrument *load_instrument(char *name, int percussion,
 	  /* Try to determine a volume scaling factor for the sample.
 	     This is a very crude adjustment, but things sound more
 	     balanced with it. Still, this should be a runtime option. */
-	  int32_t i=sp->data_length/2;
-	  int16_t maxamp=0,a;
-	  int16_t *tmp=(int16_t *)sp->data;
+	  sint32 i=sp->data_length/2;
+	  sint16 maxamp=0,a;
+	  sint16 *tmp=(sint16 *)sp->data;
 	  while (i--)
 	    {
 	      a=*tmp++;
@@ -536,11 +536,11 @@ static Instrument *load_instrument(char *name, int percussion,
 #ifdef LOOKUP_HACK
       /* Squash the 16-bit data into 8 bits. */
       {
-	uint8_t *gulp,*ulp;
-	int16_t *swp;
+	uint8 *gulp,*ulp;
+	sint16 *swp;
 	int l=sp->data_length >> FRACTION_BITS;
-	gulp=ulp=safe_Malloc<uint8_t>(l+1);
-	swp=(int16_t *)sp->data;
+	gulp=ulp=safe_Malloc<uint8>(l+1);
+	swp=(sint16 *)sp->data;
 	while(l--)
 	  *ulp++ = (*swp++ >> 8) & 0xFF;
 	free(sp->data);

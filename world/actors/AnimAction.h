@@ -28,7 +28,7 @@ struct AnimFrame
 	int deltaz;
 	int deltadir;
 	int sfx;
-	uint32_t flags;
+	uint32 flags;
 
 	enum AnimFrameFlags {
 		AFF_UNK1     = 0x0001,
@@ -42,13 +42,13 @@ struct AnimFrame
 };
 
 struct AnimAction {
-	uint32_t shapenum;
-	uint32_t action;
+	uint32 shapenum;
+	uint32 action;
 
 	std::vector<AnimFrame> frames[16]; // 8 or 16 directions
 	unsigned int size;
 	int framerepeat;
-	uint32_t flags;
+	uint32 flags;
 
 	unsigned int dircount;
 

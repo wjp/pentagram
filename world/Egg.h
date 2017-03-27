@@ -39,7 +39,7 @@ public:
 	void setYRange(int r) { npcnum &= 0xF0; npcnum |= (r & 0xF); }
 
 	//! hatch the egg
-	virtual uint16_t hatch();
+	virtual uint16 hatch();
 
 	//! The item has left the fast area
 	virtual void leaveFastArea();
@@ -49,7 +49,7 @@ public:
 
 	virtual void dumpInfo();
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 
 	INTRINSIC(I_getEggXRange);
 	INTRINSIC(I_getEggYRange);

@@ -44,7 +44,7 @@ void SchedulerProcess::run()
 		Actor* a = getActor(nextActor);
 		if (a) {
 			// CHECKME: is this the right time to pass? CONSTANT
-			uint32_t stime = GUIApp::get_instance()->getGameTimeInSeconds()/60;
+			uint32 stime = GUIApp::get_instance()->getGameTimeInSeconds()/60;
 			ProcId schedpid = a->callUsecodeEvent_schedule(stime);
 			if (schedpid) waitFor(schedpid);
 		}
@@ -62,7 +62,7 @@ void SchedulerProcess::run()
 	}
 
 	// CONSTANT!
-	uint32_t currenthour = GUIApp::get_instance()->getGameTimeInSeconds()/900;
+	uint32 currenthour = GUIApp::get_instance()->getGameTimeInSeconds()/900;
 
 	if (currenthour > lastRun) {
 		// schedule a new scheduling run
@@ -83,7 +83,7 @@ void SchedulerProcess::saveData(ODataSource* ods)
 	ods->write2(nextActor);
 }
 
-bool SchedulerProcess::loadData(IDataSource* ids, uint32_t version)
+bool SchedulerProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

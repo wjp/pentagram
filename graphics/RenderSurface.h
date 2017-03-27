@@ -52,30 +52,30 @@ class RenderSurface
 {
 public:
 
-	// Colour shifting values (should these all be uint32_t???)
+	// Colour shifting values (should these all be uint32???)
 	struct Format
 	{
-		uint32_t	s_bpp,    s_bytes_per_pixel;
-		uint32_t	r_loss,   g_loss,   b_loss,   a_loss;
-		uint32_t	r_loss16, g_loss16, b_loss16, a_loss16;
-		uint32_t	r_shift,  g_shift,  b_shift,  a_shift;
-		uint32_t	r_mask,   g_mask,   b_mask,   a_mask;
+		uint32	s_bpp,    s_bytes_per_pixel;
+		uint32	r_loss,   g_loss,   b_loss,   a_loss;
+		uint32	r_loss16, g_loss16, b_loss16, a_loss16;
+		uint32	r_shift,  g_shift,  b_shift,  a_shift;
+		uint32	r_mask,   g_mask,   b_mask,   a_mask;
 	};
 
 	static Format format;
 
-	static uint8_t Gamma10toGamma22[256];
-	static uint8_t Gamma22toGamma10[256];
+	static uint8 Gamma10toGamma22[256];
+	static uint8 Gamma22toGamma10[256];
 
 	//
 	// TODO: Improve the way SDL Surfaces are created. Should be more versatile.
 	//
 
 	//! Create a standard RenderSurface
-	static RenderSurface *SetVideoMode(uint32_t width, uint32_t height, uint32_t bpp, bool fullscreen, bool use_opengl);
+	static RenderSurface *SetVideoMode(uint32 width, uint32 height, uint32 bpp, bool fullscreen, bool use_opengl);
 
 	//! Create a SecondaryRenderSurface with an associated Texture object
-	static RenderSurface *CreateSecondaryRenderSurface(uint32_t width, uint32_t height);
+	static RenderSurface *CreateSecondaryRenderSurface(uint32 width, uint32 height);
 
 	// Virtual Destructor
 	virtual ~RenderSurface();
@@ -106,10 +106,10 @@ public:
 	//
 
 	//! Set the Origin of the Surface
-	virtual void SetOrigin(int32_t x, int32_t y) = 0;
+	virtual void SetOrigin(sint32 x, sint32 y) = 0;
 
 	//! Set the Origin of the Surface
-	virtual void GetOrigin(int32_t &x, int32_t &y) const = 0;
+	virtual void GetOrigin(sint32 &x, sint32 &y) const = 0;
 
 	//! Get the Surface Dimensions
 	virtual void GetSurfaceDims(Pentagram::Rect &) const = 0;
@@ -121,7 +121,7 @@ public:
 	virtual void SetClippingRect(const Pentagram::Rect &) = 0;
 
 	//! Check Clipped. -1 if off screen, 0 if not clipped, 1 if clipped
-	virtual int16_t CheckClipped(const Pentagram::Rect &) const = 0;
+	virtual sint16 CheckClipped(const Pentagram::Rect &) const = 0;
 
 	//! Flip the surface
 	virtual void SetFlipped(bool flipped) = 0;
@@ -137,13 +137,13 @@ public:
 	//
 
 	// Set The Surface Palette
-	// virtual void SetPalette(uint8_t palette[768]) = 0;
+	// virtual void SetPalette(uint8 palette[768]) = 0;
 
 	// Set The Surface Palette to be the one used by another surface
 	// TODO: virtual void SetPalette(RenderSurface &) = 0;
 
 	// Get The Surface Palette
-	// TODO: virtual void GetPalette(uint8_t palette[768]) = 0;
+	// TODO: virtual void GetPalette(uint8 palette[768]) = 0;
 
 	virtual void CreateNativePalette(Pentagram::Palette* palette) = 0;
 
@@ -153,16 +153,16 @@ public:
 	//
 
 	//! Fill buffer (using a palette index)
-	virtual void Fill8(uint8_t index, int32_t sx, int32_t sy, int32_t w, int32_t h) = 0;
+	virtual void Fill8(uint8 index, sint32 sx, sint32 sy, sint32 w, sint32 h) = 0;
 
 	//! Fill buffer (using a RGB colour)
-	virtual void Fill32(uint32_t rgb, int32_t sx, int32_t sy, int32_t w, int32_t h) = 0;
+	virtual void Fill32(uint32 rgb, sint32 sx, sint32 sy, sint32 w, sint32 h) = 0;
 
 	//! Fill alpha channel
-	virtual void FillAlpha(uint8_t alpha, int32_t sx, int32_t sy, int32_t w, int32_t h) = 0;
+	virtual void FillAlpha(uint8 alpha, sint32 sx, sint32 sy, sint32 w, sint32 h) = 0;
 
 	//! Fill the region doing alpha blending 
-	virtual void FillBlended(uint32_t rgba, int32_t sx, int32_t sy, int32_t w, int32_t h) = 0;
+	virtual void FillBlended(uint32 rgba, sint32 sx, sint32 sy, sint32 w, sint32 h) = 0;
 
 	//
 	// The rule for painting methods:
@@ -177,45 +177,45 @@ public:
 	//
 
 	//! Paint a Shape
-	// TODO: virtual void Paint(CachedShape* s, uint32_t frame, int32_t x, int32_t y) = 0;
-	virtual void Paint(Shape*s, uint32_t frame, int32_t x, int32_t y, bool untformed_pal = false) = 0;
+	// TODO: virtual void Paint(CachedShape* s, uint32 frame, sint32 x, sint32 y) = 0;
+	virtual void Paint(Shape*s, uint32 frame, sint32 x, sint32 y, bool untformed_pal = false) = 0;
 
 	//! Paint a Shape without clipping
-	// TODO: virtual void PaintNoClip(CachedShape*s, uint32_t frame, int32_t x, int32_t y) = 0;
-	virtual void PaintNoClip(Shape*s, uint32_t frame, int32_t x, int32_t y, bool untformed_pal = false) = 0;
+	// TODO: virtual void PaintNoClip(CachedShape*s, uint32 frame, sint32 x, sint32 y) = 0;
+	virtual void PaintNoClip(Shape*s, uint32 frame, sint32 x, sint32 y, bool untformed_pal = false) = 0;
 
 	//! Paint a Translucent Shape. 
-	// TODO: virtual void PaintTranslucent(CachedShape* s, uint32_t frame, int32_t x, int32_t y) = 0;
-	virtual void PaintTranslucent(Shape* s, uint32_t frame, int32_t x, int32_t y, bool untformed_pal = false) = 0;
+	// TODO: virtual void PaintTranslucent(CachedShape* s, uint32 frame, sint32 x, sint32 y) = 0;
+	virtual void PaintTranslucent(Shape* s, uint32 frame, sint32 x, sint32 y, bool untformed_pal = false) = 0;
 
 	//! Paint a Mirrored Shape
-	// TODO: virtual void PaintMirrored(CachedShape* s, uint32_t frame, int32_t x, int32_t y, bool trans = false) = 0;
-	virtual void PaintMirrored(Shape* s, uint32_t frame, int32_t x, int32_t y, bool trans = false, bool untformed_pal = false) = 0;
+	// TODO: virtual void PaintMirrored(CachedShape* s, uint32 frame, sint32 x, sint32 y, bool trans = false) = 0;
+	virtual void PaintMirrored(Shape* s, uint32 frame, sint32 x, sint32 y, bool trans = false, bool untformed_pal = false) = 0;
 
 	//! Paint an Invisible Shape
-	// TODO: virtual void PaintInvisible(CachedShape* s, uint32_t frame, int32_t x, int32_t y, bool trans, bool mirrored) = 0;
-	virtual void PaintInvisible(Shape* s, uint32_t frame, int32_t x, int32_t y, bool trans, bool mirrored, bool untformed_pal = false) = 0;
+	// TODO: virtual void PaintInvisible(CachedShape* s, uint32 frame, sint32 x, sint32 y, bool trans, bool mirrored) = 0;
+	virtual void PaintInvisible(Shape* s, uint32 frame, sint32 x, sint32 y, bool trans, bool mirrored, bool untformed_pal = false) = 0;
 
 	//! Paint a Highlighted Shape of using the 32 Bit Colour col32 (0xAARRGGBB Alpha is blend level)
-	// TODO: virtual void PaintHighlight(CachedShape* s, uint32_t frame, int32_t x, int32_t y, bool trans, bool mirrored, uint32_t col32);
-	virtual void PaintHighlight(Shape* s, uint32_t frame, int32_t x, int32_t y, bool trans, bool mirrored, uint32_t col32, bool untformed_pal = false) = 0;
+	// TODO: virtual void PaintHighlight(CachedShape* s, uint32 frame, sint32 x, sint32 y, bool trans, bool mirrored, uint32 col32);
+	virtual void PaintHighlight(Shape* s, uint32 frame, sint32 x, sint32 y, bool trans, bool mirrored, uint32 col32, bool untformed_pal = false) = 0;
 
 	//! Paint a Invisible Highlighted Shape of using the 32 Bit Colour col32 (0xAARRGGBB Alpha is blend level)
-	// TODO: virtual void PaintHighlightInvis(CachedShape* s, uint32_t frame, int32_t x, int32_t y, bool trans, bool mirrored, uint32_t col32);
-	virtual void PaintHighlightInvis(Shape* s, uint32_t frame, int32_t x, int32_t y, bool trans, bool mirrored, uint32_t col32, bool untformed_pal = false) = 0;
+	// TODO: virtual void PaintHighlightInvis(CachedShape* s, uint32 frame, sint32 x, sint32 y, bool trans, bool mirrored, uint32 col32);
+	virtual void PaintHighlightInvis(Shape* s, uint32 frame, sint32 x, sint32 y, bool trans, bool mirrored, uint32 col32, bool untformed_pal = false) = 0;
 
 	//! Paint a shape masked against destination alpha
-	virtual void PaintMasked(Shape* s, uint32_t framenum, int32_t x, int32_t y, bool trans = false, bool mirrored = false, uint32_t col32=0, bool untformed_pal = false) = 0;
+	virtual void PaintMasked(Shape* s, uint32 framenum, sint32 x, sint32 y, bool trans = false, bool mirrored = false, uint32 col32=0, bool untformed_pal = false) = 0;
 
 	//
 	// Basic Line Drawing
 	//
 	
 	// Draw a Line (using a palette index)
-	// TODO: virtual void DrawLine8(uint8_t index, int32_t sx, int32_t sy, int32_t ex, int32_t ey) = 0;
+	// TODO: virtual void DrawLine8(uint8 index, sint32 sx, sint32 sy, sint32 ex, sint32 ey) = 0;
 
 	// Draw a RGB Line
-	virtual void DrawLine32(uint32_t rgb, int32_t sx, int32_t sy, int32_t ex, int32_t ey) = 0;
+	virtual void DrawLine32(uint32 rgb, sint32 sx, sint32 sy, sint32 ex, sint32 ey) = 0;
 
 
 	//
@@ -233,19 +233,19 @@ public:
 	//
 
 	//! Blit a region from a Texture (Alpha == 0 -> skipped)
-	virtual void Blit(Texture *, int32_t sx, int32_t sy, int32_t w, int32_t h, int32_t dx, int32_t dy, bool alpha_blend=false) = 0;
+	virtual void Blit(Texture *, sint32 sx, sint32 sy, sint32 w, sint32 h, sint32 dx, sint32 dy, bool alpha_blend=false) = 0;
 
 	//! Blit a region from a Texture with a Colour blend (AlphaTex == 0 -> skipped. AlphaCol32 -> Blend Factors)
-	virtual void FadedBlit(Texture *, int32_t sx, int32_t sy, int32_t w, int32_t h, int32_t dx, int32_t dy, uint32_t col32, bool alpha_blend=false) = 0;
+	virtual void FadedBlit(Texture *, sint32 sx, sint32 sy, sint32 w, sint32 h, sint32 dx, sint32 dy, uint32 col32, bool alpha_blend=false) = 0;
 
 	//! Blit a region from a Texture with a Colour blend masked based on DestAlpha (AlphaTex == 0 || AlphaDest == 0 -> skipped. AlphaCol32 -> Blend Factors)
-	virtual void MaskedBlit(Texture *, int32_t sx, int32_t sy, int32_t w, int32_t h, int32_t dx, int32_t dy, uint32_t col32, bool alpha_blend=false) = 0;
+	virtual void MaskedBlit(Texture *, sint32 sx, sint32 sy, sint32 w, sint32 h, sint32 dx, sint32 dy, uint32 col32, bool alpha_blend=false) = 0;
 
 	//! Blit a stretched region from a Texture (Alpha == 0 -> skipped???)
-	virtual void StretchBlit(Texture *, int32_t sx, int32_t sy, int32_t sw, int32_t sh, int32_t dx, int32_t dy, int32_t dw, int32_t dh, bool bilinear = false, bool clampedges = false) = 0;
+	virtual void StretchBlit(Texture *, sint32 sx, sint32 sy, sint32 sw, sint32 sh, sint32 dx, sint32 dy, sint32 dw, sint32 dh, bool bilinear = false, bool clampedges = false) = 0;
 
 	//! Blit a region from a Texture using a scaler
-	virtual bool ScalerBlit(Texture *, int32_t sx, int32_t sy, int32_t sw, int32_t sh, int32_t dx, int32_t dy, int32_t dw, int32_t dh, const Pentagram::Scaler *, bool clampedges = false) = 0;
+	virtual bool ScalerBlit(Texture *, sint32 sx, sint32 sy, sint32 sw, sint32 sh, sint32 dx, sint32 dy, sint32 dw, sint32 dh, const Pentagram::Scaler *, bool clampedges = false) = 0;
 
 
 	////////////////////////////////////////

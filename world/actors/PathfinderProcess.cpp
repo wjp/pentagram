@@ -80,7 +80,7 @@ PathfinderProcess::PathfinderProcess(Actor* actor_, ObjId item_, bool hit)
 }
 
 PathfinderProcess::PathfinderProcess(Actor* actor_,
-									 int32_t x, int32_t y, int32_t z)
+									 sint32 x, sint32 y, sint32 z)
 {
 	assert(actor_);
 	item_num = actor_->getObjId();
@@ -139,7 +139,7 @@ void PathfinderProcess::run()
 	bool ok = true;
 
 	if (targetitem) {
-		int32_t curx,cury,curz;
+		sint32 curx,cury,curz;
 		Item* item = getItem(targetitem);
 		if (!item) {
 			perr << "PathfinderProcess: target missing" << std::endl;
@@ -236,7 +236,7 @@ void PathfinderProcess::run()
 		return;
 	}
 
-	uint16_t animpid = actor->doAnim(path[currentstep].action,
+	uint16 animpid = actor->doAnim(path[currentstep].action,
 								   path[currentstep].direction,
 								   path[currentstep].steps);
 #if 0
@@ -254,20 +254,20 @@ void PathfinderProcess::saveData(ODataSource* ods)
 	Process::saveData(ods);
 
 	ods->write2(targetitem);
-	ods->write2(static_cast<uint16_t>(targetx));
-	ods->write2(static_cast<uint16_t>(targety));
-	ods->write2(static_cast<uint16_t>(targetz));
+	ods->write2(static_cast<uint16>(targetx));
+	ods->write2(static_cast<uint16>(targety));
+	ods->write2(static_cast<uint16>(targetz));
 	ods->write1(hitmode ? 1 : 0);
-	ods->write2(static_cast<uint16_t>(currentstep));
+	ods->write2(static_cast<uint16>(currentstep));
 
-	ods->write2(static_cast<uint16_t>(path.size()));
+	ods->write2(static_cast<uint16>(path.size()));
 	for (unsigned int i = 0; i < path.size(); ++i) {
-		ods->write2(static_cast<uint16_t>(path[i].action));
-		ods->write2(static_cast<uint16_t>(path[i].direction));
+		ods->write2(static_cast<uint16>(path[i].action));
+		ods->write2(static_cast<uint16>(path[i].direction));
 	}
 }
 
-bool PathfinderProcess::loadData(IDataSource* ids, uint32_t version)
+bool PathfinderProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

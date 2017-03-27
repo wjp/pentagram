@@ -44,7 +44,7 @@ GlobEgg::~GlobEgg()
 // Called when an item has entered the fast area
 void GlobEgg::enterFastArea()
 {
-	uint32_t coordmask = ~0x1FF;
+	uint32 coordmask = ~0x1FF;
 	unsigned int coordshift = 1;
 	if (GAME_IS_CRUSADER) {
 		coordmask = ~0x3FF;
@@ -68,9 +68,9 @@ void GlobEgg::enterFastArea()
 
 
 			// calculate object's world position
-			int32_t itemx = (x & coordmask) + (globitem.x << coordshift) + 1;
-			int32_t itemy = (y & coordmask) + (globitem.y << coordshift) + 1;
-			int32_t itemz = z + globitem.z;
+			sint32 itemx = (x & coordmask) + (globitem.x << coordshift) + 1;
+			sint32 itemy = (y & coordmask) + (globitem.y << coordshift) + 1;
+			sint32 itemz = z + globitem.z;
 
 			item->move(itemx, itemy, itemz);
 		}
@@ -84,7 +84,7 @@ void GlobEgg::saveData(ODataSource* ods)
 	Item::saveData(ods);
 }
 
-bool GlobEgg::loadData(IDataSource* ids, uint32_t version)
+bool GlobEgg::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Item::loadData(ids, version)) return false;
 

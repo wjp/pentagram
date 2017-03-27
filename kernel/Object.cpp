@@ -63,10 +63,10 @@ void Object::dumpInfo()
 		 << GetClassType().class_name << ")" << std::endl;
 }
 
-ProcId Object::callUsecode(uint16_t classid, uint16_t offset,
-						   const uint8_t* args, int argsize)
+ProcId Object::callUsecode(uint16 classid, uint16 offset,
+						   const uint8* args, int argsize)
 {
-	uint32_t objptr = UCMachine::objectToPtr(getObjId());
+	uint32 objptr = UCMachine::objectToPtr(getObjId());
 	UCProcess* p = new UCProcess(classid, offset, objptr, 2, args, argsize);
 	return Kernel::get_instance()->addProcess(p);
 }
@@ -81,7 +81,7 @@ void Object::save(ODataSource* ods)
 void Object::writeObjectHeader(ODataSource* ods)
 {
 	const char* cname = GetClassType().class_name; // note: virtual
-	uint16_t clen = strlen(cname);
+	uint16 clen = strlen(cname);
 
 	ods->write2(clen);
 	ods->write(cname, clen);
@@ -95,7 +95,7 @@ void Object::saveData(ODataSource* ods)
 	ods->write2(objid);
 }
 
-bool Object::loadData(IDataSource* ids, uint32_t version)
+bool Object::loadData(IDataSource* ids, uint32 version)
 {
 	objid = ids->read2();
 

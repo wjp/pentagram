@@ -30,11 +30,11 @@
 class DebugSymbol
 {
 	public:
-		uint32_t number;
-		uint32_t unknown1;
-		uint32_t type;
-		uint32_t unknown2;
-		uint32_t unknown3;
+		uint32 number;
+		uint32 unknown1;
+		uint32 type;
+		uint32 unknown2;
+		uint32 unknown3;
 		std::string name;
 		
 };
@@ -48,30 +48,30 @@ class ConvertUsecode
 		
 		virtual const char* const *intrinsics()=0;
 		virtual const char* const *event_names()=0;
-		virtual void readheader(IDataSource *ucfile, UsecodeHeader &uch, uint32_t &curOffset)=0;
+		virtual void readheader(IDataSource *ucfile, UsecodeHeader &uch, uint32 &curOffset)=0;
 		virtual void readevents(IDataSource *ucfile, const UsecodeHeader &uch)=0;
-		virtual void readOp(TempOp &op, IDataSource *ucfile, uint32_t &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)=0;
-		virtual Node *readOp(IDataSource *ucfile, uint32_t &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)=0;
+		virtual void readOp(TempOp &op, IDataSource *ucfile, uint32 &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)=0;
+		virtual Node *readOp(IDataSource *ucfile, uint32 &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)=0;
 
 		void readDbgSymbols(IDataSource *ucfile, std::vector<DebugSymbol> &debugSymbols);
-		void readOpGeneric(TempOp &op, IDataSource *ucfile, uint32_t &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols,
+		void readOpGeneric(TempOp &op, IDataSource *ucfile, uint32 &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols,
 			bool &done, const bool crusader);
-		Node *readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols,
+		Node *readOpGeneric(IDataSource *ucfile, uint32 &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols,
 			bool &done, const bool crusader);
 		void printDbgSymbols(std::vector<DebugSymbol> &debugSymbols);
 		
-		std::string UsecodeFunctionAddressToString(const int32_t uclass, const int32_t coffset, IDataSource *ucfile, const bool crusader);
+		std::string UsecodeFunctionAddressToString(const sint32 uclass, const sint32 coffset, IDataSource *ucfile, const bool crusader);
 	
 	private:
-		static const uint32_t MAX_UCFUNC_NAMELEN = 256; // max usecode function name length
+		static const uint32 MAX_UCFUNC_NAMELEN = 256; // max usecode function name length
 };
 
 /* This needs to go into Convert*Crusader only too */
 void ConvertUsecode::readDbgSymbols(IDataSource *ucfile, std::vector<DebugSymbol> &debugSymbols)
 {
-	uint32_t count=read1(ucfile);
+	uint32 count=read1(ucfile);
 
-	for(uint32_t i=0; i<count; ++i)
+	for(uint32 i=0; i<count; ++i)
 	{
 		DebugSymbol ds;
 		
@@ -80,7 +80,7 @@ void ConvertUsecode::readDbgSymbols(IDataSource *ucfile, std::vector<DebugSymbol
 		ds.type     = read1(ucfile);
 		ds.unknown2 = read1(ucfile);
 		ds.unknown3 = read1(ucfile);
-		uint32_t tchar;
+		uint32 tchar;
 		while ((tchar = read1(ucfile)))
 			ds.name += static_cast<char>(tchar);
 		
@@ -90,7 +90,7 @@ void ConvertUsecode::readDbgSymbols(IDataSource *ucfile, std::vector<DebugSymbol
 
 void ConvertUsecode::printDbgSymbols(std::vector<DebugSymbol> &debugSymbols)
 {
-	for(uint32_t i=0; i<debugSymbols.size(); ++i)
+	for(uint32 i=0; i<debugSymbols.size(); ++i)
 	{
 		DebugSymbol &ds = debugSymbols[i];
 		
@@ -99,12 +99,12 @@ void ConvertUsecode::printDbgSymbols(std::vector<DebugSymbol> &debugSymbols)
 	}
 };
 
-void printbytes(IDataSource *f, uint32_t num)
+void printbytes(IDataSource *f, uint32 num)
 {
-	//uint32_t loff=0;
+	//uint32 loff=0;
 	while(num>0)
 	{
-		uint8_t c = f->read1();
+		uint8 c = f->read1();
 		con.Printf("%02X %c ", c, std::isprint(c) ? c : '.');
 		--num;
 	}
@@ -112,7 +112,7 @@ void printbytes(IDataSource *f, uint32_t num)
 
 /* This needs to be shuffled into two different readOp() functions, one in Convert*Crusader, and
 	the other in Convert*U8 */
-void ConvertUsecode::readOpGeneric(TempOp &op, IDataSource *ucfile, uint32_t &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols,
+void ConvertUsecode::readOpGeneric(TempOp &op, IDataSource *ucfile, uint32 &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols,
 	bool &done, const bool crusader)
 {
 		if(dbg_symbol_offset==curOffset)
@@ -536,7 +536,7 @@ void ConvertUsecode::readOpGeneric(TempOp &op, IDataSource *ucfile, uint32_t &db
 				//assert(curOffset + (static_cast<short>(op.i0))==op.offset + 3 + (static_cast<short>(op.i0)));
 				op.i0 = curOffset + (static_cast<short>(op.i0));
 				op.str = "";
-				for (uint32_t i=0; i < 8; ++i)
+				for (uint32 i=0; i < 8; ++i)
 				 op.str += static_cast<char>(read1(ucfile));
 				if(read1(ucfile)!=0) assert(false); // trailing 0
 				dbg_symbol_offset = op.i0; // the offset to the raw symbol data.
@@ -816,11 +816,11 @@ and that the child threads are indeed placed infront of the parent thread.
 
 /* This needs to be shuffled into two different readOp() functions, one in Convert*Crusader, and
 	the other in Convert*U8 */
-Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols,
+Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32 &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols,
 	bool &done, const bool crusader)
 {
 	Node *n=0;
-	uint32_t opcode=0;
+	uint32 opcode=0;
 	static std::string tstring;
 	
 	if(dbg_symbol_offset==curOffset)
@@ -832,7 +832,7 @@ Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_of
 	else
 		opcode = read1(ucfile);
 	
-	uint32_t offset = curOffset-1;
+	uint32 offset = curOffset-1;
 	
 	switch(opcode) {
 		case 0x01: // pop a word into a local var
@@ -849,7 +849,7 @@ Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_of
 			break;
 		case 0x0D: // push string (xxxx bytes)
 			{
-				uint32_t tint = read2(ucfile);
+				uint32 tint = read2(ucfile);
 				tstring.clear();
 				while (char c = static_cast<char>(read1(ucfile))) tstring += c;
 				n = new PushVarNode(opcode, offset, tint, tstring);
@@ -857,13 +857,13 @@ Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_of
 			break;
 		case 0x0F: // calli
 			{
-				uint32_t tint=read1(ucfile);
+				uint32 tint=read1(ucfile);
 				n = new DCCallNode(opcode, offset, tint, read2(ucfile));
 			}
 			break;
 		case 0x11: // call
 			{
-				uint32_t tint=read2(ucfile);
+				uint32 tint=read2(ucfile);
 				n = new DCCallNode(opcode, offset, tint, read2(ucfile));
 			}
 			break;
@@ -905,7 +905,7 @@ Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_of
 			break;
 		case 0x4E: // push global
 			{
-				uint32_t tint = read2(ucfile);
+				uint32 tint = read2(ucfile);
 				n = new PushVarNode(opcode, offset, tint, read1(ucfile));
 			}
 			break;
@@ -913,27 +913,27 @@ Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_of
 			n = new FuncMutatorNode(opcode, offset);
 			break;
 		case 0x51: // jne
-			n = new IfNode(opcode, offset, offset + 3 + static_cast<uint16_t>(read2(ucfile)));
+			n = new IfNode(opcode, offset, offset + 3 + static_cast<uint16>(read2(ucfile)));
 			break;
 		case 0x52: // jmp
-			n = new EndNode(opcode, offset, offset + 3 + static_cast<uint16_t>(read2(ucfile)));
+			n = new EndNode(opcode, offset, offset + 3 + static_cast<uint16>(read2(ucfile)));
 			break;
 		case 0x53: // suspend
 			n = new FuncMutatorNode(opcode, offset);
 			break;
 		case 0x54: // implies
 			{ // we'll read and ignore the two parameters to implies, since they're always 01 01
-				uint32_t tint1 = read1(ucfile);
-				uint32_t tint2 = read1(ucfile);
+				uint32 tint1 = read1(ucfile);
+				uint32 tint2 = read1(ucfile);
 				assert(tint1==1 && tint2==1);
 				n = new BinOperatorNode(opcode, offset);
 			}
 			break;
 		case 0x57: // spawn
 			{
-				uint32_t tint1 = read1(ucfile);
-				uint32_t tint2 = read1(ucfile);
-				uint32_t tint3 = read2(ucfile);
+				uint32 tint1 = read1(ucfile);
+				uint32 tint2 = read1(ucfile);
+				uint32 tint3 = read2(ucfile);
 				n = new DCCallNode(opcode, offset, tint1, tint2, tint3, read2(ucfile));
 			}
 			break;
@@ -948,7 +948,7 @@ Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_of
 			break;
 		case 0x5C: // symbol info
 			{
-				uint32_t tint = offset + 3 + static_cast<int16_t>(read2(ucfile));
+				uint32 tint = offset + 3 + static_cast<sint16>(read2(ucfile));
 				dbg_symbol_offset = tint;
 				n = new FuncMutatorNode(opcode, offset, tint, readnstr(ucfile, 9));
 			}
@@ -968,9 +968,9 @@ Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_of
 			break;
 		case 0x70: // loop
 			{
-				uint32_t currobj = read1(ucfile);
-				uint32_t strsize = read1(ucfile);
-				uint32_t type = read1(ucfile);
+				uint32 currobj = read1(ucfile);
+				uint32 strsize = read1(ucfile);
+				uint32 type = read1(ucfile);
 				n = new LoopNode(opcode, offset, currobj, strsize, type);
 			}
 			break;
@@ -1015,12 +1015,12 @@ Node *ConvertUsecode::readOpGeneric(IDataSource *ucfile, uint32_t &dbg_symbol_of
 	return n;
 }
 /* This looks _real_ dubious. Instead of loading all the offsets from the
-   files and converting them to pair<uint32_t, uint32_t>, we're storing them in
+   files and converting them to pair<uint32, uint32>, we're storing them in
    memory as strings, then having to convert the class:offset pair into a
    string, and strcmping against them. So instead of having a 2*O(N) operation
    at read, and a 2*O(1)*O(logN) at search. We've got a O(N) operation at read,
    and a O(N)*O(logN) for _each_ search. */
-std::string ConvertUsecode::UsecodeFunctionAddressToString(const int32_t uclass, const int32_t coffset, IDataSource *ucfile, const bool crusader)
+std::string ConvertUsecode::UsecodeFunctionAddressToString(const sint32 uclass, const sint32 coffset, IDataSource *ucfile, const bool crusader)
 {
 	char buf[MAX_UCFUNC_NAMELEN];
 	
@@ -1036,14 +1036,14 @@ std::string ConvertUsecode::UsecodeFunctionAddressToString(const int32_t uclass,
 	// Attempt to grab function name of the requested func
 
 	// Save the original pos
-	uint32_t origpos = ucfile->getPos();
+	uint32 origpos = ucfile->getPos();
 
 	// Seek to index table entry 1
 	ucfile->seek(0x80 + 8);
 
 	// Get details
-	int32_t offset = ucfile->read4();
-	/*int32_t length =*/ ucfile->read4();
+	sint32 offset = ucfile->read4();
+	/*sint32 length =*/ ucfile->read4();
 
 	// Seek to name entry
 	ucfile->seek(offset + uclass*13 + 4);

@@ -81,17 +81,17 @@ class IDataSource;
 //
 struct Texture
 {
-	uint32_t			*buffer;
-	int32_t			width;
-	int32_t			height;
-	uint32_t			format;	
+	uint32			*buffer;
+	sint32			width;
+	sint32			height;
+	uint32			format;	
 
 	// Use CalcLOG2s to calculate these (can be -1 which indicates not log2)
-	int32_t			wlog2;
-	int32_t			hlog2;
+	sint32			wlog2;
+	sint32			hlog2;
 
 	// For OpenGL
-	uint32_t			gl_tex;
+	uint32			gl_tex;
 	Texture			*next;
 
 	Texture() : buffer(0), format(TEX_FMT_STANDARD), gl_tex(0), next(0)

@@ -30,12 +30,12 @@ void UCStack::save(ODataSource* ods)
 	ods->write(buf_ptr, stacksize());
 }
 
-bool UCStack::load(IDataSource* ids, uint32_t version)
+bool UCStack::load(IDataSource* ids, uint32 version)
 {
 	size = ids->read4();
 #ifdef USE_DYNAMIC_UCSTACK
 	if (buf) delete[] buf;
-	buf = new uint8_t[size];
+	buf = new uint8[size];
 #else
 	if (size > sizeof(buf_array)) 
 	{
@@ -44,7 +44,7 @@ bool UCStack::load(IDataSource* ids, uint32_t version)
 	}
 	buf = buf_array;
 #endif
-	uint32_t sp = ids->read4();
+	uint32 sp = ids->read4();
 	buf_ptr = buf + sp;
 
 	ids->read(buf_ptr, size - sp);

@@ -33,7 +33,7 @@ public:
 	virtual bool addItem(Item* item, bool checkwghtvol=false);
 
 	//! teleport to the given location on the given map
-	virtual void teleport(int mapnum, int32_t x, int32_t y, int32_t z);
+	virtual void teleport(int mapnum, sint32 x, sint32 y, sint32 z);
 
 	//! teleport to a teleport-destination egg
 	//! \param mapnum The map to teleport to
@@ -58,23 +58,23 @@ public:
 	//! Get the GravityProcess of this Item, creating it if necessary
 	virtual GravityProcess* ensureGravityProcess();
 
-	virtual uint32_t getArmourClass();
-	virtual uint16_t getDefenseType();
-	virtual int16_t getAttackingDex();
-	virtual int16_t getDefendingDex();
+	virtual uint32 getArmourClass();
+	virtual uint16 getDefenseType();
+	virtual sint16 getAttackingDex();
+	virtual sint16 getDefendingDex();
 
-	virtual uint16_t getDamageType();
+	virtual uint16 getDamageType();
 	virtual int getDamageAmount();
 
 	virtual void setInCombat();
 	virtual void clearInCombat();
 
-	virtual ProcId die(uint16_t DamageType);
+	virtual ProcId die(uint16 DamageType);
 
 	std::string getName() { return name; }
 	void setName(std::string name_) { name = name_; }
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 
 	//! "teleport" console command
 	static void ConCmd_teleport(const Console::ArgvType &argv);
@@ -120,13 +120,13 @@ public:
 	INTRINSIC(I_setAvatarInCombat);
 	INTRINSIC(I_isAvatarInCombat);
 
-	void getWeaponOverlay(const WeaponOverlayFrame*& frame, uint32_t& shape);
+	void getWeaponOverlay(const WeaponOverlayFrame*& frame, uint32& shape);
 
 
 protected:
 	virtual void saveData(ODataSource* ods);
 
-	void useInventoryItem(uint32_t shapenum);
+	void useInventoryItem(uint32 shapenum);
 
 	bool justTeleported;
 

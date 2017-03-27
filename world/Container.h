@@ -69,25 +69,25 @@ public:
 	void destroyContents();
 
 	//! Set flag on container and all its contents recursively
-	virtual void setFlagRecursively(uint32_t mask);
+	virtual void setFlagRecursively(uint32 mask);
 
 	//! Search the container for items matching the given loopscript.
 	//! \param itemlist The matching items are appended to this list
 	//! \param loopscript The loopscript to match items against
 	//! \param scriptsize The size (in bytes) of the loopscript
 	//! \param recurse If true, search through child-containers too
-	void containerSearch(UCList* itemlist, const uint8_t* loopscript,
-						 uint32_t scriptsize, bool recurse);
+	void containerSearch(UCList* itemlist, const uint8* loopscript,
+						 uint32 scriptsize, bool recurse);
 
 	//! Get the weight of the container and its contents
 	//! \return weight
-	virtual uint32_t getTotalWeight();
+	virtual uint32 getTotalWeight();
 
 	//! Get the container's capacity
-	virtual uint32_t getCapacity();
+	virtual uint32 getCapacity();
 
 	//! Get the total volume used up by the container's current contents
-	virtual uint32_t getContentVolume();
+	virtual uint32 getContentVolume();
 
 	//! Assign self and contents an objID
 	//! \return the assiged ID
@@ -101,7 +101,7 @@ public:
 
 	virtual void dumpInfo();
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 
 	INTRINSIC(I_removeContents);
 	INTRINSIC(I_destroyContents);

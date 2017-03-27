@@ -30,7 +30,7 @@ SlidingWidget::SlidingWidget()
 {
 }
 
-SlidingWidget::SlidingWidget(int x, int y, Shape* shape_, uint32_t framenum_)
+SlidingWidget::SlidingWidget(int x, int y, Shape* shape_, uint32 framenum_)
 	: Gump(x, y, 5, 5, 0, FLAG_DRAGGABLE)
 {
 	shape = shape_;
@@ -52,7 +52,7 @@ void SlidingWidget::InitGump(Gump* newparent, bool take_focus)
 	dims.h = sf->height;
 }
 
-uint16_t SlidingWidget::TraceObjId(int mx, int my)
+uint16 SlidingWidget::TraceObjId(int mx, int my)
 {
 	if (PointOnGump(mx, my))
 		return getObjId();
@@ -65,7 +65,7 @@ void SlidingWidget::saveData(ODataSource* ods)
 	Gump::saveData(ods);
 }
 
-bool SlidingWidget::loadData(IDataSource* ids, uint32_t version)
+bool SlidingWidget::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Gump::loadData(ids, version)) return false;
 

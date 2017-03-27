@@ -88,7 +88,7 @@ void Item::dumpInfo()
 		 << getShape() << ", " << getFrame() << ", (";
 
 	if (parent) {
-		int32_t gx, gy;
+		sint32 gx, gy;
 		getGumpLocation(gx, gy);
 		pout << gx << "," << gy;
 	} else {
@@ -129,14 +129,14 @@ Item* Item::getTopItem()
 	return parent;
 }
 
-void Item::setLocation(int32_t X, int32_t Y, int32_t Z)
+void Item::setLocation(sint32 X, sint32 Y, sint32 Z)
 {
 	x = X;
 	y = Y;
 	z = Z;
 }
 
-void Item::move(int32_t X, int32_t Y, int32_t Z)
+void Item::move(sint32 X, sint32 Y, sint32 Z)
 {
 	bool no_lerping = false;
 	CurrentMap * map = World::get_instance()->getCurrentMap();
@@ -393,18 +393,18 @@ void Item::movedByPlayer()
 						   avatar, 640, false);
 	
 	for (unsigned int i = 0; i < itemlist.getSize(); ++i) {
-		Actor *actor = getActor(itemlist.getuint16_t(i));
+		Actor *actor = getActor(itemlist.getuint16(i));
 		if (actor && !actor->isDead())
 			actor->callUsecodeEvent_AvatarStoleSomething(getObjId());
 	}
 }
 
-int32_t Item::getZ() const
+sint32 Item::getZ() const
 {
 	return z;
 }
 
-void Item::getLocationAbsolute(int32_t& X, int32_t& Y, int32_t& Z) const
+void Item::getLocationAbsolute(sint32& X, sint32& Y, sint32& Z) const
 {
 	if (parent) {
 		Item *p = getParentAsContainer();
@@ -420,7 +420,7 @@ void Item::getLocationAbsolute(int32_t& X, int32_t& Y, int32_t& Z) const
 	Z = z;
 }
 
-void Item::getGumpLocation(int32_t& X, int32_t& Y) const
+void Item::getGumpLocation(sint32& X, sint32& Y) const
 {
 	if (!parent) return;
 
@@ -428,7 +428,7 @@ void Item::getGumpLocation(int32_t& X, int32_t& Y) const
 	Y = (y >> 8) & 0xFF;
 }
 
-void Item::setGumpLocation(int32_t X, int32_t Y)
+void Item::setGumpLocation(sint32 X, sint32 Y)
 {
 	if (!parent) return;
 
@@ -444,7 +444,7 @@ void Item::randomGumpLocation()
 	y = 0xFFFF;
 }
 
-void Item::getCentre(int32_t& X, int32_t& Y, int32_t& Z) const
+void Item::getCentre(sint32& X, sint32& Y, sint32& Z) const
 {
 	// constants!
 	ShapeInfo *shapeinfo = getShapeInfo();
@@ -464,19 +464,19 @@ void Item::getCentre(int32_t& X, int32_t& Y, int32_t& Z) const
 
 Pentagram::Box Item::getWorldBox() const
 {
-	int32_t xd,yd,zd;
+	sint32 xd,yd,zd;
 	getFootpadWorld(xd,yd,zd);
 	return Pentagram::Box(x,y,z,xd,yd,zd);
 }
 
 bool Item::overlaps(Item& item2) const
 {
-	int32_t x1a,y1a,z1a,x1b,y1b,z1b;
-	int32_t x2a,y2a,z2a,x2b,y2b,z2b;
+	sint32 x1a,y1a,z1a,x1b,y1b,z1b;
+	sint32 x2a,y2a,z2a,x2b,y2b,z2b;
 	getLocation(x1b,y1b,z1a);
 	item2.getLocation(x2b,y2b,z2a);
 
-	int32_t xd,yd,zd;
+	sint32 xd,yd,zd;
 	getFootpadWorld(xd,yd,zd);
 	x1a = x1b - xd;
 	y1a = y1b - yd;
@@ -495,12 +495,12 @@ bool Item::overlaps(Item& item2) const
 
 bool Item::overlapsxy(Item& item2) const
 {
-	int32_t x1a,y1a,z1a,x1b,y1b;
-	int32_t x2a,y2a,z2a,x2b,y2b;
+	sint32 x1a,y1a,z1a,x1b,y1b;
+	sint32 x2a,y2a,z2a,x2b,y2b;
 	getLocation(x1b,y1b,z1a);
 	item2.getLocation(x2b,y2b,z2a);
 
-	int32_t xd,yd,zd;
+	sint32 xd,yd,zd;
 	getFootpadWorld(xd,yd,zd);
 	x1a = x1b - xd;
 	y1a = y1b - yd;
@@ -516,12 +516,12 @@ bool Item::overlapsxy(Item& item2) const
 
 bool Item::isOn(Item& item2) const
 {
-	int32_t x1a,y1a,z1a,x1b,y1b;
-	int32_t x2a,y2a,z2a,x2b,y2b,z2b;
+	sint32 x1a,y1a,z1a,x1b,y1b;
+	sint32 x2a,y2a,z2a,x2b,y2b,z2b;
 	getLocation(x1b,y1b,z1a);
 	item2.getLocation(x2b,y2b,z2a);
 
-	int32_t xd,yd,zd;
+	sint32 xd,yd,zd;
 	getFootpadWorld(xd,yd,zd);
 	x1a = x1b - xd;
 	y1a = y1b - yd;
@@ -537,7 +537,7 @@ bool Item::isOn(Item& item2) const
 	return false;
 }
 
-bool Item::canExistAt(int32_t x, int32_t y, int32_t z, bool needsupport) const
+bool Item::canExistAt(sint32 x, sint32 y, sint32 z, bool needsupport) const
 {
 	CurrentMap* cm = World::get_instance()->getCurrentMap();
 	Item* support;
@@ -548,10 +548,10 @@ bool Item::canExistAt(int32_t x, int32_t y, int32_t z, bool needsupport) const
 
 int Item::getDirToItemCentre(Item& item2) const
 {
-	int32_t ix,iy,iz;
+	sint32 ix,iy,iz;
 	getCentre(ix,iy,iz);
 
-	int32_t i2x,i2y,i2z;
+	sint32 i2x,i2y,i2z;
 	item2.getCentre(i2x,i2y,i2z);
 
 	return Get_WorldDirection(i2y - iy, i2x - ix);
@@ -559,12 +559,12 @@ int Item::getDirToItemCentre(Item& item2) const
 
 int Item::getRange(Item& item2, bool checkz) const
 {
-	int32_t thisX, thisY, thisZ;
-	int32_t otherX, otherY, otherZ;
-	int32_t thisXd, thisYd, thisZd;
-	int32_t otherXd, otherYd, otherZd;
-	int32_t thisXmin, thisYmin, thisZmax;
-	int32_t otherXmin, otherYmin, otherZmax;
+	sint32 thisX, thisY, thisZ;
+	sint32 otherX, otherY, otherZ;
+	sint32 thisXd, thisYd, thisZd;
+	sint32 otherXd, otherYd, otherZd;
+	sint32 thisXmin, thisYmin, thisZmax;
+	sint32 otherXmin, otherYmin, otherZmax;
 
 	getLocationAbsolute(thisX, thisY, thisZ);
 	item2.getLocationAbsolute(otherX, otherY, otherZ);
@@ -579,7 +579,7 @@ int Item::getRange(Item& item2, bool checkz) const
 	otherYmin = otherY - otherYd;
 	otherZmax = otherZ + otherZd;
 
-	int32_t range = 0;
+	sint32 range = 0;
 
 	if (thisXmin - otherX > range)
 		range = thisYmin - otherY;
@@ -608,14 +608,14 @@ Shape* Item::getShapeObject() const
 	return cachedShape;
 }
 
-uint16_t Item::getFamily()
+uint16 Item::getFamily()
 {
-	return static_cast<uint16_t>(getShapeInfo()->family);
+	return static_cast<uint16>(getShapeInfo()->family);
 }
 
-uint32_t Item::getWeight()
+uint32 Item::getWeight()
 {
-	uint32_t weight = getShapeInfo()->weight;
+	uint32 weight = getShapeInfo()->weight;
 
 	switch (getShapeInfo()->family) {
 	case ShapeInfo::SF_QUANTITY:
@@ -627,18 +627,18 @@ uint32_t Item::getWeight()
 	}
 }
 
-uint32_t Item::getTotalWeight()
+uint32 Item::getTotalWeight()
 {
 	return getWeight();
 }
 
-uint32_t Item::getVolume()
+uint32 Item::getVolume()
 {
 	// invisible items (trap markers and such) don't take up volume
 	if (getFlags() & FLG_INVISIBLE) return 0;
 
 
-	uint32_t volume = getShapeInfo()->volume;
+	uint32 volume = getShapeInfo()->volume;
 
 	switch (getShapeInfo()->family) {
 	case ShapeInfo::SF_QUANTITY:
@@ -652,14 +652,14 @@ uint32_t Item::getVolume()
 	}
 }
 
-bool Item::checkLoopScript(const uint8_t* script, uint32_t scriptsize)
+bool Item::checkLoopScript(const uint8* script, uint32 scriptsize)
 {
 	// if really necessary this could be made static to prevent news/deletes
 	DynamicUCStack stack(0x40); // 64bytes should be plenty of room
 
 	unsigned int i = 0;
 
-	uint16_t ui16a, ui16b;
+	uint16 ui16a, ui16b;
 
 	stack.push2(1); // default to true if script is empty
 
@@ -770,7 +770,7 @@ bool Item::checkLoopScript(const uint8_t* script, uint32_t scriptsize)
 			break;
 
 		case LS_TOKEN_SHAPE: // item shape
-			stack.push2(static_cast<uint16_t>(getShape()));
+			stack.push2(static_cast<uint16>(getShape()));
 			break;
 
 		case 'A': case 'B': case 'C': case 'D': case 'E':
@@ -783,7 +783,7 @@ bool Item::checkLoopScript(const uint8_t* script, uint32_t scriptsize)
 			int count = script[i] - '@';
 			for (int j = 0; j < count; j++) {
 				//! check for i out of bounds
-				if (getShape() == static_cast<uint32_t>(script[i+1] + (script[i+2]<<8)))
+				if (getShape() == static_cast<uint32>(script[i+1] + (script[i+2]<<8)))
 					match = true;
 				i += 2;
 			}
@@ -795,7 +795,7 @@ bool Item::checkLoopScript(const uint8_t* script, uint32_t scriptsize)
 		break;
 
 		case LS_TOKEN_FRAME: // item frame
-			stack.push2(static_cast<uint16_t>(getFrame()));
+			stack.push2(static_cast<uint16>(getFrame()));
 			break;
 
 		case 'a': case 'b': case 'c': case 'd': case 'e':
@@ -808,7 +808,7 @@ bool Item::checkLoopScript(const uint8_t* script, uint32_t scriptsize)
 			int count = script[i] - '`';
 			for (int j = 0; j < count; j++) {
 				//! check for i out of bounds
-				if (getFrame() == static_cast<uint32_t>(script[i+1] + (script[i+2]<<8)))
+				if (getFrame() == static_cast<uint32>(script[i+1] + (script[i+2]<<8)))
 					match = true;
 				i += 2;
 			}
@@ -830,7 +830,7 @@ bool Item::checkLoopScript(const uint8_t* script, uint32_t scriptsize)
 }
 
 
-int32_t Item::collideMove(int32_t dx, int32_t dy, int32_t dz, bool teleport, bool force, ObjId* hititem, uint8_t* dirs)
+sint32 Item::collideMove(sint32 dx, sint32 dy, sint32 dz, bool teleport, bool force, ObjId* hititem, uint8* dirs)
 {
 	GUIApp *guiapp = GUIApp::get_instance();
 	World *world = World::get_instance();
@@ -839,9 +839,9 @@ int32_t Item::collideMove(int32_t dx, int32_t dy, int32_t dz, bool teleport, boo
 	if (hititem) *hititem = 0;
 	if (dirs) *dirs = 0;
 
-	int32_t end[3] = { dx, dy, dz };
+	sint32 end[3] = { dx, dy, dz };
 
-	int32_t start[3];
+	sint32 start[3];
 	if (parent)
 	{
 		// If we are moving from a container, only check the destination
@@ -855,7 +855,7 @@ int32_t Item::collideMove(int32_t dx, int32_t dy, int32_t dz, bool teleport, boo
 		getLocation(start[0], start[1], start[2]);
 	}
 
-	int32_t dims[3];
+	sint32 dims[3];
 	getFootpadWorld(dims[0], dims[1], dims[2]);
 
 	// Do the sweep test
@@ -934,7 +934,7 @@ int32_t Item::collideMove(int32_t dx, int32_t dy, int32_t dz, bool teleport, boo
 	}
 	else
 	{
-		int32_t hit = 0x4000;
+		sint32 hit = 0x4000;
 
 		// If not force, work out if we can reach the end
 		// if not, need to do 'stuff'
@@ -976,7 +976,7 @@ int32_t Item::collideMove(int32_t dx, int32_t dy, int32_t dz, bool teleport, boo
 			// Did we go past the endpoint of the move?
 			if (it->hit_time > hit) break;
 
-			uint16_t proc_gothit = 0, proc_rel = 0;
+			uint16 proc_gothit = 0, proc_rel = 0;
 
 			// If hitting at start, we should have already 
 			// called gotHit and hit.
@@ -1017,7 +1017,7 @@ int32_t Item::collideMove(int32_t dx, int32_t dy, int32_t dz, bool teleport, boo
 	return 0;
 }
 
-unsigned int Item::countNearby(uint32_t shape, uint16_t range)
+unsigned int Item::countNearby(uint32 shape, uint16 range)
 {
 	CurrentMap* currentmap = World::get_instance()->getCurrentMap();
 	UCList itemlist(2);
@@ -1028,9 +1028,9 @@ unsigned int Item::countNearby(uint32_t shape, uint16_t range)
 }
 
 
-uint32_t Item::callUsecodeEvent(uint32_t event, const uint8_t* args, int argsize)
+uint32 Item::callUsecodeEvent(uint32 event, const uint8* args, int argsize)
 {
-	uint32_t	class_id = shape;
+	uint32	class_id = shape;
 
 	// Non-monster NPCs use objid/npcnum + 1024
 	// Note: in the original, a non-monster NPC is specified with
@@ -1051,7 +1051,7 @@ uint32_t Item::callUsecodeEvent(uint32_t event, const uint8_t* args, int argsize
 		class_id = quality + 0x47F;
 
 	Usecode* u = GameData::get_instance()->getMainUsecode();
-	uint32_t offset = u->get_class_event(class_id, event);
+	uint32 offset = u->get_class_event(class_id, event);
 	if (!offset) return 0; // event not found
 
 #ifdef DEBUG
@@ -1064,32 +1064,32 @@ uint32_t Item::callUsecodeEvent(uint32_t event, const uint8_t* args, int argsize
 	// FIXME: Disabled usecode except for Use events in crusader for now
 	if (GAME_IS_CRUSADER && event != 1) return 0;
 
-	return callUsecode(static_cast<uint16_t>(class_id), 
-						static_cast<uint16_t>(offset),
+	return callUsecode(static_cast<uint16>(class_id), 
+						static_cast<uint16>(offset),
 						args, argsize);
 }
 
-uint32_t Item::callUsecodeEvent_look()							// event 0
+uint32 Item::callUsecodeEvent_look()							// event 0
 {
 	return callUsecodeEvent(0);	// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_use()								// event 1
+uint32 Item::callUsecodeEvent_use()								// event 1
 {
 	return callUsecodeEvent(1);	// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_anim()							// event 2
+uint32 Item::callUsecodeEvent_anim()							// event 2
 {
 	return callUsecodeEvent(2);	// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_cachein()							// event 4
+uint32 Item::callUsecodeEvent_cachein()							// event 4
 {
 	return callUsecodeEvent(4);	// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_hit(uint16_t hitter, int16_t hitforce)// event 5
+uint32 Item::callUsecodeEvent_hit(uint16 hitter, sint16 hitforce)// event 5
 {
 	DynamicUCStack	arg_stack(4);
 	arg_stack.push2(hitforce);
@@ -1097,7 +1097,7 @@ uint32_t Item::callUsecodeEvent_hit(uint16_t hitter, int16_t hitforce)// event 5
 	return callUsecodeEvent(5, arg_stack.access(), 4);	// CONSTANT 5
 }
 
-uint32_t Item::callUsecodeEvent_gotHit(uint16_t hitter, int16_t hitforce)// event 6
+uint32 Item::callUsecodeEvent_gotHit(uint16 hitter, sint16 hitforce)// event 6
 {
 	DynamicUCStack	arg_stack(4);
 	arg_stack.push2(hitforce);
@@ -1105,65 +1105,65 @@ uint32_t Item::callUsecodeEvent_gotHit(uint16_t hitter, int16_t hitforce)// even
 	return callUsecodeEvent(6, arg_stack.access(), 4);	// CONSTANT 6
 }
 
-uint32_t Item::callUsecodeEvent_hatch()							// event 7
+uint32 Item::callUsecodeEvent_hatch()							// event 7
 {
 	return callUsecodeEvent(7);		// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_schedule(uint32_t time)				// event 8
+uint32 Item::callUsecodeEvent_schedule(uint32 time)				// event 8
 {
 	DynamicUCStack	arg_stack(4);
 	arg_stack.push4(time);
 	return callUsecodeEvent(8, arg_stack.access(), 4);  // CONSTANT 8
 }
 
-uint32_t Item::callUsecodeEvent_release()							// event 9
+uint32 Item::callUsecodeEvent_release()							// event 9
 {
 	return callUsecodeEvent(9);		// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_combine()							// event C
+uint32 Item::callUsecodeEvent_combine()							// event C
 {
 	return callUsecodeEvent(0xC);	// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_enterFastArea()					// event F
+uint32 Item::callUsecodeEvent_enterFastArea()					// event F
 {
 	return callUsecodeEvent(0xF);	// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_leaveFastArea()					// event 10
+uint32 Item::callUsecodeEvent_leaveFastArea()					// event 10
 {
 	return callUsecodeEvent(0x10);	// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_cast(uint16_t unk)					// event 11
+uint32 Item::callUsecodeEvent_cast(uint16 unk)					// event 11
 {
 	DynamicUCStack	arg_stack(2);
 	arg_stack.push2(unk);
 	return callUsecodeEvent(0x11, arg_stack.access(), 2); // CONSTANT 0x11
 }
 
-uint32_t Item::callUsecodeEvent_justMoved()						// event 12
+uint32 Item::callUsecodeEvent_justMoved()						// event 12
 {
 	return callUsecodeEvent(0x12);	// CONSTANT
 }
 
-uint32_t Item::callUsecodeEvent_AvatarStoleSomething(uint16_t unk)	// event 13
+uint32 Item::callUsecodeEvent_AvatarStoleSomething(uint16 unk)	// event 13
 {
 	DynamicUCStack	arg_stack(2);
 	arg_stack.push2(unk);
 	return callUsecodeEvent(0x13, arg_stack.access(), 2); // CONSTANT 0x13
 }
 
-uint32_t Item::callUsecodeEvent_guardianBark(int16_t unk)			// event 15
+uint32 Item::callUsecodeEvent_guardianBark(sint16 unk)			// event 15
 {
 	DynamicUCStack	arg_stack(2);
 	arg_stack.push2(unk);
 	return callUsecodeEvent(0x15, arg_stack.access(), 2); // CONSTANT 0x15
 }
 
-uint32_t Item::use()
+uint32 Item::use()
 {
 	Actor* actor = p_dynamic_cast<Actor*>(this);
 	if (actor) {
@@ -1216,7 +1216,7 @@ void Item::destroy(bool delnow)
 //
 // Desc: Setup the lerped info for this frame
 //
-void Item::setupLerp(int32_t gametick)
+void Item::setupLerp(sint32 gametick)
 {
 	// Don't need to set us up
 	if (last_setup && gametick == last_setup)
@@ -1396,7 +1396,7 @@ void Item::leaveFastArea()
 	}
 }
 
-uint16_t Item::openGump(uint32_t gumpshape)
+uint16 Item::openGump(uint32 gumpshape)
 {
 	if (flags & FLG_GUMP_OPEN) return 0;
 	assert(gump == 0);
@@ -1443,7 +1443,7 @@ void Item::clearGump()
 	flags &= ~FLG_GUMP_OPEN;
 }
 
-int32_t Item::ascend(int delta)
+sint32 Item::ascend(int delta)
 {
 //	pout << "Ascend: objid=" << getObjId() << ", delta=" << delta << std::endl;
 
@@ -1460,9 +1460,9 @@ int32_t Item::ascend(int delta)
 	World* world= World::get_instance();
 	world->getCurrentMap()->surfaceSearch(&uclist, script, sizeof(script),
 										  this, true, false, false);
-	for (uint32_t i = 0; i < uclist.getSize(); i++)
+	for (uint32 i = 0; i < uclist.getSize(); i++)
 	{
-		Item *item = getItem(uclist.getuint16_t(i));
+		Item *item = getItem(uclist.getuint16(i));
 		if (!item) continue;
 		if (item->getShapeInfo()->is_fixed()) continue;
 
@@ -1470,7 +1470,7 @@ int32_t Item::ascend(int delta)
 	}
 
 	// move self
-	int32_t ix,iy,iz;
+	sint32 ix,iy,iz;
 	getLocation(ix,iy,iz);
 	int dist = collideMove(ix, iy, iz+delta, false, false);
 	delta = (delta * dist) / 0x4000;
@@ -1478,9 +1478,9 @@ int32_t Item::ascend(int delta)
 //	pout << "Ascend: dist=" << dist << std::endl;
 
 	// move other items
-	for (uint32_t i = 0; i < uclist.getSize(); i++)
+	for (uint32 i = 0; i < uclist.getSize(); i++)
 	{
-		Item *item = getItem(uclist.getuint16_t(i));
+		Item *item = getItem(uclist.getuint16(i));
 		if (!item) continue;
 		if (item->getShapeInfo()->is_fixed()) continue;
 
@@ -1535,9 +1535,9 @@ void Item::grab()
 	world->getCurrentMap()->surfaceSearch(&uclist, script, sizeof(script),
 										  this, true, false, true);
 
-	for (uint32_t i = 0; i < uclist.getSize(); i++)
+	for (uint32 i = 0; i < uclist.getSize(); i++)
 	{
-		Item *item = getItem(uclist.getuint16_t(i));
+		Item *item = getItem(uclist.getuint16(i));
 		if (!item) continue;
 		item->fall();
 	}
@@ -1547,9 +1547,9 @@ void Item::grab()
 	world->getCurrentMap()->surfaceSearch(&uclist, script, sizeof(script),
 										  this, false, true, false);
 
-	for (uint32_t i = 0; i < uclist.getSize(); i++)
+	for (uint32 i = 0; i < uclist.getSize(); i++)
 	{
-		Item *item = getItem(uclist.getuint16_t(i));
+		Item *item = getItem(uclist.getuint16(i));
 		if (!item) continue;
 		item->callUsecodeEvent_release();
 	}
@@ -1575,7 +1575,7 @@ void Item::explode()
 	AudioProcess* audioproc = AudioProcess::get_instance();
 	if (audioproc) audioproc->playSFX(sfx, 0x60, 0, 0);
 
-	int32_t x,y,z;
+	sint32 x,y,z;
 	getLocation(x,y,z);
 
 	destroy(); // delete self
@@ -1588,10 +1588,10 @@ void Item::explode()
 						   160, false, x, y); //! CHECKME: 128?
 
 	for (unsigned int i = 0; i < itemlist.getSize(); ++i) {
-		Item *item = getItem(itemlist.getuint16_t(i));
+		Item *item = getItem(itemlist.getuint16(i));
 		if (!item) continue;
 		if (getRange(*item, true) > 160) continue; // check vertical distance
-		int32_t ix,iy,iz;
+		sint32 ix,iy,iz;
 		item->getLocation(ix,iy,iz);
 		int dir = Get_WorldDirection(ix-x, iy-y); //!! CHECKME
 		item->receiveHit(0, dir, 6 + (std::rand()%6),
@@ -1599,7 +1599,7 @@ void Item::explode()
 	}
 }
 
-uint16_t Item::getDamageType()
+uint16 Item::getDamageType()
 {
 	ShapeInfo* si = getShapeInfo();
 	if (si->weaponinfo) {
@@ -1609,7 +1609,7 @@ uint16_t Item::getDamageType()
 	return 0;
 }
 
-void Item::receiveHit(uint16_t other, int dir, int damage, uint16_t type)
+void Item::receiveHit(uint16 other, int dir, int damage, uint16 type)
 {
 	// first, check if the item has a 'gotHit' usecode event
 	if (callUsecodeEvent_gotHit(other, 0)) //!! TODO: what should the 0 be??
@@ -1673,8 +1673,8 @@ static bool checkLineOfSightCollisions(
 	bool usingAlternatePos, ObjId item, ObjId other)
 {
 	std::list<CurrentMap::SweepItem>::const_iterator it;
-	int32_t other_hit_time = 0x4000;
-	int32_t blocked_time = 0x4000;
+	sint32 other_hit_time = 0x4000;
+	sint32 blocked_time = 0x4000;
 	for (it = collisions.begin(); it != collisions.end(); it++)
 	{
 		// ignore self and other
@@ -1698,14 +1698,14 @@ static bool checkLineOfSightCollisions(
 }
 
 bool Item::canReach(Item* other, int range,
-					int32_t otherX, int32_t otherY, int32_t otherZ)
+					sint32 otherX, sint32 otherY, sint32 otherZ)
 {
 	// get location and dimensions of self and other (or their root containers)
-	int32_t thisX, thisY, thisZ;
-	int32_t thisXd, thisYd, thisZd;
-	int32_t otherXd, otherYd, otherZd;
-	int32_t thisXmin, thisYmin;
-	int32_t otherXmin, otherYmin;
+	sint32 thisX, thisY, thisZ;
+	sint32 thisXd, thisYd, thisZd;
+	sint32 otherXd, otherYd, otherZd;
+	sint32 thisXmin, thisYmin;
+	sint32 otherXmin, otherYmin;
 
 	bool usingAlternatePos = (otherX != 0);
 
@@ -1731,9 +1731,9 @@ bool Item::canReach(Item* other, int range,
 
 
 	// if not, do line of sight between origins of items
-	int32_t start[3];
-	int32_t end[3];
-	int32_t dims[3] = { 2, 2, 2 };
+	sint32 start[3];
+	sint32 end[3];
+	sint32 dims[3] = { 2, 2, 2 };
 
 	start[0] = thisX; start[1] = thisY; start[2] = thisZ;
 	end[0] = otherX; end[1] = otherY; end[2] = otherZ;
@@ -1790,8 +1790,8 @@ bool Item::canMergeWith(Item* other)
 
 	if (family != ShapeInfo::SF_REAGENT) return false;
 
-	uint32_t frame1 = getFrame();
-	uint32_t frame2 = other->getFrame();
+	uint32 frame1 = getFrame();
+	uint32 frame2 = other->getFrame();
 	if (frame1 == frame2) return true;
 
 	// special cases: necromancy reagents, shape 395
@@ -1821,13 +1821,13 @@ bool Item::canMergeWith(Item* other)
 void Item::saveData(ODataSource* ods)
 {
 	Object::saveData(ods);
-	ods->write2(static_cast<uint16_t>(extendedflags));
+	ods->write2(static_cast<uint16>(extendedflags));
 	ods->write2(flags);
-	ods->write2(static_cast<uint16_t>(shape));
-	ods->write2(static_cast<uint16_t>(frame));
-	ods->write2(static_cast<uint16_t>(x));
-	ods->write2(static_cast<uint16_t>(y));
-	ods->write2(static_cast<uint16_t>(z));
+	ods->write2(static_cast<uint16>(shape));
+	ods->write2(static_cast<uint16>(frame));
+	ods->write2(static_cast<uint16>(x));
+	ods->write2(static_cast<uint16>(y));
+	ods->write2(static_cast<uint16>(z));
 	ods->write2(quality);
 	ods->write2(npcnum);
 	ods->write2(mapnum);
@@ -1840,7 +1840,7 @@ void Item::saveData(ODataSource* ods)
 		ods->write2(parent);
 }
 
-bool Item::loadData(IDataSource* ids, uint32_t version)
+bool Item::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Object::loadData(ids, version)) return false;
 
@@ -1876,7 +1876,7 @@ bool Item::loadData(IDataSource* ids, uint32_t version)
 }
 
 
-uint32_t Item::I_touch(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_touch(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_NULL32(); // ARG_ITEM_FROM_PTR(item);
 
@@ -1886,42 +1886,42 @@ uint32_t Item::I_touch(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_getX(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getX(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
 
-	int32_t x,y,z;
+	sint32 x,y,z;
 	item->getLocationAbsolute(x,y,z);
 	return x;
 }
 
-uint32_t Item::I_getY(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getY(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
 
-	int32_t x,y,z;
+	sint32 x,y,z;
 	item->getLocationAbsolute(x,y,z);
 	return y;
 }
 
-uint32_t Item::I_getZ(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getZ(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
 
-	int32_t x,y,z;
+	sint32 x,y,z;
 	item->getLocationAbsolute(x,y,z);
 	return z;
 }
 
-uint32_t Item::I_getCX(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getCX(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
 
-	int32_t x,y,z;
+	sint32 x,y,z;
 	item->getLocationAbsolute(x,y,z);
 
 	if (item->flags & FLG_FLIPPED)
@@ -1930,12 +1930,12 @@ uint32_t Item::I_getCX(const uint8_t* args, unsigned int /*argsize*/)
 		return x - item->getShapeInfo()->x * 16;
 }
 
-uint32_t Item::I_getCY(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getCY(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
 
-	int32_t x,y,z;
+	sint32 x,y,z;
 	item->getLocationAbsolute(x,y,z);
 
 	if (item->flags & FLG_FLIPPED)
@@ -1944,24 +1944,24 @@ uint32_t Item::I_getCY(const uint8_t* args, unsigned int /*argsize*/)
 		return y - item->getShapeInfo()->y * 16;
 }
 
-uint32_t Item::I_getCZ(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getCZ(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
 
-	int32_t x,y,z;
+	sint32 x,y,z;
 	item->getLocationAbsolute(x,y,z);
 
 	return z + item->getShapeInfo()->z * 4;
 }
 
-uint32_t Item::I_getPoint(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getPoint(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_UC_PTR(ptr);
 	if (!item) return 0;
 
-	int32_t x,y,z;
+	sint32 x,y,z;
 	item->getLocationAbsolute(x,y,z);
 
 	WorldPoint point;
@@ -1974,7 +1974,7 @@ uint32_t Item::I_getPoint(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_getShape(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getShape(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -1982,17 +1982,17 @@ uint32_t Item::I_getShape(const uint8_t* args, unsigned int /*argsize*/)
 	return item->getShape();
 }
 
-uint32_t Item::I_setShape(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_setShape(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(shape);
+	ARG_UINT16(shape);
 	if (!item) return 0;
 
 	item->setShape(shape);
 	return 0;
 }
 
-uint32_t Item::I_getFrame(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getFrame(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2000,17 +2000,17 @@ uint32_t Item::I_getFrame(const uint8_t* args, unsigned int /*argsize*/)
 	return item->getFrame();
 }
 
-uint32_t Item::I_setFrame(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_setFrame(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(frame);
+	ARG_UINT16(frame);
 	if (!item) return 0;
 
 	item->setFrame(frame);
 	return 0;
 }
 
-uint32_t Item::I_getQuality(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getQuality(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2021,7 +2021,7 @@ uint32_t Item::I_getQuality(const uint8_t* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32_t Item::I_getUnkEggType(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getUnkEggType(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2037,7 +2037,7 @@ uint32_t Item::I_getUnkEggType(const uint8_t* args, unsigned int /*argsize*/)
 	}
 }
 
-uint32_t Item::I_getQuantity(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getQuantity(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2049,7 +2049,7 @@ uint32_t Item::I_getQuantity(const uint8_t* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32_t Item::I_getContainer(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getContainer(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2063,7 +2063,7 @@ uint32_t Item::I_getContainer(const uint8_t* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32_t Item::I_getRootContainer(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getRootContainer(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2082,7 +2082,7 @@ uint32_t Item::I_getRootContainer(const uint8_t* args, unsigned int /*argsize*/)
 	return parent->getObjId();
 }
 
-uint32_t Item::I_getQ(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getQ(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2090,7 +2090,7 @@ uint32_t Item::I_getQ(const uint8_t* args, unsigned int /*argsize*/)
 	return item->getQuality();
 }
 
-uint32_t Item::I_getQLo(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getQLo(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2098,7 +2098,7 @@ uint32_t Item::I_getQLo(const uint8_t* args, unsigned int /*argsize*/)
 	return item->getQuality() & 0xFF;
 }
 
-uint32_t Item::I_getQHi(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getQHi(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2106,44 +2106,44 @@ uint32_t Item::I_getQHi(const uint8_t* args, unsigned int /*argsize*/)
 	return (item->getQuality() >> 8) & 0xFF;
 }
 
-uint32_t Item::I_setQ(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_setQ(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(q);
+	ARG_UINT16(q);
 	if (!item) return 0;
 
 	item->setQuality(q);
 	return 0;
 }
 
-uint32_t Item::I_setQLo(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_setQLo(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(q);
+	ARG_UINT16(q);
 	if (!item) return 0;
 
-	uint16_t iq = item->getQuality() & 0xFF00;
+	uint16 iq = item->getQuality() & 0xFF00;
 
 	item->setQuality(iq | (q & 0xFF));
 	return 0;
 }
 
-uint32_t Item::I_setQHi(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_setQHi(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(q);
+	ARG_UINT16(q);
 	if (!item) return 0;
 
-	uint16_t iq = item->getQuality() & 0x00FF;
+	uint16 iq = item->getQuality() & 0x00FF;
 
 	item->setQuality(iq | ((q<<8) & 0xFF00));
 	return 0;
 }
 
-uint32_t Item::I_setQuality(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_setQuality(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(q);
+	ARG_UINT16(q);
 	if (!item) return 0;
 
 	if (item->getFamily() != ShapeInfo::SF_GENERIC)
@@ -2152,10 +2152,10 @@ uint32_t Item::I_setQuality(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_setQuantity(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_setQuantity(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(q);
+	ARG_UINT16(q);
 	if (!item) return 0;
 
 	if (item->getFamily() == ShapeInfo::SF_QUANTITY ||
@@ -2165,7 +2165,7 @@ uint32_t Item::I_setQuantity(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_getFamily(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getFamily(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2173,10 +2173,10 @@ uint32_t Item::I_getFamily(const uint8_t* args, unsigned int /*argsize*/)
 	return item->getFamily();
 }
 
-uint32_t Item::I_getTypeFlag(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getTypeFlag(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(typeflag);
+	ARG_UINT16(typeflag);
 	if (!item) return 0;
 
 	ShapeInfo *info = item->getShapeInfo();
@@ -2192,7 +2192,7 @@ uint32_t Item::I_getTypeFlag(const uint8_t* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32_t Item::I_getStatus(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getStatus(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2200,30 +2200,30 @@ uint32_t Item::I_getStatus(const uint8_t* args, unsigned int /*argsize*/)
 	return item->getFlags();
 }
 
-uint32_t Item::I_orStatus(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_orStatus(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(mask);
+	ARG_UINT16(mask);
 	if (!item) return 0;
 
 	item->flags |= mask;
 	return 0;
 }
 
-uint32_t Item::I_andStatus(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_andStatus(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(mask);
+	ARG_UINT16(mask);
 	if (!item) return 0;
 
 	item->flags &= mask;
 	return 0;
 }
 
-uint32_t Item::I_ascend(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_ascend(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_int16_t(delta);
+	ARG_SINT16(delta);
 	if (!item) return 0;
 
 	int dist = item->ascend(delta);
@@ -2234,7 +2234,7 @@ uint32_t Item::I_ascend(const uint8_t* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32_t Item::I_getWeight(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getWeight(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2242,7 +2242,7 @@ uint32_t Item::I_getWeight(const uint8_t* args, unsigned int /*argsize*/)
 	return item->getWeight();
 }
 
-uint32_t Item::I_getWeightIncludingContents(const uint8_t* args,
+uint32 Item::I_getWeightIncludingContents(const uint8* args,
 										  unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
@@ -2251,14 +2251,14 @@ uint32_t Item::I_getWeightIncludingContents(const uint8_t* args,
 	return item->getTotalWeight();
 }
 
-uint32_t Item::I_bark(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_bark(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_STRING(str);
 	if (id_item == 666) item = getItem(1);
 	if (!item) return 0;	// Hack!
 
-	uint32_t shapenum = item->getShape();
+	uint32 shapenum = item->getShape();
 	if (id_item == 666) shapenum = 666;	// Hack for guardian barks
 	Gump *gump = new BarkGump(item->getObjId(), str, shapenum);
 	
@@ -2275,7 +2275,7 @@ uint32_t Item::I_bark(const uint8_t* args, unsigned int /*argsize*/)
 	return gump->GetNotifyProcess()->getPid();
 }
 
-uint32_t Item::I_look(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_look(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2283,7 +2283,7 @@ uint32_t Item::I_look(const uint8_t* args, unsigned int /*argsize*/)
 	return item->callUsecodeEvent_look();
 }
 
-uint32_t Item::I_use(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_use(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2291,18 +2291,18 @@ uint32_t Item::I_use(const uint8_t* args, unsigned int /*argsize*/)
 	return item->callUsecodeEvent_use();
 }
 
-uint32_t Item::I_gotHit(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_gotHit(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(hitter);
-	ARG_int16_t(unk);
+	ARG_UINT16(hitter);
+	ARG_SINT16(unk);
 	if (!item) return 0;
 
 	return item->callUsecodeEvent_gotHit(hitter, unk);
 }
 
 
-uint32_t Item::I_enterFastArea(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_enterFastArea(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2310,7 +2310,7 @@ uint32_t Item::I_enterFastArea(const uint8_t* args, unsigned int /*argsize*/)
 	return item->callUsecodeEvent_enterFastArea();
 }
 
-uint32_t Item::I_ask(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_ask(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_NULL32(); // ARG_ITEM_FROM_PTR(item); // currently unused.
 	ARG_LIST(answers);
@@ -2323,11 +2323,11 @@ uint32_t Item::I_ask(const uint8_t* args, unsigned int /*argsize*/)
 	return gump->GetNotifyProcess()->getPid();
 }
 
-uint32_t Item::I_legalCreateAtPoint(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_legalCreateAtPoint(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_UC_PTR(itemptr); // need to store the item id at *itemptr
-	ARG_uint16_t(shape);
-	ARG_uint16_t(frame);
+	ARG_UINT16(shape);
+	ARG_UINT16(frame);
 	ARG_WORLDPOINT(point);
 
 	// check if item can exist
@@ -2343,25 +2343,25 @@ uint32_t Item::I_legalCreateAtPoint(const uint8_t* args, unsigned int /*argsize*
 			 <<	"," << frame << ")." << std::endl;
 		return 0;
 	}
-	uint16_t objID = newitem->getObjId();
+	uint16 objID = newitem->getObjId();
 	newitem->move(point.getX(), point.getY(), point.getZ());
 
-	uint8_t buf[2];
-	buf[0] = static_cast<uint8_t>(objID);
-	buf[1] = static_cast<uint8_t>(objID >> 8);
+	uint8 buf[2];
+	buf[0] = static_cast<uint8>(objID);
+	buf[1] = static_cast<uint8>(objID >> 8);
 	UCMachine::get_instance()->assignPointer(itemptr, buf, 2);
 
 	return 1;
 }
 
-uint32_t Item::I_legalCreateAtCoords(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_legalCreateAtCoords(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_UC_PTR(itemptr); // need to store the item id at *itemptr
-	ARG_uint16_t(shape);
-	ARG_uint16_t(frame);
-	ARG_uint16_t(x);
-	ARG_uint16_t(y);
-	ARG_uint16_t(z);
+	ARG_UINT16(shape);
+	ARG_UINT16(frame);
+	ARG_UINT16(x);
+	ARG_UINT16(y);
+	ARG_UINT16(z);
 
 	// check if item can exist
 	CurrentMap* cm = World::get_instance()->getCurrentMap();
@@ -2376,26 +2376,26 @@ uint32_t Item::I_legalCreateAtCoords(const uint8_t* args, unsigned int /*argsize
 			 <<	"," << frame << ")." << std::endl;
 		return 0;
 	}
-	uint16_t objID = newitem->getObjId();
+	uint16 objID = newitem->getObjId();
 	newitem->move(x, y, z);
 
-	uint8_t buf[2];
-	buf[0] = static_cast<uint8_t>(objID);
-	buf[1] = static_cast<uint8_t>(objID >> 8);
+	uint8 buf[2];
+	buf[0] = static_cast<uint8>(objID);
+	buf[1] = static_cast<uint8>(objID >> 8);
 	UCMachine::get_instance()->assignPointer(itemptr, buf, 2);
 
 	return 1;
 }
 
-uint32_t Item::I_legalCreateInCont(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_legalCreateInCont(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_UC_PTR(itemptr); // need to store the item id at *itemptr
-	ARG_uint16_t(shape);
-	ARG_uint16_t(frame);
+	ARG_UINT16(shape);
+	ARG_UINT16(frame);
 	ARG_CONTAINER_FROM_ID(container);
-	ARG_uint16_t(unknown); // ?
+	ARG_UINT16(unknown); // ?
 
-	uint8_t buf[2];
+	uint8 buf[2];
 	buf[0] = 0;
 	buf[1] = 0;
 	UCMachine::get_instance()->assignPointer(itemptr, buf, 2);
@@ -2412,11 +2412,11 @@ uint32_t Item::I_legalCreateInCont(const uint8_t* args, unsigned int /*argsize*/
 
 	// also need to check weight, volume maybe??
 	if (newitem->moveToContainer(container)) {
-		uint16_t objID = newitem->getObjId();
+		uint16 objID = newitem->getObjId();
 
-		uint8_t buf[2];
-		buf[0] = static_cast<uint8_t>(objID);
-		buf[1] = static_cast<uint8_t>(objID >> 8);
+		uint8 buf[2];
+		buf[0] = static_cast<uint8>(objID);
+		buf[1] = static_cast<uint8>(objID >> 8);
 		UCMachine::get_instance()->assignPointer(itemptr, buf, 2);
 
 		return 1;
@@ -2430,7 +2430,7 @@ uint32_t Item::I_legalCreateInCont(const uint8_t* args, unsigned int /*argsize*/
 	}
 }
 
-uint32_t Item::I_destroy(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_destroy(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item || item->getObjId() == 1) return 0;
@@ -2440,7 +2440,7 @@ uint32_t Item::I_destroy(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_getFootpadData(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getFootpadData(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_UC_PTR(xptr);
@@ -2448,26 +2448,26 @@ uint32_t Item::I_getFootpadData(const uint8_t* args, unsigned int /*argsize*/)
 	ARG_UC_PTR(zptr);
 	if (!item) return 0;
 
-	uint8_t buf[2];
-	int32_t x,y,z;
+	uint8 buf[2];
+	sint32 x,y,z;
 	item->getFootpadData(x,y,z);
 
-	buf[0] = static_cast<uint8_t>(x);
-	buf[1] = static_cast<uint8_t>(x >> 8);
+	buf[0] = static_cast<uint8>(x);
+	buf[1] = static_cast<uint8>(x >> 8);
 	UCMachine::get_instance()->assignPointer(xptr, buf, 2);
 
-	buf[0] = static_cast<uint8_t>(y);
-	buf[1] = static_cast<uint8_t>(y >> 8);
+	buf[0] = static_cast<uint8>(y);
+	buf[1] = static_cast<uint8>(y >> 8);
 	UCMachine::get_instance()->assignPointer(yptr, buf, 2);
 
-	buf[0] = static_cast<uint8_t>(z);
-	buf[1] = static_cast<uint8_t>(z >> 8);
+	buf[0] = static_cast<uint8>(z);
+	buf[1] = static_cast<uint8>(z >> 8);
 	UCMachine::get_instance()->assignPointer(zptr, buf, 2);
 
 	return 0;
 }
 
-uint32_t Item::I_overlaps(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_overlaps(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_ITEM_FROM_ID(item2);
@@ -2480,7 +2480,7 @@ uint32_t Item::I_overlaps(const uint8_t* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32_t Item::I_overlapsXY(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_overlapsXY(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_ITEM_FROM_ID(item2);
@@ -2493,7 +2493,7 @@ uint32_t Item::I_overlapsXY(const uint8_t* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32_t Item::I_isOn(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_isOn(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_ITEM_FROM_ID(item2);
@@ -2506,15 +2506,15 @@ uint32_t Item::I_isOn(const uint8_t* args, unsigned int /*argsize*/)
 		return 0;
 }
 
-uint32_t Item::I_getFamilyOfType(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getFamilyOfType(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_uint16_t(shape);
+	ARG_UINT16(shape);
 
 	return GameData::get_instance()->getMainShapes()->
 		getShapeInfo(shape)->family;
 }
 
-uint32_t Item::I_push(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_push(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2524,11 +2524,11 @@ uint32_t Item::I_push(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_create(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_create(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_UC_PTR(itemptr); // need to store the item id at *itemptr (????)
-	ARG_uint16_t(shape);
-	ARG_uint16_t(frame);
+	ARG_UINT16(shape);
+	ARG_UINT16(frame);
 
 	Item* newitem = ItemFactory::createItem(shape, frame, 0, 0, 0, 0, 0, true);
 	if (!newitem) {
@@ -2536,7 +2536,7 @@ uint32_t Item::I_create(const uint8_t* args, unsigned int /*argsize*/)
 			 <<	"," << frame << ")." << std::endl;
 		return 0;
 	}
-	uint16_t objID = newitem->getObjId();
+	uint16 objID = newitem->getObjId();
 
 #if 0
 	pout << "Item::create: created item " << objID << " (" << shape
@@ -2545,15 +2545,15 @@ uint32_t Item::I_create(const uint8_t* args, unsigned int /*argsize*/)
 
 	newitem->moveToEtherealVoid();
 
-	uint8_t buf[2];
-	buf[0] = static_cast<uint8_t>(objID);
-	buf[1] = static_cast<uint8_t>(objID >> 8);
+	uint8 buf[2];
+	buf[0] = static_cast<uint8>(objID);
+	buf[1] = static_cast<uint8>(objID >> 8);
 	UCMachine::get_instance()->assignPointer(itemptr, buf, 2);
 
 	return 1;
 }
 
-uint32_t Item::I_pop(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_pop(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_NULL32(); // ARG_ITEM_FROM_PTR(item); // unused
 
@@ -2561,7 +2561,7 @@ uint32_t Item::I_pop(const uint8_t* args, unsigned int /*argsize*/)
 
 	if (w->etherealEmpty()) return 0; // no items left on stack
 
-	uint16_t objid = w->etherealPeek();
+	uint16 objid = w->etherealPeek();
 	Item* item = getItem(objid);
 	if (!item) {
 		w->etherealRemove(objid);
@@ -2579,18 +2579,18 @@ uint32_t Item::I_pop(const uint8_t* args, unsigned int /*argsize*/)
 	return objid;
 }
 
-uint32_t Item::I_popToCoords(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_popToCoords(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_NULL32(); // ARG_ITEM_FROM_PTR(item); // unused
-	ARG_uint16_t(x);
-	ARG_uint16_t(y);
-	ARG_uint16_t(z);
+	ARG_UINT16(x);
+	ARG_UINT16(y);
+	ARG_UINT16(z);
 
 	World* w = World::get_instance();
 
 	if (w->etherealEmpty()) return 0; // no items left on stack
 
-	uint16_t objid = w->etherealPeek();
+	uint16 objid = w->etherealPeek();
 	Item* item = getItem(objid);
 	if (!item) {
 		w->etherealRemove(objid);
@@ -2608,7 +2608,7 @@ uint32_t Item::I_popToCoords(const uint8_t* args, unsigned int /*argsize*/)
 	return objid;
 }
 
-uint32_t Item::I_popToContainer(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_popToContainer(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_NULL32(); // ARG_ITEM_FROM_PTR(item); // unused
 	ARG_CONTAINER_FROM_ID(container);
@@ -2622,7 +2622,7 @@ uint32_t Item::I_popToContainer(const uint8_t* args, unsigned int /*argsize*/)
 
 	if (w->etherealEmpty()) return 0; // no items left on stack
 
-	uint16_t objid = w->etherealPeek();
+	uint16 objid = w->etherealPeek();
 	Item* item = getItem(objid);
 	if (!item) {
 		w->etherealRemove(objid);
@@ -2636,7 +2636,7 @@ uint32_t Item::I_popToContainer(const uint8_t* args, unsigned int /*argsize*/)
 	return objid;
 }
 
-uint32_t Item::I_popToEnd(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_popToEnd(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_NULL32(); // ARG_ITEM_FROM_PTR(item); // unused
 	ARG_CONTAINER_FROM_ID(container);
@@ -2650,7 +2650,7 @@ uint32_t Item::I_popToEnd(const uint8_t* args, unsigned int /*argsize*/)
 
 	if (w->etherealEmpty()) return 0; // no items left on stack
 
-	uint16_t objid = w->etherealPeek();
+	uint16 objid = w->etherealPeek();
 	Item* item = getItem(objid);
 	if (!item) {
 		w->etherealRemove(objid);
@@ -2667,12 +2667,12 @@ uint32_t Item::I_popToEnd(const uint8_t* args, unsigned int /*argsize*/)
 	return objid;
 }
 
-uint32_t Item::I_move(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_move(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(x);
-	ARG_uint16_t(y);
-	ARG_uint16_t(z);
+	ARG_UINT16(x);
+	ARG_UINT16(y);
+	ARG_UINT16(z);
 	if (!item) return 0;
 
 	//! What should this do to ethereal items?
@@ -2682,12 +2682,12 @@ uint32_t Item::I_move(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_legalMoveToPoint(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_legalMoveToPoint(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_WORLDPOINT(point);
-	ARG_uint16_t(force); // 0/1
-	ARG_uint16_t(unknown2); // always 0
+	ARG_UINT16(force); // 0/1
+	ARG_UINT16(unknown2); // always 0
 
 	//! What should this do to ethereal items?
 
@@ -2699,17 +2699,17 @@ uint32_t Item::I_legalMoveToPoint(const uint8_t* args, unsigned int /*argsize*/)
 //	}
 }
 
-uint32_t Item::I_legalMoveToContainer(const uint8_t* args,unsigned int /*argsize*/)
+uint32 Item::I_legalMoveToContainer(const uint8* args,unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_CONTAINER_FROM_PTR(container);
-	ARG_uint16_t(unknown); // always 0
+	ARG_UINT16(unknown); // always 0
 
 	// try to move item to container checking weight and volume
 	return item->moveToContainer(container, true);
 }
 
-uint32_t Item::I_getEtherealTop(const uint8_t* /*args*/, unsigned int /*argsize*/)
+uint32 Item::I_getEtherealTop(const uint8* /*args*/, unsigned int /*argsize*/)
 {
 	World* w = World::get_instance();
 	if (w->etherealEmpty()) return 0; // no items left on stack
@@ -2718,7 +2718,7 @@ uint32_t Item::I_getEtherealTop(const uint8_t* /*args*/, unsigned int /*argsize*
 
 
 //!!! is this correct?
-uint32_t Item::I_getMapArray(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getMapArray(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2727,17 +2727,17 @@ uint32_t Item::I_getMapArray(const uint8_t* args, unsigned int /*argsize*/)
 }
 
 //!!! is this correct?
-uint32_t Item::I_setMapArray(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_setMapArray(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(mapnum);
+	ARG_UINT16(mapnum);
 	if (!item) return 0;
 
 	item->setMapNum(mapnum);
 	return 0;
 }
 
-uint32_t Item::I_getNpcNum(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getNpcNum(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2745,71 +2745,71 @@ uint32_t Item::I_getNpcNum(const uint8_t* args, unsigned int /*argsize*/)
 	return item->getNpcNum();
 }
 
-uint32_t Item::I_getDirToCoords(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getDirToCoords(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(x);
-	ARG_uint16_t(y);
+	ARG_UINT16(x);
+	ARG_UINT16(y);
 	if (!item) return 0;
 
-	int32_t ix,iy,iz;
+	sint32 ix,iy,iz;
 	item->getLocationAbsolute(ix,iy,iz);
 
 	return Get_WorldDirection(y - iy, x - ix);
 }
 
-uint32_t Item::I_getDirFromCoords(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getDirFromCoords(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(x);
-	ARG_uint16_t(y);
+	ARG_UINT16(x);
+	ARG_UINT16(y);
 	if (!item) return 0;
 
-	int32_t ix,iy,iz;
+	sint32 ix,iy,iz;
 	item->getLocationAbsolute(ix,iy,iz);
 
 	return Get_WorldDirection(iy - y, ix - x);
 }
 
-uint32_t Item::I_getDirToItem(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getDirToItem(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_ITEM_FROM_ID(item2);
 	if (!item) return 0;
 	if (!item2) return 0;
 
-	int32_t ix,iy,iz;
+	sint32 ix,iy,iz;
 	item->getLocationAbsolute(ix,iy,iz);
 
-	int32_t i2x,i2y,i2z;
+	sint32 i2x,i2y,i2z;
 	item2->getLocationAbsolute(i2x,i2y,i2z);
 
 	return Get_WorldDirection(i2y - iy, i2x - ix);
 }
 
-uint32_t Item::I_getDirFromItem(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getDirFromItem(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_ITEM_FROM_ID(item2);
 	if (!item) return 0;
 	if (!item2) return 0;
 
-	int32_t ix,iy,iz;
+	sint32 ix,iy,iz;
 	item->getLocationAbsolute(ix,iy,iz);
 
-	int32_t i2x,i2y,i2z;
+	sint32 i2x,i2y,i2z;
 	item2->getLocationAbsolute(i2x,i2y,i2z);
 
 	return (Get_WorldDirection(i2y - iy, i2x - ix) + 4) % 8;
 }
 
-uint32_t Item::I_hurl(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_hurl(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_int16_t(xs);
-	ARG_int16_t(ys);
-	ARG_int16_t(zs);
-	ARG_int16_t(grav);
+	ARG_SINT16(xs);
+	ARG_SINT16(ys);
+	ARG_SINT16(zs);
+	ARG_SINT16(grav);
 	if (!item) return 0;
 
 	item->hurl(xs, ys, zs, grav);
@@ -2817,12 +2817,12 @@ uint32_t Item::I_hurl(const uint8_t* args, unsigned int /*argsize*/)
 	return item->gravitypid;
 }
 
-uint32_t Item::I_shoot(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_shoot(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_WORLDPOINT(point);
-	ARG_uint16_t(speed); // either 0x20 (fish) or 0x40 (death disk, dart)
-	ARG_uint16_t(gravity); // either 2 (fish) or 1 (death disk, dart)
+	ARG_UINT16(speed); // either 0x20 (fish) or 0x40 (death disk, dart)
+	ARG_UINT16(gravity); // either 2 (fish) or 1 (death disk, dart)
 	if (!item) return 0;
 
 	MissileTracker tracker(item, point.getX(), point.getY(), point.getZ(),
@@ -2832,7 +2832,7 @@ uint32_t Item::I_shoot(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_fall(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_fall(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2842,7 +2842,7 @@ uint32_t Item::I_fall(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_grab(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_grab(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2852,12 +2852,12 @@ uint32_t Item::I_grab(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_getSliderInput(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getSliderInput(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_NULL32(); //	ARG_ITEM_FROM_PTR(item);
-	ARG_int16_t(minval);
-	ARG_int16_t(maxval);
-	ARG_int16_t(step);
+	ARG_SINT16(minval);
+	ARG_SINT16(maxval);
+	ARG_SINT16(step);
 
 	UCProcess* current = p_dynamic_cast<UCProcess*>(Kernel::get_instance()->getRunningProcess());
 	assert(current);
@@ -2873,17 +2873,17 @@ uint32_t Item::I_getSliderInput(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_openGump(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_openGump(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(gumpshape);
+	ARG_UINT16(gumpshape);
 	if (!item) return 0;
 
 	item->openGump(gumpshape);
 	return 0;
 }
 
-uint32_t Item::I_closeGump(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_closeGump(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2892,16 +2892,16 @@ uint32_t Item::I_closeGump(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_guardianBark(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_guardianBark(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(num);
+	ARG_UINT16(num);
 	if (!item) return 0;
 
 	return item->callUsecodeEvent_guardianBark(num);
 }
 
-uint32_t Item::I_getSurfaceWeight(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getSurfaceWeight(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2912,10 +2912,10 @@ uint32_t Item::I_getSurfaceWeight(const uint8_t* args, unsigned int /*argsize*/)
 	world->getCurrentMap()->surfaceSearch(&uclist, script, sizeof(script),
 										  item, true, false, true);
 
-	uint32_t weight = 0; 
-	for (uint32_t i = 0; i < uclist.getSize(); i++)
+	uint32 weight = 0; 
+	for (uint32 i = 0; i < uclist.getSize(); i++)
 	{
-		Item *other = getItem(uclist.getuint16_t(i));
+		Item *other = getItem(uclist.getuint16(i));
 		if (!other) continue;
 		weight += other->getTotalWeight();
 	}
@@ -2923,20 +2923,20 @@ uint32_t Item::I_getSurfaceWeight(const uint8_t* args, unsigned int /*argsize*/)
 	return weight;
 }
 
-uint32_t Item::I_isExplosive(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_isExplosive(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
 	return item->getShapeInfo()->is_explode()?1:0;
 }
 
-uint32_t Item::I_receiveHit(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_receiveHit(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(other);
-	ARG_int16_t(dir);
-	ARG_int16_t(damage); // force of the hit
-	ARG_uint16_t(type); // hit type
+	ARG_UINT16(other);
+	ARG_SINT16(dir);
+	ARG_SINT16(damage); // force of the hit
+	ARG_UINT16(type); // hit type
 	if (!item) return 0;
 
 	item->receiveHit(other, dir, damage, type);
@@ -2944,7 +2944,7 @@ uint32_t Item::I_receiveHit(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_explode(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_explode(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	if (!item) return 0;
@@ -2953,10 +2953,10 @@ uint32_t Item::I_explode(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_igniteChaos(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_igniteChaos(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_uint16_t(x);
-	ARG_uint16_t(y);
+	ARG_UINT16(x);
+	ARG_UINT16(y);
 	ARG_NULL8();
 
 	UCList itemlist(2);
@@ -2966,7 +2966,7 @@ uint32_t Item::I_igniteChaos(const uint8_t* args, unsigned int /*argsize*/)
 						   160, false, x, y); //! CHECKME: 160?
 
 	for (unsigned int i = 0; i < itemlist.getSize(); ++i) {
-		Item *item = getItem(itemlist.getuint16_t(i));
+		Item *item = getItem(itemlist.getuint16(i));
 		if (!item) continue;
 		item->use();
 	}
@@ -2974,11 +2974,11 @@ uint32_t Item::I_igniteChaos(const uint8_t* args, unsigned int /*argsize*/)
 	return 0;
 }
 
-uint32_t Item::I_canReach(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_canReach(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_ITEM_FROM_ID(other);
-	ARG_int16_t(range);
+	ARG_SINT16(range);
 
 	// TODO: add cheat to make this always return 1
 
@@ -2989,7 +2989,7 @@ uint32_t Item::I_canReach(const uint8_t* args, unsigned int /*argsize*/)
 }
 
 
-uint32_t Item::I_getRange(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_getRange(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	ARG_ITEM_FROM_ID(other);
@@ -2999,9 +2999,9 @@ uint32_t Item::I_getRange(const uint8_t* args, unsigned int /*argsize*/)
 	return item->getRange(*other);
 }
 
-uint32_t Item::I_isCrusTypeNPC(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Item::I_isCrusTypeNPC(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_uint16_t(sh);
+	ARG_UINT16(sh);
 
 	if (sh == 0x7FE) return 1;
 

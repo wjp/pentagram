@@ -20,7 +20,7 @@
 #include "XFormBlend.h"
 #include "Texture.h"
 
-const uint8_t U8XFormPal[1024] = {
+const uint8 U8XFormPal[1024] = {
 	0,	0,	0,	0,
 	0,	0,	0,	0,
 	0,	0,	0,	0,
@@ -64,9 +64,9 @@ const uint8_t U8XFormPal[1024] = {
 //
 // dest*175 + {48,48,48}
 //
-uint32_t P_FASTCALL U8xformCol8 (uint32_t col)
+uint32 P_FASTCALL U8xformCol8 (uint32 col)
 {
-	static uint32_t r, g, b;
+	static uint32 r, g, b;
 	UNPACK_RGB8(col,r,g,b);
 	XFORM_BLEND_FUNC(48,48,48,80);
 	return PACK_RGB16(r,g,b);
@@ -77,9 +77,9 @@ uint32_t P_FASTCALL U8xformCol8 (uint32_t col)
 // xform_palette[37] = 24;
 // xform_palette[38] = 24;
 // xform_palette[39] = 80;
-uint32_t P_FASTCALL U8xformCol9 (uint32_t col)
+uint32 P_FASTCALL U8xformCol9 (uint32 col)
 {
-	static uint32_t r, g, b;
+	static uint32 r, g, b;
 	UNPACK_RGB8(col,r,g,b);
 	XFORM_BLEND_FUNC(24,24,24,80);
 	return PACK_RGB16(r,g,b);
@@ -90,9 +90,9 @@ uint32_t P_FASTCALL U8xformCol9 (uint32_t col)
 // xform_palette[41] = 64;
 // xform_palette[42] = 24;
 // xform_palette[43] = 64;
-uint32_t P_FASTCALL U8xformCol10 (uint32_t col)
+uint32 P_FASTCALL U8xformCol10 (uint32 col)
 {
-	static uint32_t r, g, b;
+	static uint32 r, g, b;
 	UNPACK_RGB8(col,r,g,b);
 	XFORM_BLEND_FUNC(64,64,24,64);
 	return PACK_RGB16(r,g,b);
@@ -103,9 +103,9 @@ uint32_t P_FASTCALL U8xformCol10 (uint32_t col)
 // xform_palette[45] = 80;
 // xform_palette[46] = 80;
 // xform_palette[47] = 80;
-uint32_t P_FASTCALL U8xformCol11 (uint32_t col)
+uint32 P_FASTCALL U8xformCol11 (uint32 col)
 {
-	static uint32_t r, g, b;
+	static uint32 r, g, b;
 	UNPACK_RGB8(col,r,g,b);
 	XFORM_BLEND_FUNC(80,80,80,80);
 	return PACK_RGB16(r,g,b);
@@ -116,9 +116,9 @@ uint32_t P_FASTCALL U8xformCol11 (uint32_t col)
 // xform_palette[49] = 90;
 // xform_palette[50] = 0;
 // xform_palette[51] = 80;
-uint32_t P_FASTCALL U8xformCol12 (uint32_t col)
+uint32 P_FASTCALL U8xformCol12 (uint32 col)
 {
-	static uint32_t r, g, b;
+	static uint32 r, g, b;
 	UNPACK_RGB8(col,r,g,b);
 	XFORM_BLEND_FUNC(180,90,0,80);
 	if (r>65535) r = 65535;
@@ -131,9 +131,9 @@ uint32_t P_FASTCALL U8xformCol12 (uint32_t col)
 // xform_palette[53] = 0;
 // xform_palette[54] = 252;
 // xform_palette[55] = 40;
-uint32_t P_FASTCALL U8xformCol13 (uint32_t col)
+uint32 P_FASTCALL U8xformCol13 (uint32 col)
 {
-	static uint32_t r, g, b;
+	static uint32 r, g, b;
 	UNPACK_RGB8(col,r,g,b);
 	XFORM_BLEND_FUNC(0,0,252,40);
 	if (b>65535) b = 65535;
@@ -145,9 +145,9 @@ uint32_t P_FASTCALL U8xformCol13 (uint32_t col)
 // xform_palette[57] = 0;
 // xform_palette[58] = 104;
 // xform_palette[59] = 40;
-uint32_t P_FASTCALL U8xformCol14 (uint32_t col)
+uint32 P_FASTCALL U8xformCol14 (uint32 col)
 {
-	static uint32_t r, g, b;
+	static uint32 r, g, b;
 	UNPACK_RGB8(col,r,g,b);
 	XFORM_BLEND_FUNC(0,0,104,40);
 	if (b>65535) b = 65535;

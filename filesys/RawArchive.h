@@ -36,25 +36,25 @@ public:
 
 	virtual ~RawArchive();
 
-	virtual void cache(uint32_t index);
-	virtual void uncache(uint32_t index);
-	virtual bool isCached(uint32_t index);
+	virtual void cache(uint32 index);
+	virtual void uncache(uint32 index);
+	virtual bool isCached(uint32 index);
 
 	//! return object. DON'T delete or modify!
-	virtual const uint8_t* get_object_nodel(uint32_t index);
+	virtual const uint8* get_object_nodel(uint32 index);
 
 	//! return object. delete afterwards. This will not cache the object
-	virtual uint8_t* get_object(uint32_t index);
+	virtual uint8* get_object(uint32 index);
 
 	//! get size of object
-	virtual uint32_t get_size(uint32_t index);
+	virtual uint32 get_size(uint32 index);
 
 	//! return object as IDataSource. Delete the IDataSource afterwards,
 	//! but DON'T delete/modify the buffer it points to.
-	virtual IDataSource* get_datasource(uint32_t index);	
+	virtual IDataSource* get_datasource(uint32 index);	
 
 protected:
-	std::vector<uint8_t*> objects;
+	std::vector<uint8*> objects;
 };
 
 #endif

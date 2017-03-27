@@ -36,11 +36,11 @@ public:
 	virtual void Close(bool no_del = false);
 
 	// Paint the Gump
-	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
 
 	virtual bool OnKeyDown(int key, int mod);
 	virtual bool OnTextInput(int unicode);
-	virtual void ChildNotify(Gump *child, uint32_t message);
+	virtual void ChildNotify(Gump *child, uint32 message);
 
 	static void showMenu();
 	static void ConCmd_showMenu(const Console::ArgvType &argv);

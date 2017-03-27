@@ -24,7 +24,7 @@
 #include "hq4xScaler.inc"
 
 namespace Pentagram {
-	template Scaler::ScalerFunc hq4xScaler::GetScaler<uint32_t, Manip_Nat2Nat_32, uint32_t>();
+	template Scaler::ScalerFunc hq4xScaler::GetScaler<uint32, Manip_Nat2Nat_32, uint32>();
 }
 
 #endif

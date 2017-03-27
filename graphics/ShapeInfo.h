@@ -76,13 +76,13 @@ public:
 		SE_WEAPON = 6
 	};
 		   
-	uint32_t flags;
-	uint32_t x, y, z;
-	uint32_t family;
-	uint32_t equiptype;
-	uint32_t animtype, animdata;
-	uint32_t unknown;
-	uint32_t weight, volume;
+	uint32 flags;
+	uint32 x, y, z;
+	uint32 family;
+	uint32 equiptype;
+	uint32 animtype, animdata;
+	uint32 unknown;
+	uint32 weight, volume;
 
 	WeaponInfo* weaponinfo;
 	ArmourInfo* armourinfo;
@@ -110,7 +110,7 @@ public:
 	bool getTypeFlagU8(int typeflag);
 	bool getTypeFlagCrusader(int typeflag);
 
-	inline void getFootpadWorld(int32_t& X, int32_t& Y, int32_t& Z, uint16_t flipped) const;
+	inline void getFootpadWorld(sint32& X, sint32& Y, sint32& Z, uint16 flipped) const;
 
 	ShapeInfo() : 
 		flags(0), x(0), y(0), z(0),
@@ -126,7 +126,7 @@ public:
 
 };
 
-inline void ShapeInfo::getFootpadWorld(int32_t& X, int32_t& Y, int32_t& Z, uint16_t flipped) const
+inline void ShapeInfo::getFootpadWorld(sint32& X, sint32& Y, sint32& Z, uint16 flipped) const
 {
 	Z = z *  8;
 

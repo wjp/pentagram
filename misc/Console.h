@@ -83,22 +83,22 @@ enum MsgMask {
 class Console
 {
 	char		text[CON_TEXTSIZE];
-	int32_t		current;				// line where next message will be printed
-	int32_t		xoff;					// offset in current line for next print
-	int32_t		display;				// bottom of console displays this line
+	sint32		current;				// line where next message will be printed
+	sint32		xoff;					// offset in current line for next print
+	sint32		display;				// bottom of console displays this line
 
-	int32_t		linewidth;				// characters across screen
-	int32_t		totallines;				// total lines in console scrollback
+	sint32		linewidth;				// characters across screen
+	sint32		totallines;				// total lines in console scrollback
 
-	int32_t		vislines;
+	sint32		vislines;
 
 	bool		wordwrap;				// Enable/Disable word wrapping
 	bool		cr;						// Line feed marker
 
-	int32_t		putchar_count;			// Number of characters that have been putchar'd
+	sint32		putchar_count;			// Number of characters that have been putchar'd
 	char		putchar_buf[CON_PUTCHAR_SIZE];	// The Characters that have been putchar'd
 
-	uint32_t		std_output_enabled;		
+	uint32		std_output_enabled;		
 
 	// stdout and stderr redirection
 	ODataSource	*stdout_redir;
@@ -112,8 +112,8 @@ class Console
 	MsgMask		msgMask;				// mask to determine which messages are printed or not
 
 	// Overlay timing
-	uint32_t		framenum;
-	uint32_t		times[CON_NUM_TIMES];	// framenum the line was generated
+	uint32		framenum;
+	uint32		times[CON_NUM_TIMES];	// framenum the line was generated
 										// for transparent notify lines
 public:
 	enum SpecialChars
@@ -152,29 +152,29 @@ public:
 	void	SetAutoPaint(void (*func)(void)) { auto_paint = func; }
 
 	// Scroll through the console. - is up + is down
-	void	ScrollConsole(int32_t lines);
+	void	ScrollConsole(sint32 lines);
 
 	// Redirection
-	void	RedirectOutputStream(uint32_t mask, ODataSource *ds)
+	void	RedirectOutputStream(uint32 mask, ODataSource *ds)
 	{
 		if (mask & CON_STDOUT) stdout_redir = ds;
 		if (mask & CON_STDERR) stderr_redir = ds;
 	}
 
 	// Enabling output
-	void	setOutputEnabled(uint32_t mask)
+	void	setOutputEnabled(uint32 mask)
 	{
 		std_output_enabled |= mask;
 	}
 
 	// Disabling output
-	void	unsetOutputEnabled(uint32_t mask)
+	void	unsetOutputEnabled(uint32 mask)
 	{
 		std_output_enabled &= ~mask;
 	}
 	
 	// Enabling output
-	uint32_t	getOutputEnabled()
+	uint32	getOutputEnabled()
 	{
 		return std_output_enabled;
 	}
@@ -185,7 +185,7 @@ public:
 		msgMask = mm;
 	}
 	
-	void setFrameNum(uint32_t f) 
+	void setFrameNum(uint32 f) 
 	{
 		framenum = f;
 	}
@@ -199,8 +199,8 @@ public:
 	void	Print(const MsgMask mm, const char *txt);
 
 	// printf, and output to stdout
-	int32_t	Printf(const char *fmt, ...);
-	int32_t	Printf(const MsgMask mm, const char *fmt, ...); // with msg filtering
+	sint32	Printf(const char *fmt, ...);
+	sint32	Printf(const MsgMask mm, const char *fmt, ...); // with msg filtering
 	
 	// printf, and output to stdout (va_list)
 	int		vPrintf (const char *fmt, va_list);
@@ -221,8 +221,8 @@ public:
 	void	Print_err(const MsgMask mm, const char *txt);
 
 	// printf, and output to stderr
-	int32_t	Printf_err(const char *fmt, ...);
-	int32_t	Printf_err(const MsgMask mm, const char *fmt, ...);
+	sint32	Printf_err(const char *fmt, ...);
+	sint32	Printf_err(const MsgMask mm, const char *fmt, ...);
 
 	// printf, and output to stderr (va_list)
 	int		vPrintf_err (const char *fmt, va_list);

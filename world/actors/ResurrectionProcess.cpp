@@ -84,7 +84,7 @@ void ResurrectionProcess::saveData(ODataSource* ods)
 	Process::saveData(ods);
 }
 
-bool ResurrectionProcess::loadData(IDataSource* ids, uint32_t version)
+bool ResurrectionProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

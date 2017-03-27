@@ -105,7 +105,7 @@ void GrantPeaceProcess::run()
 							   caster, 768, false);
 
 		for (unsigned int i = 0; i < itemlist.getSize(); ++i) {
-			Actor *t = getActor(itemlist.getuint16_t(i));
+			Actor *t = getActor(itemlist.getuint16(i));
 			if (!t) continue;
 			if (t == caster) continue;
 
@@ -120,14 +120,14 @@ void GrantPeaceProcess::run()
 				hit = true;
 
 				if (t->getShape() == 411 && khumash) { // CONSTANT!
-					int32_t tx,ty,tz;
+					sint32 tx,ty,tz;
 					t->getLocation(tx,ty,tz);
 
 					// CONSTANT! (shape 480, frame 0-9, repeat 1, delay 1)
 					Process *sp = new SpriteProcess(480,0,9,1,1, tx, ty, tz);
 					Kernel::get_instance()->addProcess(sp);
 
-					Item* throne = getItem(KGlist.getuint16_t(0));
+					Item* throne = getItem(KGlist.getuint16(0));
 					if (throne) {
 						throne->setFrame(1); // CONSTANT!
 					}
@@ -187,7 +187,7 @@ void GrantPeaceProcess::run()
 	terminate();
 }
 
-uint32_t GrantPeaceProcess::I_castGrantPeace(const uint8_t* args,
+uint32 GrantPeaceProcess::I_castGrantPeace(const uint8* args,
 										   unsigned int /*argsize*/)
 {
 	MainActor* avatar = getMainActor();
@@ -217,11 +217,11 @@ void GrantPeaceProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 
-	uint8_t ht = havetarget ? 1 : 0;
+	uint8 ht = havetarget ? 1 : 0;
 	ods->write1(ht);
 }
 
-bool GrantPeaceProcess::loadData(IDataSource* ids, uint32_t version)
+bool GrantPeaceProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

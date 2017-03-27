@@ -71,11 +71,11 @@ int shapenum;
 void ConvertFlexes(IDataSource *readfile, ODataSource *writefile)
 {
 	ConvertShape	shape;
-	uint32_t			i;
+	uint32			i;
 
 	// Number of flex entries
 	readfile->seek(0x54);
-	uint32_t num_entries = readfile->read4();
+	uint32 num_entries = readfile->read4();
 
 	// Write blank stuff for output 
 	for (i = 0; i < 0x52; i++) writefile->write1(0x1A);
@@ -85,14 +85,14 @@ void ConvertFlexes(IDataSource *readfile, ODataSource *writefile)
 	writefile->write4(num_entries);
 
 	// Offset to begin writing a shape at
-	uint32_t	write_offset = 0x80 + 8 * num_entries;
+	uint32	write_offset = 0x80 + 8 * num_entries;
 
 	// Write blank index table
 	for (i = 0x58; i < write_offset; i++)  writefile->write1(0);
 
 	// Convert shapes
 	con.Printf ("Convering %i shapes...\n", num_entries);
-	for (uint32_t s = 0; s < num_entries; s++)
+	for (uint32 s = 0; s < num_entries; s++)
 	{
 #ifdef EXPORT_SHAPENUM
 		shapenum = s;
@@ -100,8 +100,8 @@ void ConvertFlexes(IDataSource *readfile, ODataSource *writefile)
 
 		// Get the read offset and size
 		readfile->seek(0x80 + 8*s);
-		uint32_t read_offset = readfile->read4();
-		uint32_t read_size = readfile->read4();
+		uint32 read_offset = readfile->read4();
+		uint32 read_size = readfile->read4();
 
 		if (!read_size) continue;
 
@@ -142,7 +142,7 @@ void ConvertFlexes(IDataSource *readfile, ODataSource *writefile)
 		// Write shape
 		con.Printf ("Writing shape %i...\n", s);
 		writefile->seek(write_offset);
-		uint32_t write_size;
+		uint32 write_size;
 		shape.Write(writefile, write_format, write_size);
 
 		// Update the table
@@ -165,7 +165,7 @@ void ConvertShp(IDataSource *readfile, ODataSource *writefile)
 	shapenum = 1;
 #endif
 	ConvertShape shape;
-	uint32_t read_size = readfile->getSize();
+	uint32 read_size = readfile->getSize();
 
 	// Detect ShapeFormat
 	if (read_format == &AutoShapeFormat)
@@ -195,7 +195,7 @@ void ConvertShp(IDataSource *readfile, ODataSource *writefile)
 
 	con.Printf ("Reading shape...\n");
 	shape.Read(readfile, read_format, read_size);
-	uint32_t write_size;
+	uint32 write_size;
 	con.Printf ("Writing shape...\n");
 	shape.Write(writefile, write_format, write_size);
 	shape.Free();

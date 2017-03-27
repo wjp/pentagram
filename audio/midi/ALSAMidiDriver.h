@@ -39,10 +39,10 @@ public:
 protected:
 	virtual int			open();
 	virtual void		close();
-	virtual void		send(uint32_t message);
+	virtual void		send(uint32 message);
 //	virtual void		yield();
-	virtual void		send_sysex(uint8_t status, const uint8_t *msg,
-								   uint16_t length);
+	virtual void		send_sysex(uint8 status, const uint8 *msg,
+								   uint16 length);
 
 	std::string devname;
 	bool isOpen;

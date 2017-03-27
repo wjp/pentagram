@@ -158,7 +158,7 @@ GUIApp::GUIApp(int argc, const char* const* argv)
 		mouseButton[i].state = MBS_HANDLED;
 	}
 
-	for (uint16_t key=0; key < HID_LAST; ++key)
+	for (uint16 key=0; key < HID_LAST; ++key)
 	{
 		lastDown[key] = 0;
 		down[key] = 0;
@@ -635,7 +635,7 @@ void GUIApp::shutdownGame(bool reloading)
 	scalerGump = 0;
 	inverterGump = 0;
 
-	timeOffset = -(int32_t)Kernel::get_instance()->getFrameNum();
+	timeOffset = -(sint32)Kernel::get_instance()->getFrameNum();
 	inversion = 0;
 	save_count = 0;
 	has_cheated = false;
@@ -748,7 +748,7 @@ void GUIApp::run()
 {
 	isRunning = true;
 
-	int32_t next_ticks = SDL_GetTicks()*3;	// Next time is right now!
+	sint32 next_ticks = SDL_GetTicks()*3;	// Next time is right now!
 	
 	SDL_Event event;
 	while (isRunning) {
@@ -763,8 +763,8 @@ void GUIApp::run()
 		}
 		else 
 		{
-			int32_t ticks = SDL_GetTicks()*3;
-			int32_t diff = next_ticks - ticks;
+			sint32 ticks = SDL_GetTicks()*3;
+			sint32 diff = next_ticks - ticks;
 
 			while (diff < 0) {
 				next_ticks += animationRate;
@@ -882,24 +882,24 @@ void GUIApp::CreateHWCursors()
 	hwcursors = new HWMouseCursor[mouse->frameCount()];
 	std::memset (hwcursors, 0, sizeof(HWMouseCursor) * mouse->frameCount());
 
-	for (uint32_t frame = 0; frame < mouse->frameCount(); frame++)
+	for (uint32 frame = 0; frame < mouse->frameCount(); frame++)
 	{
 		ShapeFrame *f = mouse->getFrame(frame);
-		uint32_t bpp = BaseSoftRenderSurface::format.s_bpp;
+		uint32 bpp = BaseSoftRenderSurface::format.s_bpp;
 		int buf_width = f->width;
 		int buf_height = f->height;
 
 		// DIB must be dword aligned
 		if (bpp != 32) buf_width = (buf_width+1)&~1;	
 
-		uint8_t *buf = new uint8_t [bpp/8 * buf_width * buf_height];
+		uint8 *buf = new uint8 [bpp/8 * buf_width * buf_height];
 
 		RenderSurface *surf;
 
 		if (bpp == 32)
-			surf = new SoftRenderSurface<uint32_t>(buf_width, buf_height, buf);
+			surf = new SoftRenderSurface<uint32>(buf_width, buf_height, buf);
 		else
-			surf = new SoftRenderSurface<uint16_t>(buf_width, buf_height, buf);
+			surf = new SoftRenderSurface<uint16>(buf_width, buf_height, buf);
 
 		surf->BeginPainting();
 		surf->Fill32(0x00FF00FF, 0, 0, buf_width, buf_height);
@@ -913,8 +913,8 @@ void GUIApp::CreateHWCursors()
 		//
 
 		// 1 bit bitmap must be word aligned 
-		uint32_t bit_width = (buf_width+15)&~15;
-		uint8_t *buf_mask = new uint8_t [bit_width/8 * buf_height*2];
+		uint32 bit_width = (buf_width+15)&~15;
+		uint8 *buf_mask = new uint8 [bit_width/8 * buf_height*2];
 
 		// Clear it
 		std::memset(buf_mask, 0x00, bit_width/8 * buf_height * 2);
@@ -922,14 +922,14 @@ void GUIApp::CreateHWCursors()
 
 		if (bpp == 32)
 		{
-			uint32_t *buf32 = (uint32_t*)buf;
+			uint32 *buf32 = (uint32*)buf;
 			for (int y = 0; y < buf_height; y++)
 			{
 				for (int x = 0; x < buf_width; x++)
 				{
 					bool black = (x & 1) == (y & 1);
-					uint32_t bit = y * bit_width + x;
-					uint32_t byte = bit/8;
+					uint32 bit = y * bit_width + x;
+					uint32 byte = bit/8;
 					bit = 7-(bit % 8);
 
 					// If background is clear colour, mask it out
@@ -946,14 +946,14 @@ void GUIApp::CreateHWCursors()
 		}
 		else
 		{
-			uint16_t *buf16 = (uint16_t*)buf;
+			uint16 *buf16 = (uint16*)buf;
 			for (int y = 0; y < buf_height; y++)
 			{
 				for (int x = 0; x < buf_width; x++)
 				{
 					bool black = (x & 1) == (y & 1);
-					uint32_t bit = y * bit_width + x;
-					uint32_t byte = bit/8;
+					uint32 bit = y * bit_width + x;
+					uint32 byte = bit/8;
 					bit = 7-(bit % 8);
 
 					// If background is clear colour, mask it out
@@ -1461,7 +1461,7 @@ bool GUIApp::LoadConsoleFont(std::string confontini)
 
 void GUIApp::enterTextMode(Gump *gump)
 {
-	uint16_t key;
+	uint16 key;
 	for (key=0; key < HID_LAST; ++key)
 	{
 		if (down[key])
@@ -1486,7 +1486,7 @@ void GUIApp::leaveTextMode(Gump *gump)
 
 void GUIApp::handleEvent(const SDL_Event& event)
 {
-	uint32_t now = SDL_GetTicks();
+	uint32 now = SDL_GetTicks();
 	HID_Key key = HID_LAST;
 	HID_Event evn = HID_EVENT_LAST;
 	bool handled = false;
@@ -1736,8 +1736,8 @@ void GUIApp::handleEvent(const SDL_Event& event)
 
 void GUIApp::handleDelayedEvents()
 {
-	uint32_t now = SDL_GetTicks();
-	uint16_t key;
+	uint32 now = SDL_GetTicks();
+	uint16 key;
 	int button;
 	for (button = 0; button < MOUSE_LAST; ++button) {
 		if (!(mouseButton[button].state & (MBS_HANDLED | MBS_DOWN)) &&
@@ -1929,16 +1929,16 @@ void GUIApp::writeSaveInfo(ODataSource* ods)
 {
 	time_t t = std::time(0);
 	struct tm *timeinfo = localtime (&t);
-	ods->write2(static_cast<uint16_t>(timeinfo->tm_year + 1900));
-	ods->write1(static_cast<uint8_t>(timeinfo->tm_mon+1));
-	ods->write1(static_cast<uint8_t>(timeinfo->tm_mday));
-	ods->write1(static_cast<uint8_t>(timeinfo->tm_hour));
-	ods->write1(static_cast<uint8_t>(timeinfo->tm_min));
-	ods->write1(static_cast<uint8_t>(timeinfo->tm_sec));
+	ods->write2(static_cast<uint16>(timeinfo->tm_year + 1900));
+	ods->write1(static_cast<uint8>(timeinfo->tm_mon+1));
+	ods->write1(static_cast<uint8>(timeinfo->tm_mday));
+	ods->write1(static_cast<uint8>(timeinfo->tm_hour));
+	ods->write1(static_cast<uint8>(timeinfo->tm_min));
+	ods->write1(static_cast<uint8>(timeinfo->tm_sec));
 	ods->write4(save_count);
 	ods->write4(getGameTimeInSeconds());
 
-	uint8_t c = (has_cheated ? 1 : 0);
+	uint8 c = (has_cheated ? 1 : 0);
 	ods->write1(c);
 
 	// write game-specific info
@@ -2074,7 +2074,7 @@ void GUIApp::resetEngine()
 	//        also present in a savegame.
 	// kernel->addProcess(new JoystickCursorProcess(JOY1, 0, 1));
 
-	timeOffset = -(int32_t)Kernel::get_instance()->getFrameNum();
+	timeOffset = -(sint32)Kernel::get_instance()->getFrameNum();
 	inversion = 0;
 	save_count = 0;
 	has_cheated = false;
@@ -2123,7 +2123,7 @@ void GUIApp::setupCoreGumps()
 	assert(gameMapGump->getObjId() == 260);
 
 
-	for (uint16_t i = 261; i < 384; ++i)
+	for (uint16 i = 261; i < 384; ++i)
 		objectmanager->reserveObjId(i);
 }
 
@@ -2178,7 +2178,7 @@ bool GUIApp::loadGame(std::string filename)
 	}
 
 	Savegame* sg = new Savegame(ids);
-	uint32_t version = sg->getVersion();
+	uint32 version = sg->getVersion();
 	if (version == 0) {
 		Error("Invalid or corrupt savegame", "Error Loading savegame " + filename);
 		delete sg;
@@ -2336,7 +2336,7 @@ void GUIApp::Error(std::string message, std::string title, bool exit_to_menu)
 	}
 }
 
-Gump* GUIApp::getGump(uint16_t gumpid)
+Gump* GUIApp::getGump(uint16 gumpid)
 {
 	return p_dynamic_cast<Gump*>(ObjectManager::get_instance()->
 								 getObject(gumpid));
@@ -2379,7 +2379,7 @@ void GUIApp::addGump(Gump* gump)
 	}
 }
 
-uint32_t GUIApp::getGameTimeInSeconds()
+uint32 GUIApp::getGameTimeInSeconds()
 {
 	// 1 second per every 30 frames
 	return (Kernel::get_instance()->getFrameNum()+timeOffset)/30; // constant!
@@ -2388,39 +2388,39 @@ uint32_t GUIApp::getGameTimeInSeconds()
 
 void GUIApp::save(ODataSource* ods)
 {
-	uint8_t s = (avatarInStasis ? 1 : 0);
+	uint8 s = (avatarInStasis ? 1 : 0);
 	ods->write1(s);
 
-	int32_t absoluteTime = Kernel::get_instance()->getFrameNum()+timeOffset;
-	ods->write4(static_cast<uint32_t>(absoluteTime));
+	sint32 absoluteTime = Kernel::get_instance()->getFrameNum()+timeOffset;
+	ods->write4(static_cast<uint32>(absoluteTime));
 	ods->write2(avatarMoverProcess->getPid());
 
 	Pentagram::Palette *pal = PaletteManager::get_instance()->getPalette(PaletteManager::Pal_Game);
 	for (int i = 0; i < 12; i++) ods->write2(pal->matrix[i]);
 	ods->write2(pal->transform);
 
-	ods->write2(static_cast<uint16_t>(inversion));
+	ods->write2(static_cast<uint16>(inversion));
 
 	ods->write4(save_count);
 
-	uint8_t c = (has_cheated ? 1 : 0);
+	uint8 c = (has_cheated ? 1 : 0);
 	ods->write1(c);
 }
 
-bool GUIApp::load(IDataSource* ids, uint32_t version)
+bool GUIApp::load(IDataSource* ids, uint32 version)
 {
 	avatarInStasis = (ids->read1() != 0);
 
 	// no gump should be moused over after load
 	mouseOverGump = 0;
 
-	int32_t absoluteTime = static_cast<int32_t>(ids->read4());
+	sint32 absoluteTime = static_cast<sint32>(ids->read4());
 	timeOffset = absoluteTime - Kernel::get_instance()->getFrameNum();
 
-	uint16_t amppid = ids->read2();
+	uint16 amppid = ids->read2();
 	avatarMoverProcess = p_dynamic_cast<AvatarMoverProcess*>(Kernel::get_instance()->getProcess(amppid));
 
-	int16_t matrix[12];
+	sint16 matrix[12];
 	for (int i = 0; i < 12; i++)
 		matrix[i] = ids->read2();
 
@@ -2654,35 +2654,35 @@ void GUIApp::ConCmd_memberVar(const Console::ArgvType &argv)
 // Intrinsics
 //
 
-uint32_t GUIApp::I_avatarCanCheat(const uint8_t* /*args*/,
+uint32 GUIApp::I_avatarCanCheat(const uint8* /*args*/,
 								unsigned int /*argsize*/)
 {
 	return GUIApp::get_instance()->areCheatsEnabled() ? 1 : 0;
 }
 
 
-uint32_t GUIApp::I_makeAvatarACheater(const uint8_t* /*args*/,
+uint32 GUIApp::I_makeAvatarACheater(const uint8* /*args*/,
 									unsigned int /*argsize*/)
 {
 	GUIApp::get_instance()->makeCheater();
 	return 0;
 }
 
-uint32_t GUIApp::I_getCurrentTimerTick(const uint8_t* /*args*/,
+uint32 GUIApp::I_getCurrentTimerTick(const uint8* /*args*/,
 										unsigned int /*argsize*/)
 {
 	// number of ticks of a 60Hz timer, with the default animrate of 30Hz
 	return Kernel::get_instance()->getFrameNum()*2;
 }
 
-uint32_t GUIApp::I_setAvatarInStasis(const uint8_t* args, unsigned int /*argsize*/)
+uint32 GUIApp::I_setAvatarInStasis(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_int16_t(stasis);
+	ARG_SINT16(stasis);
 	get_instance()->setAvatarInStasis(stasis!=0);
 	return 0;
 }
 
-uint32_t GUIApp::I_getAvatarInStasis(const uint8_t* /*args*/, unsigned int /*argsize*/)
+uint32 GUIApp::I_getAvatarInStasis(const uint8* /*args*/, unsigned int /*argsize*/)
 {
 	if (get_instance()->avatarInStasis)
 		return 1;
@@ -2690,39 +2690,39 @@ uint32_t GUIApp::I_getAvatarInStasis(const uint8_t* /*args*/, unsigned int /*arg
 		return 0;
 }
 
-uint32_t GUIApp::I_getTimeInGameHours(const uint8_t* /*args*/,
+uint32 GUIApp::I_getTimeInGameHours(const uint8* /*args*/,
 										unsigned int /*argsize*/)
 {
 	// 900 seconds per game hour
 	return get_instance()->getGameTimeInSeconds() / 900;
 }
 
-uint32_t GUIApp::I_getTimeInMinutes(const uint8_t* /*args*/,
+uint32 GUIApp::I_getTimeInMinutes(const uint8* /*args*/,
 										unsigned int /*argsize*/)
 {
 	// 60 seconds per minute
 	return get_instance()->getGameTimeInSeconds() / 60;
 }
 
-uint32_t GUIApp::I_getTimeInSeconds(const uint8_t* /*args*/,
+uint32 GUIApp::I_getTimeInSeconds(const uint8* /*args*/,
 										unsigned int /*argsize*/)
 {
 	return get_instance()->getGameTimeInSeconds();
 }
 
-uint32_t GUIApp::I_setTimeInGameHours(const uint8_t* args,
+uint32 GUIApp::I_setTimeInGameHours(const uint8* args,
 										unsigned int /*argsize*/)
 {
-	ARG_uint16_t(newhour);
+	ARG_UINT16(newhour);
 
 	// 1 game hour per every 27000 frames
-	int32_t	absolute = newhour*27000;
+	sint32	absolute = newhour*27000;
 	get_instance()->timeOffset = absolute-Kernel::get_instance()->getFrameNum();
 
 	return 0;
 }
 
-uint32_t GUIApp::I_closeItemGumps(const uint8_t* args, unsigned int /*argsize*/)
+uint32 GUIApp::I_closeItemGumps(const uint8* args, unsigned int /*argsize*/)
 {
 	GUIApp* g = GUIApp::get_instance();
 	g->getDesktopGump()->CloseItemDependents();

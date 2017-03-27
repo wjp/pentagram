@@ -33,8 +33,8 @@ public:
 
 	void load(IDataSource* ds);
 
-	ActorAnim* getAnim(uint32_t shape) const;
-	AnimAction* getAnim(uint32_t shape, uint32_t action) const;
+	ActorAnim* getAnim(uint32 shape) const;
+	AnimAction* getAnim(uint32 shape, uint32 action) const;
 
 private:
 	std::vector<ActorAnim*> anims;

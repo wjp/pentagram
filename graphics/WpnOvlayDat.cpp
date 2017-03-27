@@ -40,13 +40,13 @@ WpnOvlayDat::~WpnOvlayDat()
 	overlay.clear();
 }
 
-const AnimWeaponOverlay* WpnOvlayDat::getAnimOverlay(uint32_t action) const
+const AnimWeaponOverlay* WpnOvlayDat::getAnimOverlay(uint32 action) const
 {
 	if (action >= overlay.size()) return 0;
 	return overlay[action];
 }
 
-const WeaponOverlayFrame* WpnOvlayDat::getOverlayFrame(uint32_t action, int type,
+const WeaponOverlayFrame* WpnOvlayDat::getOverlayFrame(uint32 action, int type,
 													   int direction,
 													   int frame) const
 {

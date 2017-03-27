@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 	FlexWriter * fw;
 	const char * ext = "fxo";
 	int i = 0;
-	uint32_t index = 0;
+	uint32 index = 0;
 	program = argv[0];
 
 	if (argc < 3) {
@@ -153,8 +153,8 @@ int main(int argc, char **argv)
 			FlexFile * flex = new FlexFile(ids);
 			for(index=0; index < flex->getIndexCount(); index++)
 			{
-				uint32_t size;
-				uint8_t* data = flex->getObject(index, &size);
+				uint32 size;
+				uint8* data = flex->getObject(index, &size);
 				if (!data || size == 0) continue;
 				char outfile[32];
 				snprintf(outfile,32,"%04X.%s", index, ext);
@@ -192,7 +192,7 @@ int main(int argc, char **argv)
 			pout << "-------------------------" << std::endl;
 			pout << "Object\tLength" << std::endl;
 			for(index=0; index < flex->getIndexCount(); index++) {
-				uint32_t size = flex->getSize(index);
+				uint32 size = flex->getSize(index);
 				if (size > 0)
 					pout << index << "\t" << flex->getSize(index) << std::endl;
 			}

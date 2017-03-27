@@ -56,7 +56,7 @@ void MainMenuProcess::saveData(ODataSource* ods)
 	Process::saveData(ods);
 }
 
-bool MainMenuProcess::loadData(IDataSource* ids, uint32_t version)
+bool MainMenuProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

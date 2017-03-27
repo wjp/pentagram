@@ -131,7 +131,7 @@ int CoreAudioMidiDriver::open() {
 			OSErr err;
 #if USE_DEPRECATED_COREAUDIO_API
 			FSRef   fsref;
-			err = FSPathMakeRef(reinterpret_cast<const uint8_t *>(soundfont.c_str()), &fsref, NULL);
+			err = FSPathMakeRef(reinterpret_cast<const UInt8 *>(soundfont.c_str()), &fsref, NULL);
 			if (!err) {
 				err = AudioUnitSetProperty(
 						  _synth, kMusicDeviceProperty_SoundBankFSRef,
@@ -141,7 +141,7 @@ int CoreAudioMidiDriver::open() {
 			// kMusicDeviceProperty_SoundBankFSSpec is present on 10.6+, but broken
 			// kMusicDeviceProperty_SoundBankURL was added in 10.5 as a replacement
 			CFURLRef url = CFURLCreateFromFileSystemRepresentation(kCFAllocatorDefault,
-						   reinterpret_cast<const uint8_t *>(soundfont.c_str()),
+						   reinterpret_cast<const UInt8 *>(soundfont.c_str()),
 						   soundfont.size(), false);
 			if (url) {
 				err = AudioUnitSetProperty(
@@ -188,18 +188,18 @@ void CoreAudioMidiDriver::close() {
 	}
 }
 
-void CoreAudioMidiDriver::send(uint32_t message) {
-	uint8_t status_byte = (message & 0x000000FF);
-	uint8_t first_byte = (message & 0x0000FF00) >> 8;
-	uint8_t second_byte = (message & 0x00FF0000) >> 16;
+void CoreAudioMidiDriver::send(uint32 message) {
+	uint8 status_byte = (message & 0x000000FF);
+	uint8 first_byte = (message & 0x0000FF00) >> 8;
+	uint8 second_byte = (message & 0x00FF0000) >> 16;
 
 	assert(_auGraph != NULL);
 	MusicDeviceMIDIEvent(_synth, status_byte, first_byte, second_byte, 0);
 }
 
 
-void CoreAudioMidiDriver::send_sysex(uint8_t status, const uint8_t *msg, uint16_t length) {
-	uint8_t buf[384];
+void CoreAudioMidiDriver::send_sysex(uint8 status, const uint8 *msg, uint16 length) {
+	uint8 buf[384];
 
 	assert(sizeof(buf) >= static_cast<size_t>(length) + 2);
 	assert(_auGraph != NULL);

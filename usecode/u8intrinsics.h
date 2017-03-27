@@ -300,17 +300,17 @@ Intrinsic U8Intrinsics[] = {
 	MainActor::I_clrAvatarInCombat,
 	MainActor::I_setAvatarInCombat,
 	MainActor::I_isAvatarInCombat,
-	AudioProcess::I_playSFX,		// int16_t
-	AudioProcess::I_playSFX,		// int16_t uint8_t
-	AudioProcess::I_playSFX,		// int16_t uint16_t ObjID
-	AudioProcess::I_playAmbientSFX, // int16_t              Unused (but implemented)
+	AudioProcess::I_playSFX,		// sint16
+	AudioProcess::I_playSFX,		// sint16 uint8
+	AudioProcess::I_playSFX,		// sint16 uint16 ObjID
+	AudioProcess::I_playAmbientSFX, // sint16              Unused (but implemented)
 	// 0x0F0
-	AudioProcess::I_playAmbientSFX, // int16_t uint8_t        Unused (but implemented)
-	AudioProcess::I_playAmbientSFX,	// int16_t uint16_t ObjID
+	AudioProcess::I_playAmbientSFX, // sint16 uint8        Unused (but implemented)
+	AudioProcess::I_playAmbientSFX,	// sint16 uint16 ObjID
 	AudioProcess::I_isSFXPlaying,
 	AudioProcess::I_setVolumeSFX,
-	AudioProcess::I_stopSFX,		// int16_t
-	AudioProcess::I_stopSFX,		// int16_t ObjID
+	AudioProcess::I_stopSFX,		// sint16
+	AudioProcess::I_stopSFX,		// sint16 ObjID
 	0, //U
 	0, //U
 	MusicProcess::I_musicStop,

@@ -39,7 +39,7 @@ TeleportEgg::~TeleportEgg()
 
 }
 
-uint16_t TeleportEgg::hatch()
+uint16 TeleportEgg::hatch()
 {
 	if (!isTeleporter()) return 0; // teleport target
 
@@ -57,7 +57,7 @@ void TeleportEgg::saveData(ODataSource* ods)
 	Egg::saveData(ods);
 }
 
-bool TeleportEgg::loadData(IDataSource* ids, uint32_t version)
+bool TeleportEgg::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Egg::loadData(ids, version)) return false;
 

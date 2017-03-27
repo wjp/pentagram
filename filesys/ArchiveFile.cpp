@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 DEFINE_RUNTIME_CLASSTYPE_CODE_BASE_CLASS(ArchiveFile);
 
 //static
-bool ArchiveFile::extractIndexFromName(const std::string& name, uint32_t& index)
+bool ArchiveFile::extractIndexFromName(const std::string& name, uint32& index)
 {
 	if (name.size() == 0) return false;
 
@@ -38,15 +38,15 @@ bool ArchiveFile::extractIndexFromName(const std::string& name, uint32_t& index)
 
 	if (val < 0) return false;
 
-	index = static_cast<uint32_t>(val);
+	index = static_cast<uint32>(val);
 
 	return true;
 }
 
-IDataSource* ArchiveFile::getDataSource(uint32_t index, bool is_text)
+IDataSource* ArchiveFile::getDataSource(uint32 index, bool is_text)
 {
-	uint32_t size;
-	uint8_t* buf = getObject(index, &size);
+	uint32 size;
+	uint8* buf = getObject(index, &size);
 
 	if (!buf) return 0;
 
@@ -55,8 +55,8 @@ IDataSource* ArchiveFile::getDataSource(uint32_t index, bool is_text)
 
 IDataSource* ArchiveFile::getDataSource(const std::string& name, bool is_text)
 {
-	uint32_t size;
-	uint8_t* buf = getObject(name, &size);
+	uint32 size;
+	uint8* buf = getObject(name, &size);
 
 	if (!buf) return 0;
 

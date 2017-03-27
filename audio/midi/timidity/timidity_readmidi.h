@@ -37,9 +37,9 @@ struct MidiEventList {
   MidiEventList *next;
 };
 
-extern int32_t quietchannels;
+extern sint32 quietchannels;
 
-extern MidiEvent *read_midi_file(FILE *mfp, int32_t *count, int32_t *sp);
+extern MidiEvent *read_midi_file(FILE *mfp, sint32 *count, sint32 *sp);
 
 #ifdef NS_TIMIDITY
 };

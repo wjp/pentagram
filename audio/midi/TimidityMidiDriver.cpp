@@ -41,7 +41,7 @@ TimidityMidiDriver::TimidityMidiDriver() :
 
 int TimidityMidiDriver::open()
 {
-	int32_t encoding = PE_16BIT|PE_SIGNED;
+	sint32 encoding = PE_16BIT|PE_SIGNED;
 	if (!stereo) encoding |= PE_MONO;
 	if (NS_TIMIDITY::Timidity_Init_Simple(sample_rate,65536,encoding)) 
 	{
@@ -104,12 +104,12 @@ void TimidityMidiDriver::close()
 	NS_TIMIDITY::Timidity_DeInit();
 }
 
-void TimidityMidiDriver::send(uint32_t b)
+void TimidityMidiDriver::send(uint32 b)
 {
 	NS_TIMIDITY::Timidity_PlayEvent(b&0xFF, (b>>8)&0x7F, (b>>16)&0x7F);
 }
 
-void TimidityMidiDriver::lowLevelProduceSamples(int16_t *samples, uint32_t num_samples)
+void TimidityMidiDriver::lowLevelProduceSamples(sint16 *samples, uint32 num_samples)
 {
 	NS_TIMIDITY::Timidity_GenerateSamples(samples,num_samples);
 }

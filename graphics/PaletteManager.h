@@ -49,18 +49,18 @@ public:
 	void updatedFont(PalIndex index);
 
 	//! Apply a transform matrix to a palette (-4.11 fixed)
-	void transformPalette(PalIndex index, int16_t matrix[12]);
+	void transformPalette(PalIndex index, sint16 matrix[12]);
 
 	//! reset the transformation matrix of a palette
 	void untransformPalette(PalIndex index);
 
 	// Get a TransformMatrix from a PalTransforms value (-4.11 fixed)
-	static void getTransformMatrix(int16_t matrix[12],
+	static void getTransformMatrix(sint16 matrix[12],
 								   Pentagram::PalTransforms trans);
 
 	// Create a custom Transform Matrix from RGBA col32. (-4.11 fixed)
 	// Alpha will set how much of original palette to keep. 0 = keep none
-	static void getTransformMatrix(int16_t matrix[12], uint32_t col32);	
+	static void getTransformMatrix(sint16 matrix[12], uint32 col32);	
 
 	//! Change the Render Surface used by the PaletteManager
 	void RenderSurfaceChanged(RenderSurface* rs);

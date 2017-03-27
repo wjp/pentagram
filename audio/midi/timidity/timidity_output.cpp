@@ -54,88 +54,88 @@ PlayMode *play_mode_list[] = {
 /*****************************************************************/
 /* Some functions to convert signed 32-bit data to other formats */
 
-void s32tos8(void *dp, int32_t *lp, int32_t c)
+void s32tos8(void *dp, sint32 *lp, sint32 c)
 {
-  int8_t *cp=(int8_t *)(dp);
-  int32_t l;
+  sint8 *cp=(sint8 *)(dp);
+  sint32 l;
   while (c--)
     {
       l=(*lp++)>>(32-8-GUARD_BITS);
       if (l>127) l=127;
       else if (l<-128) l=-128;
-      *cp++ = (int8_t) (l);
+      *cp++ = (sint8) (l);
     }
 }
 
-void s32tou8(void *dp, int32_t *lp, int32_t c)
+void s32tou8(void *dp, sint32 *lp, sint32 c)
 {
-  uint8_t *cp=(uint8_t *)(dp);
-  int32_t l;
+  uint8 *cp=(uint8 *)(dp);
+  sint32 l;
   while (c--)
     {
       l=(*lp++)>>(32-8-GUARD_BITS);
       if (l>127) l=127;
       else if (l<-128) l=-128;
-      *cp++ = 0x80 ^ ((uint8_t) l);
+      *cp++ = 0x80 ^ ((uint8) l);
     }
 }
 
-void s32tos16(void *dp, int32_t *lp, int32_t c)
+void s32tos16(void *dp, sint32 *lp, sint32 c)
 {
-  int16_t *sp=(int16_t *)(dp);
-  int32_t l;
+  sint16 *sp=(sint16 *)(dp);
+  sint32 l;
   while (c--)
     {
       l=(*lp++)>>(32-16-GUARD_BITS);
       if (l > 32767) l=32767;
       else if (l<-32768) l=-32768;
-      *sp++ = (int16_t)(l);
+      *sp++ = (sint16)(l);
     }
 }
 
-void s32tou16(void *dp, int32_t *lp, int32_t c)
+void s32tou16(void *dp, sint32 *lp, sint32 c)
 {
-  uint16_t *sp=(uint16_t *)(dp);
-  int32_t l;
+  uint16 *sp=(uint16 *)(dp);
+  sint32 l;
   while (c--)
     {
       l=(*lp++)>>(32-16-GUARD_BITS);
       if (l > 32767) l=32767;
       else if (l<-32768) l=-32768;
-      *sp++ = 0x8000 ^ (uint16_t)(l);
+      *sp++ = 0x8000 ^ (uint16)(l);
     }
 }
 
-void s32tos16x(void *dp, int32_t *lp, int32_t c)
+void s32tos16x(void *dp, sint32 *lp, sint32 c)
 {
-  int16_t *sp=(int16_t *)(dp);
-  int32_t l;
+  sint16 *sp=(sint16 *)(dp);
+  sint32 l;
   while (c--)
     {
       l=(*lp++)>>(32-16-GUARD_BITS);
       if (l > 32767) l=32767;
       else if (l<-32768) l=-32768;
-      *sp++ = XCHG_SHORT((int16_t)(l));
+      *sp++ = XCHG_SHORT((sint16)(l));
     }
 }
 
-void s32tou16x(void *dp, int32_t *lp, int32_t c)
+void s32tou16x(void *dp, sint32 *lp, sint32 c)
 {
-  uint16_t *sp=(uint16_t *)(dp);
-  int32_t l;
+  uint16 *sp=(uint16 *)(dp);
+  sint32 l;
   while (c--)
     {
       l=(*lp++)>>(32-16-GUARD_BITS);
       if (l > 32767) l=32767;
       else if (l<-32768) l=-32768;
-      *sp++ = XCHG_SHORT(0x8000 ^ (uint16_t)(l));
+      *sp++ = XCHG_SHORT(0x8000 ^ (uint16)(l));
     }
 }
 
-void s32toulaw(void *dp, int32_t *lp, int32_t c)
+void s32toulaw(void *dp, sint32 *lp, sint32 c)
 {
-  uint8_t *up=(uint8_t *)(dp);
-  int32_t l;
+  uint8 *up=(uint8 *)(dp);
+  sint32 l;
   while (c--)
     {
       l=(*lp++)>>(32-13-GUARD_BITS);

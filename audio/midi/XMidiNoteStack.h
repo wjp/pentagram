@@ -39,7 +39,7 @@ public:
 	}
 
 	// Pops the top of the stack if its off_time is <= time (6000th of second)
-	inline XMidiEvent *PopTime(uint32_t time) {
+	inline XMidiEvent *PopTime(uint32 time) {
 		if (notes && notes->ex.note_on.note_time <= time)  {
 			XMidiEvent *note = notes;
 			notes = note->ex.note_on.next_note;
@@ -111,7 +111,7 @@ public:
 		if (max_polyphony < polyphony) max_polyphony = polyphony;
 	}
 
-	inline void Push(XMidiEvent *event, uint32_t time) {
+	inline void Push(XMidiEvent *event, uint32 time) {
 		event->ex.note_on.note_time = time;
 		event->ex.note_on.next_note = 0;
 

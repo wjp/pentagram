@@ -33,9 +33,9 @@ public:
 	bool isTeleporter() const { return frame != 1; }
 	int getTeleportId() const { return (quality & 0xFF); }
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 
-	virtual uint16_t hatch();
+	virtual uint16 hatch();
 protected:
 	virtual void saveData(ODataSource* ods);
 

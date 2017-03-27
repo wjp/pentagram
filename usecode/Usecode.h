@@ -26,13 +26,13 @@ public:
 	Usecode() { }
 	virtual ~Usecode() { }
 
-	virtual const uint8_t* get_class(uint32_t classid)=0;
-	virtual uint32_t get_class_size(uint32_t classid)=0;
-	virtual const char* get_class_name(uint32_t classid) = 0;
-	virtual uint32_t get_class_base_offset(uint32_t classid) = 0;
-	virtual uint32_t get_class_event_count(uint32_t classid) = 0;
+	virtual const uint8* get_class(uint32 classid)=0;
+	virtual uint32 get_class_size(uint32 classid)=0;
+	virtual const char* get_class_name(uint32 classid) = 0;
+	virtual uint32 get_class_base_offset(uint32 classid) = 0;
+	virtual uint32 get_class_event_count(uint32 classid) = 0;
 
-	virtual uint32_t get_class_event(uint32_t classid, uint32_t eventid);
+	virtual uint32 get_class_event(uint32 classid, uint32 eventid);
 };
 
 

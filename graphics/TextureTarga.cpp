@@ -22,11 +22,11 @@
 
 struct TGA
 {
-	uint32_t		Height;										// Height of Image
-	uint32_t		Width;										// Width ofImage
-	uint32_t		Bpp;										// Bits Per Pixel
-	uint32_t		bytesPerPixel;
-	uint32_t		Flags;
+	uint32		Height;										// Height of Image
+	uint32		Width;										// Width ofImage
+	uint32		Bpp;										// Bits Per Pixel
+	uint32		bytesPerPixel;
+	uint32		Flags;
 	bool		Flipped;
 	bool		Compressed;
 
@@ -42,13 +42,13 @@ struct TGA
 	}
 };
 
-static const uint8_t uTGAcompare[12] = {0,0,2, 0,0,0,0,0,0,0,0,0};	// Uncompressed TGA Header
-static const uint8_t cTGAcompare[12] = {0,0,10,0,0,0,0,0,0,0,0,0};	// Compressed TGA Header
+static const uint8 uTGAcompare[12] = {0,0,2, 0,0,0,0,0,0,0,0,0};	// Uncompressed TGA Header
+static const uint8 cTGAcompare[12] = {0,0,10,0,0,0,0,0,0,0,0,0};	// Compressed TGA Header
 
 bool TextureTarga::Read(IDataSource *ds)
 {
 	// TGA File Header
-	uint8_t header[12];										
+	uint8 header[12];										
 
 	// TGA image data
 	TGA tga;
@@ -57,7 +57,7 @@ bool TextureTarga::Read(IDataSource *ds)
 	ds->seek(0);
 
 	// Attempt to read 12 byte header from file
-	ds->read(static_cast<uint8_t *>(header), 12);
+	ds->read(static_cast<uint8 *>(header), 12);
 
 	// Is it uncompressed?
 	//if(memcmp(uTGAcompare+1, header+1, 11) == 0) tga.Compressed = false;
@@ -91,7 +91,7 @@ bool TextureTarga::Read(IDataSource *ds)
 		return false;
 
 	// Allocate temporary buffer
-	uint8_t *temp_buffer	= new uint8_t[width * height * tga.bytesPerPixel];
+	uint8 *temp_buffer	= new uint8[width * height * tga.bytesPerPixel];
 
 	// Couldn't allocate
 	if (!temp_buffer) return false;
@@ -100,12 +100,12 @@ bool TextureTarga::Read(IDataSource *ds)
 	if (tga.Compressed)
 	{
 		// Is compressed
-		uint8_t *image = temp_buffer;
-		uint8_t *end = temp_buffer + tga.bytesPerPixel * width * height;
+		uint8 *image = temp_buffer;
+		uint8 *end = temp_buffer + tga.bytesPerPixel * width * height;
 
 		while(image < end)
 		{
-			uint32_t chunkheader = ds->read1();
+			uint32 chunkheader = ds->read1();
 
 			// RAW (copy chunkheader+1 pixels)
 			if(chunkheader < 128)
@@ -113,7 +113,7 @@ bool TextureTarga::Read(IDataSource *ds)
 				chunkheader = (chunkheader+1)*tga.bytesPerPixel;
 
 				// Read chunkheader pixels
-				ds->read(static_cast<uint8_t *>(image), chunkheader);
+				ds->read(static_cast<uint8 *>(image), chunkheader);
 
 				image += chunkheader;
 			}
@@ -123,10 +123,10 @@ bool TextureTarga::Read(IDataSource *ds)
 				chunkheader = (chunkheader-127)*tga.bytesPerPixel;
 
 				// Read the pixel
-				static uint8_t colorbuffer[4];
-				ds->read(static_cast<uint8_t *>(colorbuffer), tga.bytesPerPixel);
+				static uint8 colorbuffer[4];
+				ds->read(static_cast<uint8 *>(colorbuffer), tga.bytesPerPixel);
 
-				uint8_t *end_run = image + chunkheader;
+				uint8 *end_run = image + chunkheader;
 
 				if(tga.bytesPerPixel == 4) {
 					while (image < end_run) {
@@ -149,11 +149,11 @@ bool TextureTarga::Read(IDataSource *ds)
 	else
 	{
 		// Is uncompressed
-		ds->read(static_cast<uint8_t *>(temp_buffer), width * height * tga.bytesPerPixel);
+		ds->read(static_cast<uint8 *>(temp_buffer), width * height * tga.bytesPerPixel);
 	}
 
 	// Create Actual Buffer
-	buffer	= new uint32_t[width * height];
+	buffer	= new uint32[width * height];
 
 	// Couldn't allocate
 	if (!buffer)
@@ -176,14 +176,14 @@ bool TextureTarga::Read(IDataSource *ds)
 //
 // Convert the loaded buffer into something a little more useful
 //
-void TextureTarga::ConvertFormat(uint8_t *src, TGA &tga)
+void TextureTarga::ConvertFormat(uint8 *src, TGA &tga)
 {
 	// End iterations
-	uint32_t *dst = buffer;
-	uint32_t *end = buffer + width * height;
-	uint32_t line_size = width;
+	uint32 *dst = buffer;
+	uint32 *end = buffer + width * height;
+	uint32 line_size = width;
 
-	uint32_t src_line_inc = 0;
+	uint32 src_line_inc = 0;
 
 	if (tga.Flipped) {
 		src_line_inc = width * tga.bytesPerPixel * 2;
@@ -192,7 +192,7 @@ void TextureTarga::ConvertFormat(uint8_t *src, TGA &tga)
 
 	while (dst < end) {
 		
-		uint32_t *line_end = dst + line_size;
+		uint32 *line_end = dst + line_size;
 
 		if (tga.Bpp == 32) while (dst < line_end) {
 

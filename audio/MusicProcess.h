@@ -53,7 +53,7 @@ public:
 
 	virtual void run();
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 
 	// MusicProcess::playMusic console command
 	static void ConCmd_playMusic(const Console::ArgvType &argv);

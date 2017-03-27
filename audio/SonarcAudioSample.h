@@ -25,8 +25,8 @@ namespace Pentagram {
 class SonarcAudioSample : public AudioSample
 {
 	struct SonarcDecompData {
-		uint32_t		pos;
-		uint32_t		sample_pos;
+		uint32		pos;
+		uint32		sample_pos;
 	};
 
 	static bool	GeneratedOneTable;
@@ -35,20 +35,20 @@ class SonarcAudioSample : public AudioSample
 	static void GenerateOneTable();
 
 	static void decode_EC(int mode, int samplecount,
-						const uint8_t* source, int sourcesize,
-						uint8_t* dest);
+						const uint8* source, int sourcesize,
+						uint8* dest);
 	static void decode_LPC(int order, int nsamples,
-						uint8_t* dest, const uint8_t* factors);
-	static int audio_decode(const uint8_t* source, uint8_t* dest);
+						uint8* dest, const uint8* factors);
+	static int audio_decode(const uint8* source, uint8* dest);
 
-	uint32_t		src_offset;
+	uint32		src_offset;
 
 public:
-	SonarcAudioSample(uint8_t *buffer_, uint32_t size_);
+	SonarcAudioSample(uint8 *buffer_, uint32 size_);
 	virtual ~SonarcAudioSample(void);
 
 	virtual void initDecompressor(void *DecompData) const;
-	virtual uint32_t decompressFrame(void *DecompData, void *samples) const;
+	virtual uint32 decompressFrame(void *DecompData, void *samples) const;
 	virtual void rewind(void *DecompData) const;
 };
 

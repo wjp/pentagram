@@ -53,7 +53,7 @@ ShapeViewerGump::ShapeViewerGump()
 
 ShapeViewerGump::ShapeViewerGump(int width, int height,
 					 std::vector<std::pair<std::string,ShapeArchive*> >& flexes_,
-					 uint32_t _Flags, int32_t layer)
+					 uint32 _Flags, sint32 layer)
 	: ModalGump(50, 50, width, height, 0, _Flags, layer),
 	  flexes(flexes_), curflex(0), curshape(0), curframe(0), background(0)
 {
@@ -68,7 +68,7 @@ ShapeViewerGump::~ShapeViewerGump()
 
 }
 
-void ShapeViewerGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool /*scaled*/)
+void ShapeViewerGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool /*scaled*/)
 {
 	if (flexes.empty()) {
 		Close();
@@ -77,8 +77,8 @@ void ShapeViewerGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool /
 
 	surf->Fill32(background, 0, 0, dims.w, dims.h);
 
-	int32_t posx = (dims.w - shapew)/2 + shapex;
-	int32_t posy = (dims.h - shapeh)/2 + shapey;
+	sint32 posx = (dims.w - shapew)/2 + shapex;
+	sint32 posy = (dims.h - shapeh)/2 + shapey;
 
 	Shape* shape = flex->getShape(curshape);
 	if (shape && curframe < shape->frameCount())

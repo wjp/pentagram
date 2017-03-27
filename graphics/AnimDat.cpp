@@ -39,14 +39,14 @@ AnimDat::~AnimDat()
 	anims.clear();
 }
 
-ActorAnim* AnimDat::getAnim(uint32_t shape) const
+ActorAnim* AnimDat::getAnim(uint32 shape) const
 {
 	if (shape >= anims.size()) return 0;
 
 	return anims[shape];
 }
 
-AnimAction* AnimDat::getAnim(uint32_t shape, uint32_t action) const
+AnimAction* AnimDat::getAnim(uint32 shape, uint32 action) const
 {
 	if (shape >= anims.size()) return 0;
 	if (anims[shape] == 0) return 0;
@@ -69,7 +69,7 @@ void AnimDat::load(IDataSource *ds)
 	for (unsigned int shape = 0; shape < anims.size(); shape++)
 	{
 		ds->seek(4*shape);
-		uint32_t offset = ds->read4();
+		uint32 offset = ds->read4();
 
 		if (offset == 0) {
 			anims[shape] = 0;
@@ -84,7 +84,7 @@ void AnimDat::load(IDataSource *ds)
 		for (unsigned int action = 0; action < actioncount; action++)
 		{
 			ds->seek(offset + action*4);
-			uint32_t actionoffset = ds->read4();
+			uint32 actionoffset = ds->read4();
 
 			if (actionoffset == 0) {
 				a->actions[action] = 0;
@@ -97,7 +97,7 @@ void AnimDat::load(IDataSource *ds)
 			a->actions[action]->action = action;
 
 			ds->seek(actionoffset);
-			uint32_t actionsize = ds->read1();
+			uint32 actionsize = ds->read1();
 			a->actions[action]->size = actionsize;
 			a->actions[action]->flags = ds->read1();
 			a->actions[action]->framerepeat = ds->read1();
@@ -119,7 +119,7 @@ void AnimDat::load(IDataSource *ds)
 				{
 					if (GAME_IS_U8) {
 						f.frame = ds->read1(); // & 0x7FF;
-						uint8_t x = ds->read1();
+						uint8 x = ds->read1();
 						f.frame += (x & 0x7) << 8;
 						f.deltaz = ds->readXS(1);
 						f.sfx = ds->read1();
@@ -130,7 +130,7 @@ void AnimDat::load(IDataSource *ds)
 						// byte 0: low byte of frame
 						f.frame = ds->read1();
 						// byte 1: low nibble part of frame
-						uint8_t x = ds->read1();
+						uint8 x = ds->read1();
 						f.frame += (x & 0xF) << 8;
 						// byte 2, 3: unknown; byte 3 might contain flags
 						ds->skip(2);

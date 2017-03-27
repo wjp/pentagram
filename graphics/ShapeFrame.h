@@ -32,36 +32,36 @@ public:
 	// all the unknown crap is removed. It's designed to allow for painting
 	// only, and for speed when loading.
 	
-	ShapeFrame(const uint8_t* data, uint32_t size, const ConvertShapeFormat* format=0,
-		const uint8_t special[256]=0, ConvertShapeFrame *prev=0);
+	ShapeFrame(const uint8* data, uint32 size, const ConvertShapeFormat* format=0,
+		const uint8 special[256]=0, ConvertShapeFrame *prev=0);
 	~ShapeFrame();
 
-	uint32_t				compressed;
-	int32_t				width, height;
-	int32_t				xoff, yoff;
+	uint32				compressed;
+	sint32				width, height;
+	sint32				xoff, yoff;
 
-	uint32_t				*line_offsets;		// Note these are offsets into rle_data
-	const uint8_t			*rle_data;
+	uint32				*line_offsets;		// Note these are offsets into rle_data
+	const uint8			*rle_data;
 
-	bool hasPoint(int32_t x, int32_t y) const;	// Check to see if a point is in the frame
+	bool hasPoint(sint32 x, sint32 y) const;	// Check to see if a point is in the frame
 
-	uint8_t getPixelAtPoint(int32_t x, int32_t y) const;	// Get the pixel at the point 
+	uint8 getPixelAtPoint(sint32 x, sint32 y) const;	// Get the pixel at the point 
 
 	void getConvertShapeFrame(ConvertShapeFrame &csf, bool need_bytes_rle=false);
 protected:
 
 	// This will load a u8 style shape 'optimized'.
-	void LoadU8Format(const uint8_t* data, uint32_t size);
+	void LoadU8Format(const uint8* data, uint32 size);
 
 	// This will load a pentagram style shape 'optimized'.
-	void LoadPentagramFormat(const uint8_t* data, uint32_t size);
+	void LoadPentagramFormat(const uint8* data, uint32 size);
 
 	// This will load any sort of shape via a ConvertShapeFormat struct
 	// Crusader shapes must be loaded this way
-	void LoadGenericFormat(const uint8_t* data, uint32_t size, const ConvertShapeFormat* format);
+	void LoadGenericFormat(const uint8* data, uint32 size, const ConvertShapeFormat* format);
 
 	// This will load a u8-compressed shape
-	void LoadU8CMPFormat(const uint8_t* data, uint32_t size, const ConvertShapeFormat* format, const uint8_t special[256], ConvertShapeFrame *prev);
+	void LoadU8CMPFormat(const uint8* data, uint32 size, const ConvertShapeFormat* format, const uint8 special[256], ConvertShapeFrame *prev);
 };
 
 

@@ -29,15 +29,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Base Error Code type
 struct ECode
 {
-	int32_t	error;
+	sint32	error;
 
 	ECode() : error(0) { }
-	ECode(int32_t _e) : error(_e) { }
+	ECode(sint32 _e) : error(_e) { }
 
 	bool failed() const { return error != 0; }
 	bool succeded() const { return error == 0; }
 
-	ECode &operator = (int32_t &_e)
+	ECode &operator = (sint32 &_e)
 	{
 		error = _e;
 		return (*this);
@@ -49,22 +49,22 @@ struct ECode
 		return (*this);
 	}
 
-	bool operator != (int32_t &_e)
+	bool operator != (sint32 &_e)
 	{
 		return error != _e;
 	}
 
-	friend bool operator != (int32_t &_e, ECode &_e2)
+	friend bool operator != (sint32 &_e, ECode &_e2)
 	{
 		return _e2.error != _e;
 	}
 
-	bool operator == (int32_t &_e)
+	bool operator == (sint32 &_e)
 	{
 		return error == _e;
 	}
 
-	friend bool operator == (int32_t &_e, ECode &_e2)
+	friend bool operator == (sint32 &_e, ECode &_e2)
 	{
 		return _e2.error == _e;
 	}

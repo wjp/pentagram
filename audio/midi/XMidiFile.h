@@ -40,7 +40,7 @@ class XMidiEventList;
 class   XMidiFile
 {
 protected:
-	uint16_t				num_tracks;
+	uint16				num_tracks;
 
 private:
 	XMidiEventList		**events;
@@ -71,7 +71,7 @@ public:
 	int number_of_tracks() { return num_tracks; }
 
 	// External Event list functions
-	XMidiEventList *GetEventList (uint32_t track);
+	XMidiEventList *GetEventList (uint32 track);
 
 	// Not yet implimented
 	// int apply_patch (int track, DataSource *source);
@@ -90,21 +90,21 @@ private:
 	void CreateNewEvent (int time);
 
 	// Variable length quantity
-	int GetVLQ (IDataSource *source, uint32_t &quant);
-	int GetVLQ2 (IDataSource *source, uint32_t &quant);
+	int GetVLQ (IDataSource *source, uint32 &quant);
+	int GetVLQ2 (IDataSource *source, uint32 &quant);
 
-	void AdjustTimings(uint32_t ppqn);	// This is used by Midi's ONLY!
+	void AdjustTimings(uint32 ppqn);	// This is used by Midi's ONLY!
 	void ApplyFirstState(first_state &fs, int chan_mask);
 
 	int ConvertNote (const int time, const unsigned char status, IDataSource *source, const int size);
 	int ConvertEvent (const int time, const unsigned char status, IDataSource *source, const int size, first_state& fs);
 	int ConvertSystemMessage (const int time, const unsigned char status, IDataSource *source);
-	int CreateMT32SystemMessage(const int time, uint32_t address_base, uint16_t address_offset, uint32_t len, const void *data = 0, IDataSource *source=0);
+	int CreateMT32SystemMessage(const int time, uint32 address_base, uint16 address_offset, uint32 len, const void *data = 0, IDataSource *source=0);
 
 	int ConvertFiletoList (IDataSource *source, const bool is_xmi, first_state& fs);
 
 	int ExtractTracksFromXmi (IDataSource *source);
-	int ExtractTracksFromMid (IDataSource *source, const uint32_t ppqn, const int num_tracks, const bool type1);
+	int ExtractTracksFromMid (IDataSource *source, const uint32 ppqn, const int num_tracks, const bool type1);
 	
 	int ExtractTracks (IDataSource *source);
 

@@ -81,7 +81,7 @@ void OptionsGump::InitGump(Gump* newparent, bool take_focus)
 	y+= 14;
 }
 
-void OptionsGump::ChildNotify(Gump *child, uint32_t message)
+void OptionsGump::ChildNotify(Gump *child, uint32 message)
 {
 	if (message == ButtonWidget::BUTTON_CLICK)
 	{
@@ -89,7 +89,7 @@ void OptionsGump::ChildNotify(Gump *child, uint32_t message)
 	}
 }
 
-void OptionsGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
+void OptionsGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
 {
 	Gump::PaintThis(surf, lerp_factor, scaled);
 }

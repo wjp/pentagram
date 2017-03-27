@@ -43,7 +43,7 @@
 namespace NS_TIMIDITY {
 #endif
 
-int32_t freq_table[128]=
+sint32 freq_table[128]=
 {
  8176, 8662, 9177, 9723, 
  10301, 10913, 11562, 12250, 
@@ -320,7 +320,7 @@ float sine(int x)
 #endif /* LOOKUP_SINE */
 
 #ifdef LOOKUP_HACK
-int16_t _u2l[] =
+sint16 _u2l[] =
 {
  -32256, -31228, -30200, -29172, -28143, -27115, -26087, -25059,
  -24031, -23002, -21974, -20946, -19918, -18889, -17861, -16833,
@@ -356,9 +356,9 @@ int16_t _u2l[] =
  56, 48, 40, 32, 24, 16, 8, 0
 };
 
-int32_t *mixup;
+sint32 *mixup;
 #ifdef LOOKUP_INTERPOLATION
-int8_t *iplookup;
+sint8 *iplookup;
 #endif
 
 #endif
@@ -367,7 +367,7 @@ void init_tables(void)
 {
 #ifdef LOOKUP_HACK
   int i,j,v;
-  mixup=safe_Malloc<int32_t>(1<<(7+8)); /* Give your cache a workout! */
+  mixup=safe_Malloc<sint32>(1<<(7+8)); /* Give your cache a workout! */
 
   for (i=0; i<128; i++)
     {
@@ -380,7 +380,7 @@ void init_tables(void)
     }
 
 #ifdef LOOKUP_INTERPOLATION
-  iplookup=safe_Malloc<int8_t>(1<<(9+5));
+  iplookup=safe_Malloc<sint8>(1<<(9+5));
   for (i=-256; i<256; i++)
     for(j=0; j<32; j++)
       iplookup[((i<<5) & 0x3FE0) | j] = (i * j)>>5;
@@ -390,7 +390,7 @@ void init_tables(void)
 #endif
 }
 
-uint8_t _l2u_[] =
+uint8 _l2u_[] =
 {
  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -906,7 +906,7 @@ uint8_t _l2u_[] =
  0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80
 };
 
-uint8_t *_l2u = _l2u_ + 4096;
+uint8 *_l2u = _l2u_ + 4096;
 
 #ifdef NS_TIMIDITY
 };

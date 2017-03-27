@@ -33,8 +33,8 @@ namespace NS_TIMIDITY {
 #endif
 
 struct MidiEvent {
-  int32_t time;
-  uint8_t channel, type, a, b;
+  sint32 time;
+  uint8 channel, type, a, b;
 };
 
 /* Midi events */
@@ -75,10 +75,10 @@ struct Channel {
 #define NO_PANNING -1
 
 struct Voice {
-  uint8_t
+  uint8
     status, channel, note, velocity;
   Sample *sample;
-  int32_t
+  sint32
     orig_frequency, frequency,
     sample_offset, sample_increment,
     envelope_volume, envelope_target, envelope_increment,
@@ -90,7 +90,7 @@ struct Voice {
 
   float
     left_amp, right_amp, tremolo_volume;
-  int32_t
+  sint32
     vibrato_sample_increment[VIBRATO_SAMPLE_INCREMENTS];
   int
     vibrato_phase, vibrato_control_ratio, vibrato_control_counter,
@@ -115,14 +115,14 @@ struct Voice {
 extern Channel channel[16];
 extern Voice voice[MAX_VOICES];
 
-extern int32_t control_ratio, amp_with_poly, amplification;
-extern int32_t drumchannels;
+extern sint32 control_ratio, amp_with_poly, amplification;
+extern sint32 drumchannels;
 extern int adjust_panning_immediately;
 extern int voices;
 
 #define ISDRUMCHANNEL(c) ((drumchannels & (1<<(c))))
 
-extern int play_midi(MidiEvent *el, int32_t events, int32_t samples);
+extern int play_midi(MidiEvent *el, sint32 events, sint32 samples);
 extern int play_midi_file(char *fn);
 extern void dumb_pass_playing_list(int number_of_files, char *list_of_files[]);
 

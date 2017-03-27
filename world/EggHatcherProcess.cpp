@@ -40,7 +40,7 @@ EggHatcherProcess::~EggHatcherProcess()
 
 }
 
-void EggHatcherProcess::addEgg(uint16_t egg)
+void EggHatcherProcess::addEgg(uint16 egg)
 {
 	eggs.push_back(egg);
 }
@@ -58,22 +58,22 @@ void EggHatcherProcess::run()
 	assert(av);
 
 	for (unsigned int i = 0; i < eggs.size(); i++) {
-		uint16_t eggid = eggs[i];
+		uint16 eggid = eggs[i];
 		Egg* egg = p_dynamic_cast<Egg*>(getObject(eggid));
 		if (!egg) continue; // egg gone
 
-		int32_t x,y,z;
+		sint32 x,y,z;
 		egg->getLocation(x,y,z);
 
 		//! constants
-		int32_t x1 = x - 32 * egg->getXRange();
-		int32_t x2 = x + 32 * egg->getXRange();
-		int32_t y1 = y - 32 * egg->getYRange();
-		int32_t y2 = y + 32 * egg->getYRange();
+		sint32 x1 = x - 32 * egg->getXRange();
+		sint32 x2 = x + 32 * egg->getXRange();
+		sint32 y1 = y - 32 * egg->getYRange();
+		sint32 y2 = y + 32 * egg->getYRange();
 
 		// get avatar location
-		int32_t ax,ay,az;
-		int32_t axs,ays,azs;
+		sint32 ax,ay,az;
+		sint32 axs,ays,azs;
 		av->getLocation(ax,ay,az);
 		av->getFootpadWorld(axs,ays,azs);
 
@@ -102,7 +102,7 @@ void EggHatcherProcess::saveData(ODataSource* ods)
 }
 
 
-bool EggHatcherProcess::loadData(IDataSource* ids, uint32_t version)
+bool EggHatcherProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

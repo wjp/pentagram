@@ -57,7 +57,7 @@ void MissileProcess::run()
 		return;
 	}
 
-	int32_t x, y, z;
+	sint32 x, y, z;
 
 	currentpos += 1;
 	if (currentpos > (2500/speed)) currentpos = (2500/speed);
@@ -80,21 +80,21 @@ void MissileProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 
-	ods->write4(static_cast<uint32_t>(from_x));
-	ods->write4(static_cast<uint32_t>(from_y));
-	ods->write4(static_cast<uint32_t>(from_z));
-	ods->write4(static_cast<uint32_t>(to_x));
-	ods->write4(static_cast<uint32_t>(to_y));
-	ods->write4(static_cast<uint32_t>(to_z));
-	ods->write4(static_cast<uint32_t>(speed));
-	ods->write4(static_cast<uint32_t>(currentpos));
+	ods->write4(static_cast<uint32>(from_x));
+	ods->write4(static_cast<uint32>(from_y));
+	ods->write4(static_cast<uint32>(from_z));
+	ods->write4(static_cast<uint32>(to_x));
+	ods->write4(static_cast<uint32>(to_y));
+	ods->write4(static_cast<uint32>(to_z));
+	ods->write4(static_cast<uint32>(speed));
+	ods->write4(static_cast<uint32>(currentpos));
 
-	uint8_t c = (curve ? 1 : 0);
+	uint8 c = (curve ? 1 : 0);
 	ods->write1(c);
 
 }
 
-bool MissileProcess::loadData(IDataSource* ids, uint32_t version)
+bool MissileProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

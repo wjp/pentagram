@@ -45,7 +45,7 @@ ReadableGump::ReadableGump()
 
 }
 
-ReadableGump::ReadableGump(ObjId owner, uint16_t shape, int font, std::string msg) :
+ReadableGump::ReadableGump(ObjId owner, uint16 shape, int font, std::string msg) :
 	ModalGump(0, 0, 100, 100, owner), shapenum(shape), fontnum(font), text(msg)
 {
 }
@@ -102,10 +102,10 @@ bool ReadableGump::OnKeyDown(int key, int mod)
 }
 
 
-uint32_t ReadableGump::I_readGrave(const uint8_t* args, unsigned int /*argsize*/)
+uint32 ReadableGump::I_readGrave(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(shape);
+	ARG_UINT16(shape);
 	ARG_STRING(str);
 	assert(item);
 
@@ -116,10 +116,10 @@ uint32_t ReadableGump::I_readGrave(const uint8_t* args, unsigned int /*argsize*/
 	return gump->GetNotifyProcess()->getPid();
 }
 
-uint32_t ReadableGump::I_readPlaque(const uint8_t* args, unsigned int /*argsize*/)
+uint32 ReadableGump::I_readPlaque(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
-	ARG_uint16_t(shape);
+	ARG_UINT16(shape);
 	ARG_STRING(str);
 	assert(item);
 
@@ -135,7 +135,7 @@ void ReadableGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to load ModalGump");
 }
 
-bool ReadableGump::loadData(IDataSource* ids, uint32_t version)
+bool ReadableGump::loadData(IDataSource* ids, uint32 version)
 {
 	CANT_HAPPEN_MSG("Trying to load ModalGump");
 

@@ -99,7 +99,7 @@ GameData::~GameData()
 	speech.clear();
 }
 
-MapGlob* GameData::getGlob(uint32_t glob) const
+MapGlob* GameData::getGlob(uint32 glob) const
 {
 	if (glob < globs.size())
 		return globs[glob];
@@ -107,7 +107,7 @@ MapGlob* GameData::getGlob(uint32_t glob) const
 		return 0;
 }
 
-ShapeArchive* GameData::getShapeFlex(uint16_t flexId) const
+ShapeArchive* GameData::getShapeFlex(uint16 flexId) const
 {
 	switch (flexId) {
 		case MAINSHAPES:
@@ -407,7 +407,7 @@ void GameData::setupJPOverrides()
 		}
 
 		unsigned int jpfontnum = std::atoi(vals[0].c_str());
-		uint32_t col32 = std::strtol(vals[1].c_str(), 0, 0);
+		uint32 col32 = std::strtol(vals[1].c_str(), 0, 0);
 
 		if (!fontmanager->addJPOverride(fontnum, jpfontnum, col32))
 		{
@@ -449,7 +449,7 @@ void GameData::setupTTFOverrides(const char* configkey, bool SJIS)
 
 		std::string filename = vals[0];
 		int pointsize = std::atoi(vals[1].c_str());
-		uint32_t col32 = std::strtol(vals[2].c_str(), 0, 0);
+		uint32 col32 = std::strtol(vals[2].c_str(), 0, 0);
 		int border = std::atoi(vals[3].c_str());
 
 		if (!fontmanager->addTTFOverride(fontnum, filename, pointsize,
@@ -461,7 +461,7 @@ void GameData::setupTTFOverrides(const char* configkey, bool SJIS)
 	}
 }
 
-SpeechFlex* GameData::getSpeechFlex(uint32_t shapenum)
+SpeechFlex* GameData::getSpeechFlex(uint32 shapenum)
 {
 	if (shapenum >= speech.size()) return 0;
 

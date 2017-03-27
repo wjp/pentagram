@@ -24,13 +24,13 @@
 
 #include <map>
 #include <string>
-extern std::map<int32_t, std::string> ScriptExpressions;
+extern std::map<sint32, std::string> ScriptExpressions;
 
 /****************************************************************************
 	LoopScriptNode
  ****************************************************************************/
  
-void LoopScriptNode::print_unk(Console &o, const uint32_t isize) const
+void LoopScriptNode::print_unk(Console &o, const uint32 isize) const
 {
 	assert(rtype().type()==Type::T_INVALID);
 	Node::print_linenum_unk(o, isize);
@@ -76,7 +76,7 @@ bool LoopNode::fold(DCUnit * /*unit*/, std::deque<Node *> &nodes)
 		{
 			pnode.push_back(grab(nodes));
 		}
-		//grab_p(nodes, std::abs(static_cast<int32_t>(addSP->size())));
+		//grab_p(nodes, std::abs(static_cast<sint32>(addSP->size())));
 		
 		// add us back to the stack
 		//nodes.push_back(us);
@@ -88,7 +88,7 @@ bool LoopNode::fold(DCUnit * /*unit*/, std::deque<Node *> &nodes)
 	return false;
 }
 
-void LoopNode::print_unk(Console &o, const uint32_t isize) const
+void LoopNode::print_unk(Console &o, const uint32 isize) const
 {
 	print_linenum_unk(o, isize);
 	o.Printf("search_%s_type_%02X(", suc::print_bp(currObj), searchType);
@@ -128,7 +128,7 @@ void LoopNode::print_bin(ODequeDataSource &o) const
 	LoopNextNode
  ****************************************************************************/
 
-void LoopNextNode::print_unk(Console &o, const uint32_t isize) const
+void LoopNextNode::print_unk(Console &o, const uint32 isize) const
 {
 	assert(rtype().type()==Type::T_INVALID);
 	Node::print_linenum_unk(o, isize);

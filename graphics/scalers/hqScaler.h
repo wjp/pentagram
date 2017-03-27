@@ -30,7 +30,7 @@ class hqScaler : public Scaler
 public:
 	hqScaler();
 
-	virtual const uint32_t	ScaleBits() const;			//< bits for supported integer scaling
+	virtual const uint32	ScaleBits() const;			//< bits for supported integer scaling
 	virtual const bool		ScaleArbitrary() const;		//< supports arbitrary scaling of any degree 
 
 	virtual const char *	ScalerName() const;			//< Name Of the Scaler (1 word)
@@ -38,19 +38,19 @@ public:
 	virtual const char *	ScalerCopyright() const;	//< Scaler Copyright info
 
 private:
-	static bool _Scale16Nat ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
-	static bool _Scale16Sta ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
+	static bool _Scale16Nat ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
+	static bool _Scale16Sta ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
 
-	static bool _Scale32Nat ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
-	static bool _Scale32Sta ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
-	static bool _Scale32_A888 ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
-	static bool _Scale32_888A ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src);
+	static bool _Scale32Nat ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
+	static bool _Scale32Sta ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
+	static bool _Scale32_A888 ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
+	static bool _Scale32_888A ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src);
 };
 
 extern const hqScaler hq_scaler;

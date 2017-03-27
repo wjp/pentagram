@@ -41,17 +41,17 @@ public:
 	//! \param swidth1 width before scaling (usually game-width)
 	//! \param sheight1 height before scaling (usually game-height)
 	//! \param scaler1 scaler to use
-	ScalerGump(int32_t x, int32_t y, int32_t width, int32_t height);
+	ScalerGump(sint32 x, sint32 y, sint32 width, sint32 height);
 	virtual ~ScalerGump(void);
 
-	virtual void Paint(RenderSurface* surf, int32_t lerp_factor, bool scaled);
+	virtual void Paint(RenderSurface* surf, sint32 lerp_factor, bool scaled);
 	virtual void RenderSurfaceChanged();
 	virtual void ParentToGump(int &px, int &py,
 							  PointRoundDir r = ROUND_TOPLEFT);
 	virtual void GumpToParent(int &gx, int &gy,
 							  PointRoundDir r = ROUND_TOPLEFT);
 	
-	void GetScaledSize(int32_t &sw, int32_t &sh) const { sw = swidth1; sh = sheight1; }
+	void GetScaledSize(sint32 &sw, sint32 &sh) const { sw = swidth1; sh = sheight1; }
 	void ChangeScaler(std::string scalername, int scalex, int scaley);
 
 protected:
@@ -65,8 +65,8 @@ protected:
 	const Pentagram::Scaler	*scaler2;
 	RenderSurface			*buffer2;
 
-	int32_t					width;
-	int32_t					height;
+	sint32					width;
+	sint32					height;
 
 private:
 	void SetupScalers();

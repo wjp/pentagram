@@ -39,7 +39,7 @@ public:
 	ControlEntryGump(int x, int y, int width, const char * binding, const char * name);
 	virtual ~ControlEntryGump(void);
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
-	virtual void ChildNotify(Gump *child, uint32_t message);
+	virtual void ChildNotify(Gump *child, uint32 message);
 	void init();
 protected:
 	Pentagram::istring bindingName;
@@ -100,7 +100,7 @@ void ControlEntryGump::init()
 */
 }
 
-void ControlEntryGump::ChildNotify(Gump *child, uint32_t message)
+void ControlEntryGump::ChildNotify(Gump *child, uint32 message)
 {
 	ObjId cid = child->getObjId();
 	if (message == ButtonWidget::BUTTON_CLICK)
@@ -150,7 +150,7 @@ void ControlsGump::addEntry(const char * binding, const char * name, int & x, in
 	y += rect.h;
 }
 
-void ControlsGump::ChildNotify(Gump *child, uint32_t message)
+void ControlsGump::ChildNotify(Gump *child, uint32 message)
 {
 	if (message == BindGump::UPDATE)
 	{
@@ -164,7 +164,7 @@ void ControlsGump::ChildNotify(Gump *child, uint32_t message)
 	}
 }
 
-void ControlsGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
+void ControlsGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
 {
 	Gump::PaintThis(surf, lerp_factor, scaled);
 }

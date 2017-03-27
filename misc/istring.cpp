@@ -26,9 +26,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 namespace Pentagram {
 
-int strncasecmp (const char *s1, const char *s2, uint32_t length)
+int strncasecmp (const char *s1, const char *s2, uint32 length)
 {
-	uint32_t	c1, c2;
+	uint32	c1, c2;
 	
 	do
 	{
@@ -71,8 +71,8 @@ void strcpy_s(char *dest, size_t size, const char *src)
 
 bool ichar_traits::eq(const char_type & c1, const char_type & c2)
 {
-	uint32_t c3 = c1;
-	uint32_t c4 = c2;
+	uint32 c3 = c1;
+	uint32 c4 = c2;
 	if (c3 >= 'a' && c3 <= 'z')
 		c3 -= ('a' - 'A');
 	if (c4 >= 'a' && c4 <= 'z')
@@ -82,8 +82,8 @@ bool ichar_traits::eq(const char_type & c1, const char_type & c2)
 
 bool ichar_traits::lt(const char_type & c1, const char_type & c2)
 {
-	uint32_t c3 = c1;
-	uint32_t c4 = c2;
+	uint32 c3 = c1;
+	uint32 c4 = c2;
 	if (c3 >= 'a' && c3 <= 'z')
 		c3 -= ('a' - 'A');
 	if (c4 >= 'a' && c4 <= 'z')

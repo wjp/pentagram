@@ -42,7 +42,7 @@ bool loadPalette(Pentagram::Palette * pal, const ConvertShapeFormat * format)
 	for (int i = 0; i < 256; ++i)
 	{
 		palHack[0] = i;
-		pal->native[i] = *((uint16_t * ) palHack);
+		pal->native[i] = *((uint16 * ) palHack);
 	}
 
 	if (format == &PentagramShapeFormat)

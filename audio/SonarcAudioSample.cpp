@@ -24,7 +24,7 @@ namespace Pentagram {
 bool SonarcAudioSample::GeneratedOneTable = false;
 int SonarcAudioSample::OneTable[256];
 
-SonarcAudioSample::SonarcAudioSample(uint8_t *buffer_, uint32_t size_) : 
+SonarcAudioSample::SonarcAudioSample(uint8 *buffer_, uint32 size_) : 
 	AudioSample(buffer_, size_),
 	src_offset(0x20)
 
@@ -42,7 +42,7 @@ SonarcAudioSample::SonarcAudioSample(uint8_t *buffer_, uint32_t size_) :
 	stereo = false;
 
 	// Get frame bytes... we need to compensate for 'large' files
-	uint32_t frame_bytes = *(buffer+src_offset);
+	uint32 frame_bytes = *(buffer+src_offset);
 	frame_bytes |= (*(buffer+src_offset+1)) << 8;
 
 	if (frame_bytes == 0x20 && length > 32767) {
@@ -81,11 +81,11 @@ void SonarcAudioSample::GenerateOneTable()
 }
 
 void SonarcAudioSample::decode_EC(int mode, int samplecount,
-						const uint8_t* source, int sourcesize,
-						uint8_t* dest)
+						const uint8* source, int sourcesize,
+						uint8* dest)
 {
 	bool zerospecial = false;
-	uint32_t data = 0;
+	uint32 data = 0;
 	int inputbits = 0; // current 'fill rate' of data window
 
 	if (mode >= 7) {
@@ -111,38 +111,38 @@ void SonarcAudioSample::decode_EC(int mode, int samplecount,
 				inputbits--;
 			}
 
-			uint8_t lowByte = data & 0xFF;
+			uint8 lowByte = data & 0xFF;
 			int ones = OneTable[lowByte];
 
 			if (ones == 0) {
 				data >>= 1; // strip zero
 				// low byte contains (mode+1) bits of the sample
-				int8_t sample = data & 0xFF;
+				sint8 sample = data & 0xFF;
 				sample <<= (7 - mode);
 				sample >>= (7 - mode); // sign extend
-				*dest++ = (uint8_t)(sample+0x80);
+				*dest++ = (uint8)(sample+0x80);
 				data >>= mode+1;
 				inputbits -= mode+2;
 			} else if (ones < 7-mode) {
 				data >>= ones+1; // strip ones and zero
 				// low byte contains (mode+ones) bits of the sample
-				int8_t sample = data & 0xFF;
+				sint8 sample = data & 0xFF;
 				sample <<= (7-mode-ones);
 				sample &= 0x7F;
 				if (!(sample & 0x40))
 					sample |= 0x80; // reconstruct sign bit
 				sample >>= (7-mode-ones); // sign extend
-				*dest++ = (uint8_t)(sample+0x80);
+				*dest++ = (uint8)(sample+0x80);
 				data >>= (mode+ones);
 				inputbits -= mode+2*ones+1;
 			} else {
 				data >>= (7 - mode); // strip ones
 				// low byte contains 7 bits of the sample
-				int8_t sample = data & 0xFF;
+				sint8 sample = data & 0xFF;
 				sample &= 0x7F;
 				if (!(sample & 0x40))
 					sample |= 0x80; // reconstruct sign bit
-				*dest++ = (uint8_t)(sample+0x80);
+				*dest++ = (uint8)(sample+0x80);
 				data >>= 7;
 				inputbits -= 2*7-mode;
 			}		
@@ -152,36 +152,36 @@ void SonarcAudioSample::decode_EC(int mode, int samplecount,
 }
 
 void SonarcAudioSample::decode_LPC(int order, int nsamples,
-						uint8_t* dest, const uint8_t* factors)
+						uint8* dest, const uint8* factors)
 {
-	uint8_t *startdest = dest;
+	uint8 *startdest = dest;
 	dest -= order;
 
 	// basic linear predictive (de)coding
 	// the errors this produces are fixed by decode_EC
 
 	for (int i = 0; i < nsamples; ++i) {
-		uint8_t* loopdest = dest++;
+		uint8* loopdest = dest++;
 		int accum = 0;
 		for (int j = order-1; j >= 0; --j) {
-			int8_t val1 = (loopdest<startdest)? 0: (*loopdest);
+			sint8 val1 = (loopdest<startdest)? 0: (*loopdest);
 			loopdest++;
 			val1 ^= 0x80;
-			int16_t val2 = factors[j*2] + (factors[j*2+1]<<8);
+			sint16 val2 = factors[j*2] + (factors[j*2+1]<<8);
 			accum += (int)val1 * val2;
 		}
 
 		accum += 0x00000800;
-		*loopdest -= (int8_t)((accum >> 12) & 0xFF);
+		*loopdest -= (sint8)((accum >> 12) & 0xFF);
 	}
 }
 
-int SonarcAudioSample::audio_decode(const uint8_t* source, uint8_t* dest)
+int SonarcAudioSample::audio_decode(const uint8* source, uint8* dest)
 {
 	int size = source[0] + (source[1] << 8);
-	uint16_t checksum = 0;
+	uint16 checksum = 0;
 	for (int i = 0; i < size/2; ++i) {
-		uint16_t val = source[2*i] + (source[2*i+1] << 8);
+		uint16 val = source[2*i] + (source[2*i+1] << 8);
 		checksum ^= val;
 	}
 		   
@@ -215,7 +215,7 @@ void SonarcAudioSample::initDecompressor(void *DecompData) const
 	decomp->sample_pos = 0;
 }
 
-uint32_t SonarcAudioSample::decompressFrame(void *DecompData, void *samples) const
+uint32 SonarcAudioSample::decompressFrame(void *DecompData, void *samples) const
 {
 	SonarcDecompData *decomp = reinterpret_cast<SonarcDecompData *>(DecompData);
 
@@ -223,14 +223,14 @@ uint32_t SonarcAudioSample::decompressFrame(void *DecompData, void *samples) con
 	if (decomp->sample_pos == length) return 0;
 
 	// Get Frame size
-	uint32_t frame_bytes  = *(buffer+decomp->pos);
+	uint32 frame_bytes  = *(buffer+decomp->pos);
 	frame_bytes |= (*(buffer+decomp->pos+1)) << 8;
 
 	// Get Num Frame Samples
-	uint32_t frame_samples  = *(buffer+decomp->pos+2);
+	uint32 frame_samples  = *(buffer+decomp->pos+2);
 	frame_samples |= (*(buffer+decomp->pos+3)) << 8;
 
-	audio_decode(buffer+decomp->pos, reinterpret_cast<uint8_t*>(samples));
+	audio_decode(buffer+decomp->pos, reinterpret_cast<uint8*>(samples));
 
 	decomp->pos += frame_bytes;
 	decomp->sample_pos += frame_samples;

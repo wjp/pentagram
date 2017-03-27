@@ -48,8 +48,8 @@ ContainerGump::ContainerGump()
 
 }
 
-ContainerGump::ContainerGump(Shape* shape_, uint32_t framenum_, uint16_t owner,
-							 uint32_t Flags_, int32_t layer)
+ContainerGump::ContainerGump(Shape* shape_, uint32 framenum_, uint16 owner,
+							 uint32 Flags_, sint32 layer)
 	: ItemRelativeGump(0, 0, 5, 5, owner, Flags_, layer),
 	  display_dragging(false)
 {
@@ -89,7 +89,7 @@ void ContainerGump::InitGump(Gump* newparent, bool take_focus)
 	// U8 puts a container gump slightly to the left of an object
 }
 
-void ContainerGump::getItemCoords(Item* item, int32_t& itemx, int32_t& itemy)
+void ContainerGump::getItemCoords(Item* item, sint32& itemx, sint32& itemy)
 {
 	item->getGumpLocation(itemx,itemy);
 
@@ -108,7 +108,7 @@ void ContainerGump::getItemCoords(Item* item, int32_t& itemx, int32_t& itemy)
 }
 
 
-void ContainerGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
+void ContainerGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
 {
 	// paint self
 	ItemRelativeGump::PaintThis(surf, lerp_factor, scaled);
@@ -122,7 +122,7 @@ void ContainerGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool sca
 	}
 
 	std::list<Item*>& contents = c->contents;
-	int32_t gametick = Kernel::get_instance()->getFrameNum();
+	sint32 gametick = Kernel::get_instance()->getFrameNum();
 
 	//!! TODO: check these painting commands (flipped? translucent?)
 	bool paintEditorItems = GUIApp::get_instance()->isPaintEditorItems();
@@ -135,7 +135,7 @@ void ContainerGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool sca
 		if (!paintEditorItems && item->getShapeInfo()->is_editor())
 			continue;
 
-		int32_t itemx,itemy;
+		sint32 itemx,itemy;
 		getItemCoords(item, itemx, itemy);
 		Shape* s = item->getShapeObject();
 		assert(s);
@@ -144,7 +144,7 @@ void ContainerGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool sca
 
 
 	if (display_dragging) {
-		int32_t itemx, itemy;
+		sint32 itemx, itemy;
 		itemx = dragging_x + itemarea.x;
 		itemy = dragging_y + itemarea.y;
 		Shape* s = GameData::get_instance()->getMainShapes()->
@@ -157,9 +157,9 @@ void ContainerGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool sca
 
 // Find object (if any) at (mx,my)
 // (mx,my) are relative to parent
-uint16_t ContainerGump::TraceObjId(int mx, int my)
+uint16 ContainerGump::TraceObjId(int mx, int my)
 {
-	uint16_t objid = Gump::TraceObjId(mx,my);
+	uint16 objid = Gump::TraceObjId(mx,my);
 	if (objid && objid != 65535) return objid;
 
 	ParentToGump(mx,my);
@@ -178,7 +178,7 @@ uint16_t ContainerGump::TraceObjId(int mx, int my)
 		if (!paintEditorItems && item->getShapeInfo()->is_editor())
 			continue;
 
-		int32_t itemx,itemy;
+		sint32 itemx,itemy;
 		getItemCoords(item, itemx, itemy);
 		Shape* s = item->getShapeObject();
 		assert(s);
@@ -196,8 +196,8 @@ uint16_t ContainerGump::TraceObjId(int mx, int my)
 }
 
 // get item coords relative to self
-bool ContainerGump::GetLocationOfItem(uint16_t itemid, int &gx, int &gy,
-									  int32_t lerp_factor)
+bool ContainerGump::GetLocationOfItem(uint16 itemid, int &gx, int &gy,
+									  sint32 lerp_factor)
 {
 	Item* item = getItem(itemid);
 	Item* parent = item->getParentAsContainer();
@@ -206,7 +206,7 @@ bool ContainerGump::GetLocationOfItem(uint16_t itemid, int &gx, int &gy,
 
 	//!!! need to use lerp_factor
 
-	int32_t itemx, itemy;
+	sint32 itemx, itemy;
 	getItemCoords(item, itemx, itemy);
 
 	gx = itemx;
@@ -217,7 +217,7 @@ bool ContainerGump::GetLocationOfItem(uint16_t itemid, int &gx, int &gy,
 
 // we don't want our position to depend on Gump of parent container
 // so change the default ItemRelativeGump behaviour
-void ContainerGump::GetItemLocation(int32_t lerp_factor)
+void ContainerGump::GetItemLocation(sint32 lerp_factor)
 {
 	Item *it = getItem(owner);
 
@@ -330,7 +330,7 @@ void ContainerGump::OnMouseClick(int button, int mx, int my)
 			return;
 		}
 		
-		uint16_t objID = TraceObjId(mx, my);
+		uint16 objID = TraceObjId(mx, my);
 
 		Item *item = getItem(objID);
 		if (item) {
@@ -351,7 +351,7 @@ void ContainerGump::OnMouseDouble(int button, int mx, int my)
 			return;
 		}
 		
-		uint16_t objID = TraceObjId(mx, my);
+		uint16 objID = TraceObjId(mx, my);
 
 		if (objID == getObjId()) {
 			objID = owner; // use container when double click on self
@@ -385,7 +385,7 @@ bool ContainerGump::StartDraggingItem(Item* item, int mx, int my)
 	MainActor* avatar = getMainActor();
 	if (!avatar->canReach(c, 128)) return false;
 
-	int32_t itemx,itemy;
+	sint32 itemx,itemy;
 	getItemCoords(item, itemx, itemy);
 
 	GUIApp::get_instance()->setDraggingOffset(mx - itemx, my - itemy);
@@ -561,20 +561,20 @@ void ContainerGump::saveData(ODataSource* ods)
 {
 	ItemRelativeGump::saveData(ods);
 
-	ods->write4(static_cast<uint32_t>(itemarea.x));
-	ods->write4(static_cast<uint32_t>(itemarea.y));
-	ods->write4(static_cast<uint32_t>(itemarea.w));
-	ods->write4(static_cast<uint32_t>(itemarea.h));
+	ods->write4(static_cast<uint32>(itemarea.x));
+	ods->write4(static_cast<uint32>(itemarea.y));
+	ods->write4(static_cast<uint32>(itemarea.w));
+	ods->write4(static_cast<uint32>(itemarea.h));
 }
 
-bool ContainerGump::loadData(IDataSource* ids, uint32_t version)
+bool ContainerGump::loadData(IDataSource* ids, uint32 version)
 {
 	if (!ItemRelativeGump::loadData(ids, version)) return false;
 
-	int32_t iax = static_cast<int32_t>(ids->read4());
-	int32_t iay = static_cast<int32_t>(ids->read4());
-	int32_t iaw = static_cast<int32_t>(ids->read4());
-	int32_t iah = static_cast<int32_t>(ids->read4());
+	sint32 iax = static_cast<sint32>(ids->read4());
+	sint32 iay = static_cast<sint32>(ids->read4());
+	sint32 iaw = static_cast<sint32>(ids->read4());
+	sint32 iah = static_cast<sint32>(ids->read4());
 	itemarea.Set(iax, iay, iaw, iah);
 
 	return true;

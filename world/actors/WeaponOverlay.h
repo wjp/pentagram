@@ -22,9 +22,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <vector>
 
 struct WeaponOverlayFrame {
-	int32_t xoff;
-	int32_t yoff;
-	uint32_t frame;
+	sint32 xoff;
+	sint32 yoff;
+	uint32 frame;
 };
 
 struct WeaponOverlay {

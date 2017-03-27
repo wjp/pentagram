@@ -26,27 +26,27 @@ class ODataSource;
 class BaseUCStack
 {
 protected:
-	uint8_t* buf;
-	uint8_t* buf_ptr;
-	uint32_t size;
+	uint8* buf;
+	uint8* buf_ptr;
+	uint32 size;
 public:
 
-	BaseUCStack(uint32_t len, uint8_t *b) : buf(b), size(len)
+	BaseUCStack(uint32 len, uint8 *b) : buf(b), size(len)
 	{
 		// stack grows downward, so start at the end of the buffer
 		buf_ptr = buf + size;
 	}
 	virtual ~BaseUCStack() { }
 
-	inline uint32_t getSize() const {
+	inline uint32 getSize() const {
 		return size;
 	}
 
-	inline uint32_t stacksize() const {
+	inline uint32 stacksize() const {
 		return size - (buf_ptr - buf);
 	}
 
-	inline void addSP(const int32_t offset) {
+	inline void addSP(const sint32 offset) {
 		buf_ptr += offset;
 	}
 
@@ -62,30 +62,30 @@ public:
 	// Push values to the stack
 	//
 
-	inline void push1(uint8_t val) {
+	inline void push1(uint8 val) {
 		buf_ptr--;
 		buf_ptr[0] = val;
 	}
 	
-	inline void push2(uint16_t val) {
+	inline void push2(uint16 val) {
 		buf_ptr-=2;
-		buf_ptr[0] = static_cast<uint8_t>( val     & 0xFF);
-		buf_ptr[1] = static_cast<uint8_t>((val>>8) & 0xFF);
+		buf_ptr[0] = static_cast<uint8>( val     & 0xFF);
+		buf_ptr[1] = static_cast<uint8>((val>>8) & 0xFF);
 	}
-	inline void push4(uint32_t val) {
+	inline void push4(uint32 val) {
 		buf_ptr-=4;
-		buf_ptr[0] = static_cast<uint8_t>( val      & 0xFF);
-		buf_ptr[1] = static_cast<uint8_t>((val>>8)  & 0xFF);
-		buf_ptr[2] = static_cast<uint8_t>((val>>16) & 0xFF);
-		buf_ptr[3] = static_cast<uint8_t>((val>>24) & 0xFF);
+		buf_ptr[0] = static_cast<uint8>( val      & 0xFF);
+		buf_ptr[1] = static_cast<uint8>((val>>8)  & 0xFF);
+		buf_ptr[2] = static_cast<uint8>((val>>16) & 0xFF);
+		buf_ptr[3] = static_cast<uint8>((val>>24) & 0xFF);
 	}
 	// Push an arbitrary number of bytes of 0
-	inline void push0(const uint32_t size) { 
+	inline void push0(const uint32 size) { 
 		buf_ptr -= size;
 		std::memset (buf_ptr, 0, size);
 	}
 	// Push an arbitrary number of bytes
-	inline void push(const uint8_t *in, const uint32_t size) { 
+	inline void push(const uint8 *in, const uint32 size) { 
 		buf_ptr -= size;
 		std::memcpy (buf_ptr, in, size);
 	}
@@ -94,21 +94,21 @@ public:
 	// Pop values from the stack
 	//
 
-	inline uint16_t pop2() {
-		uint8_t b0, b1;
+	inline uint16 pop2() {
+		uint8 b0, b1;
 		b0 = *buf_ptr++;
 		b1 = *buf_ptr++;
 		return (b0 | (b1 << 8));
 	}
-	inline uint32_t pop4() {
-		uint8_t b0, b1, b2, b3;
+	inline uint32 pop4() {
+		uint8 b0, b1, b2, b3;
 		b0 = *buf_ptr++;
 		b1 = *buf_ptr++;
 		b2 = *buf_ptr++;
 		b3 = *buf_ptr++;
 		return (b0 | (b1<<8) | (b2<<16) | (b3<<24));
 	}
-	inline void pop(uint8_t *out, const uint32_t size) {
+	inline void pop(uint8 *out, const uint32 size) {
 		std::memcpy(out, buf_ptr, size);
 		buf_ptr += size;
 	}
@@ -117,20 +117,20 @@ public:
 	// Access a value from a location in the stacck
 	//
 
-	inline uint8_t access1(const uint32_t offset) const {
+	inline uint8 access1(const uint32 offset) const {
 		return buf[offset];
 	}
-	inline uint16_t access2(const uint32_t offset) const {
+	inline uint16 access2(const uint32 offset) const {
 		return (buf[offset] | (buf[offset+1] << 8));
 	}
-	inline uint32_t access4(const uint32_t offset) const {
+	inline uint32 access4(const uint32 offset) const {
 		return buf[offset] | (buf[offset+1]<<8) |
 			(buf[offset+2]<<16) | (buf[offset+3]<<24);
 	}
-	inline uint8_t* access(const uint32_t offset) {		
+	inline uint8* access(const uint32 offset) {		
 		return buf+offset;
 	}
-	inline uint8_t* access() {
+	inline uint8* access() {
 		return buf_ptr;
 	}
 
@@ -138,48 +138,48 @@ public:
 	// Assign a value to a location in the stack
 	//
 
-	inline void assign1(const uint32_t offset, const uint8_t val) {
-		const_cast<uint8_t*>(buf)[offset]   = static_cast<uint8_t>( val     & 0xFF);
+	inline void assign1(const uint32 offset, const uint8 val) {
+		const_cast<uint8*>(buf)[offset]   = static_cast<uint8>( val     & 0xFF);
 	}
-	inline void assign2(const uint32_t offset, const uint16_t val) {
-		const_cast<uint8_t*>(buf)[offset]   = static_cast<uint8_t>( val     & 0xFF);
-		const_cast<uint8_t*>(buf)[offset+1] = static_cast<uint8_t>((val>>8) & 0xFF);
+	inline void assign2(const uint32 offset, const uint16 val) {
+		const_cast<uint8*>(buf)[offset]   = static_cast<uint8>( val     & 0xFF);
+		const_cast<uint8*>(buf)[offset+1] = static_cast<uint8>((val>>8) & 0xFF);
 	}
-	inline void assign4(const uint32_t offset, const uint32_t val) {
-		const_cast<uint8_t*>(buf)[offset]   = static_cast<uint8_t>( val      & 0xFF);
-		const_cast<uint8_t*>(buf)[offset+1] = static_cast<uint8_t>((val>>8)  & 0xFF);
-		const_cast<uint8_t*>(buf)[offset+2] = static_cast<uint8_t>((val>>16) & 0xFF);
-		const_cast<uint8_t*>(buf)[offset+3] = static_cast<uint8_t>((val>>24) & 0xFF);
+	inline void assign4(const uint32 offset, const uint32 val) {
+		const_cast<uint8*>(buf)[offset]   = static_cast<uint8>( val      & 0xFF);
+		const_cast<uint8*>(buf)[offset+1] = static_cast<uint8>((val>>8)  & 0xFF);
+		const_cast<uint8*>(buf)[offset+2] = static_cast<uint8>((val>>16) & 0xFF);
+		const_cast<uint8*>(buf)[offset+3] = static_cast<uint8>((val>>24) & 0xFF);
 	}
-	inline void assign(const uint32_t offset, const uint8_t *in, const uint32_t len)
+	inline void assign(const uint32 offset, const uint8 *in, const uint32 len)
 	{
-		std::memcpy (const_cast<uint8_t*>(buf)+offset, in, len);
+		std::memcpy (const_cast<uint8*>(buf)+offset, in, len);
 	}
 };
 
 class DynamicUCStack : public BaseUCStack
 {
 public:
-	DynamicUCStack(uint32_t len=0x1000) : BaseUCStack(len, new uint8_t[len]) { }
+	DynamicUCStack(uint32 len=0x1000) : BaseUCStack(len, new uint8[len]) { }
 	virtual ~DynamicUCStack() { delete [] buf; }
 
 #ifdef USE_DYNAMIC_UCSTACK
 #define UCStack DynamicUCStack
 	void save(ODataSource* ods);
-	bool load(IDataSource* ids, uint32_t version);
+	bool load(IDataSource* ids, uint32 version);
 #endif
 };
 
 #ifndef USE_DYNAMIC_UCSTACK
 class UCStack : public BaseUCStack
 {
-	uint8_t	buf_array[0x1000];
+	uint8	buf_array[0x1000];
 public:
 	UCStack() : BaseUCStack(0x1000, buf_array) { }
 	virtual ~UCStack() { }
 
 	void save(ODataSource* ods);
-	bool load(IDataSource* ids, uint32_t version);
+	bool load(IDataSource* ids, uint32 version);
 };
 #endif
 

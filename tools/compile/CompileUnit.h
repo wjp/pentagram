@@ -98,7 +98,7 @@ class CompileUnit
 		LLCToken _expect; // the expect state
 		bool _warned; // have we warned?
 		#ifdef COMPILER_TEST
-		uint32_t testidx;
+		uint32 testidx;
 		#endif
 };
 

@@ -53,7 +53,7 @@ void TTFRenderedText::draw(RenderSurface* surface, int x, int y,
 }
 
 void TTFRenderedText::drawBlended(RenderSurface* surface, int x, int y,
-								  uint32_t col, bool destmasked)
+								  uint32 col, bool destmasked)
 {
 	if (!destmasked)
 		surface->FadedBlit(texture, 0, 0, width, height,

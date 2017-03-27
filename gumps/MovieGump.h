@@ -31,7 +31,7 @@ public:
 
 	MovieGump();
 	MovieGump(int width, int height, RawArchive* skf, bool introMusicHack = false, 
-			  uint32_t _Flags = 0, int32_t layer = LAYER_MODAL);
+			  uint32 _Flags = 0, sint32 layer = LAYER_MODAL);
 	virtual ~MovieGump(void);
 
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
@@ -41,7 +41,7 @@ public:
 	virtual void run();
 
 	// Paint the Gump
-	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
 
 	virtual bool OnKeyDown(int key, int mod);
 

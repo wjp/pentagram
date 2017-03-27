@@ -33,9 +33,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "CoreApp.h"
 #include "IDataSource.h"
 
-Item* ItemFactory::createItem(uint32_t shape, uint32_t frame, uint16_t quality,
-							  uint16_t flags, uint16_t npcnum, uint16_t mapnum,
-							  uint32_t extendedflags, bool objid)
+Item* ItemFactory::createItem(uint32 shape, uint32 frame, uint16 quality,
+							  uint16 flags, uint16 npcnum, uint16 mapnum,
+							  uint32 extendedflags, bool objid)
 {
 	// check what class to create
 	ShapeInfo *info = GameData::get_instance()->getMainShapes()->
@@ -45,7 +45,7 @@ Item* ItemFactory::createItem(uint32_t shape, uint32_t frame, uint16_t quality,
 	// New item, no lerping
 	extendedflags |= Item::EXT_LERP_NOPREV;
 
-	uint32_t family = info->family;
+	uint32 family = info->family;
 
 	switch (family) {
 	case ShapeInfo::SF_GENERIC:
@@ -150,9 +150,9 @@ Item* ItemFactory::createItem(uint32_t shape, uint32_t frame, uint16_t quality,
 
 
 
-Actor* ItemFactory::createActor(uint32_t shape, uint32_t frame, uint16_t quality,
-								uint16_t flags, uint16_t npcnum, uint16_t mapnum,
-								uint32_t extendedflags, bool objid)
+Actor* ItemFactory::createActor(uint32 shape, uint32 frame, uint16 quality,
+								uint16 flags, uint16 npcnum, uint16 mapnum,
+								uint32 extendedflags, bool objid)
 {
 	// this function should probably differentiate between the Avatar,
 	// NPCs, monsters?
@@ -189,7 +189,7 @@ Actor* ItemFactory::createActor(uint32_t shape, uint32_t frame, uint16_t quality
 	actor->npcnum = npcnum;
 	actor->mapnum = mapnum;
 	if (npcnum != 0) {
-		actor->objid = static_cast<uint16_t>(npcnum);
+		actor->objid = static_cast<uint16>(npcnum);
 	} else if (objid) {
 		actor->assignObjId();
 	}

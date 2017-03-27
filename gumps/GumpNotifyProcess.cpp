@@ -32,7 +32,7 @@ GumpNotifyProcess::GumpNotifyProcess()
 
 }
 
-GumpNotifyProcess::GumpNotifyProcess(uint16_t it) : Process(it), gump(0)
+GumpNotifyProcess::GumpNotifyProcess(uint16 it) : Process(it), gump(0)
 {
 	result = 0;
 	type = 0x200; // CONSTANT!
@@ -83,7 +83,7 @@ void GumpNotifyProcess::saveData(ODataSource* ods)
 	ods->write2(gump);
 }
 
-bool GumpNotifyProcess::loadData(IDataSource* ids, uint32_t version)
+bool GumpNotifyProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

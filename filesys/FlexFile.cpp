@@ -66,21 +66,21 @@ bool FlexFile::isFlexFile(IDataSource* ds)
 	return false;
 }
 
-uint32_t FlexFile::getOffset(uint32_t index)
+uint32 FlexFile::getOffset(uint32 index)
 {
 	ds->seek(0x80 + 8*index);
 	return ds->read4();
 }
 
-uint8_t* FlexFile::getObject(uint32_t index, uint32_t* sizep)
+uint8* FlexFile::getObject(uint32 index, uint32* sizep)
 {
 	if (index >= count) return 0;
 
-	uint32_t size = getSize(index);
+	uint32 size = getSize(index);
 	if (size == 0) return 0;
 
-	uint8_t *object = new uint8_t[size];
-	uint32_t offset = getOffset(index);
+	uint8 *object = new uint8[size];
+	uint32 offset = getOffset(index);
 
 	ds->seek(offset);
 	ds->read(object, size);
@@ -90,17 +90,17 @@ uint8_t* FlexFile::getObject(uint32_t index, uint32_t* sizep)
 	return object;
 }
 
-uint32_t FlexFile::getSize(uint32_t index)
+uint32 FlexFile::getSize(uint32 index)
 {
 	if (index >= count) return 0;
 
 	ds->seek(0x84 + 8*index);
-	uint32_t length = ds->read4();	
+	uint32 length = ds->read4();	
 
 	return length;
 }
 
-bool FlexFile::nameToIndex(const std::string& name, uint32_t& index)
+bool FlexFile::nameToIndex(const std::string& name, uint32& index)
 {
 	return extractIndexFromName(name, index);
 }

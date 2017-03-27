@@ -35,7 +35,7 @@ struct TextureTarga : public Texture
 
 protected:
 
-	void ConvertFormat(uint8_t *buffer, TGA &tga);
+	void ConvertFormat(uint8 *buffer, TGA &tga);
 };
 
 

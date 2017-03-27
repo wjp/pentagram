@@ -38,8 +38,8 @@ Gump::Gump()
 {
 }
 
-Gump::Gump(int inX, int inY, int Width, int Height, uint16_t inOwner,
-		   uint32_t inFlags, int32_t inLayer) : 
+Gump::Gump(int inX, int inY, int Width, int Height, uint16 inOwner,
+		   uint32 inFlags, sint32 inLayer) : 
 	Object(), owner(inOwner), parent(0), x(inX), y(inY),
 	dims(0,0,Width,Height), flags(inFlags), layer(inLayer), index(-1),
 	shape(0), framenum(0), children(), focus_child(0), notifier(0),
@@ -207,7 +207,7 @@ void Gump::CloseItemDependents()
 	}
 }
 
-bool Gump::GetMouseCursor(int mx, int my, Shape &shape, int32_t &frame)
+bool Gump::GetMouseCursor(int mx, int my, Shape &shape, sint32 &frame)
 {
 	ParentToGump(mx,my);
 
@@ -233,7 +233,7 @@ bool Gump::GetMouseCursor(int mx, int my, Shape &shape, int32_t &frame)
 	return ret;
 }
 
-void Gump::Paint(RenderSurface *surf, int32_t lerp_factor, bool scaled)
+void Gump::Paint(RenderSurface *surf, sint32 lerp_factor, bool scaled)
 {
 	// Don't paint if hidden
 	if (IsHidden()) return;
@@ -269,7 +269,7 @@ void Gump::Paint(RenderSurface *surf, int32_t lerp_factor, bool scaled)
 	surf->SetOrigin(ox, oy);
 }
 
-void Gump::PaintThis(RenderSurface* surf, int32_t /*lerp_factor*/, bool /*scaled*/)
+void Gump::PaintThis(RenderSurface* surf, sint32 /*lerp_factor*/, bool /*scaled*/)
 {
 	if (shape)
 	{
@@ -291,7 +291,7 @@ void Gump::PaintThis(RenderSurface* surf, int32_t /*lerp_factor*/, bool /*scaled
 	}
 }
 
-void Gump::PaintChildren(RenderSurface *surf, int32_t lerp_factor, bool scaled)
+void Gump::PaintChildren(RenderSurface *surf, sint32 lerp_factor, bool scaled)
 {
 	// Iterate all children
 	std::list<Gump*>::iterator it = children.begin();
@@ -308,8 +308,8 @@ void Gump::PaintChildren(RenderSurface *surf, int32_t lerp_factor, bool scaled)
 	}	
 }
 
-void Gump::PaintCompositing(RenderSurface* surf, int32_t lerp_factor,
-							int32_t sx, int32_t sy)
+void Gump::PaintCompositing(RenderSurface* surf, sint32 lerp_factor,
+							sint32 sx, sint32 sy)
 {
 	// Don't paint if hidden
 	if (IsHidden()) return;
@@ -358,7 +358,7 @@ void Gump::PaintCompositing(RenderSurface* surf, int32_t lerp_factor,
 	surf->SetOrigin(ox, oy);
 }
 
-void Gump::PaintComposited(RenderSurface* /*surf*/, int32_t /*lerp_factor*/, int32_t /*scalex*/, int32_t /*scaley*/)
+void Gump::PaintComposited(RenderSurface* /*surf*/, sint32 /*lerp_factor*/, sint32 /*scalex*/, sint32 /*scaley*/)
 {
 }
 
@@ -533,13 +533,13 @@ void Gump::ScreenSpaceToGumpRect(int &sx, int &sy, int &sw, int &sh,
 	if (sh != 0) sh = y2-y1;
 }
 
-uint16_t Gump::TraceObjId(int mx, int my)
+uint16 Gump::TraceObjId(int mx, int my)
 {
 	// Convert to local coords
 	int gx = mx,gy = my;
 	ParentToGump(gx,gy);
 
-	uint16_t objid = 0;
+	uint16 objid = 0;
 
 	// reverse-iterate children
 	std::list<Gump*>::reverse_iterator it;
@@ -563,8 +563,8 @@ uint16_t Gump::TraceObjId(int mx, int my)
 	return objid;
 }
 
-bool Gump::GetLocationOfItem(uint16_t itemid, int &gx, int &gy,
-							 int32_t lerp_factor)
+bool Gump::GetLocationOfItem(uint16 itemid, int &gx, int &gy,
+							 sint32 lerp_factor)
 {
 	gx = 0;
 	gy = 0;
@@ -841,18 +841,18 @@ void Gump::saveData(ODataSource* ods)
 	Object::saveData(ods);
 
 	ods->write2(owner);
-	ods->write4(static_cast<uint32_t>(x));
-	ods->write4(static_cast<uint32_t>(y));
-	ods->write4(static_cast<uint32_t>(dims.x));
-	ods->write4(static_cast<uint32_t>(dims.y));
-	ods->write4(static_cast<uint32_t>(dims.w));
-	ods->write4(static_cast<uint32_t>(dims.h));
+	ods->write4(static_cast<uint32>(x));
+	ods->write4(static_cast<uint32>(y));
+	ods->write4(static_cast<uint32>(dims.x));
+	ods->write4(static_cast<uint32>(dims.y));
+	ods->write4(static_cast<uint32>(dims.w));
+	ods->write4(static_cast<uint32>(dims.h));
 	ods->write4(flags);
-	ods->write4(static_cast<uint32_t>(layer));
-	ods->write4(static_cast<uint32_t>(index));
+	ods->write4(static_cast<uint32>(layer));
+	ods->write4(static_cast<uint32>(index));
 
-	uint16_t flex = 0;
-	uint32_t shapenum = 0;
+	uint16 flex = 0;
+	uint32 shapenum = 0;
 	if (shape)
 	{
 		shape->getShapeId(flex, shapenum);
@@ -884,40 +884,40 @@ void Gump::saveData(ODataSource* ods)
 	}
 }
 
-bool Gump::loadData(IDataSource* ids, uint32_t version)
+bool Gump::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Object::loadData(ids, version)) return false;
 
 	owner = ids->read2();
-	x = static_cast<int32_t>(ids->read4());
-	y = static_cast<int32_t>(ids->read4());
+	x = static_cast<sint32>(ids->read4());
+	y = static_cast<sint32>(ids->read4());
 
-	int dx = static_cast<int32_t>(ids->read4());
-	int dy = static_cast<int32_t>(ids->read4());
-	int dw = static_cast<int32_t>(ids->read4());
-	int dh = static_cast<int32_t>(ids->read4());
+	int dx = static_cast<sint32>(ids->read4());
+	int dy = static_cast<sint32>(ids->read4());
+	int dw = static_cast<sint32>(ids->read4());
+	int dh = static_cast<sint32>(ids->read4());
 	dims.Set(dx, dy, dw, dh);
 
 	flags = ids->read4();
-	layer = static_cast<int32_t>(ids->read4());
-	index = static_cast<int32_t>(ids->read4());
+	layer = static_cast<sint32>(ids->read4());
+	index = static_cast<sint32>(ids->read4());
 
 	shape = 0;
 	ShapeArchive * flex = GameData::get_instance()->getShapeFlex(ids->read2());
-	uint32_t shapenum = ids->read4();
+	uint32 shapenum = ids->read4();
 	if (flex)
 	{
 		shape = flex->getShape(shapenum);
 	}
 
 	framenum = ids->read4();
-	uint16_t focusid = ids->read2();
+	uint16 focusid = ids->read2();
 	focus_child = 0;
 	notifier = ids->read2();
 	process_result = ids->read4();
 
 	// read children
-	uint32_t childcount = ids->read4();
+	uint32 childcount = ids->read4();
 	for (unsigned int i = 0; i < childcount; ++i) {
 		Object* obj = ObjectManager::get_instance()->loadObject(ids, version);
 		Gump* child = p_dynamic_cast<Gump*>(obj);

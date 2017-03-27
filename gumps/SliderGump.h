@@ -30,14 +30,14 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	SliderGump();
-	SliderGump(int x, int y, int16_t min, int16_t max,
-			   int16_t value, int16_t delta=1);
+	SliderGump(int x, int y, sint16 min, sint16 max,
+			   sint16 value, sint16 delta=1);
 	virtual ~SliderGump(void);
 
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
-	virtual void PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled);
 	virtual void Close(bool no_del = false);	
-	virtual void ChildNotify(Gump *child, uint32_t message);
+	virtual void ChildNotify(Gump *child, uint32 message);
 
 	void setUsecodeNotify(UCProcess* ucp);
 
@@ -48,18 +48,18 @@ public:
 
 	virtual bool OnKeyDown(int key, int mod);
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
-	int16_t min;
-	int16_t max;
-	int16_t delta;
-	int16_t value;
+	sint16 min;
+	sint16 max;
+	sint16 delta;
+	sint16 value;
 
-	uint16_t usecodeNotifyPID;
+	uint16 usecodeNotifyPID;
 
-	int16_t renderedvalue;
+	sint16 renderedvalue;
 	RenderedText* renderedtext;
 	
 	int getSliderPos();

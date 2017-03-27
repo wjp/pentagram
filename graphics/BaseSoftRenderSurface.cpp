@@ -77,7 +77,7 @@ BaseSoftRenderSurface::BaseSoftRenderSurface(SDL_Renderer *r, SDL_Texture *t,
 	// Trickery to get the alpha channel
 	if (format.a_mask == 0 && bytes_per_pixel==4)
 	{
-		uint32_t mask = ~(format.r_mask|format.g_mask|format.b_mask);
+		uint32 mask = ~(format.r_mask|format.g_mask|format.b_mask);
 
 		// Using all bits????
 		if (!mask) return;
@@ -182,11 +182,11 @@ BaseSoftRenderSurface::BaseSoftRenderSurface(int w, int h, int bpp,
 
 
 //
-// BaseSoftRenderSurface::BaseSoftRenderSurface(int w, int h, uint8_t *buf)
+// BaseSoftRenderSurface::BaseSoftRenderSurface(int w, int h, uint8 *buf)
 //
 // Desc: Constructor for Generic BaseSoftRenderSurface which matches screen params
 //
-BaseSoftRenderSurface::BaseSoftRenderSurface(int w, int h, uint8_t *buf) :
+BaseSoftRenderSurface::BaseSoftRenderSurface(int w, int h, uint8 *buf) :
 	pixels(0), pixels00(0), zbuffer(0), zbuffer00(0),
 	bytes_per_pixel(0), bits_per_pixel(0), format_type(0), 
 	ox(0), oy(0), width(0), height(0), pitch(0), zpitch(0),
@@ -205,7 +205,7 @@ BaseSoftRenderSurface::BaseSoftRenderSurface(int w, int h, uint8_t *buf) :
 }
 
 //
-// BaseSoftRenderSurface::BaseSoftRenderSurface(int w, int h, uint8_t *buf)
+// BaseSoftRenderSurface::BaseSoftRenderSurface(int w, int h, uint8 *buf)
 //
 // Desc: Constructor for Generic BaseSoftRenderSurface which matches screen params
 //
@@ -222,10 +222,10 @@ BaseSoftRenderSurface::BaseSoftRenderSurface(int w, int h) :
 	pitch = w*bpp/8;
 	bits_per_pixel = bpp;
 	bytes_per_pixel = bpp/8;
-	pixels00 = new uint8_t[pitch * height];
+	pixels00 = new uint8[pitch * height];
 
 	rtt_tex = new Texture;
-	rtt_tex->buffer = reinterpret_cast<uint32_t*>(pixels00);
+	rtt_tex->buffer = reinterpret_cast<uint32*>(pixels00);
 	rtt_tex->width = width;
 	rtt_tex->height = height;
 	rtt_tex->format = TEX_FMT_NATIVE;
@@ -281,7 +281,7 @@ ECode BaseSoftRenderSurface::BeginPainting()
 			}
 
 			// Pixels pointer
-			pixels00 = static_cast<uint8_t*>(sdl_surf->pixels);
+			pixels00 = static_cast<uint8*>(sdl_surf->pixels);
 			pitch = sdl_surf->pitch;
 			if (flipped) pitch = -pitch;
 		}
@@ -374,7 +374,7 @@ void BaseSoftRenderSurface::CreateNativePalette(Pentagram::Palette* palette)
 {
 	for (int i = 0; i < 256; i++)
 	{
-		int32_t r,g,b;
+		sint32 r,g,b;
 
 		// Normal palette
 		palette->native_untransformed[i] = PACK_RGB8(palette->palette[i*3+0],
@@ -404,9 +404,9 @@ void BaseSoftRenderSurface::CreateNativePalette(Pentagram::Palette* palette)
 
 		// Transformed normal palette
 		// FIXME - Wont work on non SDL SRS Implementations
-		palette->native[i] = PACK_RGB8(static_cast<uint8_t>(r>>11),
-										static_cast<uint8_t>(g>>11),
-										static_cast<uint8_t>(b>>11));
+		palette->native[i] = PACK_RGB8(static_cast<uint8>(r>>11),
+										static_cast<uint8>(g>>11),
+										static_cast<uint8>(b>>11));
 
 		// Transformed XFORM palette (Uses the TEX32 format)
 		if (TEX32_A(palette->xform_untransformed[i]))
@@ -432,9 +432,9 @@ void BaseSoftRenderSurface::CreateNativePalette(Pentagram::Palette* palette)
 			if (b < 0) b = 0;
 			if (b > 0x7F800) b = 0x7F800;
 
-			palette->xform[i] = TEX32_PACK_RGBA(static_cast<uint8_t>(r>>11),
-												static_cast<uint8_t>(g>>11),
-												static_cast<uint8_t>(b>>11),
+			palette->xform[i] = TEX32_PACK_RGBA(static_cast<uint8>(r>>11),
+												static_cast<uint8>(g>>11),
+												static_cast<uint8>(b>>11),
 								TEX32_A(palette->xform_untransformed[i]));
 		}
 		else
@@ -454,11 +454,11 @@ void BaseSoftRenderSurface::GetSurfaceDims(Rect &r) const
 }
 
 //
-// void BaseSoftRenderSurface::SetOrigin(int32_t x, int32_t y)
+// void BaseSoftRenderSurface::SetOrigin(sint32 x, sint32 y)
 //
 // Desc: Set the Phyiscal Pixel to be the logical origin
 //
-void BaseSoftRenderSurface::SetOrigin(int32_t x, int32_t y)
+void BaseSoftRenderSurface::SetOrigin(sint32 x, sint32 y)
 {
 	// Adjust the clipping window
 	clip_window.MoveRel(ox-x, oy-y);
@@ -472,11 +472,11 @@ void BaseSoftRenderSurface::SetOrigin(int32_t x, int32_t y)
 }
 
 //
-// void BaseSoftRenderSurface::GetOrigin(int32_t &x, int32_t &y)
+// void BaseSoftRenderSurface::GetOrigin(sint32 &x, sint32 &y)
 //
 // Desc: Get the Phyiscal Pixel that is the logical origin
 //
-void BaseSoftRenderSurface::GetOrigin(int32_t &x, int32_t &y) const
+void BaseSoftRenderSurface::GetOrigin(sint32 &x, sint32 &y) const
 {
 	// Set the origin
 	x = ox;
@@ -508,14 +508,14 @@ void BaseSoftRenderSurface::SetClippingRect(const Rect &r)
 }
 
 //
-// int16_t BaseSoftRenderSurface::CheckClipped(Rect &r)
+// sint16 BaseSoftRenderSurface::CheckClipped(Rect &r)
 //
 // Desc: Check for a clipped rectangle
 // Returns: -1 if off screen, 
 //           0 if not clipped, 
 //           1 if clipped
 //
-int16_t BaseSoftRenderSurface::CheckClipped(const Rect &c) const 
+sint16 BaseSoftRenderSurface::CheckClipped(const Rect &c) const 
 {
 	Rect r = c;
 	r.Intersect(clip_window);

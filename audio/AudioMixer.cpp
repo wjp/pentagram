@@ -135,7 +135,7 @@ void AudioMixer::reset()
 	Unlock();
 }
 
-int AudioMixer::playSample(AudioSample *sample, int loop, int priority, bool paused, uint32_t pitch_shift_, int lvol, int rvol)
+int AudioMixer::playSample(AudioSample *sample, int loop, int priority, bool paused, uint32 pitch_shift_, int lvol, int rvol)
 {
 	if (!audio_ok || !channels) return -1;
 
@@ -240,14 +240,14 @@ void AudioMixer::getVolume(int chan, int &lvol, int &rvol)
 }
 	
 
-void AudioMixer::sdlAudioCallback(void *userdata, uint8_t *stream, int len)
+void AudioMixer::sdlAudioCallback(void *userdata, Uint8 *stream, int len)
 {
 	AudioMixer *mixer = reinterpret_cast<AudioMixer *>(userdata);
 
-	mixer->MixAudio(reinterpret_cast<int16_t*>(stream), len);
+	mixer->MixAudio(reinterpret_cast<sint16*>(stream), len);
 }
 
-void AudioMixer::MixAudio(int16_t *stream, uint32_t bytes)
+void AudioMixer::MixAudio(sint16 *stream, uint32 bytes)
 {
 	if (!audio_ok) return;
 

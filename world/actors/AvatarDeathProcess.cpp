@@ -77,7 +77,7 @@ void AvatarDeathProcess::saveData(ODataSource* ods)
 	Process::saveData(ods);
 }
 
-bool AvatarDeathProcess::loadData(IDataSource* ids, uint32_t version)
+bool AvatarDeathProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

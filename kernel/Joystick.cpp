@@ -124,8 +124,8 @@ void JoystickCursorProcess::run()
 	{
 		int tx = now - ticks;
 		int r = 350 - accel * 30;
-		int16_t jx = SDL_JoystickGetAxis(joy[js], x_axis);
-		int16_t jy = SDL_JoystickGetAxis(joy[js], y_axis);
+		sint16 jx = SDL_JoystickGetAxis(joy[js], x_axis);
+		sint16 jy = SDL_JoystickGetAxis(joy[js], y_axis);
 		if (jx > AXIS_TOLERANCE || jx < -AXIS_TOLERANCE)
 			dx = ((jx / 1000) * tx) / r;
 		if (jy > AXIS_TOLERANCE || jy < -AXIS_TOLERANCE)
@@ -152,7 +152,7 @@ void JoystickCursorProcess::run()
 	}
 }
 
-bool JoystickCursorProcess::loadData(IDataSource* ids, uint32_t version)
+bool JoystickCursorProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

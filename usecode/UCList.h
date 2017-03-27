@@ -37,7 +37,7 @@ class ODataSource;
 
 class UCList
 {
-	std::vector<uint8_t> elements;
+	std::vector<uint8> elements;
 	unsigned int elementsize;
 	unsigned int size;
 
@@ -56,26 +56,26 @@ class UCList
 		free();
 	}
 
-	const uint8_t* operator[](uint32_t index) {
+	const uint8* operator[](uint32 index) {
 		// check that index isn't out of bounds...
 		return &(elements[index * elementsize]);
 	}
 
-	uint16_t getuint16_t(uint32_t index) {
+	uint16 getuint16(uint32 index) {
 		assert(elementsize == 2);
-		uint16_t t = elements[index * elementsize];
+		uint16 t = elements[index * elementsize];
 		t += elements[index * elementsize + 1] << 8;
 		return t;
 	}
 
-	void append(const uint8_t* e) {
+	void append(const uint8* e) {
 		elements.resize((size + 1) * elementsize);
 		for (unsigned int i = 0; i < elementsize; i++)
 			elements[size*elementsize + i] = e[i];
 		size++;
 	}
 
-	void remove(const uint8_t* e) {
+	void remove(const uint8* e) {
 		// do we need to erase all occurences of e or just the first one?
 		// (deleting all, currently)
 		for (unsigned int i = 0; i < size; i++) {
@@ -91,7 +91,7 @@ class UCList
 		}
 	}
 
-	bool inList(const uint8_t* e) {
+	bool inList(const uint8* e) {
 		for (unsigned int i = 0; i < size; i++) {
 			bool equal = true;
 			for (unsigned int j = 0; j < elementsize && equal; j++)
@@ -122,10 +122,10 @@ class UCList
 	}
 
 	void free() { elements.clear(); size = 0; }
-	uint32_t getSize() const { return size; }
+	uint32 getSize() const { return size; }
 	unsigned int getElementSize() const { return elementsize; }
 
-	void assign(uint32_t index, const uint8_t* e) {
+	void assign(uint32 index, const uint8* e) {
 		// need to check that index isn't out-of-bounds? (or grow list?)
 		for (unsigned int i = 0; i < elementsize; i++)
 			elements[index*elementsize+i] = e[i];
@@ -140,17 +140,17 @@ class UCList
 	void copyStringList(UCList& l);
 	void unionStringList(UCList& l);
 	void substractStringList(UCList& l);
-	bool stringInList(uint16_t str);
-	void assignString(uint32_t index, uint16_t str);
-	void removeString(uint16_t str, bool nodel=false);
+	bool stringInList(uint16 str);
+	void assignString(uint32 index, uint16 str);
+	void removeString(uint16 str, bool nodel=false);
 
-	uint16_t getStringIndex(uint32_t index);
+	uint16 getStringIndex(uint32 index);
 
 	void save(ODataSource* ods);
-	bool load(IDataSource* ids, uint32_t version);
+	bool load(IDataSource* ids, uint32 version);
 
 private:
-	std::string& getString(uint32_t index);
+	std::string& getString(uint32 index);
 };
 
 #endif

@@ -34,7 +34,7 @@ ItemRelativeGump::ItemRelativeGump()
 }
 
 ItemRelativeGump::ItemRelativeGump(int x, int y, int width, int height,
-								   uint16_t owner, uint32_t _Flags, int32_t _Layer)
+								   uint16 owner, uint32 _Flags, sint32 _Layer)
 	: Gump(x, y, width, height, owner, _Flags, _Layer), ix(0), iy(0)
 {
 }
@@ -64,7 +64,7 @@ void ItemRelativeGump::MoveOnScreen()
 	y = 0;
 
 	// get rectangle that gump occupies in scalerGump's coordinate space
-	int32_t left,right,top,bottom;
+	sint32 left,right,top,bottom;
 	left = -dims.x;
 	right = left + dims.w;
 	top = -dims.y;
@@ -72,7 +72,7 @@ void ItemRelativeGump::MoveOnScreen()
 	GumpToParent(left,top);
 	GumpToParent(right,bottom);
 
-	int32_t movex = 0, movey = 0;
+	sint32 movex = 0, movey = 0;
 
 	if (left < -sd.x)
 		movex = -sd.x - left;
@@ -89,7 +89,7 @@ void ItemRelativeGump::MoveOnScreen()
 
 // Paint the Gump (RenderSurface is relative to parent).
 // Calls PaintThis and PaintChildren
-void ItemRelativeGump::Paint(RenderSurface*surf, int32_t lerp_factor, bool scaled)
+void ItemRelativeGump::Paint(RenderSurface*surf, sint32 lerp_factor, bool scaled)
 {
 	GetItemLocation(lerp_factor);
 	Gump::Paint(surf,lerp_factor, scaled);
@@ -112,7 +112,7 @@ void ItemRelativeGump::GumpToParent(int &gx, int &gy, PointRoundDir r)
 	gy += iy;
 }
 
-void ItemRelativeGump::GetItemLocation(int32_t lerp_factor)
+void ItemRelativeGump::GetItemLocation(sint32 lerp_factor)
 {
 	Item *it = 0;
 	Item *next = 0;
@@ -185,7 +185,7 @@ void ItemRelativeGump::saveData(ODataSource* ods)
 	Gump::saveData(ods);
 }
 
-bool ItemRelativeGump::loadData(IDataSource* ids, uint32_t version)
+bool ItemRelativeGump::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Gump::loadData(ids, version)) return false;
 

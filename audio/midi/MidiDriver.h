@@ -52,7 +52,7 @@ public:
 	//! \param sample_rate The sample rate for software synths
 	//! \param stereo Specifies if a software synth must produce stero sound
 	//! \return Non zero on failure
-	virtual int			initMidiDriver(uint32_t sample_rate, bool stereo) = 0;
+	virtual int			initMidiDriver(uint32 sample_rate, bool stereo) = 0;
 
 	//! Destroy the driver
 	virtual void		destroyMidiDriver() = 0;
@@ -104,7 +104,7 @@ public:
 
 	//! Get the callback data for a specified sequence
 	//! \param seq_num The Sequence to get callback data from
-	virtual uint32_t		getSequenceCallbackData(int seq_num) { return 0; }
+	virtual uint32		getSequenceCallbackData(int seq_num) { return 0; }
 
 	//! Is this a Software Synth/Sample producer
 	virtual bool		isSampleProducer() { return false; }
@@ -112,7 +112,7 @@ public:
 	//! Produce Samples when doing Software Synthesizing
 	//! \param samples The buffer to fill with samples
 	//! \param bytes The number of bytes of music to produce
-	virtual void		produceSamples(int16_t *samples, uint32_t bytes) { }
+	virtual void		produceSamples(sint16 *samples, uint32 bytes) { }
 
 	//! Is this a FM Synth and should use the Adlib Tracks?
 	virtual bool		isFMSynth() { return false; }
@@ -138,12 +138,12 @@ public:
 
 	//! Get the name of a driver
 	//! \param index Driver number
-	static std::string	getDriverName(uint32_t index);
+	static std::string	getDriverName(uint32 index);
 
 	//! Create an Instance of a MidiDriver
 	//! \param driverName Name of the prefered driver to create
 	//! \return The created MidiDriver instance
-	static MidiDriver	*createInstance(std::string driverName,uint32_t sample_rate,bool stereo);
+	static MidiDriver	*createInstance(std::string driverName,uint32 sample_rate,bool stereo);
 
 protected:
 	//! Get a configuration setting for the midi driver

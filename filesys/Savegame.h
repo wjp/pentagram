@@ -31,7 +31,7 @@ public:
 	virtual ~Savegame();
 
 	//! get the savegame's global version
-	uint32_t getVersion();
+	uint32 getVersion();
 
 	//! get the savegame's description
 	std::string getDescription();

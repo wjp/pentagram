@@ -29,7 +29,7 @@
 class FuncMutatorNode : public Node
 {
 	public:
-		FuncMutatorNode(const uint32_t opcode, const uint32_t offset, const uint32_t newValue1)
+		FuncMutatorNode(const uint32 opcode, const uint32 offset, const uint32 newValue1)
 			: Node(opcode, offset, Type(Type::T_INVALID)),
 			_initsize(newValue1), _linenum(newValue1)
 			{
@@ -41,7 +41,7 @@ class FuncMutatorNode : public Node
 					default: assert(false);
 				}
 			};
-		FuncMutatorNode(const uint32_t opcode, const uint32_t offset, const uint32_t newSymbolOffset,
+		FuncMutatorNode(const uint32 opcode, const uint32 offset, const uint32 newSymbolOffset,
 			const std::string &newClassName)
 			: Node(opcode, offset, Type(Type::T_INVALID)),
 			_symboloffset(newSymbolOffset), _classname(newClassName)
@@ -49,7 +49,7 @@ class FuncMutatorNode : public Node
 				assert(acceptOp(opcode, 0x5C));
 				mtype = SYMBOL_INFO;
 			};
-		FuncMutatorNode(const uint32_t opcode, const uint32_t offset)
+		FuncMutatorNode(const uint32 opcode, const uint32 offset)
 			: Node(opcode, offset, Type(Type::T_INVALID))
 			{
 				assert(acceptOp(opcode, 0x50, 0x53, 0x7A));
@@ -63,8 +63,8 @@ class FuncMutatorNode : public Node
 			};
 		~FuncMutatorNode() {};
 
-		void print_unk(Console &o, const uint32_t isize, const bool comment) const;
-		void print_unk(Console &o, const uint32_t isize) const { print_unk(o, isize, true); };
+		void print_unk(Console &o, const uint32 isize, const bool comment) const;
+		void print_unk(Console &o, const uint32 isize) const { print_unk(o, isize, true); };
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 		bool fold(DCUnit *unit, std::deque<Node *> &nodes);
@@ -73,13 +73,13 @@ class FuncMutatorNode : public Node
 		enum mutatortype { RET, INIT, LINE_NUMBER, SYMBOL_INFO, SUSPEND, END } mtype;
 
 	private:
-		uint32_t _initsize; // init
-		uint32_t _linenum; // line number
-		uint32_t _symboloffset; // symbol info
+		uint32 _initsize; // init
+		uint32 _linenum; // line number
+		uint32 _symboloffset; // symbol info
 		std::string _classname; // symbol info
 	
 	public: // wheeefun accessors.
-		uint32_t a_initsize() const { assert(opcode()==0x5A && mtype==INIT); return _initsize; };
+		uint32 a_initsize() const { assert(opcode()==0x5A && mtype==INIT); return _initsize; };
 };
 
 class DCFuncNode : public ColNode
@@ -96,8 +96,8 @@ class DCFuncNode : public ColNode
 			};
 		~DCFuncNode() {};
 
-		void print_unk_funcheader(Console &o, const uint32_t isize) const;
-		void print_unk(Console &o, const uint32_t isize) const;
+		void print_unk_funcheader(Console &o, const uint32 isize) const;
+		void print_unk(Console &o, const uint32 isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 		bool fold(DCUnit *unit, std::deque<Node *> &nodes);
@@ -113,16 +113,16 @@ class DCFuncNode : public ColNode
 		std::deque<Node *> funcnodes;
 		DCCallMutatorNode *setinfonode;
 
-		uint32_t	locals_datasize; // from 'init' opcode
-		uint32_t	func_start_offset; // from 'init' opcode
-		uint32_t	debug_ret_offset; // from 'ret' opcode, FIXME: debugging only
-		uint32_t	debug_end_offset; // from 'end' opcode, FIXME: debugging only
+		uint32	locals_datasize; // from 'init' opcode
+		uint32	func_start_offset; // from 'init' opcode
+		uint32	debug_ret_offset; // from 'ret' opcode, FIXME: debugging only
+		uint32	debug_end_offset; // from 'end' opcode, FIXME: debugging only
 		
-		uint32_t	process_type; // from 'set info' opcode
-		uint32_t	debug_processtype_offset; // from 'set info' opcode, FIXME: debugging only
+		uint32	process_type; // from 'set info' opcode
+		uint32	debug_processtype_offset; // from 'set info' opcode, FIXME: debugging only
 		bool	debug_thisp; // from 'set info' opcode.
 
-		uint32_t	debug_procexclude_offset; // from 'process exclude' opcode, FIXME: debugging only
+		uint32	debug_procexclude_offset; // from 'process exclude' opcode, FIXME: debugging only
 		bool	has_procexclude; // from 'process exclude' opcode
 
 	private:

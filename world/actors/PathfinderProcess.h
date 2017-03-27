@@ -29,7 +29,7 @@ class PathfinderProcess : public Process
 public:
 	PathfinderProcess();
 	PathfinderProcess(Actor* actor, ObjId item, bool hit=false);
-	PathfinderProcess(Actor* actor, int32_t x, int32_t y, int32_t z);
+	PathfinderProcess(Actor* actor, sint32 x, sint32 y, sint32 z);
 	virtual ~PathfinderProcess();
 
 	// p_dynamic_cast stuff
@@ -40,11 +40,11 @@ public:
 
 //	virtual void terminate();
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
-	int32_t targetx, targety, targetz;
+	sint32 targetx, targety, targetz;
 	ObjId targetitem;
 	bool hitmode;
 

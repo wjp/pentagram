@@ -48,37 +48,37 @@ static char *strerror(int _errno) {
 namespace NS_TIMIDITY {
 #endif
 
-int32_t quietchannels=0;
+sint32 quietchannels=0;
 
 /* to avoid some unnecessary parameter passing */
 static MidiEventList *evlist;
-static int32_t event_count;
+static sint32 event_count;
 static FILE *fp;
-static int32_t at;
+static sint32 at;
 
 /* These would both fit into 32 bits, but they are often added in
    large multiples, so it's simpler to have two roomy ints */
-static int32_t sample_increment, sample_correction; /*samples per MIDI delta-t*/
+static sint32 sample_increment, sample_correction; /*samples per MIDI delta-t*/
 
 /* Computes how many (fractional) samples one MIDI delta-time unit contains */
-static void compute_sample_increment(int32_t tempo, int32_t divisions)
+static void compute_sample_increment(sint32 tempo, sint32 divisions)
 {
   double a;
   a = (double) (tempo) * (double) (play_mode->rate) * (65536.0/1000000.0) /
     (double)(divisions);
 
-  sample_correction = (int32_t)(a) & 0xFFFF;
-  sample_increment = (int32_t)(a) >> 16;
+  sample_correction = (sint32)(a) & 0xFFFF;
+  sample_increment = (sint32)(a) >> 16;
 
   ctl->cmsg(CMSG_INFO, VERB_DEBUG, "Samples per delta-t: %d (correction %d)",
        sample_increment, sample_correction);
 }
 
 /* Read variable-length number (7 bits per byte, MSB first) */
-static int32_t getvl(void)
+static sint32 getvl(void)
 {
-  int32_t l=0;
-  uint8_t c;
+  sint32 l=0;
+  uint8 c;
   for (;;)
     {
       fread(&c,1,1,fp);
@@ -90,10 +90,10 @@ static int32_t getvl(void)
 
 /* Print a string from the file, followed by a newline. Any non-ASCII
    or unprintable characters will be converted to periods. */
-static int dumpstring(int32_t len, const char *label)
+static int dumpstring(sint32 len, const char *label)
 {
   signed char *s=safe_Malloc<signed char>(len+1);
-  if (len != (int32_t)fread(s, 1, len, fp))
+  if (len != (sint32)fread(s, 1, len, fp))
     {
       free(s);
       return -1;
@@ -121,10 +121,10 @@ static int dumpstring(int32_t len, const char *label)
    be linked to the event list */
 static MidiEventList *read_midi_event(void)
 {
-  static uint8_t laststatus, lastchan;
-  static uint8_t nrpn=0, rpn_msb[16], rpn_lsb[16]; /* one per channel */
-  uint8_t me, type, a,b,c;
-  int32_t len;
+  static uint8 laststatus, lastchan;
+  static uint8 nrpn=0, rpn_msb[16], rpn_lsb[16]; /* one per channel */
+  uint8 me, type, a,b,c;
+  sint32 len;
   MidiEventList *event;
 
   for (;;)
@@ -305,7 +305,7 @@ static int read_track(int append)
 {
   MidiEventList *meep;
   MidiEventList *next, *new_event;
-  int32_t len;
+  sint32 len;
   char tmp[4];
 
   meep=evlist;
@@ -378,12 +378,12 @@ static void free_midi_list(void)
    events, marking used instruments for loading. Convert event times to
    samples: handle tempo changes. Strip unnecessary events from the list.
    Free the linked list. */
-static MidiEvent *groom_list(int32_t divisions,int32_t *eventsp,int32_t *samplesp)
+static MidiEvent *groom_list(sint32 divisions,sint32 *eventsp,sint32 *samplesp)
 {
   MidiEvent *groomed_list, *lp;
   MidiEventList *meep;
-  int32_t i, our_event_count, tempo, skip_this_event, new_value;
-  int32_t sample_cum, samples_to_do, at, st, dt, counting_time;
+  sint32 i, our_event_count, tempo, skip_this_event, new_value;
+  sint32 sample_cum, samples_to_do, at, st, dt, counting_time;
 
   int current_bank[16], current_set[16], current_program[16]; 
   /* Or should each bank have its own current program? */
@@ -533,10 +533,10 @@ static MidiEvent *groom_list(int32_t divisions,int32_t *eventsp,int32_t *samples
   return groomed_list;
 }
 
-MidiEvent *read_midi_file(FILE *mfp, int32_t *count, int32_t *sp)
+MidiEvent *read_midi_file(FILE *mfp, sint32 *count, sint32 *sp)
 {
-  int32_t len, divisions;
-  int16_t format, tracks, divisions_tmp;
+  sint32 len, divisions;
+  sint16 format, tracks, divisions_tmp;
   int i;
   char tmp[4];
 
@@ -576,9 +576,9 @@ MidiEvent *read_midi_file(FILE *mfp, int32_t *count, int32_t *sp)
     {
       /* SMPTE time -- totally untested. Got a MIDI file that uses this? */
       divisions=
-	(int32_t)(-(divisions_tmp/256)) * (int32_t)(divisions_tmp & 0xFF);
+	(sint32)(-(divisions_tmp/256)) * (sint32)(divisions_tmp & 0xFF);
     }
-  else divisions=(int32_t)(divisions_tmp);
+  else divisions=(sint32)(divisions_tmp);
 
   if (len > 6)
     {

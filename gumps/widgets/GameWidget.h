@@ -36,15 +36,15 @@ public:
 
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
 
-	virtual uint16_t TraceObjId(int mx, int my);
+	virtual uint16 TraceObjId(int mx, int my);
 
-	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
 
 	virtual Gump* OnMouseDown(int button, int mx, int my);
 	virtual void OnMouseOver();
 	virtual void OnMouseLeft();
 
-	virtual void ChildNotify(Gump *child, uint32_t message);
+	virtual void ChildNotify(Gump *child, uint32 message);
 
 	enum Message
 	{

@@ -49,28 +49,28 @@ Voice voice[MAX_VOICES];
 int
     voices=DEFAULT_VOICES;
 
-int32_t
+sint32
     control_ratio=0,
     amplification=DEFAULT_AMPLIFICATION;
 
 float
     master_volume;
 
-int32_t drumchannels=DEFAULT_DRUMCHANNELS;
+sint32 drumchannels=DEFAULT_DRUMCHANNELS;
 int adjust_panning_immediately=1;
 
 struct MidiSong {
-	int32_t samples;
+	sint32 samples;
 	MidiEvent *events;
 };
 static int midi_playing = 0;
-static int32_t lost_notes, cut_notes;
-static int32_t *buffer_pointer;
-static int32_t buffered_count;
-extern int32_t *common_buffer;
+static sint32 lost_notes, cut_notes;
+static sint32 *buffer_pointer;
+static sint32 buffered_count;
+extern sint32 *common_buffer;
 
 static MidiEvent *event_list, *current_event;
-static int32_t sample_count, current_sample;
+static sint32 sample_count, current_sample;
 
 static void adjust_amplification(void)
 { 
@@ -119,7 +119,7 @@ static void reset_midi(void)
 
 static void select_sample(int v, Instrument *ip)
 {
-  int32_t f, cdiff, diff;
+  sint32 f, cdiff, diff;
   int s,i;
   Sample *sp, *closest;
 
@@ -194,7 +194,7 @@ static void recompute_freq(int v)
       if (!(channel[voice[v].channel].pitchfactor))
 	{
 	  /* Damn. Somebody bent the pitch. */
-	  int32_t i=pb*channel[voice[v].channel].pitchsens;
+	  sint32 i=pb*channel[voice[v].channel].pitchsens;
 	  if (pb<0)
 	    i=-i;
 	  channel[voice[v].channel].pitchfactor=
@@ -202,11 +202,11 @@ static void recompute_freq(int v)
 	}
       if (pb>0)
 	voice[v].frequency=
-	  (int32_t)(channel[voice[v].channel].pitchfactor *
+	  (sint32)(channel[voice[v].channel].pitchfactor *
 		  (double)(voice[v].orig_frequency));
       else
 	voice[v].frequency=
-	  (int32_t)((double)(voice[v].orig_frequency) /
+	  (sint32)((double)(voice[v].orig_frequency) /
 		  channel[voice[v].channel].pitchfactor);
     }
 
@@ -219,12 +219,12 @@ static void recompute_freq(int v)
   if (sign) 
     a = -a; /* need to preserve the loop direction */
 
-  voice[v].sample_increment = (int32_t)(a);
+  voice[v].sample_increment = (sint32)(a);
 }
 
 static void recompute_amp(int v)
 {
-  int32_t tempamp;
+  sint32 tempamp;
 
   /* TODO: use fscale */
 
@@ -376,7 +376,7 @@ static void kill_note(int i)
 static void note_on(MidiEvent *e)
 {
   int i=voices, lowest=-1; 
-  int32_t lv=0x7FFFFFFF, v;
+  sint32 lv=0x7FFFFFFF, v;
 
   while (i--)
     {
@@ -557,7 +557,7 @@ static void adjust_volume(int c)
       }
 }
 
-static void seek_forward(int32_t until_time)
+static void seek_forward(sint32 until_time)
 {
   reset_voices();
   while (current_event->time < until_time)
@@ -622,7 +622,7 @@ static void seek_forward(int32_t until_time)
   current_sample=until_time;
 }
 
-static void skip_to(int32_t until_time)
+static void skip_to(sint32 until_time)
 {
   if (current_sample > until_time)
     current_sample=0;
@@ -640,7 +640,7 @@ static void skip_to(int32_t until_time)
 static int apply_controls(void)
 {
   int rc, i, did_skip=0;
-  int32_t val;
+  sint32 val;
   /* ASCII renditions of CD player pictograms indicate approximate effect */
   do
     switch(rc=ctl->read(&val))
@@ -708,7 +708,7 @@ static int apply_controls(void)
     return rc;
 }
 
-static void do_compute_data(int32_t count)
+static void do_compute_data(sint32 count)
 {
   int i;
   memset(buffer_pointer, 0, 
@@ -723,7 +723,7 @@ static void do_compute_data(int32_t count)
 
 /* count=0 means flush remaining buffered data to output device, then
    flush the device itself */
-static int compute_data(void *stream, int32_t count)
+static int compute_data(void *stream, sint32 count)
 {
   int rc, channels;
 
@@ -765,7 +765,7 @@ static int compute_data(void *stream, int32_t count)
 int Timidity_PlaySome(void *stream, int samples)
 {
   int rc = TM_RC_NONE;
-  int32_t end_sample;
+  sint32 end_sample;
   
   if ( ! midi_playing ) {
     return TM_RC_NONE;
@@ -913,7 +913,7 @@ void Timidity_SetVolume(int volume)
 MidiSong *Timidity_LoadSong(char *midifile)
 {
   MidiSong *song;
-  int32_t events;
+  sint32 events;
   FILE *fp;
 
   /* Allocate memory for the song */
@@ -970,12 +970,12 @@ void Timidity_FreeSong(MidiSong *song)
 
 #define MIDIEVENT(t,ch,pa,pb) \
   event.time=0; event.type=t; event.channel=ch; \
-  event.a=(uint8_t)pa; event.b=(uint8_t)pb; 
+  event.a=(uint8)pa; event.b=(uint8)pb; 
 
 void Timidity_PlayEvent(unsigned char status, int a, int b)
 {
 	MidiEvent event;
-	uint8_t chan=status & 0x0F;
+	uint8 chan=status & 0x0F;
 
 	switch((status>>4) & 0x07)
 	{
@@ -1088,7 +1088,7 @@ void Timidity_GenerateSamples(void *stream, int samples)
 		do_compute_data(AUDIO_BUFFER_SIZE);
 		samples -= AUDIO_BUFFER_SIZE;
 		s32tobuf(stream, common_buffer, channels*AUDIO_BUFFER_SIZE);
-		stream = AUDIO_BUFFER_SIZE*sample_size + (uint8_t*)stream;
+		stream = AUDIO_BUFFER_SIZE*sample_size + (uint8*)stream;
 		buffer_pointer=common_buffer;
 		buffered_count=0;
 	}

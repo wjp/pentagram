@@ -88,9 +88,9 @@ void FireballProcess::run()
 	//   * deal damage if hit Actor
 	//   * turn around if hit non-Actor
 
-	int32_t x,y,z;
-	int32_t tx,ty,tz;
-	int32_t dx,dy;
+	sint32 x,y,z;
+	sint32 tx,ty,tz;
+	sint32 dx,dy;
 	item->getLocation(x,y,z);
 	t->getLocationAbsolute(tx,ty,tz);
 
@@ -172,14 +172,14 @@ void FireballProcess::explode()
 	}
 }
 
-uint32_t FireballProcess::I_TonysBalls(const uint8_t* args,
+uint32 FireballProcess::I_TonysBalls(const uint8* args,
 									 unsigned int /*argsize*/)
 {
 	ARG_NULL16(); // unknown
 	ARG_NULL16(); // unknown
-	ARG_int16_t(x);
-	ARG_int16_t(y);
-	ARG_uint16_t(z);
+	ARG_SINT16(x);
+	ARG_SINT16(y);
+	ARG_UINT16(z);
 
 	Item* ball = ItemFactory::createItem(260, 4, 0, Item::FLG_FAST_ONLY,
 										 0, 0, 0, true);
@@ -206,8 +206,8 @@ void FireballProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 
-	ods->write4(static_cast<uint32_t>(xspeed));
-	ods->write4(static_cast<uint32_t>(yspeed));
+	ods->write4(static_cast<uint32>(xspeed));
+	ods->write4(static_cast<uint32>(yspeed));
 	ods->write2(target);
 	ods->write2(tail[0]);
 	ods->write2(tail[1]);
@@ -215,7 +215,7 @@ void FireballProcess::saveData(ODataSource* ods)
 	ods->write2(age);
 }
 
-bool FireballProcess::loadData(IDataSource* ids, uint32_t version)
+bool FireballProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

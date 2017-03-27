@@ -37,10 +37,10 @@ public:
 	static void deallocate(void * ptr)
 		{ memorymanager->_deallocate(ptr); }
 
-	Allocator * getAllocator(uint16_t index)
+	Allocator * getAllocator(uint16 index)
 		{ return index < allocatorCount ? allocators[index] : 0; }
 
-	uint16_t getAllocatorCount()
+	uint16 getAllocatorCount()
 		{ return allocatorCount; }
 
 	void freeResources();
@@ -53,7 +53,7 @@ public:
 
 private:
 	Allocator* allocators[10];
-	uint16_t allocatorCount;
+	uint16 allocatorCount;
 
 	void * _allocate(size_t size);
 	void _deallocate(void * ptr);

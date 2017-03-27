@@ -26,7 +26,7 @@
 	PopVarNode
  ****************************************************************************/
 
-/*void PopVarNode::fold(const uint32_t end)
+/*void PopVarNode::fold(const uint32 end)
 {
 	PTRACE(("(PopVar)\tPOS: %4d\tOP: %04X offset: %04X\n", end, foldops[end].op(),
 		foldops[end].offset));
@@ -64,14 +64,14 @@
 			break;
 	}
 
-	int32_t tempsize = lnode->rtype.size();
+	sint32 tempsize = lnode->rtype.size();
 	assert(tempsize>0);
 	grab_r(tempsize, end);
 	assert(tempsize==0);
 }*/
 
 
-void PopVarNode::print_unk(Console &o, const uint32_t isize) const
+void PopVarNode::print_unk(Console &o, const uint32 isize) const
 {
 	assert(node!=0);
 	Node::print_linenum_unk(o, isize);
@@ -151,7 +151,7 @@ bool PopVarNode::fold(DCUnit *unit, std::deque<Node *> &nodes)
 	PushVarNode
  ****************************************************************************/
 
-/*void PushVarNode::fold(const uint32_t end)
+/*void PushVarNode::fold(const uint32 end)
 {
 	PTRACE(("(PushVar)\tPOS: %4d\tOP: %04X offset: %04X\n", end, foldops[end].op(),
 		foldops[end].offset));
@@ -258,7 +258,7 @@ bool PopVarNode::fold(DCUnit *unit, std::deque<Node *> &nodes)
 	}
 }*/
 
-void PushVarNode::print_unk(Console &o, const uint32_t /*isize*/) const
+void PushVarNode::print_unk(Console &o, const uint32 /*isize*/) const
 {
 	#if 0
 	_dtype.print_type_unk(o);

@@ -335,9 +335,9 @@ void Kernel::ConCmd_advanceFrame(const Console::ArgvType& argv)
 	}
 }
 
-uint32_t Kernel::getNumProcesses(ObjId objid, uint16_t processtype)
+uint32 Kernel::getNumProcesses(ObjId objid, uint16 processtype)
 {
-	uint32_t count = 0;
+	uint32 count = 0;
 
 	for (ProcessIterator it = processes.begin(); it != processes.end(); ++it)
 	{
@@ -354,7 +354,7 @@ uint32_t Kernel::getNumProcesses(ObjId objid, uint16_t processtype)
 	return count;
 }
 
-Process* Kernel::findProcess(ObjId objid, uint16_t processtype)
+Process* Kernel::findProcess(ObjId objid, uint16 processtype)
 {
 	for (ProcessIterator it = processes.begin(); it != processes.end(); ++it)
 	{
@@ -374,7 +374,7 @@ Process* Kernel::findProcess(ObjId objid, uint16_t processtype)
 }
 
 
-void Kernel::killProcesses(ObjId objid, uint16_t processtype, bool fail)
+void Kernel::killProcesses(ObjId objid, uint16 processtype, bool fail)
 {
 	for (ProcessIterator it = processes.begin(); it != processes.end(); ++it)
 	{
@@ -393,7 +393,7 @@ void Kernel::killProcesses(ObjId objid, uint16_t processtype, bool fail)
 	}
 }
 
-void Kernel::killProcessesNotOfType(ObjId objid, uint16_t processtype, bool fail)
+void Kernel::killProcessesNotOfType(ObjId objid, uint16 processtype, bool fail)
 {
 	for (ProcessIterator it = processes.begin(); it != processes.end(); ++it)
 	{
@@ -423,13 +423,13 @@ void Kernel::save(ODataSource* ods)
 	}
 }
 
-bool Kernel::load(IDataSource* ids, uint32_t version)
+bool Kernel::load(IDataSource* ids, uint32 version)
 {
 	framenum = ids->read4();
 
 	if (!pIDs->load(ids, version)) return false;
 
-	uint32_t pcount = ids->read4();
+	uint32 pcount = ids->read4();
 
 	for (unsigned int i = 0; i < pcount; ++i) {
 		Process* p = loadProcess(ids, version);
@@ -440,9 +440,9 @@ bool Kernel::load(IDataSource* ids, uint32_t version)
 	return true;
 }
 
-Process* Kernel::loadProcess(IDataSource* ids, uint32_t version)
+Process* Kernel::loadProcess(IDataSource* ids, uint32 version)
 {
-	uint16_t classlen = ids->read2();
+	uint16 classlen = ids->read2();
 	char* buf = new char[classlen+1];
 	ids->read(buf, classlen);
 	buf[classlen] = 0;
@@ -468,18 +468,18 @@ Process* Kernel::loadProcess(IDataSource* ids, uint32_t version)
 	return p;
 }
 
-uint32_t Kernel::I_getNumProcesses(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Kernel::I_getNumProcesses(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_OBJID(item);
-	ARG_uint16_t(type);
+	ARG_UINT16(type);
 
 	return Kernel::get_instance()->getNumProcesses(item, type);
 }
 
-uint32_t Kernel::I_resetRef(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Kernel::I_resetRef(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_OBJID(item);
-	ARG_uint16_t(type);
+	ARG_UINT16(type);
 
 	Kernel::get_instance()->killProcesses(item, type, true);
 	return 0;

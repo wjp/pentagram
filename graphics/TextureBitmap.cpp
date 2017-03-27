@@ -27,11 +27,11 @@
 // Bitmap Header
 //
 struct BMPHeader {
-		uint16_t		bfType;
-		uint32_t		bfSize;
-		uint16_t		bfReserved1;
-		uint16_t		bfReserved2;
-		uint32_t		bfOffBits;
+		uint16		bfType;
+		uint32		bfSize;
+		uint16		bfReserved1;
+		uint16		bfReserved2;
+		uint32		bfOffBits;
 
 		void Read(IDataSource *ds) {
 			bfType = ds->read2();
@@ -46,17 +46,17 @@ struct BMPHeader {
 // Bitmap Info Header
 //
 struct BMPInfoHeader {
-		uint32_t		biSize;
-		int32_t		biWidth;
-		int32_t		biHeight;
-		uint16_t		biPlanes;
-		uint16_t		biBitCount;
-		uint32_t		biCompression;
-		uint32_t		biSizeImage;
-		int32_t		biXPelsPerMeter;
-		int32_t		biYPelsPerMeter;
-		uint32_t		biClrUsed;
-		uint32_t		biClrImportant;
+		uint32		biSize;
+		sint32		biWidth;
+		sint32		biHeight;
+		uint16		biPlanes;
+		uint16		biBitCount;
+		uint32		biCompression;
+		uint32		biSizeImage;
+		sint32		biXPelsPerMeter;
+		sint32		biYPelsPerMeter;
+		uint32		biClrUsed;
+		uint32		biClrImportant;
 
 		void Read(IDataSource *ds) {
 			biSize = ds->read4();
@@ -86,7 +86,7 @@ bool TextureBitmap::Read(IDataSource *ds)
 	int index;
 	
 	// used to convert images to 32 bit
-	uint8_t *temp_buffer = NULL; 
+	uint8 *temp_buffer = NULL; 
 
 	// this contains the bitmapfile header
 	BMPHeader		bitmapfileheader;	
@@ -105,7 +105,7 @@ bool TextureBitmap::Read(IDataSource *ds)
 	bitmapinfoheader.Read(ds);
 	
 	// now load the color palette if there is one
-	uint8_t palette[768];
+	uint8 palette[768];
 	if (bitmapinfoheader.biBitCount == 8)
 	{
 		for (index=0; index < 256; index++)
@@ -123,11 +123,11 @@ bool TextureBitmap::Read(IDataSource *ds)
 	ds->seek(ds->getSize()-bitmapinfoheader.biSizeImage);
 	
 	// allocate temporary buffer
-	if (0 == (temp_buffer = new uint8_t [bitmapinfoheader.biSizeImage]))
+	if (0 == (temp_buffer = new uint8 [bitmapinfoheader.biSizeImage]))
 		return false;
 
 	// allocate final 32 bit storage buffer
-	if (0 == (buffer=new uint32_t[bitmapinfoheader.biWidth * bitmapinfoheader.biHeight]))
+	if (0 == (buffer=new uint32[bitmapinfoheader.biWidth * bitmapinfoheader.biHeight]))
 	{
 		// release working buffer
 		delete [] temp_buffer;
@@ -137,14 +137,14 @@ bool TextureBitmap::Read(IDataSource *ds)
 	} // end if
 	
 	// now read it in
-	ds->read(static_cast<uint8_t *>(temp_buffer),bitmapinfoheader.biSizeImage);
+	ds->read(static_cast<uint8 *>(temp_buffer),bitmapinfoheader.biSizeImage);
 
 	// 8 Bit Palette
 	if (bitmapinfoheader.biBitCount == 8) {
 		for (index=0; index<bitmapinfoheader.biWidth*bitmapinfoheader.biHeight; index++)
 		{
 			// extract RGB components (in BGR order), note the scaling
-			uint8_t palindex = temp_buffer[index];
+			uint8 palindex = temp_buffer[index];
 
 			int row = index / bitmapinfoheader.biWidth;
 			int write = index % bitmapinfoheader.biWidth;
@@ -160,13 +160,13 @@ bool TextureBitmap::Read(IDataSource *ds)
 	// 16 Bit High Colour
 	else if (bitmapinfoheader.biBitCount == 16) {
 		// Colour shifting values
-		#define UNPACK_BMP16(pix,r,g,b) { r = static_cast<uint8_t>((((pix)&31)>>10)<<5); g = static_cast<uint8_t>((((pix)&31)>>5)<<5); b = static_cast<uint8_t>(((pix)&31)<<5); }
+		#define UNPACK_BMP16(pix,r,g,b) { r = static_cast<uint8>((((pix)&31)>>10)<<5); g = static_cast<uint8>((((pix)&31)>>5)<<5); b = static_cast<uint8>(((pix)&31)<<5); }
 
 		for (index=0; index<bitmapinfoheader.biWidth*bitmapinfoheader.biHeight; index++)
 		{
 			// extract RGB components, and pack them into an int
-			uint8_t red, green, blue ;
-			uint16_t color = temp_buffer[index*2 + 0] | (temp_buffer[index*2 + 1]<<8);
+			uint8 red, green, blue ;
+			uint16 color = temp_buffer[index*2 + 0] | (temp_buffer[index*2 + 1]<<8);
 			UNPACK_BMP16(color,red,green,blue);
 
 			int row = index / bitmapinfoheader.biWidth;

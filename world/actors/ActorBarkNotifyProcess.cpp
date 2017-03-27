@@ -36,7 +36,7 @@ ActorBarkNotifyProcess::ActorBarkNotifyProcess()
 
 }
 
-ActorBarkNotifyProcess::ActorBarkNotifyProcess(uint16_t it)
+ActorBarkNotifyProcess::ActorBarkNotifyProcess(uint16 it)
 	: GumpNotifyProcess(it)
 {
 
@@ -82,7 +82,7 @@ void ActorBarkNotifyProcess::saveData(ODataSource* ods)
 	GumpNotifyProcess::saveData(ods);
 }
 
-bool ActorBarkNotifyProcess::loadData(IDataSource* ids, uint32_t version)
+bool ActorBarkNotifyProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!GumpNotifyProcess::loadData(ids, version)) return false;
 

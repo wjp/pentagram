@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Pentagram {
 
 int strcasecmp (const char *s1, const char *s2);
-int strncasecmp (const char *s1, const char *s2, uint32_t length);
+int strncasecmp (const char *s1, const char *s2, uint32 length);
 
 //! Safe strcpy with size checking
 void strcpy_s(char *dest, size_t size, const char *src);

@@ -33,7 +33,7 @@ using	std::deque;
 	IfNode
  ****************************************************************************/
 
-void IfNode::print_unk(Console &o, const uint32_t isize) const
+void IfNode::print_unk(Console &o, const uint32 isize) const
 {
 	assert(rtype().type()==Type::T_INVALID);
 	
@@ -306,7 +306,7 @@ bool IfNode::fold_else(DCUnit *unit, std::deque<Node *> &nodes)
 	EndNode
  ****************************************************************************/
 
-void EndNode::print_unk(Console &o, const uint32_t isize) const
+void EndNode::print_unk(Console &o, const uint32 isize) const
 {
 	assert(rtype().type()==Type::T_INVALID);
 	Node::print_linenum_unk(o, isize);

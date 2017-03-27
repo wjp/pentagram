@@ -22,37 +22,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "CoreApp.h"
 #include "GameInfo.h"
 
-const uint8_t* UsecodeFlex::get_class(uint32_t classid)
+const uint8* UsecodeFlex::get_class(uint32 classid)
 {
-	const uint8_t* obj = get_object_nodel(classid+2);
+	const uint8* obj = get_object_nodel(classid+2);
 	return obj;
 }
 
-uint32_t UsecodeFlex::get_class_size(uint32_t classid)
+uint32 UsecodeFlex::get_class_size(uint32 classid)
 {
-	uint32_t size = get_size(classid+2);
+	uint32 size = get_size(classid+2);
 	return size;
 }
 
-const char* UsecodeFlex::get_class_name(uint32_t classid)
+const char* UsecodeFlex::get_class_name(uint32 classid)
 {
 	if (get_size(classid+2) > 0) {
-		const uint8_t* name_object = get_object_nodel(1);
+		const uint8* name_object = get_object_nodel(1);
 		return reinterpret_cast<const char*>(name_object+4+(13 * classid));
 	} else {
 		return 0;
 	}
 }
 
-uint32_t UsecodeFlex::get_class_base_offset(uint32_t classid)
+uint32 UsecodeFlex::get_class_base_offset(uint32 classid)
 {
 	if (get_size(classid+2) == 0) return 0;
 
 	if (GAME_IS_U8) {
 		return 0x0C;
 	} else if (GAME_IS_CRUSADER) {
-		const uint8_t* obj = get_object_nodel(classid+2);
-		uint32_t offset = obj[8];
+		const uint8* obj = get_object_nodel(classid+2);
+		uint32 offset = obj[8];
 		offset += obj[9] << 8;
 		offset += obj[10] << 16;
 		offset += obj[11] << 24;
@@ -64,7 +64,7 @@ uint32_t UsecodeFlex::get_class_base_offset(uint32_t classid)
 	}
 }
 
-uint32_t UsecodeFlex::get_class_event_count(uint32_t classid)
+uint32 UsecodeFlex::get_class_event_count(uint32 classid)
 {
 	if (get_size(classid+2) == 0) return 0;
 

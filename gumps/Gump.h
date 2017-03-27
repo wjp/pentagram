@@ -41,33 +41,33 @@ protected:
 
 	friend class GumpList;
 
-	uint16_t				owner;			// Owner item
+	uint16				owner;			// Owner item
 	Gump *				parent;			// Parent gump
-	int32_t				x, y;			// Gump's position in parent.
+	sint32				x, y;			// Gump's position in parent.
 										// Always the upper left corner!
 
 	Pentagram::Rect		dims;			// The dimensions/coord space of the gump
-	uint32_t				flags;			// Gump flags
-	int32_t				layer;			// gump ordering layer
+	uint32				flags;			// Gump flags
+	sint32				layer;			// gump ordering layer
 
-	int32_t				index;			// 'Index'
+	sint32				index;			// 'Index'
 
 	Shape				*shape;			// The gumps shape (always painted at 0,0)
-	uint32_t				framenum;
+	uint32				framenum;
 
 	//! The Gump list for this gump. This will contain all child gumps,
 	//! as well as all gump widgets. 
 	std::list<Gump*>	children;		// List of all gumps
 	Gump *				focus_child;	// The child that has focus
 
-	uint16_t				notifier;		// Process to notify when we're closing
-	uint32_t				process_result;	// Result for the notifier process
+	uint16				notifier;		// Process to notify when we're closing
+	uint32				process_result;	// Result for the notifier process
 
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
 	Gump();
-	Gump(int x, int y, int width, int height, uint16_t owner = 0,
-		 uint32_t _Flags = 0, int32_t layer = LAYER_NORMAL);
+	Gump(int x, int y, int width, int height, uint16 owner = 0,
+		 uint32 _Flags = 0, sint32 layer = LAYER_NORMAL);
 	virtual ~Gump();
 
 public:
@@ -75,17 +75,17 @@ public:
 	virtual void				CreateNotifier();
 	void						SetNotifyProcess(GumpNotifyProcess* proc);
 	GumpNotifyProcess*			GetNotifyProcess();
-	inline uint32_t				GetResult() { return process_result; }
-	void						SetResult(uint32_t res) { process_result = res; }
+	inline uint32				GetResult() { return process_result; }
+	void						SetResult(uint32 res) { process_result = res; }
 
 	//! Set the Gump's shape/frame
-	inline void					SetShape(Shape *_shape, uint32_t _framenum)
+	inline void					SetShape(Shape *_shape, uint32 _framenum)
 		{ shape = _shape; framenum = _framenum; }
 
 	void						SetShape(FrameID frame, bool adjustsize=false);
 
 	//! Set the Gump's frame
-	inline void					SetFramenum(uint32_t _framenum)
+	inline void					SetFramenum(uint32 _framenum)
 		{ framenum = _framenum; }
 
 	//! Init the gump and add it to parent; call after construction
@@ -121,7 +121,7 @@ public:
 	//! attempt to get the cursor shape from the next lower gump.
 	//! \return true if this gump wants to set the cursor, false otherwise
 	virtual bool		GetMouseCursor(int mx, int my, Shape &shape,
-									   int32_t &frame);
+									   sint32 &frame);
 
 	// Notify gumps the render surface changed.
 	virtual void		RenderSurfaceChanged();
@@ -139,7 +139,7 @@ public:
 	// \param surf The RenderSurface to paint to
 	// \param lerp_factor The lerp_factor to paint at (0-256)
 	// \param scaled Set if the gump is being drawn scaled. 
-	virtual void		Paint(RenderSurface* surf, int32_t lerp_factor, bool scaled);
+	virtual void		Paint(RenderSurface* surf, sint32 lerp_factor, bool scaled);
 
 	//! Paint the unscaled compontents of the Gump with compositing (RenderSurface is relative to parent).
 	//! Calls PaintComposited on self and PaintCompositing on children
@@ -147,7 +147,7 @@ public:
 	// \param lerp_factor The lerp_factor to paint at (0-256)
 	// \param scalex Fixed point scaling factor for x coord
 	// \param scaley Fixed point scaling factor for y coord
-	virtual void		PaintCompositing(RenderSurface* surf, int32_t lerp_factor, int32_t scalex, int32_t scaley);
+	virtual void		PaintCompositing(RenderSurface* surf, sint32 lerp_factor, sint32 scalex, sint32 scaley);
 
 protected:
 
@@ -155,23 +155,23 @@ protected:
 	// \param surf The RenderSurface to paint to
 	// \param lerp_factor The lerp_factor to paint at (0-256)
 	// \param scaled Set if the gump is being drawn scaled. 
-	virtual void		PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled);
+	virtual void		PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled);
 
 	//! Paint the Gumps Children (RenderSurface is relative to this)
 	// \param surf The RenderSurface to paint to
 	// \param lerp_factor The lerp_factor to paint at (0-256)
 	// \param scaled Set if the gump is being drawn scaled. 
-	virtual void		PaintChildren(RenderSurface* surf, int32_t lerp_factor, bool scaled);
+	virtual void		PaintChildren(RenderSurface* surf, sint32 lerp_factor, bool scaled);
 
 	//! Overloadable method to Paint just this gumps unscaled components that require compositing (RenderSurface is relative to parent).
 	// \param surf The RenderSurface to paint to
 	// \param lerp_factor The lerp_factor to paint at (0-256)
 	// \param scalex Fixed point scaling factor for x coord
 	// \param scaley Fixed point scaling factor for y coord
-	virtual void		PaintComposited(RenderSurface* surf, int32_t lerp_factor, int32_t scalex, int32_t scaley);
+	virtual void		PaintComposited(RenderSurface* surf, sint32 lerp_factor, sint32 scalex, sint32 scaley);
 
-	static inline int32_t ScaleCoord(int32_t c, int32_t factor) { return ((c*factor)+(1<<15))>>16; }
-	static inline int32_t UnscaleCoord(int32_t c, int32_t factor) { return (c<<16)/factor; }
+	static inline sint32 ScaleCoord(sint32 c, sint32 factor) { return ((c*factor)+(1<<15))>>16; }
+	static inline sint32 UnscaleCoord(sint32 c, sint32 factor) { return (c<<16)/factor; }
 
 public:
 
@@ -251,12 +251,12 @@ public:
 											 RectRoundDir r = ROUND_OUTSIDE);
 
 	//! Trace a click, and return ObjId
-	virtual uint16_t		TraceObjId(int mx, int my);
+	virtual uint16		TraceObjId(int mx, int my);
 
 	//! Get the location of an item in the gump (coords relative to this).
 	//! \return false on failure
-	virtual bool		GetLocationOfItem(uint16_t itemid, int &gx, int &gy,
-										  int32_t lerp_factor = 256);
+	virtual bool		GetLocationOfItem(uint16 itemid, int &gx, int &gy,
+										  sint32 lerp_factor = 256);
 
 
 	//
@@ -336,9 +336,9 @@ public:
 
 	//! This function is used by our children to notifty us of 'something'
 	//! Think of it as a generic call back function
-	virtual void		ChildNotify(Gump *child, uint32_t message) { }
-	void				SetIndex(int32_t i) { index = i; }
-	int32_t				GetIndex() { return index; }
+	virtual void		ChildNotify(Gump *child, uint32 message) { }
+	void				SetIndex(sint32 i) { index = i; }
+	sint32				GetIndex() { return index; }
 
 	// Dragging
 	//! Called when a child gump starts to be dragged.
@@ -412,7 +412,7 @@ public:
 		LAYER_CONSOLE		= 16		// Layer for the console
 	};
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

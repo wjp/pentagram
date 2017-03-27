@@ -124,7 +124,7 @@ void CombatProcess::run()
 				else
 					idleanim = Animation::idle2;
 			}
-			uint16_t idlepid = a->doAnim(idleanim, 8);
+			uint16 idlepid = a->doAnim(idleanim, 8);
 			waitFor(idlepid);			
  		} else {
 
@@ -231,11 +231,11 @@ ObjId CombatProcess::seekTarget()
 	cm->areaSearch(&itemlist, script, sizeof(script), a, 768, false);
 
 	for (unsigned int i = 0; i < itemlist.getSize(); ++i) {
-		Actor* t = getActor(itemlist.getuint16_t(i));
+		Actor* t = getActor(itemlist.getuint16(i));
 
 		if (t && isValidTarget(t) && isEnemy(t)) {
 			// found target
-			return itemlist.getuint16_t(i);
+			return itemlist.getuint16(i);
 		}
 	}
 
@@ -344,10 +344,10 @@ void CombatProcess::saveData(ODataSource* ods)
 
 	ods->write2(target);
 	ods->write2(fixedTarget);
-	ods->write1(static_cast<uint8_t>(combatmode));
+	ods->write1(static_cast<uint8>(combatmode));
 }
 
-bool CombatProcess::loadData(IDataSource* ids, uint32_t version)
+bool CombatProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

@@ -121,7 +121,7 @@ void EditWidget::renderText()
 	if (!IsFocus()) {
 		cv = false;
 	} else {
-		uint32_t now = SDL_GetTicks();
+		uint32 now = SDL_GetTicks();
 		if (now > cursor_changed + 750) {
 			cv = !cursor_visible;
 			cursor_changed = now;
@@ -152,7 +152,7 @@ void EditWidget::renderText()
 }
 
 // Overloadable method to Paint just this Gump (RenderSurface is relative to this)
-void EditWidget::PaintThis(RenderSurface*surf, int32_t lerp_factor, bool scaled)
+void EditWidget::PaintThis(RenderSurface*surf, sint32 lerp_factor, bool scaled)
 {
 	Gump::PaintThis(surf,lerp_factor, scaled);
 
@@ -168,7 +168,7 @@ void EditWidget::PaintThis(RenderSurface*surf, int32_t lerp_factor, bool scaled)
 }
 
 // Overloadable method to Paint just this gumps unscaled components that require compositing (RenderSurface is relative to parent).
-void EditWidget::PaintComposited(RenderSurface* surf, int32_t lerp_factor, int32_t sx, int32_t sy)
+void EditWidget::PaintComposited(RenderSurface* surf, sint32 lerp_factor, sint32 sx, sint32 sy)
 {
 	Pentagram::Font *font = getFont();
 

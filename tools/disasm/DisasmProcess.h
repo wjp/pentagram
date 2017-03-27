@@ -34,7 +34,7 @@ public:
 
 protected:
 	// just a quick way to get it to run for a little before dying.
-	uint32_t termCounter;
+	uint32 termCounter;
 };
 
 #endif

@@ -33,8 +33,8 @@ UCProcess::UCProcess() : Process()// !! fixme
 	usecode = GameData::get_instance()->getMainUsecode();
 }
 
-UCProcess::UCProcess(uint16_t classid_, uint16_t offset_, uint32_t this_ptr,
-					  int thissize, const uint8_t* args, int argsize)
+UCProcess::UCProcess(uint16 classid_, uint16 offset_, uint32 this_ptr,
+					  int thissize, const uint8* args, int argsize)
 	: Process()
 {
 	classid = 0xFFFF;
@@ -51,8 +51,8 @@ UCProcess::~UCProcess()
 
 }
 
-void UCProcess::load(uint16_t classid_, uint16_t offset_, uint32_t this_ptr,
-					 int thissize, const uint8_t* args, int argsize)
+void UCProcess::load(uint16 classid_, uint16 offset_, uint32 this_ptr,
+					 int thissize, const uint8* args, int argsize)
 {
 	if (usecode->get_class_size(classid_) == 0)
 		perr << "Class is empty..." << std::endl;
@@ -60,7 +60,7 @@ void UCProcess::load(uint16_t classid_, uint16_t offset_, uint32_t this_ptr,
 	classid = 0xFFFF;
 	ip = 0xFFFF;
 	bp = 0x0000;
-	uint16_t thissp = 0;
+	uint16 thissp = 0;
 
 	// first, push the derefenced this pointer
 	if (this_ptr != 0 && thissize > 0) {
@@ -90,7 +90,7 @@ void UCProcess::run()
 	UCMachine::get_instance()->execProcess(this);
 }
 
-void UCProcess::call(uint16_t classid_, uint16_t offset_)
+void UCProcess::call(uint16 classid_, uint16 offset_)
 {
 	stack.push2(classid); // BP+04 prev class
 	stack.push2(ip);      // BP+02 prev IP
@@ -98,7 +98,7 @@ void UCProcess::call(uint16_t classid_, uint16_t offset_)
 
 	classid = classid_;
 	ip = offset_;
-	bp = static_cast<uint16_t>(stack.getSP()); // TRUNCATES!
+	bp = static_cast<uint16>(stack.getSP()); // TRUNCATES!
 }
 
 bool UCProcess::ret()
@@ -115,11 +115,11 @@ bool UCProcess::ret()
 		return false;
 }
 
-void UCProcess::freeOnTerminate(uint16_t index, int type)
+void UCProcess::freeOnTerminate(uint16 index, int type)
 {
 	assert(type >= 1 && type <= 3);
 
-	std::pair<uint16_t, int> p;
+	std::pair<uint16, int> p;
 	p.first = index;
 	p.second = type;
 
@@ -128,10 +128,10 @@ void UCProcess::freeOnTerminate(uint16_t index, int type)
 
 void UCProcess::terminate()
 {
-	std::list<std::pair<uint16_t, int> >::iterator i;
+	std::list<std::pair<uint16, int> >::iterator i;
 
 	for (i = freeonterminate.begin(); i != freeonterminate.end(); ++i) {
-		uint16_t index = (*i).first;
+		uint16 index = (*i).first;
 		int type = (*i).second;
 
 		switch (type) {
@@ -173,17 +173,17 @@ void UCProcess::saveData(ODataSource* ods)
 	ods->write2(classid);
 	ods->write2(ip);
 	ods->write4(temp32);
-	ods->write4(static_cast<uint32_t>(freeonterminate.size()));
-	std::list<std::pair<uint16_t, int> >::iterator iter;
+	ods->write4(static_cast<uint32>(freeonterminate.size()));
+	std::list<std::pair<uint16, int> >::iterator iter;
 	for (iter = freeonterminate.begin(); iter != freeonterminate.end(); ++iter)
 	{
 		ods->write2(iter->first);
-		ods->write4(static_cast<uint32_t>(iter->second));
+		ods->write4(static_cast<uint32>(iter->second));
 	}
 	stack.save(ods);
 }
 
-bool UCProcess::loadData(IDataSource* ids, uint32_t version)
+bool UCProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 
@@ -191,9 +191,9 @@ bool UCProcess::loadData(IDataSource* ids, uint32_t version)
 	classid = ids->read2();
 	ip = ids->read2();
 	temp32 = ids->read4();
-	uint32_t freecount = ids->read4();
+	uint32 freecount = ids->read4();
 	for (unsigned int i = 0; i < freecount; ++i) {
-		std::pair<uint16_t, int> p;
+		std::pair<uint16, int> p;
 		p.first = ids->read2();
 		p.second = static_cast<int>(ids->read4());
 		freeonterminate.push_back(p);

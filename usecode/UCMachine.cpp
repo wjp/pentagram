@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 #ifdef DEBUG
-static const char *print_bp(const int16_t offset)
+static const char *print_bp(const sint16 offset)
 {
 	static char str[32];
 	snprintf(str, 32, "[BP%c%02Xh]", offset<0?'-':'+', 
@@ -55,7 +55,7 @@ static const char *print_bp(const int16_t offset)
 	return str;
 }
 
-static const char *print_sp(const int16_t offset)
+static const char *print_sp(const sint16 offset)
 {
 	static char str[32];
 	snprintf(str, 32, "[SP%c%02Xh]", offset<0?'-':'+', 
@@ -141,7 +141,7 @@ void UCMachine::reset()
 	globals->setSize(0x1000);
 
 	// clear strings, lists
-	std::map<uint16_t, UCList*>::iterator iter;
+	std::map<uint16, UCList*>::iterator iter;
 	for (iter = listHeap.begin(); iter != listHeap.end(); ++iter)
 		delete (iter->second);
 	listHeap.clear();
@@ -158,7 +158,7 @@ void UCMachine::execProcess(UCProcess* p)
 {
 	assert(p);
 
-	uint32_t base = p->usecode->get_class_base_offset(p->classid);
+	uint32 base = p->usecode->get_class_base_offset(p->classid);
 	IBufferDataSource cs(p->usecode->get_class(p->classid) + base,
 						 p->usecode->get_class_size(p->classid) - base);
 	cs.seek(p->ip);
@@ -180,10 +180,10 @@ void UCMachine::execProcess(UCProcess* p)
 		//! guard against reading past end of class
 		//! guard against other error conditions
 
-		uint8_t opcode = cs.read1();
+		uint8 opcode = cs.read1();
 
 #ifdef DEBUG
-		uint16_t trace_classid = p->classid;
+		uint16 trace_classid = p->classid;
 		ObjId trace_objid = p->item_num;
 		ProcId trace_pid = p->pid;
 #endif
@@ -191,12 +191,12 @@ void UCMachine::execProcess(UCProcess* p)
 		LOGPF(("sp = %02X; %04X:%04X: %02X\t",
 			   p->stack.stacksize(), p->classid, p->ip, opcode));
 
-		int8_t si8a, si8b;
-		uint8_t ui8a;
-		uint16_t ui16a, ui16b;
-		uint32_t ui32a, ui32b;
-		int16_t si16a, si16b;
-		int32_t si32a, si32b;
+		sint8 si8a, si8b;
+		uint8 ui8a;
+		uint16 ui16a, ui16b;
+		uint32 ui32a, ui32b;
+		sint16 si16a, si16b;
+		sint32 si32a, si32b;
 
 		switch(opcode)
 		{
@@ -205,16 +205,16 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x00:
 			// 00 xx
 			// pop 16 bit int, and assign LS 8 bit int into bp+xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.pop2();
-			p->stack.assign1(p->bp+si8a, static_cast<uint8_t>(ui16a));
+			p->stack.assign1(p->bp+si8a, static_cast<uint8>(ui16a));
 			LOGPF(("pop byte\t%s = %02Xh\n", print_bp(si8a), ui16a));
 			break;
 
 		case 0x01:
 			// 01 xx
 			// pop 16 bit int into bp+xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.pop2();
 			p->stack.assign2(p->bp+si8a, ui16a);
 			LOGPF(("pop\t\t%s = %04Xh\n", print_bp(si8a), ui16a));
@@ -223,7 +223,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x02:
 			// 02 xx
 			// pop 32 bit int into bp+xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui32a = p->stack.pop4();
 			p->stack.assign4(p->bp+si8a, ui32a);
 			LOGPF(("pop dword\t%s = %08Xh\n", print_bp(si8a), ui32a));
@@ -233,9 +233,9 @@ void UCMachine::execProcess(UCProcess* p)
 			// 03 xx yy
 			// pop yy bytes into bp+xx
 			{
-				si8a = static_cast<int8_t>(cs.read1());
-				uint8_t size = cs.read1();
-				uint8_t buf[256];
+				si8a = static_cast<sint8>(cs.read1());
+				uint8 size = cs.read1();
+				uint8 buf[256];
 				p->stack.pop(buf, size);
 				p->stack.assign(p->bp+si8a, buf, size);
 				LOGPF(("pop huge\t%s %i\n", print_bp(si8a), size));
@@ -256,9 +256,9 @@ void UCMachine::execProcess(UCProcess* p)
 			// 09 xx yy zz
 			// pop yy bytes into an element of list bp+xx (or slist if zz set)
 		{
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui32a = cs.read1();
-			si8b = static_cast<int8_t>(cs.read1());
+			si8b = static_cast<sint8>(cs.read1());
 			LOGPF(("assign element\t%s (%02X) (slist==%02X)\n",
 				   print_bp(si8a), ui32a, si8b));
 			ui16a = p->stack.pop2()-1; // index
@@ -291,7 +291,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x0A:
 			// 0A xx
 			// push sign-extended 8 bit xx onto the stack as 16 bit
-			ui16a = static_cast<int8_t>(cs.read1());
+			ui16a = static_cast<sint8>(cs.read1());
 			p->stack.push2(ui16a);
 			LOGPF(("push byte\t%04Xh\n", ui16a));
 			break;
@@ -372,8 +372,8 @@ void UCMachine::execProcess(UCProcess* p)
 			// NB: do not actually pop these argument bytes
 			{
 				//! TODO
-				uint16_t arg_bytes = cs.read1();
-				uint16_t func = cs.read2();
+				uint16 arg_bytes = cs.read1();
+				uint16 func = cs.read2();
 				LOGPF(("calli\t\t%04Xh (%02Xh arg bytes) %s \n", func, arg_bytes, convuse->intrinsics()[func]));
 
 				// !constants
@@ -386,7 +386,7 @@ void UCMachine::execProcess(UCProcess* p)
 						intrinsics[func] == UCMachine::I_true) {
 //						perr << "Unhandled intrinsic \'" << convuse->intrinsics()[func] << "\' (" << std::hex << func << std::dec << ") called" << std::endl;
 					}
-					uint8_t *argbuf = new uint8_t[arg_bytes];
+					uint8 *argbuf = new uint8[arg_bytes];
 					p->stack.pop(argbuf, arg_bytes);
 					p->stack.addSP(-arg_bytes); // don't really pop the args
 
@@ -416,19 +416,19 @@ void UCMachine::execProcess(UCProcess* p)
 			// Crusader:
 			// call function number yy yy of class xx xx
 			{
-				uint16_t new_classid = cs.read2();
-				uint16_t new_offset = cs.read2();
+				uint16 new_classid = cs.read2();
+				uint16 new_offset = cs.read2();
 				LOGPF(("call\t\t%04X:%04X\n", new_classid, new_offset));
 				if (GAME_IS_CRUSADER) {
 					new_offset = p->usecode->get_class_event(new_classid,
 															 new_offset);
 				}
 
-				p->ip = static_cast<uint16_t>(cs.getPos());	// Truncates!!
+				p->ip = static_cast<uint16>(cs.getPos());	// Truncates!!
 				p->call(new_classid, new_offset);
 
 				// Update the code segment
-				uint32_t base = p->usecode->get_class_base_offset(p->classid);
+				uint32 base = p->usecode->get_class_base_offset(p->classid);
 				cs.load(p->usecode->get_class(p->classid) + base,
 						p->usecode->get_class_size(p->classid) - base);
 				cs.seek(p->ip);
@@ -457,18 +457,18 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x14:
 			// 14
 			// 16 bit add
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
-			p->stack.push2(static_cast<uint16_t>(si16a + si16b));
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
+			p->stack.push2(static_cast<uint16>(si16a + si16b));
 			LOGPF(("add\n"));
 			break;
 
 		case 0x15:
 			// 15
 			// 32 bit add
-			si32a = static_cast<int32_t>(p->stack.pop4());
-			si32b = static_cast<int32_t>(p->stack.pop4());
-			p->stack.push4(static_cast<uint32_t>(si32a + si32b));
+			si32a = static_cast<sint32>(p->stack.pop4());
+			si32b = static_cast<sint32>(p->stack.pop4());
+			p->stack.push4(static_cast<uint32>(si32a + si32b));
 			LOGPF(("add long\n"));
 			break;
 
@@ -578,46 +578,46 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x1C:
 			// 1C
 			// subtract two 16 bit integers
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
-			p->stack.push2(static_cast<uint16_t>(si16b - si16a)); // !! order?
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
+			p->stack.push2(static_cast<uint16>(si16b - si16a)); // !! order?
 			LOGPF(("sub\n"));
 			break;
 
 		case 0x1D:
 			// 1D
 			// subtract two 32 bit integers
-			si32a = static_cast<int16_t>(p->stack.pop4());
-			si32b = static_cast<int16_t>(p->stack.pop4());
-			p->stack.push4(static_cast<uint32_t>(si32b - si32a)); // !! order?
+			si32a = static_cast<sint16>(p->stack.pop4());
+			si32b = static_cast<sint16>(p->stack.pop4());
+			p->stack.push4(static_cast<uint32>(si32b - si32a)); // !! order?
 			LOGPF(("sub long\n"));
 			break;
 
 		case 0x1E:
 			// 1E
 			// multiply two 16 bit integers
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
-			p->stack.push2(static_cast<uint16_t>(si16a * si16b));
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
+			p->stack.push2(static_cast<uint16>(si16a * si16b));
 			LOGPF(("mul\n"));
 			break;
 
 		case 0x1F:
 			// 1F
 			// multiply two 32 bit integers
-			si32a = static_cast<int16_t>(p->stack.pop4());
-			si32b = static_cast<int16_t>(p->stack.pop4());
-			p->stack.push4(static_cast<uint32_t>(si32a * si32b));
+			si32a = static_cast<sint16>(p->stack.pop4());
+			si32b = static_cast<sint16>(p->stack.pop4());
+			p->stack.push4(static_cast<uint32>(si32a * si32b));
 			LOGPF(("mul long\n"));
 			break;
 
 		case 0x20:
 			// 20
 			// divide two 16 bit integers    (order?)
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
 			if (si16a != 0) {
-				p->stack.push2(static_cast<uint16_t>(si16b / si16a));
+				p->stack.push2(static_cast<uint16>(si16b / si16a));
 			} else {
 				perr.printf("division by zero.\n");
 				p->stack.push2(0);
@@ -628,10 +628,10 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x21:
 			// 21
 			// divide two 32 bit integers    (order?)
-			si32a = static_cast<int16_t>(p->stack.pop4());
-			si32b = static_cast<int16_t>(p->stack.pop4());
+			si32a = static_cast<sint16>(p->stack.pop4());
+			si32b = static_cast<sint16>(p->stack.pop4());
 			if (si32a != 0) {
-				p->stack.push4(static_cast<uint32_t>(si32b / si32a));
+				p->stack.push4(static_cast<uint32>(si32b / si32a));
 			} else {
 				perr.printf("division by zero.\n");
 				p->stack.push4(0);
@@ -644,10 +644,10 @@ void UCMachine::execProcess(UCProcess* p)
 			// 16 bit mod    (order?)
 			// is this a C-style %?
 			// or return values between 0 and si16a-1 ?
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
 			if (si16a != 0) {
-				p->stack.push2(static_cast<uint16_t>(si16b % si16a));
+				p->stack.push2(static_cast<uint16>(si16b % si16a));
 			} else {
 				perr.printf("division by zero.\n");
 				p->stack.push2(0);
@@ -659,10 +659,10 @@ void UCMachine::execProcess(UCProcess* p)
 			// 23
 			// 32 bit mod   (order)?
 			// also see 0x22
-			si32a = static_cast<int16_t>(p->stack.pop4());
-			si32b = static_cast<int16_t>(p->stack.pop4());
+			si32a = static_cast<sint16>(p->stack.pop4());
+			si32b = static_cast<sint16>(p->stack.pop4());
 			if (si32a != 0) {
-				p->stack.push4(static_cast<uint32_t>(si32b % si32a));
+				p->stack.push4(static_cast<uint32>(si32b % si32a));
 			} else {
 				perr.printf("division by zero.\n");
 				p->stack.push4(0);
@@ -673,8 +673,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x24:
 			// 24
 			// 16 bit cmp
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
 			if (si16a == si16b) {
 				p->stack.push2(1);
 			} else {
@@ -686,8 +686,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x25:
 			// 25
 			// 32 bit cmp
-			si32a = static_cast<int32_t>(p->stack.pop4());
-			si32b = static_cast<int32_t>(p->stack.pop4());
+			si32a = static_cast<sint32>(p->stack.pop4());
+			si32b = static_cast<sint32>(p->stack.pop4());
 			if (si32a == si32b) {
 				p->stack.push2(1);
 			} else {
@@ -716,8 +716,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x28:
 			// 28
 			// 16 bit less-than
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
 			if (si16b < si16a) {
 				p->stack.push2(1);
 			} else {
@@ -729,8 +729,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x29:
 			// 29
 			// 32 bit less-than
-			si32a = static_cast<int32_t>(p->stack.pop4());
-			si32b = static_cast<int32_t>(p->stack.pop4());
+			si32a = static_cast<sint32>(p->stack.pop4());
+			si32b = static_cast<sint32>(p->stack.pop4());
 			if (si32b < si32a) {
 				p->stack.push2(1);
 			} else {
@@ -742,8 +742,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x2A:
 			// 2A
 			// 16 bit less-or-equal
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
 			if (si16b <= si16a) {
 				p->stack.push2(1);
 			} else {
@@ -755,8 +755,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x2B:
 			// 2B
 			// 32 bit less-or-equal
-			si32a = static_cast<int32_t>(p->stack.pop4());
-			si32b = static_cast<int32_t>(p->stack.pop4());
+			si32a = static_cast<sint32>(p->stack.pop4());
+			si32b = static_cast<sint32>(p->stack.pop4());
 			if (si32b <= si32a) {
 				p->stack.push2(1);
 			} else {
@@ -768,8 +768,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x2C:
 			// 2C
 			// 16 bit greater-than
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
 			if (si16b > si16a) {
 				p->stack.push2(1);
 			} else {
@@ -781,8 +781,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x2D:
 			// 2D
 			// 32 bit greater-than
-			si32a = static_cast<int32_t>(p->stack.pop4());
-			si32b = static_cast<int32_t>(p->stack.pop4());
+			si32a = static_cast<sint32>(p->stack.pop4());
+			si32b = static_cast<sint32>(p->stack.pop4());
 			if (si32b > si32a) {
 				p->stack.push2(1);
 			} else {
@@ -794,8 +794,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x2E:
 			// 2E
 			// 16 bit greater-or-equal
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
 			if (si16b >= si16a) {
 				p->stack.push2(1);
 			} else {
@@ -807,8 +807,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x2F:
 			// 2F
 			// 32 bit greater-or-equal
-			si32a = static_cast<int32_t>(p->stack.pop4());
-			si32b = static_cast<int32_t>(p->stack.pop4());
+			si32a = static_cast<sint32>(p->stack.pop4());
+			si32b = static_cast<sint32>(p->stack.pop4());
 			if (si32b >= si32a) {
 				p->stack.push2(1);
 			} else {
@@ -897,8 +897,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x36:
 			// 36
 			// 16 bit not-equal
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			si16b = static_cast<int16_t>(p->stack.pop2());
+			si16a = static_cast<sint16>(p->stack.pop2());
+			si16b = static_cast<sint16>(p->stack.pop2());
 			if (si16a != si16b) {
 				p->stack.push2(1);
 			} else {
@@ -910,8 +910,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x37:
 			// 37
 			// 32 bit not-equal
-			si32a = static_cast<int16_t>(p->stack.pop4());
-			si32b = static_cast<int16_t>(p->stack.pop4());
+			si32a = static_cast<sint16>(p->stack.pop4());
+			si32b = static_cast<sint16>(p->stack.pop4());
 			if (si32a != si32b) {
 				p->stack.push2(1);
 			} else {
@@ -983,9 +983,9 @@ void UCMachine::execProcess(UCProcess* p)
 			// 3C
 			// 16 bit left shift
 			// operand order?
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			ui16b = static_cast<int16_t>(p->stack.pop2());
-			p->stack.push2(static_cast<uint16_t>(si16a << ui16b));
+			si16a = static_cast<sint16>(p->stack.pop2());
+			ui16b = static_cast<sint16>(p->stack.pop2());
+			p->stack.push2(static_cast<uint16>(si16a << ui16b));
 			LOGPF(("lsh\n"));
 			break;
 
@@ -994,16 +994,16 @@ void UCMachine::execProcess(UCProcess* p)
 			// 16 bit right shift
 			// !! sign-extend or not?
 			// operand order?
-			si16a = static_cast<int16_t>(p->stack.pop2());
-			ui16b = static_cast<int16_t>(p->stack.pop2());
-			p->stack.push2(static_cast<uint16_t>(si16a >> ui16b));
+			si16a = static_cast<sint16>(p->stack.pop2());
+			ui16b = static_cast<sint16>(p->stack.pop2());
+			p->stack.push2(static_cast<uint16>(si16a >> ui16b));
 			LOGPF(("rsh\n"));
 			break;
 
 		case 0x3E:
 			// 3E xx
 			// push the value of the unsigned 8 bit local var xx as 16 bit int
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.access1(p->bp+si8a);
 			p->stack.push2(ui16a);
 			LOGPF(("push byte\t%s = %02Xh\n", print_bp(si8a), ui16a));
@@ -1012,7 +1012,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x3F:
 			// 3F xx
 			// push the value of the 16 bit local var xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.access2(p->bp+si8a);
 			p->stack.push2(ui16a);
 			LOGPF(("push\t\t%s = %04Xh\n", print_bp(si8a), ui16a));
@@ -1021,7 +1021,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x40:
 			// 40 xx
 			// push the value of the 32 bit local var xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui32a = p->stack.access4(p->bp+si8a);
 			p->stack.push4(ui32a);
 			LOGPF(("push dword\t%s = %08Xh\n", print_bp(si8a), ui32a));
@@ -1032,7 +1032,7 @@ void UCMachine::execProcess(UCProcess* p)
 			// push the string local var xx
 			// duplicating the string?
 			{
-				si8a = static_cast<int8_t>(cs.read1());
+				si8a = static_cast<sint8>(cs.read1());
 				ui16a = p->stack.access2(p->bp+si8a);
 				p->stack.push2(duplicateString(ui16a));
 				LOGPF(("push string\t%s\n", print_bp(si8a)));
@@ -1044,7 +1044,7 @@ void UCMachine::execProcess(UCProcess* p)
 			// push the list (with yy size elements) at BP+xx
 			// duplicating the list?
 			{
-				si8a = static_cast<int8_t>(cs.read1());
+				si8a = static_cast<sint8>(cs.read1());
 				ui16a = cs.read1();
 				ui16b = p->stack.access2(p->bp+si8a);
 				UCList* l = new UCList(ui16a);
@@ -1056,7 +1056,7 @@ void UCMachine::execProcess(UCProcess* p)
 					// perr << "Pushing non-existent list" << std::endl;
 					// error = true;
 				}
-				uint16_t newlistid = assignList(l);
+				uint16 newlistid = assignList(l);
 				p->stack.push2(newlistid);
 				LOGPF(("push list\t%s (%04X, copy %04X, %d elements)\n",
 					   print_bp(si8a), ui16b, newlistid, l->getSize()));
@@ -1068,7 +1068,7 @@ void UCMachine::execProcess(UCProcess* p)
 			// push the stringlist local var xx
 			// duplicating the list, duplicating the strings in the list
 			{
-				si8a = static_cast<int8_t>(cs.read1());
+				si8a = static_cast<sint8>(cs.read1());
 //!U8				ui16a = cs.read1();
 				ui16a = 2;
 				ui16b = p->stack.access2(p->bp+si8a);
@@ -1110,7 +1110,7 @@ void UCMachine::execProcess(UCProcess* p)
 //				error = true;
 			} else {
 				if (ui32b) {
-					uint16_t s = getList(ui16b)->getStringIndex(ui16a);
+					uint16 s = getList(ui16b)->getStringIndex(ui16a);
 					p->stack.push2(duplicateString(s));
 				} else {
 					p->stack.push((*getList(ui16b))[ui16a], ui32a);
@@ -1122,7 +1122,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x45:
 			// 45 xx yy
 			// push huge of size yy from BP+xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16b = cs.read1();
 			p->stack.push(p->stack.access(p->bp+si8a), ui16b);
 			LOGPF(("push huge\t%s %02X\n", print_bp(si8a), ui16b));
@@ -1131,7 +1131,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x4B:
 			// 4B xx
 			// push 32 bit pointer address of BP+XX
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			p->stack.push4(stackToPtr(p->pid, p->bp+si8a));
 			LOGPF(("push addr\t%s\n", print_bp(si8a)));
 			break;
@@ -1187,7 +1187,7 @@ void UCMachine::execProcess(UCProcess* p)
 			// TODO: get flagname for output?
 
 			ui32a = globals->getBits(ui16a, ui16b);
-			p->stack.push2(static_cast<uint16_t>(ui32a));
+			p->stack.push2(static_cast<uint16>(ui32a));
 			LOGPF(("push\t\tglobal [%04X %02X] = %02X\n", ui16a,ui16b,ui32a));
 			break;
 
@@ -1228,7 +1228,7 @@ void UCMachine::execProcess(UCProcess* p)
 				// return value is stored in temp32 register
 
 				// Update the code segment
-				uint32_t base = p->usecode->get_class_base_offset(p->classid);
+				uint32 base = p->usecode->get_class_base_offset(p->classid);
 				cs.load(p->usecode->get_class(p->classid) + base,
 						p->usecode->get_class_size(p->classid) - base);
 				cs.seek(p->ip);
@@ -1240,7 +1240,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x51:
 			// 51 xx xx
 			// relative jump to xxxx if false
-			si16a = static_cast<int16_t>(cs.read2());
+			si16a = static_cast<sint16>(cs.read2());
 			ui16b = p->stack.pop2();
 			if (!ui16b) {
 				ui16a = cs.getPos() + si16a;
@@ -1256,7 +1256,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x52:
 			// 52 xx xx
 			// relative jump to xxxx
-			si16a = static_cast<int16_t>(cs.read2());
+			si16a = static_cast<sint16>(cs.read2());
 			ui16a = cs.getPos() + si16a;
 			cs.seek(ui16a);
 			LOGPF(("jmp\t\t%04hXh\t(to %04X)\n", si16a, cs.getPos()));
@@ -1333,10 +1333,10 @@ void UCMachine::execProcess(UCProcess* p)
 			{
 				int arg_bytes = cs.read1();
 				int this_size = cs.read1();
-				uint16_t classid = cs.read2();
-				uint16_t offset = cs.read2();
+				uint16 classid = cs.read2();
+				uint16 offset = cs.read2();
 
-				uint32_t thisptr = p->stack.pop4();
+				uint32 thisptr = p->stack.pop4();
 				
 				LOGPF(("spawn\t\t%02X %02X %04X:%04X\n",
 					   arg_bytes, this_size, classid, offset));
@@ -1379,22 +1379,22 @@ void UCMachine::execProcess(UCProcess* p)
 			// uu = unknown (occurring values: 00, 02, 05)
 
 			{
-				uint16_t classid = cs.read2();
-				uint16_t offset = cs.read2();
-				uint16_t delta = cs.read2();
+				uint16 classid = cs.read2();
+				uint16 offset = cs.read2();
+				uint16 delta = cs.read2();
 				int this_size = cs.read1();
-				uint32_t unknown = cs.read1(); // ??
+				uint32 unknown = cs.read1(); // ??
 				
 				LOGPF(("spawn inline\t%04X:%04X+%04X=%04X %02X %02X\n",
 					   classid,offset,delta,offset+delta,this_size, unknown));
 
-				uint32_t thisptr = 0;
+				uint32 thisptr = 0;
 				if (this_size > 0)
 					thisptr = p->stack.access4(p->bp+6);
 				UCProcess* newproc = new UCProcess(classid, offset + delta,
 												   thisptr, this_size);
 
-				uint16_t newpid= Kernel::get_instance()->addProcessExec(newproc);
+				uint16 newpid= Kernel::get_instance()->addProcessExec(newproc);
 
 #ifdef DEBUG
 				if (trace_show(p->pid, p->item_num, p->classid)) {
@@ -1437,7 +1437,7 @@ void UCMachine::execProcess(UCProcess* p)
 			// 5D
 			// push 8 bit value returned from function call
 			// (push temp8 as 16 bit value)
-			p->stack.push2(static_cast<uint8_t>(p->temp32 & 0xFF));
+			p->stack.push2(static_cast<uint8>(p->temp32 & 0xFF));
 			LOGPF(("push byte\tretval = %02Xh\n", (p->temp32 & 0xFF)));
 			break;
 
@@ -1445,7 +1445,7 @@ void UCMachine::execProcess(UCProcess* p)
 			// 5E
 			// push 16 bit value returned from function call
 			// (push temp16)
-			p->stack.push2(static_cast<uint16_t>(p->temp32 & 0xFFFF));
+			p->stack.push2(static_cast<uint16>(p->temp32 & 0xFFFF));
 			LOGPF(("push\t\tretval = %04Xh\n", (p->temp32 & 0xFFFF)));
 			break;
 
@@ -1460,7 +1460,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x60:
 			// 60
 			// convert 16-bit to 32-bit int (sign extend)
-			si32a = static_cast<int16_t>(p->stack.pop2());
+			si32a = static_cast<sint16>(p->stack.pop2());
 			p->stack.push4(si32a);
 			LOGPF(("int to long\n"));
 			break;
@@ -1468,7 +1468,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x61:
 			// 61
 			// convert 32-bit to 16-bit int
-			si16a = static_cast<int16_t>(p->stack.pop4());
+			si16a = static_cast<sint16>(p->stack.pop4());
 			p->stack.push2(si16a);
 			LOGPF(("long to int\n"));
 			break;
@@ -1476,7 +1476,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x62:
 			// 62 xx
 			// free the string in var BP+xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.access2(p->bp+si8a);
 			freeString(ui16a);
 			LOGPF(("free string\t%s = %04X\n", print_bp(si8a), ui16a));
@@ -1485,7 +1485,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x63:
 			// 63 xx
 			// free the stringlist in var BP+xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.access2(p->bp+si8a);
 			freeStringList(ui16a);
 			LOGPF(("free slist\t%s = %04X\n", print_bp(si8a), ui16a));
@@ -1494,7 +1494,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x64:
 			// 64 xx
 			// free the list in var BP+xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.access2(p->bp+si8a);
 			freeList(ui16a);
 			LOGPF(("free list\t%s = %04X\n", print_bp(si8a), ui16a));
@@ -1505,7 +1505,7 @@ void UCMachine::execProcess(UCProcess* p)
 			// free the string at SP+xx
 			// NB: sometimes there's a 32-bit string pointer at SP+xx
 			//     However, the low word of this is exactly the 16bit ref
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.access2(p->stack.getSP()+si8a);
 			freeString(ui16a);
 			LOGPF(("free string\t%s = %04X\n", print_sp(si8a), ui16a));
@@ -1514,7 +1514,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x66:
 			// 66 xx
 			// free the list at SP+xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.access2(p->stack.getSP()+si8a);
 			freeList(ui16a);
 			LOGPF(("free list\t%s = %04X\n", print_sp(si8a), ui16a));
@@ -1523,7 +1523,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x67:
 			// 67 xx
 			// free the string list at SP+xx
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.access2(p->stack.getSP()+si8a);
 			freeStringList(ui16a);
 			LOGPF(("free slist\t%s = %04x\n", print_sp(si8a), ui16a));
@@ -1532,7 +1532,7 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x69:
 			// 69 xx
 			// push the string in var BP+xx as 32 bit pointer			
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			ui16a = p->stack.access2(p->bp+si8a);
 			p->stack.push4(stringToPtr(ui16a));
 			LOGPF(("str to ptr\t%s\n", print_bp(si8a)));
@@ -1596,7 +1596,7 @@ void UCMachine::execProcess(UCProcess* p)
 			// 6E xx
 			// substract xx from stack pointer
 			// (effect on SP is the same as popping xx bytes)
-			si8a = static_cast<int8_t>(cs.read1());
+			si8a = static_cast<sint8>(cs.read1());
 			p->stack.addSP(-si8a);
 			LOGPF(("move sp\t\t%s%02Xh\n", si8a<0?"-":"", si8a<0?-si8a:si8a));
 			break;
@@ -1605,8 +1605,8 @@ void UCMachine::execProcess(UCProcess* p)
 		case 0x6F:
 			// 6F xx
 			// push 32 pointer address of SP-xx
-			si8a = static_cast<int8_t>(cs.read1());
-			p->stack.push4(stackToPtr(p->pid, static_cast<uint16_t>(p->stack.getSP() - si8a)));
+			si8a = static_cast<sint8>(cs.read1());
+			p->stack.push4(stackToPtr(p->pid, static_cast<uint16>(p->stack.getSP() - si8a)));
 			LOGPF(("push addr\t%s\n", print_sp(-si8a)));
 			break;
 
@@ -1628,8 +1628,8 @@ void UCMachine::execProcess(UCProcess* p)
 			// zz == type
 			{
 				si16a = cs.readXS(1);
-				uint32_t scriptsize = cs.read1();
-				uint32_t searchtype = cs.read1();
+				uint32 scriptsize = cs.read1();
+				uint32 searchtype = cs.read1();
 
 				ui16a = p->stack.pop2();
 				ui16b = p->stack.pop2();
@@ -1652,10 +1652,10 @@ void UCMachine::execProcess(UCProcess* p)
 					break;
 				}
 
-				uint8_t* script = new uint8_t[scriptsize];
+				uint8* script = new uint8[scriptsize];
 				p->stack.pop(script, scriptsize);
 
-				uint32_t stacksize = 0;
+				uint32 stacksize = 0;
 				bool recurse = false;
 				// we'll put everything on the stack after stacksize is set
 
@@ -1741,9 +1741,9 @@ void UCMachine::execProcess(UCProcess* p)
 				p->stack.push0(stacksize - scriptsize - 8); // filler
 				p->stack.push(script, scriptsize);
 				p->stack.push2(scriptsize);
-				p->stack.push2(static_cast<uint16_t>(si16a));
+				p->stack.push2(static_cast<uint16>(si16a));
 				p->stack.push2(0);
-				uint16_t itemlistID = assignList(itemlist);
+				uint16 itemlistID = assignList(itemlist);
 				p->stack.push2(itemlistID);
 
 				delete[] script;
@@ -1757,13 +1757,13 @@ void UCMachine::execProcess(UCProcess* p)
 			// next loop object. pushes false if end reached
 			{
 				unsigned int sp = p->stack.getSP();
-				uint16_t itemlistID = p->stack.access2(sp);
+				uint16 itemlistID = p->stack.access2(sp);
 				UCList* itemlist = getList(itemlistID);
-				uint16_t index = p->stack.access2(sp+2);
-				si16a = static_cast<int16_t>(p->stack.access2(sp+4));
+				uint16 index = p->stack.access2(sp+2);
+				si16a = static_cast<sint16>(p->stack.access2(sp+4));
 #if 0
-				uint16_t scriptsize = p->stack.access2(sp+6);
-				const uint8_t* loopscript = p->stack.access(sp+8);
+				uint16 scriptsize = p->stack.access2(sp+6);
+				const uint8* loopscript = p->stack.access(sp+8);
 #endif
 
 				if (!itemlist) {
@@ -1780,7 +1780,7 @@ void UCMachine::execProcess(UCProcess* p)
 					}
 
 					p->stack.assign(p->bp+si16a, (*itemlist)[index], 2);
-					uint16_t objid = p->stack.access2(p->bp+si16a);
+					uint16 objid = p->stack.access2(p->bp+si16a);
 					Item* item = getItem(objid);
 					if (item) {
 #if 0
@@ -1962,7 +1962,7 @@ void UCMachine::execProcess(UCProcess* p)
 
 		// write back IP (but preserve IP if there was an error)
 		if (!error)
-			p->ip = static_cast<uint16_t>(cs.getPos());	// TRUNCATES!
+			p->ip = static_cast<uint16>(cs.getPos());	// TRUNCATES!
 
 		// check if we suspended ourselves
 		if((p->flags & Process::PROC_SUSPENDED)!=0)
@@ -1977,11 +1977,11 @@ void UCMachine::execProcess(UCProcess* p)
 }
 
 
-std::string& UCMachine::getString(uint16_t str)
+std::string& UCMachine::getString(uint16 str)
 {
 	static std::string emptystring("");
 
-	std::map<uint16_t, std::string>::iterator iter = stringHeap.find(str);
+	std::map<uint16, std::string>::iterator iter = stringHeap.find(str);
 
 	if (iter != stringHeap.end())
 		return iter->second;
@@ -1989,9 +1989,9 @@ std::string& UCMachine::getString(uint16_t str)
 	return emptystring;
 }
 
-UCList* UCMachine::getList(uint16_t l)
+UCList* UCMachine::getList(uint16 l)
 {
-	std::map<uint16_t, UCList*>::iterator iter = listHeap.find(l);
+	std::map<uint16, UCList*>::iterator iter = listHeap.find(l);
 
 	if (iter != listHeap.end())
 		return iter->second;
@@ -2001,9 +2001,9 @@ UCList* UCMachine::getList(uint16_t l)
 
 
 
-uint16_t UCMachine::assignString(const char* str)
+uint16 UCMachine::assignString(const char* str)
 {
-	uint16_t id = stringIDs->getNewID();
+	uint16 id = stringIDs->getNewID();
 	if (id == 0) return 0;
 
 	stringHeap[id] = str;
@@ -2011,15 +2011,15 @@ uint16_t UCMachine::assignString(const char* str)
 	return id;
 }
 
-uint16_t UCMachine::duplicateString(uint16_t str)
+uint16 UCMachine::duplicateString(uint16 str)
 {
 	return assignString(stringHeap[str].c_str());
 }
 
 
-uint16_t UCMachine::assignList(UCList* l)
+uint16 UCMachine::assignList(UCList* l)
 {
-	uint16_t id = listIDs->getNewID();
+	uint16 id = listIDs->getNewID();
 	if (id == 0) return 0;
 	assert(listHeap.find(id) == listHeap.end());
 
@@ -2028,22 +2028,22 @@ uint16_t UCMachine::assignList(UCList* l)
 	return id;
 }
 
-void UCMachine::freeString(uint16_t s)
+void UCMachine::freeString(uint16 s)
 {
 	//! There's still a semi-bug in some places that string 0 can be assigned
 	//! (when something accesses stringHeap[0])
 	//! This may not be desirable, but OTOH the created string will be
 	//! empty, so not too much of a problem.
-	std::map<uint16_t, std::string>::iterator iter = stringHeap.find(s);
+	std::map<uint16, std::string>::iterator iter = stringHeap.find(s);
 	if (iter != stringHeap.end()) {
 		stringHeap.erase(iter);
 		stringIDs->clearID(s);
 	}
 }
 
-void UCMachine::freeList(uint16_t l)
+void UCMachine::freeList(uint16 l)
 {
-	std::map<uint16_t, UCList*>::iterator iter = listHeap.find(l);
+	std::map<uint16, UCList*>::iterator iter = listHeap.find(l);
 	if (iter != listHeap.end() && iter->second) {
 		iter->second->free();
 		delete iter->second;
@@ -2052,9 +2052,9 @@ void UCMachine::freeList(uint16_t l)
 	}
 }
 
-void UCMachine::freeStringList(uint16_t l)
+void UCMachine::freeStringList(uint16 l)
 {
-	std::map<uint16_t, UCList*>::iterator iter = listHeap.find(l);
+	std::map<uint16, UCList*>::iterator iter = listHeap.find(l);
 	if (iter != listHeap.end() && iter->second) {
 		iter->second->freeStrings();
 		delete iter->second;
@@ -2064,51 +2064,51 @@ void UCMachine::freeStringList(uint16_t l)
 }
 
 //static
-uint32_t UCMachine::listToPtr(uint16_t l)
+uint32 UCMachine::listToPtr(uint16 l)
 {
-	uint32_t ptr = SEG_LIST;
+	uint32 ptr = SEG_LIST;
 	ptr <<= 16;
 	ptr += l;
 	return ptr;
 }
 
 //static
-uint32_t UCMachine::stringToPtr(uint16_t s)
+uint32 UCMachine::stringToPtr(uint16 s)
 {
-	uint32_t ptr = SEG_STRING;
+	uint32 ptr = SEG_STRING;
 	ptr <<= 16;
 	ptr += s;
 	return ptr;
 }
 
 //static
-uint32_t UCMachine::stackToPtr(uint16_t pid, uint16_t offset)
+uint32 UCMachine::stackToPtr(uint16 pid, uint16 offset)
 {
-	uint32_t ptr = SEG_STACK + pid;
+	uint32 ptr = SEG_STACK + pid;
 	ptr <<= 16;
 	ptr += offset;
 	return ptr;
 }
 
 //static
-uint32_t UCMachine::globalToPtr(uint16_t offset)
+uint32 UCMachine::globalToPtr(uint16 offset)
 {
-	uint32_t ptr = SEG_GLOBAL;
+	uint32 ptr = SEG_GLOBAL;
 	ptr <<= 16;
 	ptr += offset;
 	return ptr;
 }
 
 //static
-uint32_t UCMachine::objectToPtr(uint16_t objID)
+uint32 UCMachine::objectToPtr(uint16 objID)
 {
-	uint32_t ptr = SEG_OBJ;
+	uint32 ptr = SEG_OBJ;
 	ptr <<= 16;
 	ptr += objID;
 	return ptr;
 }
 
-bool UCMachine::assignPointer(uint32_t ptr, const uint8_t* data, uint32_t size)
+bool UCMachine::assignPointer(uint32 ptr, const uint8* data, uint32 size)
 {
 	// Only implemented the following:
 	// * stack pointers
@@ -2117,8 +2117,8 @@ bool UCMachine::assignPointer(uint32_t ptr, const uint8_t* data, uint32_t size)
 
 	//! range checking...
 
-	uint16_t segment =static_cast<uint16_t>(ptr >> 16);
-	uint16_t offset = static_cast<uint16_t>(ptr & 0xFFFF);
+	uint16 segment =static_cast<uint16>(ptr >> 16);
+	uint16 offset = static_cast<uint16>(ptr & 0xFFFF);
 
 	if (segment >= SEG_STACK_FIRST && segment <= SEG_STACK_LAST)
 	{
@@ -2149,7 +2149,7 @@ bool UCMachine::assignPointer(uint32_t ptr, const uint8_t* data, uint32_t size)
 	return true;
 }
 
-bool UCMachine::dereferencePointer(uint32_t ptr, uint8_t* data, uint32_t size)
+bool UCMachine::dereferencePointer(uint32 ptr, uint8* data, uint32 size)
 {
 	// this one is a bit tricky. There's no way we can support
 	// all possible pointers, so we're just going to do a few:
@@ -2160,8 +2160,8 @@ bool UCMachine::dereferencePointer(uint32_t ptr, uint8_t* data, uint32_t size)
 
 	//! range checking...
 
-	uint16_t segment = static_cast<uint16_t>(ptr >> 16);
-	uint16_t offset = static_cast<uint16_t>(ptr & 0xFFFF);
+	uint16 segment = static_cast<uint16>(ptr >> 16);
+	uint16 offset = static_cast<uint16>(ptr & 0xFFFF);
 	
 	if (segment >= SEG_STACK_FIRST && segment <= SEG_STACK_LAST)
 	{
@@ -2186,8 +2186,8 @@ bool UCMachine::dereferencePointer(uint32_t ptr, uint8_t* data, uint32_t size)
 			return false;
 		} else {
 			// push objref
-			data[0] = static_cast<uint8_t>(offset);
-			data[1] = static_cast<uint8_t>(offset>>8);
+			data[0] = static_cast<uint8>(offset);
+			data[1] = static_cast<uint8>(offset>>8);
 		}
 	}
 	else if (segment == SEG_GLOBAL)
@@ -2204,12 +2204,12 @@ bool UCMachine::dereferencePointer(uint32_t ptr, uint8_t* data, uint32_t size)
 }
 
 //static
-uint16_t UCMachine::ptrToObject(uint32_t ptr)
+uint16 UCMachine::ptrToObject(uint32 ptr)
 {
 	//! This function is a bit of a misnomer, since it's more general than this
 
-	uint16_t segment = static_cast<uint16_t>(ptr >> 16);
-	uint16_t offset = static_cast<uint16_t>(ptr);
+	uint16 segment = static_cast<uint16>(ptr >> 16);
+	uint16 offset = static_cast<uint16>(ptr);
 	if (segment >= SEG_STACK_FIRST && segment <= SEG_STACK_LAST)
 	{
 		UCProcess *proc = p_dynamic_cast<UCProcess*>
@@ -2247,13 +2247,13 @@ void UCMachine::usecodeStats()
 	pout << "Usecode Machine memory stats:" << std::endl;
 	pout << "Strings    : " << stringHeap.size() << "/65534" << std::endl;
 #ifdef DUMPHEAP
-	std::map<uint16_t, std::string>::iterator iter;
+	std::map<uint16, std::string>::iterator iter;
 	for (iter = stringHeap.begin(); iter != stringHeap.end(); ++iter)
 		pout << iter->first << ":" << iter->second << std::endl;
 #endif
 	pout << "Lists      : " << listHeap.size() << "/65534" << std::endl;
 #ifdef DUMPHEAP
-	std::map<uint16_t, UCList*>::iterator iterl;
+	std::map<uint16, UCList*>::iterator iterl;
 	for (iterl = listHeap.begin(); iterl != listHeap.end(); ++iterl) {
 		if (!iterl->second) {
 			pout << iterl->first << ": <null>" << std::endl;
@@ -2263,7 +2263,7 @@ void UCMachine::usecodeStats()
 			pout << iterl->first << ":";
 			for (unsigned int i = 0; i < iterl->second->getSize(); ++i) {
 				if (i > 0) pout << ",";
-				pout << iterl->second->getuint16_t(i);
+				pout << iterl->second->getuint16(i);
 			}				
 			pout << std::endl;
 		} else {
@@ -2283,9 +2283,9 @@ void UCMachine::saveGlobals(ODataSource* ods)
 void UCMachine::saveStrings(ODataSource* ods)
 {
 	stringIDs->save(ods);
-	ods->write4(static_cast<uint32_t>(stringHeap.size()));
+	ods->write4(static_cast<uint32>(stringHeap.size()));
 
-	std::map<uint16_t, std::string>::iterator iter;
+	std::map<uint16, std::string>::iterator iter;
 	for (iter = stringHeap.begin(); iter != stringHeap.end(); ++iter)
 	{
 		ods->write2((*iter).first);
@@ -2299,7 +2299,7 @@ void UCMachine::saveLists(ODataSource* ods)
 	listIDs->save(ods);
 	ods->write4(listHeap.size());
 
-	std::map<uint16_t, UCList*>::iterator iter;
+	std::map<uint16, UCList*>::iterator iter;
 	for (iter = listHeap.begin(); iter != listHeap.end(); ++iter)
 	{
 		ods->write2((*iter).first);
@@ -2307,20 +2307,20 @@ void UCMachine::saveLists(ODataSource* ods)
 	}
 }
 
-bool UCMachine::loadGlobals(IDataSource* ids, uint32_t version)
+bool UCMachine::loadGlobals(IDataSource* ids, uint32 version)
 {
 	return globals->load(ids, version);
 }
 
-bool UCMachine::loadStrings(IDataSource* ids, uint32_t version)
+bool UCMachine::loadStrings(IDataSource* ids, uint32 version)
 {
 	if (!stringIDs->load(ids, version)) return false;
 
-	uint32_t stringcount = ids->read4();
+	uint32 stringcount = ids->read4();
 	for (unsigned int i = 0; i < stringcount; ++i)
 	{
-		uint16_t sid = ids->read2();
-		uint32_t len = ids->read4();
+		uint16 sid = ids->read2();
+		uint32 len = ids->read4();
 		if (len) {
 			char* buf = new char[len+1];
 			ids->read(buf, len);
@@ -2335,14 +2335,14 @@ bool UCMachine::loadStrings(IDataSource* ids, uint32_t version)
 	return true;
 }
 
-bool UCMachine::loadLists(IDataSource* ids, uint32_t version)
+bool UCMachine::loadLists(IDataSource* ids, uint32 version)
 {
 	if (!listIDs->load(ids, version)) return false;
 
-	uint32_t listcount = ids->read4();
+	uint32 listcount = ids->read4();
 	for (unsigned int i = 0; i < listcount; ++i)
 	{
-		uint16_t lid = ids->read2();
+		uint16 lid = ids->read2();
 		UCList* l = new UCList(2); // the "2" will be ignored by load()
 		bool ret = l->load(ids, version);
 		if (!ret) return false;
@@ -2354,26 +2354,26 @@ bool UCMachine::loadLists(IDataSource* ids, uint32_t version)
 }
 
 
-uint32_t UCMachine::I_true(const uint8_t* /*args*/, unsigned int /*argsize*/)
+uint32 UCMachine::I_true(const uint8* /*args*/, unsigned int /*argsize*/)
 {
 	return 1;
 }
 
-uint32_t UCMachine::I_dummyProcess(const uint8_t* /*args*/, unsigned int /*argsize*/)
+uint32 UCMachine::I_dummyProcess(const uint8* /*args*/, unsigned int /*argsize*/)
 {
 	return Kernel::get_instance()->addProcess(new DelayProcess(4));
 }
 
-uint32_t UCMachine::I_getName(const uint8_t* /*args*/, unsigned int /*argsize*/)
+uint32 UCMachine::I_getName(const uint8* /*args*/, unsigned int /*argsize*/)
 {
 	UCMachine *uc = UCMachine::get_instance();
 	MainActor* av = getMainActor();
 	return uc->assignString(av->getName().c_str());
 }
 
-uint32_t UCMachine::I_numToStr(const uint8_t* args, unsigned int /*argsize*/)
+uint32 UCMachine::I_numToStr(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_int16_t(num);
+	ARG_SINT16(num);
 
 	char buf[16]; // a 16 bit int should easily fit
 	snprintf(buf, 16, "%d", num);
@@ -2381,9 +2381,9 @@ uint32_t UCMachine::I_numToStr(const uint8_t* args, unsigned int /*argsize*/)
 	return UCMachine::get_instance()->assignString(buf);
 }
 
-uint32_t UCMachine::I_urandom(const uint8_t* args, unsigned int /*argsize*/)
+uint32 UCMachine::I_urandom(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_uint16_t(num);
+	ARG_UINT16(num);
 	if (num <= 1) return 0;
 
 	// return random integer between 0 (incl.) to num (excl.)
@@ -2391,10 +2391,10 @@ uint32_t UCMachine::I_urandom(const uint8_t* args, unsigned int /*argsize*/)
 	return (std::rand() % num);
 }
 
-uint32_t UCMachine::I_rndRange(const uint8_t* args, unsigned int /*argsize*/)
+uint32 UCMachine::I_rndRange(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_int16_t(lo);
-	ARG_int16_t(hi);
+	ARG_SINT16(lo);
+	ARG_SINT16(hi);
 
 	// return random integer between lo (incl.) to hi (incl.)
 
@@ -2446,7 +2446,7 @@ void UCMachine::ConCmd_tracePID(const Console::ArgvType &argv)
 		return;
 	}
 
-	uint16_t pid = static_cast<uint16_t>(strtol(argv[1].c_str(), 0, 0));
+	uint16 pid = static_cast<uint16>(strtol(argv[1].c_str(), 0, 0));
 
 	UCMachine *uc = UCMachine::get_instance();
 	uc->tracing_enabled = true;
@@ -2462,7 +2462,7 @@ void UCMachine::ConCmd_traceObjID(const Console::ArgvType &argv)
 		return;
 	}
 
-	uint16_t objid = static_cast<uint16_t>(strtol(argv[1].c_str(), 0, 0));
+	uint16 objid = static_cast<uint16>(strtol(argv[1].c_str(), 0, 0));
 
 	UCMachine *uc = UCMachine::get_instance();
 	uc->tracing_enabled = true;
@@ -2478,7 +2478,7 @@ void UCMachine::ConCmd_traceClass(const Console::ArgvType &argv)
 		return;
 	}
 
-	uint16_t ucclass = static_cast<uint16_t>(strtol(argv[1].c_str(), 0, 0));
+	uint16 ucclass = static_cast<uint16>(strtol(argv[1].c_str(), 0, 0));
 
 	UCMachine *uc = UCMachine::get_instance();
 	uc->tracing_enabled = true;

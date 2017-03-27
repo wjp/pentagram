@@ -82,7 +82,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifdef FLIP_SHAPES
 
 #ifdef FLIP_CONDITIONAL
-const int32_t neg = (FLIP_CONDITIONAL)?-1:0;
+const sint32 neg = (FLIP_CONDITIONAL)?-1:0;
 #define XNEG(x) (((x)+neg)^neg)
 #else
 #define XNEG(x) (-(x))
@@ -119,7 +119,7 @@ const int32_t neg = (FLIP_CONDITIONAL)?-1:0;
 
 #define OFFSET_PIXELS (off_pixels)
 
-	uint8_t				*off_pixels  = static_cast<uint8_t*>(pixels) + static_cast<sintptr>(clip_window.x)*sizeof(uintX) + static_cast<sintptr>(clip_window.y)*pitch;
+	uint8				*off_pixels  = static_cast<uint8*>(pixels) + static_cast<sintptr>(clip_window.x)*sizeof(uintX) + static_cast<sintptr>(clip_window.y)*pitch;
 	x -= clip_window.x;
 	y -= clip_window.y;
 
@@ -165,36 +165,36 @@ const int32_t neg = (FLIP_CONDITIONAL)?-1:0;
 
 // All the variables we want
 
-	const uint8_t			*linedata;
-	int32_t				xpos;
+	const uint8			*linedata;
+	sint32				xpos;
 	sintptr				line; // sintptr for pointer arithmetic
-	int32_t				dlen;
+	sint32				dlen;
 
 	uintX				*pixptr;
 	uintX				*endrun;
 	uintX				*line_start;
-	uint32_t				pix;
+	uint32				pix;
 
 	// Sanity check
 	if (framenum >= s->frameCount()) return;
 	if (s->getPalette() == 0) return;
 
 	ShapeFrame		*frame			= s->getFrame(framenum);
-	const uint8_t		*rle_data		= frame->rle_data;
-	const uint32_t	*line_offsets	= frame->line_offsets;
-	const uint32_t	*pal			= untformed_pal?
+	const uint8		*rle_data		= frame->rle_data;
+	const uint32	*line_offsets	= frame->line_offsets;
+	const uint32	*pal			= untformed_pal?
 										&(s->getPalette()->native_untransformed[0]):
 										&(s->getPalette()->native[0]);
 
 	
 #ifdef XFORM_SHAPES
-	const uint32_t	*xform_pal		= untformed_pal?
+	const uint32	*xform_pal		= untformed_pal?
 										&(s->getPalette()->xform_untransformed[0]):
 										&(s->getPalette()->xform[0]);
 #endif
 
-	int32_t width = frame->width;
-	int32_t height = frame->height;
+	sint32 width = frame->width;
+	sint32 height = frame->height;
 	x -= XNEG(frame->xoff);
 	y -= frame->yoff;
 
@@ -208,7 +208,7 @@ const int32_t neg = (FLIP_CONDITIONAL)?-1:0;
 		{
 
 			linedata = rle_data + line_offsets[i];
-			line_start = reinterpret_cast<uintX *>(static_cast<uint8_t*>(OFFSET_PIXELS) + pitch*line);
+			line_start = reinterpret_cast<uintX *>(static_cast<uint8*>(OFFSET_PIXELS) + pitch*line);
 
 			LINE_END_ASSIGN();
 
@@ -288,7 +288,7 @@ const int32_t neg = (FLIP_CONDITIONAL)?-1:0;
 
 		if (NOT_CLIPPED_Y)
 		{
-			line_start = reinterpret_cast<uintX *>(static_cast<uint8_t*>(OFFSET_PIXELS) + pitch*line);
+			line_start = reinterpret_cast<uintX *>(static_cast<uint8*>(OFFSET_PIXELS) + pitch*line);
 			LINE_END_ASSIGN();
 
 			do 

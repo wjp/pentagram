@@ -43,8 +43,8 @@ SliderGump::SliderGump() : ModalGump()
 }
 
 
-SliderGump::SliderGump(int x, int y, int16_t min_, int16_t max_,
-					   int16_t value_, int16_t delta_)
+SliderGump::SliderGump(int x, int y, sint16 min_, sint16 max_,
+					   sint16 value_, sint16 delta_)
 	: ModalGump(x, y, 5, 5), min(min_), max(max_), delta(delta_), value(value_)
 {
 	usecodeNotifyPID = 0;
@@ -93,7 +93,7 @@ void SliderGump::setValueFromSlider(int sliderx)
 	int val = (sliderx-sliderminx)*(max-min)/(slidermaxx-sliderminx) + min;
 	if (val < min) val = min;
 	if (val > max) val = max;
-	value = min + delta*(static_cast<int16_t>(val/delta));
+	value = min + delta*(static_cast<sint16>(val/delta));
 }
 
 void SliderGump::setSliderPos()
@@ -108,7 +108,7 @@ void SliderGump::drawText(RenderSurface* surf)
 	if (!renderedtext || value != renderedvalue) {
 		Pentagram::Font *font;
 		font = FontManager::get_instance()->getGameFont(labelfont);
-		char buf[10]; // more than enough for a int16_t
+		char buf[10]; // more than enough for a sint16
 		sprintf(buf, "%d", value);
 
 		unsigned int remaining;
@@ -120,7 +120,7 @@ void SliderGump::drawText(RenderSurface* surf)
 	renderedtext->draw(surf, labelx, labely);
 }
 
-void SliderGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
+void SliderGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
 {
 	Gump::PaintThis(surf, lerp_factor, scaled);
 
@@ -171,7 +171,7 @@ void SliderGump::InitGump(Gump* newparent, bool take_focus)
 	widget->InitGump(this);
 }
 
-void SliderGump::ChildNotify(Gump *child, uint32_t message)
+void SliderGump::ChildNotify(Gump *child, uint32 message)
 {
 	if (message == ButtonWidget::BUTTON_CLICK) {
 		switch (child->GetIndex()) {
@@ -267,7 +267,7 @@ void SliderGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to save ModalGump");
 }
 
-bool SliderGump::loadData(IDataSource* ids, uint32_t version)
+bool SliderGump::loadData(IDataSource* ids, uint32 version)
 {
 	CANT_HAPPEN_MSG("Trying to load ModalGump");
 

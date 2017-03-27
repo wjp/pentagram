@@ -34,7 +34,7 @@ namespace Pentagram {
 // floating point, we approximate that by 27/32
 #define RANGE_REDUX(x)	(((x) * 27) >> 5)
 
-AudioChannel::AudioChannel(uint32_t sample_rate_, bool stereo_) :
+AudioChannel::AudioChannel(uint32 sample_rate_, bool stereo_) :
 	playdata(0), playdata_size(0), decompressor_size(0), frame_size(0),
 	sample_rate(sample_rate_), stereo(stereo_),
 	loop(0), sample(0), 
@@ -47,7 +47,7 @@ AudioChannel::~AudioChannel(void)
 {
 }
 
-void AudioChannel::playSample(AudioSample *sample_, int loop_, int priority_, bool paused_, uint32_t pitch_shift_, int lvol_, int rvol_)
+void AudioChannel::playSample(AudioSample *sample_, int loop_, int priority_, bool paused_, uint32 pitch_shift_, int lvol_, int rvol_)
 {
 	sample = sample_; 
 	loop = loop_;
@@ -67,7 +67,7 @@ void AudioChannel::playSample(AudioSample *sample_, int loop_, int priority_, bo
 	{
 		delete [] playdata;
 		playdata_size = decompressor_size + frame_size*2;
-		playdata = new uint8_t[playdata_size];
+		playdata = new uint8[playdata_size];
 	}
 
 	// Init the sample decompressor
@@ -88,7 +88,7 @@ void AudioChannel::playSample(AudioSample *sample_, int loop_, int priority_, bo
 	// Setup resampler
 	if (sample->getBits()==8 && !sample->isStereo())
 	{
-		uint8_t *src = playdata+decompressor_size;
+		uint8 *src = playdata+decompressor_size;
 		int a = *(src+0); a = (a|(a << 8))-32768;
 		int b = *(src+1); b = (a|(b << 8))-32768;
 		int c = *(src+2); c = (a|(c << 8))-32768;
@@ -98,7 +98,7 @@ void AudioChannel::playSample(AudioSample *sample_, int loop_, int priority_, bo
 
 }
 
-void AudioChannel::resampleAndMix(int16_t *stream, uint32_t bytes)
+void AudioChannel::resampleAndMix(sint16 *stream, uint32 bytes)
 {
 	if (!sample || paused) return;
 
@@ -120,8 +120,8 @@ void AudioChannel::resampleAndMix(int16_t *stream, uint32_t bytes)
 		/*
 		else
 		{
-			uint8_t *src = playdata + decompressor_size + (frame_size*frame_evenodd) + position;
-			uint8_t *src_end = src + frame0_size;
+			uint8 *src = playdata + decompressor_size + (frame_size*frame_evenodd) + position;
+			uint8 *src_end = src + frame0_size;
 
 			do {
 				int c = *(src++);
@@ -173,7 +173,7 @@ void AudioChannel::resampleAndMix(int16_t *stream, uint32_t bytes)
 void AudioChannel::DecompressNextFrame()
 {
 	// Get next frame of data
-	uint8_t *src2 = playdata + decompressor_size + (frame_size*(1-frame_evenodd));
+	uint8 *src2 = playdata + decompressor_size + (frame_size*(1-frame_evenodd));
 	frame1_size = sample->decompressFrame(playdata, src2);
 
 	// No stream, go back to beginning and get first frame 
@@ -185,13 +185,13 @@ void AudioChannel::DecompressNextFrame()
 }
 
 // Resample a frame of mono 8bit unsigned to Stereo 16bit
-void AudioChannel::resampleFrameM8toS(int16_t *&stream, uint32_t &bytes)
+void AudioChannel::resampleFrameM8toS(sint16 *&stream, uint32 &bytes)
 {
-	uint8_t *src = playdata + decompressor_size + (frame_size*frame_evenodd);
-	uint8_t *src2 = playdata + decompressor_size + (frame_size*(1-frame_evenodd));
+	uint8 *src = playdata + decompressor_size + (frame_size*frame_evenodd);
+	uint8 *src2 = playdata + decompressor_size + (frame_size*(1-frame_evenodd));
 
-	uint8_t *src_end = src + frame0_size;
-	uint8_t *src2_end = src2 + frame1_size;
+	uint8 *src_end = src + frame0_size;
+	uint8 *src2_end = src2 + frame1_size;
 
 	src += position;
 
@@ -245,13 +245,13 @@ void AudioChannel::resampleFrameM8toS(int16_t *&stream, uint32_t &bytes)
 }
 
 // Resample a frame of mono 8bit unsigned to Mono 16bit
-void AudioChannel::resampleFrameM8toM(int16_t *&stream, uint32_t &bytes)
+void AudioChannel::resampleFrameM8toM(sint16 *&stream, uint32 &bytes)
 {
-	uint8_t *src = playdata + decompressor_size + (frame_size*frame_evenodd);
-	uint8_t *src2 = playdata + decompressor_size + (frame_size*(1-frame_evenodd));
+	uint8 *src = playdata + decompressor_size + (frame_size*frame_evenodd);
+	uint8 *src2 = playdata + decompressor_size + (frame_size*(1-frame_evenodd));
 
-	uint8_t *src_end = src + frame0_size;
-	uint8_t *src2_end = src2 + frame1_size;
+	uint8 *src_end = src + frame0_size;
+	uint8 *src2_end = src2 + frame1_size;
 
 	src += position;
 

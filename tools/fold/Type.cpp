@@ -42,7 +42,7 @@ void Type::print_unk(Console &o) const
  ****************************************************************************/
 //class GlobalName;
 
-//extern std::map<uint32_t, GlobalName> GlobalNames;
+//extern std::map<uint32, GlobalName> GlobalNames;
 
 void DataType::print_value_unk(Console &o) const
 {
@@ -52,9 +52,9 @@ void DataType::print_value_unk(Console &o) const
 		case DT_BYTES:
 			switch(_vtype.type())
 			{
-				case Type::T_BYTE:  o.Printf("0x%0*Xh", 2, static_cast<int8_t >(_value)); break;
-				case Type::T_WORD:  o.Printf("0x%0*Xh", 4, static_cast<int16_t>(_value)); break;
-				case Type::T_DWORD: o.Printf("0x%0*Xh", 8, static_cast<int32_t>(_value)); break;
+				case Type::T_BYTE:  o.Printf("0x%0*Xh", 2, static_cast<sint8 >(_value)); break;
+				case Type::T_WORD:  o.Printf("0x%0*Xh", 4, static_cast<sint16>(_value)); break;
+				case Type::T_DWORD: o.Printf("0x%0*Xh", 8, static_cast<sint32>(_value)); break;
 				default: assert(false);
 			}
 			break;
@@ -83,9 +83,9 @@ void DataType::print_value_asm(Console &o) const
 		case DT_BYTES:
 			switch(_vtype.type())
 			{
-				case Type::T_BYTE:  o.Printf("%0*Xh", 2, static_cast<int8_t >(_value)); break;
-				case Type::T_WORD:  o.Printf("%0*Xh", 4, static_cast<int16_t>(_value)); break;
-				case Type::T_DWORD: o.Printf("%0*Xh", 8, static_cast<int32_t>(_value)); break;
+				case Type::T_BYTE:  o.Printf("%0*Xh", 2, static_cast<sint8 >(_value)); break;
+				case Type::T_WORD:  o.Printf("%0*Xh", 4, static_cast<sint16>(_value)); break;
+				case Type::T_DWORD: o.Printf("%0*Xh", 8, static_cast<sint32>(_value)); break;
 				default: assert(false);
 			}
 			break;
@@ -135,9 +135,9 @@ void DataType::print_value_bin(ODequeDataSource &o) const
 		case DT_BYTES:
 			switch(_vtype.type())
 			{
-				case Type::T_BYTE:  o.write1(static_cast<int8_t >(_value)); break;
-				case Type::T_WORD:  o.write2(static_cast<int16_t>(_value)); break;
-				case Type::T_DWORD: o.write4(static_cast<int32_t>(_value)); break;
+				case Type::T_BYTE:  o.write1(static_cast<sint8 >(_value)); break;
+				case Type::T_WORD:  o.write2(static_cast<sint16>(_value)); break;
+				case Type::T_DWORD: o.write4(static_cast<sint32>(_value)); break;
 				default: assert(false);
 			}
 			break;
@@ -161,7 +161,7 @@ void DataType::print_value_bin(ODequeDataSource &o) const
 			{
 				case Type::T_STRING:
 					o.write2(_strvalue.size());
-					for(uint16_t i = 0; i<_strvalue.size(); i++)
+					for(uint16 i = 0; i<_strvalue.size(); i++)
 						o.write1(_strvalue[i]);
 					break;
 				default: assert(false);

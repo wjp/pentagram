@@ -24,20 +24,20 @@
 class ItemRelativeGump : public Gump
 {
 protected:
-	int32_t ix, iy;
+	sint32 ix, iy;
 
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	ItemRelativeGump();
-	ItemRelativeGump(int32_t x, int32_t y, int32_t width, int32_t height, uint16_t owner, uint32_t _Flags = 0, int32_t layer = LAYER_NORMAL);
+	ItemRelativeGump(sint32 x, sint32 y, sint32 width, sint32 height, uint16 owner, uint32 _Flags = 0, sint32 layer = LAYER_NORMAL);
 	virtual ~ItemRelativeGump(void);
 
 	virtual void		InitGump(Gump* newparent, bool take_focus=true);
 
 	// Paint the Gump (RenderSurface is relative to parent).
 	// Calls PaintThis and PaintChildren.
-	virtual void		Paint(RenderSurface*, int32_t lerp_factor, bool scaled);
+	virtual void		Paint(RenderSurface*, sint32 lerp_factor, bool scaled);
 
 	virtual void		ParentToGump(int &px, int &py,
 									 PointRoundDir r = ROUND_TOPLEFT);
@@ -46,11 +46,11 @@ public:
 
 	virtual void		Move(int x, int y);
 
-	bool				loadData(IDataSource* ids, uint32_t version);
+	bool				loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void 		saveData(ODataSource* ods);
 
-	virtual void		GetItemLocation(int32_t lerp_factor);
+	virtual void		GetItemLocation(sint32 lerp_factor);
 
 	//! Move Gump so that it totally overlaps parent.
 	void				MoveOnScreen();

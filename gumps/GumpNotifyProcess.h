@@ -25,17 +25,17 @@ class Gump;
 
 class GumpNotifyProcess : public Process
 {
-	uint16_t gump;
+	uint16 gump;
 
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	GumpNotifyProcess();
-	GumpNotifyProcess(uint16_t it);
+	GumpNotifyProcess(uint16 it);
 	virtual ~GumpNotifyProcess(void);
 
 	void setGump(Gump *g);
-	uint16_t getGump() const { return gump; }
+	uint16 getGump() const { return gump; }
 
 	virtual void notifyClosing(int res);
 
@@ -45,7 +45,7 @@ public:
 
 	virtual void dumpInfo();
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

@@ -36,21 +36,21 @@ public:
 	//! \param pos zero-based position (in bits)
 	//! \param n number of bits (no greater than 32)
 	//! \return the value these bits represent
-	uint32_t getBits(unsigned int pos, unsigned int n);
+	uint32 getBits(unsigned int pos, unsigned int n);
 
 	//! set a value
 	//! \param pos zero-based position (in bits)
 	//! \param n number of bits (no greater than 32)
 	//! \param bits the value to set
-	void setBits(unsigned int pos, unsigned int n, uint32_t bits);
+	void setBits(unsigned int pos, unsigned int n, uint32 bits);
 
 	void save(ODataSource* ods);
-	bool load(IDataSource* ids, uint32_t version);
+	bool load(IDataSource* ids, uint32 version);
 
 private:
 	unsigned int size;
 	unsigned int bytes;
-	uint8_t* data;
+	uint8* data;
 };
 
 

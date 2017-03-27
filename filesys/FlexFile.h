@@ -32,18 +32,18 @@ public:
 	explicit FlexFile(IDataSource* ds);
 	virtual ~FlexFile();
 
-	virtual bool exists(uint32_t index) { return getSize(index) > 0; }
+	virtual bool exists(uint32 index) { return getSize(index) > 0; }
 	virtual bool exists(const std::string& name) {
-		uint32_t index;
+		uint32 index;
 		if (nameToIndex(name, index))
 			return exists(index);
 		else
 			return false;
 	}
 
-	virtual uint8_t* getObject(uint32_t index, uint32_t* size=0);
-	virtual uint8_t* getObject(const std::string& name, uint32_t* size=0) {
-		uint32_t index;
+	virtual uint8* getObject(uint32 index, uint32* size=0);
+	virtual uint8* getObject(const std::string& name, uint32* size=0) {
+		uint32 index;
 		if (nameToIndex(name, index))
 			return getObject(index, size);
 		else
@@ -51,18 +51,18 @@ public:
 	}
 	
 
-	virtual uint32_t getSize(uint32_t index);
-	virtual uint32_t getSize(const std::string& name) {
-		uint32_t index;
+	virtual uint32 getSize(uint32 index);
+	virtual uint32 getSize(const std::string& name) {
+		uint32 index;
 		if (nameToIndex(name, index))
 			return getSize(index);
 		else
 			return 0;
 	}
 
-	virtual uint32_t getCount() { return count; }
+	virtual uint32 getCount() { return count; }
 
-	virtual uint32_t getIndexCount() { return count; }
+	virtual uint32 getIndexCount() { return count; }
 
 	virtual bool isIndexed() const { return true; }
 	virtual bool isNamed() const { return false; }
@@ -70,13 +70,13 @@ public:
 	static bool isFlexFile(IDataSource* ds);
 
 protected:
-	bool nameToIndex(const std::string& name, uint32_t& index);
+	bool nameToIndex(const std::string& name, uint32& index);
 
 	IDataSource* ds;
-	uint32_t count;
+	uint32 count;
 
 private:
-	uint32_t getOffset(uint32_t index);
+	uint32 getOffset(uint32 index);
 };
 
 

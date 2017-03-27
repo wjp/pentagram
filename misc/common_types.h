@@ -65,13 +65,13 @@
 #  endif
 #endif
 
-typedef	unsigned EX_TYPE_INT8	uint8_t;
-typedef	unsigned EX_TYPE_INT16	uint16_t;
-typedef	unsigned EX_TYPE_INT32	uint32_t;
+typedef	unsigned EX_TYPE_INT8	uint8;
+typedef	unsigned EX_TYPE_INT16	uint16;
+typedef	unsigned EX_TYPE_INT32	uint32;
 
-typedef	signed EX_TYPE_INT8		int8_t;
-typedef	signed EX_TYPE_INT16	int16_t;
-typedef	signed EX_TYPE_INT32	int32_t;
+typedef	signed EX_TYPE_INT8		sint8;
+typedef	signed EX_TYPE_INT16	sint16;
+typedef	signed EX_TYPE_INT32	sint32;
 
 typedef unsigned EX_TYPE_INTPTR uintptr;
 typedef signed EX_TYPE_INTPTR sintptr;
@@ -81,10 +81,10 @@ typedef signed EX_TYPE_INTPTR sintptr;
 // ObjId and ProcId
 
 //! 16-Bit ID of an Object
-typedef uint16_t ObjId;
+typedef uint16 ObjId;
 
 //! 16-Bit ID of a Process
-typedef uint16_t ProcId;
+typedef uint16 ProcId;
 
 #endif
 

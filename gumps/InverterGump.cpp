@@ -25,7 +25,7 @@
 
 DEFINE_RUNTIME_CLASSTYPE_CODE(InverterGump,DesktopGump);
 
-InverterGump::InverterGump(int32_t _x, int32_t _y, int32_t _width, int32_t _height)
+InverterGump::InverterGump(sint32 _x, sint32 _y, sint32 _width, sint32 _height)
 	: DesktopGump(_x, _y, _width, _height)
 {
 	buffer = 0;
@@ -54,7 +54,7 @@ static inline int getIndex(int line, int n)
                 return 2*n - 1 - (line/2);
 }
 
-void InverterGump::Paint(RenderSurface* surf, int32_t lerp_factor, bool scaled)
+void InverterGump::Paint(RenderSurface* surf, sint32 lerp_factor, bool scaled)
 {
 	// Skip the clipping rect/origin setting, since they will already be set
 	// correctly by our parent.
@@ -72,7 +72,7 @@ void InverterGump::Paint(RenderSurface* surf, int32_t lerp_factor, bool scaled)
 }
 
 
-void InverterGump::PaintChildren(RenderSurface* surf, int32_t lerp_factor, bool scaled)
+void InverterGump::PaintChildren(RenderSurface* surf, sint32 lerp_factor, bool scaled)
 {
 	unsigned int state = GUIApp::get_instance()->getInversion();
 

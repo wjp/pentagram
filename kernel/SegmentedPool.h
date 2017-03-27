@@ -36,7 +36,7 @@ struct SegmentedPoolNode;
 class SegmentedPool: public Pool
 {
 public:
-	SegmentedPool(size_t nodeCapacity, uint32_t nodes);
+	SegmentedPool(size_t nodeCapacity, uint32 nodes);
 	virtual ~SegmentedPool();
 
 	ENABLE_RUNTIME_CLASSTYPE();
@@ -55,13 +55,13 @@ public:
 
 	SegmentedPoolNode* getPoolNode(void * ptr);
 private:
-	uint8_t * startOfPool;
-	uint8_t * endOfPool;
+	uint8 * startOfPool;
+	uint8 * endOfPool;
 
 	size_t nodeOffset;
 	size_t nodeCapacity;
-	uint32_t nodes;
-	uint32_t freeNodeCount;
+	uint32 nodes;
+	uint32 freeNodeCount;
 
 	SegmentedPoolNode* firstFree;
 	SegmentedPoolNode* lastFree;

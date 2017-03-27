@@ -36,7 +36,7 @@ LoiterProcess::LoiterProcess() : Process()
 
 }
 
-LoiterProcess::LoiterProcess(Actor* actor_, int32_t c)
+LoiterProcess::LoiterProcess(Actor* actor_, sint32 c)
 {
 	assert(actor_);
 	item_num = actor_->getObjId();
@@ -62,7 +62,7 @@ void LoiterProcess::run()
 		return;
 	}
 
-	int32_t x,y,z;
+	sint32 x,y,z;
 	a->getLocation(x,y,z);
 
 	x += 32 * ((std::rand() % 20) - 10);
@@ -88,7 +88,7 @@ void LoiterProcess::run()
 			else
 				idleanim = Animation::idle2;
 		}
-		uint16_t idlepid = a->doAnim(idleanim, 8);
+		uint16 idlepid = a->doAnim(idleanim, 8);
 		Process* idlep = Kernel::get_instance()->getProcess(idlepid);
 		idlep->waitFor(pfp);
 
@@ -111,7 +111,7 @@ void LoiterProcess::saveData(ODataSource* ods)
 	ods->write4(count);
 }
 
-bool LoiterProcess::loadData(IDataSource* ids, uint32_t version)
+bool LoiterProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

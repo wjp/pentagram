@@ -63,7 +63,7 @@ ActorAnimProcess::ActorAnimProcess() : Process(), tracker(0)
 }
 
 ActorAnimProcess::ActorAnimProcess(Actor* actor_, Animation::Sequence action_,
-								   uint32_t dir_, uint32_t steps_)
+								   uint32 dir_, uint32 steps_)
 {
 	assert(actor_);
 	item_num = actor_->getObjId();
@@ -190,7 +190,7 @@ void ActorAnimProcess::run()
 	bool result = true;
 	if (repeatcounter == 0) {
 		// next step:
-		int32_t x,y,z;
+		sint32 x,y,z;
 		a->getLocation(x,y,z);
 		result = tracker->stepFrom(x,y,z);
 		tracker->updateActorFlags();
@@ -218,7 +218,7 @@ void ActorAnimProcess::run()
 							 << "] falling" << std::endl;
 					}
 #endif
-					int32_t dx,dy,dz;
+					sint32 dx,dy,dz;
 					tracker->getSpeed(dx,dy,dz);
 					a->hurl(dx,dy,dz,2);
 				}
@@ -288,7 +288,7 @@ void ActorAnimProcess::run()
 		}
 	}
 
-	int32_t x,y,z,x2,y2,z2;
+	sint32 x,y,z,x2,y2,z2;
 	a->getLocation(x,y,z);
 	tracker->getInterpolatedPosition(x2,y2,z2,repeatcounter);
 	if (x == x2 && y == y2 && z == z2) {
@@ -345,7 +345,7 @@ void ActorAnimProcess::run()
 			}
 #endif
 
-			int32_t dx,dy,dz;
+			sint32 dx,dy,dz;
 			tracker->getSpeed(dx,dy,dz);
 			a->hurl(dx,dy,dz,2);
 			
@@ -384,7 +384,7 @@ void ActorAnimProcess::doSpecial()
 			Actor* skull = Actor::createActor(0x19d, 0);
 			if (!skull) return;
 			skull->setFlag(Item::FLG_FAST_ONLY);
-			int32_t x,y,z;
+			sint32 x,y,z;
 			a->getLocation(x,y,z);
 			int dir = a->getDir();
 			skull->move(x+32*x_fact[dir],y+32*y_fact[dir],z);
@@ -394,7 +394,7 @@ void ActorAnimProcess::doSpecial()
 			unsigned int ghoulcount = a->countNearby(0x8e, 8*256);
 			if (ghoulcount > 2) return;
 
-			int32_t x,y,z;
+			sint32 x,y,z;
 			a->getLocation(x,y,z);
 			x += (std::rand() % (6*256)) - 3*256;
 			y += (std::rand() % (6*256)) - 3*256;
@@ -447,10 +447,10 @@ void ActorAnimProcess::doSpecial()
 		cm->surfaceSearch(&itemlist, script, sizeof(script), a, false, true);
 		if (itemlist.getSize() == 0) return;
 
-		Item* f = getItem(itemlist.getuint16_t(0));
+		Item* f = getItem(itemlist.getuint16(0));
 		assert(f);
 
-		uint32_t floor = f->getShape();
+		uint32 floor = f->getShape();
 		bool running = (action == Animation::run);
 		bool splash = false;
 		int sfx = 0;
@@ -476,7 +476,7 @@ void ActorAnimProcess::doSpecial()
 		}
 
 		if (splash) {
-			int32_t x,y,z;
+			sint32 x,y,z;
 			a->getLocation(x,y,z);			
 			Process *sp = new SpriteProcess(475, 0, 7, 1, 1, x, y, z);
 			Kernel::get_instance()->addProcess(sp);
@@ -504,7 +504,7 @@ void ActorAnimProcess::doHitSpecial(Item* hit)
 
 		if (!weapon) return;
 
-		uint32_t weaponshape = weapon->getShape();
+		uint32 weaponshape = weapon->getShape();
 
 		switch (weaponshape) {
 		case 0x32F: // magic hammer
@@ -534,7 +534,7 @@ void ActorAnimProcess::doHitSpecial(Item* hit)
 			if (audioproc) audioproc->playSFX(sfx, 0x60, 1, 0, false,
 								  0x10000 + (std::rand()&0x1FFF) - 0x1000);
 
-			int32_t x,y,z;
+			sint32 x,y,z;
 			a->getLocation(x,y,z);
 			// 1: create flame sprite
 			// 2: create flame object
@@ -543,7 +543,7 @@ void ActorAnimProcess::doHitSpecial(Item* hit)
 			// 4b: create douse-flame sprite
 			Kernel* kernel = Kernel::get_instance();
 
-			int32_t fx,fy,fz;
+			sint32 fx,fy,fz;
 			fx = x + 96 * x_fact[dir];
 			fy = y + 96 * y_fact[dir];
 			fz = z;
@@ -635,17 +635,17 @@ void ActorAnimProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 
-	uint8_t ff = firstframe ? 1 : 0;
+	uint8 ff = firstframe ? 1 : 0;
 	ods->write1(ff);
-	uint8_t ab = animAborted ? 1 : 0;
+	uint8 ab = animAborted ? 1 : 0;
 	ods->write1(ab);
-	uint8_t attacked = attackedSomething ? 1 : 0;
+	uint8 attacked = attackedSomething ? 1 : 0;
 	ods->write1(attacked);
-	ods->write1(static_cast<uint8_t>(dir));
-	ods->write2(static_cast<uint16_t>(action));
-	ods->write2(static_cast<uint16_t>(steps));
-	ods->write2(static_cast<uint16_t>(repeatcounter));
-	ods->write2(static_cast<uint16_t>(currentstep));
+	ods->write1(static_cast<uint8>(dir));
+	ods->write2(static_cast<uint16>(action));
+	ods->write2(static_cast<uint16>(steps));
+	ods->write2(static_cast<uint16>(repeatcounter));
+	ods->write2(static_cast<uint16>(currentstep));
 
 	if (tracker) {
 		ods->write1(1);
@@ -654,7 +654,7 @@ void ActorAnimProcess::saveData(ODataSource* ods)
 		ods->write1(0);
 }
 
-bool ActorAnimProcess::loadData(IDataSource* ids, uint32_t version)
+bool ActorAnimProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

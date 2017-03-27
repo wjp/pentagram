@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 namespace Pentagram {
 
-RawAudioSample::RawAudioSample(uint8_t* buffer_, uint32_t size_, uint32_t rate_,
+RawAudioSample::RawAudioSample(uint8* buffer_, uint32 size_, uint32 rate_,
 							   bool signeddata_, bool stereo_)
 	: AudioSample(buffer_, size_), signeddata(signeddata_)
 {
@@ -50,20 +50,20 @@ void RawAudioSample::rewind(void *DecompData) const
 	initDecompressor(DecompData);
 }
 
-uint32_t RawAudioSample::decompressFrame(void *DecompData, void *samples) const
+uint32 RawAudioSample::decompressFrame(void *DecompData, void *samples) const
 {
 	RawDecompData *decomp = reinterpret_cast<RawDecompData *>(DecompData);
 
 	if (decomp->pos == buffer_size) return 0;
 
-	uint32_t count = frame_size;
+	uint32 count = frame_size;
 	if (decomp->pos + count > buffer_size)
 		count = buffer_size - decomp->pos;
 
 	if (!signeddata) {
 		std::memcpy(samples, buffer+decomp->pos, count);
 	} else {
-		uint8_t* dest = static_cast<uint8_t*>(samples);
+		uint8* dest = static_cast<uint8*>(samples);
 		for (unsigned int i = 0; i < count; ++i)
 			dest[i] = buffer[decomp->pos+i] + 128;
 	}

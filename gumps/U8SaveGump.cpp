@@ -227,7 +227,7 @@ void U8SaveGump::OnMouseClick(int button, int mx, int my)
 	}
 }
 
-void U8SaveGump::ChildNotify(Gump *child, uint32_t message)
+void U8SaveGump::ChildNotify(Gump *child, uint32 message)
 {
 	if (child->IsOfType<EditWidget>() && message == EditWidget::EDIT_ENTER)
 	{
@@ -322,7 +322,7 @@ void U8SaveGump::loadDescriptions()
 		if (!ids) continue;
 
 		Savegame* sg = new Savegame(ids);
-		uint32_t version = sg->getVersion();
+		uint32 version = sg->getVersion();
 		descriptions[i] = "";
 
 		// FIXME: move version checks elsewhere!!

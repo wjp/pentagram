@@ -37,7 +37,7 @@ public:
 	void			reset();
 	void			createProcesses();
 
-	int				playSample(AudioSample *sample, int loop, int priority, bool paused, uint32_t pitch_shift, int lvol, int rvol);
+	int				playSample(AudioSample *sample, int loop, int priority, bool paused, uint32 pitch_shift, int lvol, int rvol);
 	bool			isPlaying(int chan);
 	void			stopSample(int chan);
 	
@@ -52,7 +52,7 @@ public:
 
 private:
 	bool			audio_ok;
-	uint32_t			sample_rate;
+	uint32			sample_rate;
 	bool			stereo;
 	MidiDriver *	midi_driver;
 	int				midi_volume;
@@ -61,9 +61,9 @@ private:
 	AudioChannel	**channels;
 
 	void			init_midi();
-	static void		sdlAudioCallback(void *userdata, uint8_t *stream, int len);
+	static void		sdlAudioCallback(void *userdata, uint8 *stream, int len);
 
-	void			MixAudio(int16_t *stream, uint32_t bytes);
+	void			MixAudio(sint16 *stream, uint32 bytes);
 
 	static AudioMixer* the_audio_mixer;
 

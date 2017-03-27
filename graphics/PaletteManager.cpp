@@ -63,7 +63,7 @@ void PaletteManager::resetTransforms()
 {
 	con.Print(MM_INFO, "Resetting Palette Transforms...\n");
 
-	int16_t matrix[12];
+	sint16 matrix[12];
 	getTransformMatrix(matrix, Pentagram::Transform_None);
 
 	for (unsigned int i = 0; i < palettes.size(); ++i)
@@ -140,7 +140,7 @@ Pentagram::Palette* PaletteManager::getPalette(PalIndex index)
 	return palettes[index];
 }
 
-void PaletteManager::transformPalette(PalIndex index, int16_t matrix[12])
+void PaletteManager::transformPalette(PalIndex index, sint16 matrix[12])
 {
 	Pentagram::Palette *pal = getPalette(index);
 
@@ -157,12 +157,12 @@ void PaletteManager::untransformPalette(PalIndex index)
 	if (!pal) return;
 
 	pal->transform = Pentagram::Transform_None;
-	int16_t matrix[12];
+	sint16 matrix[12];
 	getTransformMatrix(matrix, Pentagram::Transform_None);
 	transformPalette(index, matrix);
 }
 
-void PaletteManager::getTransformMatrix(int16_t matrix[12], Pentagram::PalTransforms trans)
+void PaletteManager::getTransformMatrix(sint16 matrix[12], Pentagram::PalTransforms trans)
 {
 	switch (trans)
 	{
@@ -283,20 +283,20 @@ void PaletteManager::getTransformMatrix(int16_t matrix[12], Pentagram::PalTransf
 }
 
 
-void PaletteManager::getTransformMatrix(int16_t matrix[12], uint32_t col32)
+void PaletteManager::getTransformMatrix(sint16 matrix[12], uint32 col32)
 {
-	matrix[0]  = (static_cast<int32_t>(TEX32_A(col32))*0x800)/255;	
+	matrix[0]  = (static_cast<sint32>(TEX32_A(col32))*0x800)/255;	
 	matrix[1]  = 0;	
 	matrix[2]  = 0;	
-	matrix[3]  = (static_cast<int32_t>(TEX32_R(col32))*0x800)/255;
+	matrix[3]  = (static_cast<sint32>(TEX32_R(col32))*0x800)/255;
 
 	matrix[4]  = 0;	
-	matrix[5]  = (static_cast<int32_t>(TEX32_A(col32))*0x800)/255;	
+	matrix[5]  = (static_cast<sint32>(TEX32_A(col32))*0x800)/255;	
 	matrix[6]  = 0;	
-	matrix[7]  = (static_cast<int32_t>(TEX32_G(col32))*0x800)/255;
+	matrix[7]  = (static_cast<sint32>(TEX32_G(col32))*0x800)/255;
 
 	matrix[8]  = 0;	
 	matrix[9]  = 0;	
-	matrix[10] = (static_cast<int32_t>(TEX32_A(col32))*0x800)/255;	
-	matrix[11] = (static_cast<int32_t>(TEX32_B(col32))*0x800)/255;
+	matrix[10] = (static_cast<sint32>(TEX32_A(col32))*0x800)/255;	
+	matrix[11] = (static_cast<sint32>(TEX32_B(col32))*0x800)/255;
 }

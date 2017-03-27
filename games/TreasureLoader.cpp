@@ -97,10 +97,10 @@ bool TreasureLoader::internalParse(std::string desc, TreasureInfo& ti,
 //		pout << "internalParse: key=" << key << " val=" << val << std::endl;
 
 		if (key == "shape") {
-			if (!parseuint32_tVector(val, ti.shapes))
+			if (!parseUInt32Vector(val, ti.shapes))
 				return false;
 		} else if (key == "frame") {
-			if (!parseuint32_tVector(val, ti.frames))
+			if (!parseUInt32Vector(val, ti.frames))
 				return false;
 		} else if (key == "count") {
 			if (!parseUIntRange(val, ti.mincount, ti.maxcount)) {
@@ -148,8 +148,8 @@ bool TreasureLoader::internalParse(std::string desc, TreasureInfo& ti,
 	return true;
 }
 
-bool TreasureLoader::parseuint32_tVector(std::string val,
-									   std::vector<uint32_t>& vec)
+bool TreasureLoader::parseUInt32Vector(std::string val,
+									   std::vector<uint32>& vec)
 {
 	vec.clear();
 

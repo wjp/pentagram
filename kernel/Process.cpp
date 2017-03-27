@@ -28,7 +28,7 @@ DEFINE_RUNTIME_CLASSTYPE_CODE_BASE_CLASS(Process);
 
 DEFINE_CUSTOM_MEMORY_ALLOCATION(Process);
 
-Process::Process(ObjId it, uint16_t ty)
+Process::Process(ObjId it, uint16 ty)
 	: pid(0xFFFF), flags(0), item_num(it), type(ty), result(0)
 {
 	Kernel::get_instance()->assignPID(this);
@@ -61,7 +61,7 @@ void Process::terminate()
 	flags |= PROC_TERMINATED;
 }
 
-void Process::wakeUp(uint32_t result_)
+void Process::wakeUp(uint32 result_)
 {
 	result = result_;
 
@@ -129,7 +129,7 @@ void Process::save(ODataSource* ods)
 void Process::writeProcessHeader(ODataSource* ods)
 {
 	const char* cname = GetClassType().class_name; // virtual
-	uint16_t clen = strlen(cname);
+	uint16 clen = strlen(cname);
 
 	ods->write2(clen);
 	ods->write(cname, clen);
@@ -142,19 +142,19 @@ void Process::saveData(ODataSource* ods)
 	ods->write2(item_num);
 	ods->write2(type);
 	ods->write4(result);
-	ods->write4(static_cast<uint32_t>(waiting.size()));
+	ods->write4(static_cast<uint32>(waiting.size()));
 	for (unsigned int i = 0; i < waiting.size(); ++i)
 		ods->write2(waiting[i]);
 }
 
-bool Process::loadData(IDataSource* ids, uint32_t version)
+bool Process::loadData(IDataSource* ids, uint32 version)
 {
 	pid = ids->read2();
 	flags = ids->read4();
 	item_num = ids->read2();
 	type = ids->read2();
 	result = ids->read4();
-	uint32_t waitcount = ids->read4();
+	uint32 waitcount = ids->read4();
 	waiting.resize(waitcount);
 	for (unsigned int i = 0; i < waitcount; ++i)
 		waiting[i] = ids->read2();

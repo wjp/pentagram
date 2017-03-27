@@ -43,7 +43,7 @@ namespace NS_TIMIDITY {
 #define PI   3.14159265
 #endif
 
-extern void antialiasing(Sample *sp, int32_t output_rate);
+extern void antialiasing(Sample *sp, sint32 output_rate);
 
 #ifdef NS_TIMIDITY
 };

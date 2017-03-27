@@ -34,13 +34,13 @@ public:
 	bool writeDescription(const std::string& desc);
 
 	//! write the savegame's global version
-	bool writeVersion(uint32_t version);
+	bool writeVersion(uint32 version);
 
 	//! write a file to the savegame
 	//! \param name name of the file
 	//! \param data the data
 	//! \param size (in bytes) of data
-	virtual bool writeFile(const char* name, const uint8_t* data, uint32_t size);
+	virtual bool writeFile(const char* name, const uint8* data, uint32 size);
 
 	//! write a file to the savegame from an OAutoBufferDataSource
 	//! \param name name of the file

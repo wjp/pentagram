@@ -71,9 +71,9 @@ void JPFont::getStringSize(const std::string& text, int& width, int& height)
 		if (text[i] == '\n' || text[i] == '\r') {
 			// ignore
 		} else {
-			uint16_t sjis = text[i] & 0xFF;
+			uint16 sjis = text[i] & 0xFF;
 			if (sjis >= 0x80) {
-				uint16_t t = text[++i] & 0xFF;
+				uint16 t = text[++i] & 0xFF;
 				sjis += (t << 8);
 			}
 			width += getWidth(Pentagram::shiftjis_to_ultima8(sjis))-hlead;

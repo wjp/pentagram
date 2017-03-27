@@ -38,7 +38,7 @@ struct PathNode
 	unsigned int cost;
 	unsigned int heuristicTotalCost;
 	PathNode* parent;
-	uint32_t stepsfromparent;
+	uint32 stepsfromparent;
 };
 
 // NOTE: this is just to keep some statistics
@@ -54,7 +54,7 @@ void PathfindingState::load(Actor* actor)
 	combat = actor->isInCombat();
 }
 
-bool PathfindingState::checkPoint(int32_t x_, int32_t y_, int32_t z_,
+bool PathfindingState::checkPoint(sint32 x_, sint32 y_, sint32 z_,
 								  int range)
 {
 	int distance = (x - x_) * (x - x_) + (y - y_) * (y - y_) + (z - z_) * (z - z_); 
@@ -63,9 +63,9 @@ bool PathfindingState::checkPoint(int32_t x_, int32_t y_, int32_t z_,
 
 bool PathfindingState::checkItem(Item* item, int xyRange, int zRange)
 {
-	int32_t itemX, itemY, itemZ;
-	int32_t itemXd, itemYd, itemZd;
-	int32_t itemXmin, itemYmin;
+	sint32 itemX, itemY, itemZ;
+	sint32 itemXd, itemYd, itemZd;
+	sint32 itemXmin, itemYmin;
 
 	item->getLocationAbsolute(itemX, itemY, itemZ);
 	item->getFootpadWorld(itemXd, itemYd, itemZd);
@@ -146,7 +146,7 @@ void Pathfinder::init(Actor* actor_, PathfindingState* state)
 		start.load(actor);
 }
 
-void Pathfinder::setTarget(int32_t x, int32_t y, int32_t z)
+void Pathfinder::setTarget(sint32 x, sint32 y, sint32 z)
 {
 	targetx = x;
 	targety = y;
@@ -180,7 +180,7 @@ bool Pathfinder::canReach()
 	return pathfind(path);
 }
 
-bool Pathfinder::alreadyVisited(int32_t x, int32_t y, int32_t z)
+bool Pathfinder::alreadyVisited(sint32 x, sint32 y, sint32 z)
 {
 	//! this may need optimization
 
@@ -257,24 +257,24 @@ unsigned int Pathfinder::costHeuristic(PathNode* node)
 static void drawbox(Item* item)
 {
 	RenderSurface* screen = GUIApp::get_instance()->getScreen();
-	int32_t cx, cy, cz;
+	sint32 cx, cy, cz;
 
 	GUIApp::get_instance()->getGameMapGump()->GetCameraLocation(cx, cy, cz);
 
 	Pentagram::Rect d;
 	screen->GetSurfaceDims(d);
 
-	int32_t ix, iy, iz;
+	sint32 ix, iy, iz;
 	item->getLocation(ix, iy, iz);
 
-	int32_t xd, yd, zd;
+	sint32 xd, yd, zd;
 	item->getFootpadWorld(xd, yd, zd);
 
 	ix -= cx;
 	iy -= cy;
 	iz -= cz;
 
-	int32_t x0,y0,x1,y1,x2,y2,x3,y3;
+	sint32 x0,y0,x1,y1,x2,y2,x3,y3;
 
 	x0 = (d.w/2) + (ix - iy)/2;
 	y0 = (d.h/2) + (ix + iy)/4 - iz*2;
@@ -295,10 +295,10 @@ static void drawbox(Item* item)
 	screen->DrawLine32(0xFF00FF00, x0, y0, x3, y3);
 }
 
-static void drawdot(int32_t x, int32_t y, int32_t z, int size, uint32_t rgb)
+static void drawdot(sint32 x, sint32 y, sint32 z, int size, uint32 rgb)
 {
 	RenderSurface* screen = GUIApp::get_instance()->getScreen();
-	int32_t cx, cy, cz;
+	sint32 cx, cy, cz;
 
 	GUIApp::get_instance()->getGameMapGump()->GetCameraLocation(cx, cy, cz);
 
@@ -307,23 +307,23 @@ static void drawdot(int32_t x, int32_t y, int32_t z, int size, uint32_t rgb)
 	x -= cx;
 	y -= cy;
 	z -= cz;
-	int32_t x0,y0;
+	sint32 x0,y0;
 	x0 = (d.w/2) + (x - y)/2;
 	y0 = (d.h/2) + (x + y)/4 - z*2;
 	screen->Fill32(rgb, x0-size, y0-size, 2*size+1, 2*size+1);
 }
 
-static void drawedge(PathNode* from, PathNode* to, uint32_t rgb)
+static void drawedge(PathNode* from, PathNode* to, uint32 rgb)
 {
 	RenderSurface* screen = GUIApp::get_instance()->getScreen();
-	int32_t cx, cy, cz;
+	sint32 cx, cy, cz;
 
 	GUIApp::get_instance()->getGameMapGump()->GetCameraLocation(cx, cy, cz);
 
 	Pentagram::Rect d;
 	screen->GetSurfaceDims(d);
 
-	int32_t x0, y0, x1, y1;
+	sint32 x0, y0, x1, y1;
 
 	cx = from->state.x - cx;
 	cy = from->state.y - cy;
@@ -344,7 +344,7 @@ static void drawedge(PathNode* from, PathNode* to, uint32_t rgb)
 	screen->DrawLine32(rgb, x0, y0, x1, y1);
 }
 
-static void drawpath(PathNode* to, uint32_t rgb, bool done)
+static void drawpath(PathNode* to, uint32 rgb, bool done)
 {
 	PathNode* n1 = to;
 	PathNode* n2 = to->parent;
@@ -447,12 +447,12 @@ void Pathfinder::expandNode(PathNode* node)
 		walkanim = Animation::advance;
 
 	// try walking in all 8 directions
-	for (uint32_t dir = 0; dir < 8; ++dir) {
+	for (uint32 dir = 0; dir < 8; ++dir) {
 		state = node->state;
 		state.lastanim = walkanim;
 		state.direction = dir;
 		state.combat = actor->isInCombat();
-		uint32_t steps = 0, beststeps = 0;
+		uint32 steps = 0, beststeps = 0;
 		int bestsqdist;
 		bestsqdist = (targetx - node->state.x + actor_xd/2) *
 			(targetx - node->state.x + actor_xd/2);
@@ -462,7 +462,7 @@ void Pathfinder::expandNode(PathNode* node)
 		if (!tracker.init(actor, walkanim, dir, &state)) continue;
 
 		// determine how far the actor will travel if the animation runs to completion
-		int32_t max_endx, max_endy;
+		sint32 max_endx, max_endy;
 		tracker.evaluateMaxAnimTravel(max_endx, max_endy, dir);
 		if(alreadyVisited(max_endx, max_endy, state.z)) continue;
 		int sqrddist;
@@ -564,7 +564,7 @@ bool Pathfinder::pathfind(std::vector<PathfindingAction>& path)
 	const unsigned int NODELIMIT_MIN = 30;	//! constant
 	const unsigned int NODELIMIT_MAX = 200;	//! constant
 	bool found = false;
-	uint32_t starttime = SDL_GetTicks();
+	Uint32 starttime = SDL_GetTicks();
 
 	while (expandednodes < NODELIMIT_MAX && !nodes.empty() && !found) {
 		PathNode* node = nodes.top(); nodes.pop();
@@ -630,7 +630,7 @@ bool Pathfinder::pathfind(std::vector<PathfindingAction>& path)
 
 		if(expandednodes >= NODELIMIT_MIN && ((expandednodes) % 5) == 0)
 		{
-			uint32_t elapsed_ms = SDL_GetTicks() - starttime;
+			Uint32 elapsed_ms = SDL_GetTicks() - starttime;
 			if(elapsed_ms > 350) break;
 		}
 	}
@@ -638,8 +638,8 @@ bool Pathfinder::pathfind(std::vector<PathfindingAction>& path)
 	expandtime = SDL_GetTicks() - starttime;
 
 #if 0
-	static int32_t pfcalls = 0;
-	static int32_t pftotaltime = 0;
+	static sint32 pfcalls = 0;
+	static sint32 pftotaltime = 0;
 	pfcalls++;
 	pftotaltime += expandtime;
 	pout << "maxout average = " << (pftotaltime / pfcalls) << "ms." << std::endl;
@@ -662,7 +662,7 @@ void Pathfinder::ConCmd_visualDebug(const Console::ArgvType &argv)
 		visualdebug_actor = 0xFFFF;
 		pout << "Pathfinder: stopped visual tracing" << std::endl;
 	} else {
-		visualdebug_actor = (uint16_t)p;
+		visualdebug_actor = (uint16)p;
 		pout << "Pathfinder: visually tracing actor " << visualdebug_actor << std::endl;
 	}
 }

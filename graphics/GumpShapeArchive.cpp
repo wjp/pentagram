@@ -38,15 +38,15 @@ void GumpShapeArchive::loadGumpage(IDataSource* ds)
 	for (unsigned int i = 1; i <= count; ++i)
 	{
 		int x, y, w, h;
-		x = static_cast<int16_t>(ds->read2());
-		y = static_cast<int16_t>(ds->read2());
-		w = static_cast<int16_t>(ds->read2()) - x;
-		h = static_cast<int16_t>(ds->read2()) - y;
+		x = static_cast<sint16>(ds->read2());
+		y = static_cast<sint16>(ds->read2());
+		w = static_cast<sint16>(ds->read2()) - x;
+		h = static_cast<sint16>(ds->read2()) - y;
 		gumpItemArea[i] = new Pentagram::Rect(x, y, w, h);
 	}
 }
 
-Pentagram::Rect* GumpShapeArchive::getGumpItemArea(uint32_t shapenum)
+Pentagram::Rect* GumpShapeArchive::getGumpItemArea(uint32 shapenum)
 {
 	if (shapenum >= gumpItemArea.size()) return 0;
 	return gumpItemArea[shapenum];

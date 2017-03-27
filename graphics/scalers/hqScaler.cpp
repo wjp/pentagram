@@ -56,8 +56,8 @@ namespace Pentagram {
 	#define CASE_4X(Scale)
 #endif
  
-bool hqScaler::_Scale16Nat ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-				uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+bool hqScaler::_Scale16Nat ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+				uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	switch(dw/sw)
 	{
@@ -69,8 +69,8 @@ bool hqScaler::_Scale16Nat ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, i
 		return false;
 	}
 }
-bool hqScaler::_Scale16Sta ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-				uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+bool hqScaler::_Scale16Sta ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+				uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	switch(dw/sw)
 	{
@@ -83,8 +83,8 @@ bool hqScaler::_Scale16Sta ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, i
 	}
 }
 
-bool hqScaler::_Scale32Nat ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-				uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+bool hqScaler::_Scale32Nat ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+				uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	switch(dw/sw)
 	{
@@ -96,8 +96,8 @@ bool hqScaler::_Scale32Nat ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, i
 		return false;
 	}
 }
-bool hqScaler::_Scale32Sta ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-				uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+bool hqScaler::_Scale32Sta ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+				uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	switch(dw/sw)
 	{
@@ -109,8 +109,8 @@ bool hqScaler::_Scale32Sta ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, i
 		return false;
 	}
 }
-bool hqScaler::_Scale32_A888 ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-				uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+bool hqScaler::_Scale32_A888 ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+				uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	switch(dw/sw)
 	{
@@ -122,8 +122,8 @@ bool hqScaler::_Scale32_A888 ( Texture *tex, int32_t sx, int32_t sy, int32_t sw,
 		return false;
 	}
 }
-bool hqScaler::_Scale32_888A ( Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-				uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+bool hqScaler::_Scale32_888A ( Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+				uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	switch(dw/sw)
 	{
@@ -147,7 +147,7 @@ hqScaler::hqScaler() : Scaler()
 	Scale32_888A = _Scale32_888A;
 }
 
-const uint32_t hqScaler::ScaleBits() const { 
+const uint32 hqScaler::ScaleBits() const { 
 	return 0
 #ifdef USE_HQ2X_SCALER
 		| 1<<2

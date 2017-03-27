@@ -31,17 +31,17 @@ public:
 
 	virtual bool exists(const std::string& name);
 
-	virtual uint8_t* getObject(const std::string& name, uint32_t* size=0);
+	virtual uint8* getObject(const std::string& name, uint32* size=0);
 
-	virtual uint32_t getSize(const std::string& name);
+	virtual uint32 getSize(const std::string& name);
 
-	virtual uint32_t getCount() { return count; }
+	virtual uint32 getCount() { return count; }
 
 protected:
 	bool readMetadata();
 
 	std::string path;
-	uint32_t count;
+	uint32 count;
 };
 
 

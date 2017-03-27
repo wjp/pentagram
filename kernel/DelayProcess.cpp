@@ -50,7 +50,7 @@ void DelayProcess::dumpInfo()
 }
 
 
-bool DelayProcess::loadData(IDataSource* ids, uint32_t version)
+bool DelayProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 	
@@ -62,5 +62,5 @@ bool DelayProcess::loadData(IDataSource* ids, uint32_t version)
 void DelayProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
-	ods->write4(static_cast<uint32_t>(count));
+	ods->write4(static_cast<uint32>(count));
 }

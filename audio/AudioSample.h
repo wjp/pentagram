@@ -25,31 +25,31 @@ namespace Pentagram {
 class AudioSample
 {
 protected:
-	uint32_t	sample_rate;
-	uint32_t	bits;
+	uint32	sample_rate;
+	uint32	bits;
 	bool	stereo;
 	int		frame_size;
-	uint32_t	decompressor_size;
-	uint32_t	length;
+	uint32	decompressor_size;
+	uint32	length;
 
-	uint32_t	buffer_size;
-	uint8_t	*buffer;
+	uint32	buffer_size;
+	uint8	*buffer;
 
 public:
-	AudioSample(uint8_t *buffer, uint32_t size);
+	AudioSample(uint8 *buffer, uint32 size);
 	virtual ~AudioSample(void);
 
-	inline uint32_t getRate() const { return sample_rate; }
-	inline uint32_t getBits() const { return bits; }
+	inline uint32 getRate() const { return sample_rate; }
+	inline uint32 getBits() const { return bits; }
 	inline bool isStereo() const { return stereo; }
-	inline uint32_t getFrameSize() const { return frame_size; }
-	inline uint32_t getDecompressorDataSize() const { return decompressor_size; }
+	inline uint32 getFrameSize() const { return frame_size; }
+	inline uint32 getDecompressorDataSize() const { return decompressor_size; }
 
 	//! get AudioSample length (in samples)
-	inline uint32_t getLength() const { return length; }
+	inline uint32 getLength() const { return length; }
 
 	virtual void initDecompressor(void *DecompData) const = 0;
-	virtual uint32_t decompressFrame(void *DecompData, void *samples) const = 0;
+	virtual uint32 decompressFrame(void *DecompData, void *samples) const = 0;
 	virtual void rewind(void *DecompData) const = 0;
 };
 

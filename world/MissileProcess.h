@@ -34,12 +34,12 @@ public:
 
 	virtual void run();
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
-	int32_t from_x, from_y, from_z;
-	int32_t to_x, to_y, to_z;
+	sint32 from_x, from_y, from_z;
+	sint32 to_x, to_y, to_z;
 
 	int speed;
 	bool curve;

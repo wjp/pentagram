@@ -56,27 +56,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 // MT32 SysEx
 //
-static const uint32_t sysex_data_start = 7;		// Data starts at byte 7
-static const uint32_t sysex_max_data_size = 256;
+static const uint32 sysex_data_start = 7;		// Data starts at byte 7
+static const uint32 sysex_max_data_size = 256;
 
 
 //
 // Percussion
 //
 
-static const uint32_t rhythm_base = 0x030110;	// Note, these are 7 bit!
-static const uint32_t rhythm_mem_size = 4;
+static const uint32 rhythm_base = 0x030110;	// Note, these are 7 bit!
+static const uint32 rhythm_mem_size = 4;
 
-static const uint32_t rhythm_first_note = 24;
-static const uint32_t rhythm_num_notes = 64;
+static const uint32 rhythm_first_note = 24;
+static const uint32 rhythm_num_notes = 64;
 
 // Memory offset based on index in the table
-static inline uint32_t rhythm_mem_offset(uint32_t index_num) { 
+static inline uint32 rhythm_mem_offset(uint32 index_num) { 
 	return index_num * 4; 
 }
 
 // Memory offset based on note key num
-static inline uint32_t rhythm_mem_offset_note(uint32_t rhythm_note_num) { 
+static inline uint32 rhythm_mem_offset_note(uint32 rhythm_note_num) { 
 	return (rhythm_note_num-rhythm_first_note) * 4; 
 }
 
@@ -85,26 +85,26 @@ static inline uint32_t rhythm_mem_offset_note(uint32_t rhythm_note_num) {
 //
 // Timbre Memory Consts
 //
-static const uint32_t timbre_temp_base = 0x040000;
-static const uint32_t timbre_unk_base = 0x060000;
-static const uint32_t timbre_base = 0x080000;	// Note, these are 7 bit!
-static const uint32_t timbre_mem_size = 246;
-static inline uint32_t timbre_mem_offset(uint32_t timbre_num) { return timbre_num * 256; }
+static const uint32 timbre_temp_base = 0x040000;
+static const uint32 timbre_unk_base = 0x060000;
+static const uint32 timbre_base = 0x080000;	// Note, these are 7 bit!
+static const uint32 timbre_mem_size = 246;
+static inline uint32 timbre_mem_offset(uint32 timbre_num) { return timbre_num * 256; }
 
 //
 // Patch Temp Consts
 //
-static const uint32_t patch_temp_base = 0x030000;
-static const uint32_t patch_temp_size = 16;
-static inline uint32_t patch_temp_offset(uint32_t patch_num) { return patch_num * 16; }
+static const uint32 patch_temp_base = 0x030000;
+static const uint32 patch_temp_size = 16;
+static inline uint32 patch_temp_offset(uint32 patch_num) { return patch_num * 16; }
 
 
 //
 // Patch Memory Consts
 //
-static const uint32_t patch_base = 0x050000;		// Note, these are 7 bit!
-static const uint32_t patch_mem_size = 8;
-static inline uint32_t patch_mem_offset(uint32_t patch_num) { return patch_num * 8; }
+static const uint32 patch_base = 0x050000;		// Note, these are 7 bit!
+static const uint32 patch_mem_size = 8;
+static inline uint32 patch_mem_offset(uint32 patch_num) { return patch_num * 8; }
 
 const LowLevelMidiDriver::MT32Patch LowLevelMidiDriver::mt32_patch_template = {
 	0,		// timbre_group
@@ -120,15 +120,15 @@ const LowLevelMidiDriver::MT32Patch LowLevelMidiDriver::mt32_patch_template = {
 //
 // All Dev Reset
 //
-static const uint32_t all_dev_reset_base = 0x7f0000;
+static const uint32 all_dev_reset_base = 0x7f0000;
 
 // Display  Consts
 //
-static const uint32_t display_base = 0x200000;	// Note, these are 7 bit!
-static const uint32_t display_mem_size = 0x14;	// Display is 20 ASCII characters (32-127)
+static const uint32 display_base = 0x200000;	// Note, these are 7 bit!
+static const uint32 display_mem_size = 0x14;	// Display is 20 ASCII characters (32-127)
 
 // Convert 14 Bit base address to real
-static inline int ConvBaseToActual(uint32_t address_base)
+static inline int ConvBaseToActual(uint32 address_base)
 {
 	return ((address_base>>2) & (0x7f<<14)) | 
 			((address_base>>1) & (0x7f<<7)) | 
@@ -159,7 +159,7 @@ LowLevelMidiDriver::~LowLevelMidiDriver()
 // MidiDriver API
 //
 
-int LowLevelMidiDriver::initMidiDriver(uint32_t samp_rate, bool is_stereo)
+int LowLevelMidiDriver::initMidiDriver(uint32 samp_rate, bool is_stereo)
 {
 	// Destroy first before re-initing
 	if (initialized) destroyMidiDriver();
@@ -168,8 +168,8 @@ int LowLevelMidiDriver::initMidiDriver(uint32_t samp_rate, bool is_stereo)
 
 	// Reset the current stream states
 	std::memset(sequences, 0, sizeof (XMidiSequence*) * LLMD_NUM_SEQ);
-	std::memset(chan_locks, -1, sizeof (int32_t) * 16);
-	std::memset(chan_map, -1, sizeof (int32_t) * LLMD_NUM_SEQ * 16);
+	std::memset(chan_locks, -1, sizeof (sint32) * 16);
+	std::memset(chan_map, -1, sizeof (sint32) * LLMD_NUM_SEQ * 16);
 	for (int i = 0; i < LLMD_NUM_SEQ; i++) {
 		playing[i] = false;
 		callback_data[i] = -1;
@@ -367,12 +367,12 @@ void LowLevelMidiDriver::unpauseSequence(int seq_num)
 	sendComMessage(message);
 }
 
-uint32_t LowLevelMidiDriver::getSequenceCallbackData(int seq_num)
+uint32 LowLevelMidiDriver::getSequenceCallbackData(int seq_num)
 {
 	if (seq_num >= LLMD_NUM_SEQ || seq_num < 0) return 0;
 
 	SDL_mutexP(cbmutex);
-	uint32_t ret = callback_data[seq_num];
+	uint32 ret = callback_data[seq_num];
 	SDL_mutexV(cbmutex);
 
 	return ret;
@@ -382,10 +382,10 @@ uint32_t LowLevelMidiDriver::getSequenceCallbackData(int seq_num)
 // Communications
 // 
 
-int32_t LowLevelMidiDriver::peekComMessageType()
+sint32 LowLevelMidiDriver::peekComMessageType()
 {
 	lockComMessage();
-	int32_t ret = 0;
+	sint32 ret = 0;
 	if (messages.size()) ret = messages.front().type;
 	unlockComMessage();
 	return ret;
@@ -526,7 +526,7 @@ int LowLevelMidiDriver::threadMain()
 		xmidi_clock = SDL_GetTicks()*6;
 		if (playSequences()) break;
 
-		int32_t time_till_next = 0x7FFFFFFF;
+		sint32 time_till_next = 0x7FFFFFFF;
 
 		for (int i = 0; i < LLMD_NUM_SEQ; i++)
 		{
@@ -534,7 +534,7 @@ int LowLevelMidiDriver::threadMain()
 
 			if (sequences[seq])
 			{
-				int32_t ms = sequences[seq]->timeTillNext();
+				sint32 ms = sequences[seq]->timeTillNext();
 				if (ms < time_till_next) time_till_next = ms;
 			}
 		}
@@ -643,7 +643,7 @@ void LowLevelMidiDriver::destroySoftwareSynth()
 	close();
 }
 
-void LowLevelMidiDriver::produceSamples(int16_t *samples, uint32_t bytes)
+void LowLevelMidiDriver::produceSamples(sint16 *samples, uint32 bytes)
 {
 	// Hey, we're not supposed to be here
 	if (!initialized) return;
@@ -651,12 +651,12 @@ void LowLevelMidiDriver::produceSamples(int16_t *samples, uint32_t bytes)
 	int stereo_mult = 1;
 	if (stereo) stereo_mult = 2;
 
-	uint32_t num_samples = bytes/(2*stereo_mult);
+	uint32 num_samples = bytes/(2*stereo_mult);
 
 	// Now, do the note playing iterations
 	while (num_samples > 0)
 	{
-		uint32_t samples_to_produce = samples_per_iteration;
+		uint32 samples_to_produce = samples_per_iteration;
 		if (samples_to_produce > num_samples) samples_to_produce = num_samples;
 
 		// Increment the timing counter(s)
@@ -708,7 +708,7 @@ bool LowLevelMidiDriver::playSequences ()
 
 		while (sequences[seq] && !peekComMessageType())
 		{
-			int32_t pending_events = sequences[seq]->playEvent();
+			sint32 pending_events = sequences[seq]->playEvent();
 
 			if (pending_events > 0) break;
 			else if (pending_events == -1)
@@ -815,7 +815,7 @@ bool LowLevelMidiDriver::playSequences ()
 
 						// Allocate some channels
 						/*
-						uint16_t mask = sequences[message.sequence]->getChanMask();
+						uint16 mask = sequences[message.sequence]->getChanMask();
 						for (i = 0; i < 16; i++)
 							if (mask & (1<<i)) allocateChannel(message.sequence, i);
 						*/
@@ -866,7 +866,7 @@ bool LowLevelMidiDriver::playSequences ()
 	return false;
 }
 
-void LowLevelMidiDriver::sequenceSendEvent(uint16_t sequence_id, uint32_t message)
+void LowLevelMidiDriver::sequenceSendEvent(uint16 sequence_id, uint32 message)
 {
 	int log_chan = message & 0xF;
 	message &= 0xFFFFFFF0;	// Strip the channel number
@@ -925,7 +925,7 @@ void LowLevelMidiDriver::sequenceSendEvent(uint16_t sequence_id, uint32_t messag
 	send(message|phys_chan);
 }
 
-void LowLevelMidiDriver::sequenceSendSysEx(uint16_t sequence_id, uint8_t status, const uint8_t *msg, uint16_t length)
+void LowLevelMidiDriver::sequenceSendSysEx(uint16 sequence_id, uint8 status, const uint8 *msg, uint16 length)
 {
 	// Ignore Metadata
 	if (status == 0xFF) return;
@@ -940,22 +940,22 @@ void LowLevelMidiDriver::sequenceSendSysEx(uint16_t sequence_id, uint8_t status,
 
 		if (msg[0] == 0x41 && msg[1] == 0x10 && msg[2] == 0x16 && msg[3] == 0x12)
 		{
-			uint32_t actual_address = (msg[4]<<14) | (msg[5]<<7) | msg[6];
+			uint32 actual_address = (msg[4]<<14) | (msg[5]<<7) | msg[6];
 
-			uint32_t timbre_add_start = ConvBaseToActual(timbre_base);
-			uint32_t timbre_add_end = timbre_add_start + timbre_mem_offset(64);
-			uint32_t patch_add_start = ConvBaseToActual(patch_base);
-			uint32_t patch_add_end = patch_add_start + patch_mem_offset(128);
-			uint32_t rhythm_add_start = ConvBaseToActual(rhythm_base);
-			uint32_t rhythm_add_end = rhythm_add_start + rhythm_mem_offset(85);
-			uint32_t timbre_temp_add_start = ConvBaseToActual(timbre_temp_base);
-			uint32_t timbre_temp_add_end = timbre_temp_add_start + timbre_mem_offset(8);
-			uint32_t patch_temp_add_start = ConvBaseToActual(patch_temp_base);
-			uint32_t patch_temp_add_end = patch_temp_add_start + patch_temp_offset(8);
-			uint32_t timbre_unk_add_start = ConvBaseToActual(timbre_unk_base);
-			uint32_t timbre_unk_add_end = timbre_unk_add_start + timbre_mem_offset(128);
+			uint32 timbre_add_start = ConvBaseToActual(timbre_base);
+			uint32 timbre_add_end = timbre_add_start + timbre_mem_offset(64);
+			uint32 patch_add_start = ConvBaseToActual(patch_base);
+			uint32 patch_add_end = patch_add_start + patch_mem_offset(128);
+			uint32 rhythm_add_start = ConvBaseToActual(rhythm_base);
+			uint32 rhythm_add_end = rhythm_add_start + rhythm_mem_offset(85);
+			uint32 timbre_temp_add_start = ConvBaseToActual(timbre_temp_base);
+			uint32 timbre_temp_add_end = timbre_temp_add_start + timbre_mem_offset(8);
+			uint32 patch_temp_add_start = ConvBaseToActual(patch_temp_base);
+			uint32 patch_temp_add_end = patch_temp_add_start + patch_temp_offset(8);
+			uint32 timbre_unk_add_start = ConvBaseToActual(timbre_unk_base);
+			uint32 timbre_unk_add_end = timbre_unk_add_start + timbre_mem_offset(128);
 
-			//uint32_t sysex_size = length-(4+3+1+1);
+			//uint32 sysex_size = length-(4+3+1+1);
 
 			if (actual_address >= timbre_add_start && actual_address < timbre_add_end)
 			{
@@ -992,19 +992,19 @@ void LowLevelMidiDriver::sequenceSendSysEx(uint16_t sequence_id, uint8_t status,
 	next_sysex = SDL_GetTicks() + 40;
 }
 
-uint32_t LowLevelMidiDriver::getTickCount(uint16_t sequence_id)
+uint32 LowLevelMidiDriver::getTickCount(uint16 sequence_id)
 {
 	return xmidi_clock;
 }
 
-void LowLevelMidiDriver::handleCallbackTrigger(uint16_t sequence_id, uint8_t data)
+void LowLevelMidiDriver::handleCallbackTrigger(uint16 sequence_id, uint8 data)
 {
 	SDL_mutexP(cbmutex);
 	callback_data[sequence_id] = data;
 	SDL_mutexV(cbmutex);
 }
 
-int LowLevelMidiDriver::protectChannel(uint16_t sequence_id, int chan, bool protect)
+int LowLevelMidiDriver::protectChannel(uint16 sequence_id, int chan, bool protect)
 {
 	// Unprotect the channel
 	if (!protect) 
@@ -1048,7 +1048,7 @@ int LowLevelMidiDriver::protectChannel(uint16_t sequence_id, int chan, bool prot
 	return 0;
 }
 
-int LowLevelMidiDriver::lockChannel(uint16_t sequence_id, int chan, bool lock)
+int LowLevelMidiDriver::lockChannel(uint16 sequence_id, int chan, bool lock)
 {
 	// When locking, we want to get the highest chan number with the lowest 
 	// number of notes playing, that aren't already locked and don't have
@@ -1140,7 +1140,7 @@ int LowLevelMidiDriver::lockChannel(uint16_t sequence_id, int chan, bool lock)
 	return 0;
 }
 
-int LowLevelMidiDriver::unlockAndUnprotectChannel(uint16_t sequence_id)
+int LowLevelMidiDriver::unlockAndUnprotectChannel(uint16 sequence_id)
 {
 	// For each channel
 	for (int c = 0; c < 16; c++)
@@ -1169,7 +1169,7 @@ int LowLevelMidiDriver::unlockAndUnprotectChannel(uint16_t sequence_id)
 void LowLevelMidiDriver::loadTimbreLibrary(IDataSource *ds, TimbreLibraryType type)
 {
 	// Ensure all sequences are stopped
-	uint32_t i,j;
+	uint32 i,j;
 	for (i = 0 ; i < LLMD_NUM_SEQ; i++) {
 		ComMessage message(LLMD_MSG_FINISH);
 		message.sequence = i;
@@ -1298,27 +1298,27 @@ void LowLevelMidiDriver::extractTimbreLibrary(XMidiEventList *eventlist)
 	{
 		if (event->status != 0xF0) continue;
 
-		uint16_t length = event->ex.sysex_data.len;
-		uint8_t *msg = event->ex.sysex_data.buffer;
+		uint16 length = event->ex.sysex_data.len;
+		uint8 *msg = event->ex.sysex_data.buffer;
 
 		if (msg && length > 7 && msg[0] == 0x41 && msg[1] == 0x10 && msg[2] == 0x16 && msg[3] == 0x12)
 		{
-			uint32_t actual_address = (msg[4]<<14) | (msg[5]<<7) | msg[6];
+			uint32 actual_address = (msg[4]<<14) | (msg[5]<<7) | msg[6];
 
-			uint32_t timbre_add_start = ConvBaseToActual(timbre_base);
-			uint32_t timbre_add_end = timbre_add_start + timbre_mem_offset(64);
-			uint32_t patch_add_start = ConvBaseToActual(patch_base);
-			uint32_t patch_add_end = patch_add_start + patch_mem_offset(128);
-			uint32_t rhythm_add_start = ConvBaseToActual(rhythm_base);
-			uint32_t rhythm_add_end = rhythm_add_start + rhythm_mem_offset(85);
+			uint32 timbre_add_start = ConvBaseToActual(timbre_base);
+			uint32 timbre_add_end = timbre_add_start + timbre_mem_offset(64);
+			uint32 patch_add_start = ConvBaseToActual(patch_base);
+			uint32 patch_add_end = patch_add_start + patch_mem_offset(128);
+			uint32 rhythm_add_start = ConvBaseToActual(rhythm_base);
+			uint32 rhythm_add_end = rhythm_add_start + rhythm_mem_offset(85);
 
-			uint32_t sysex_size = length-(4+3+1+1);
+			uint32 sysex_size = length-(4+3+1+1);
 			msg += 7;
 
 			if ((actual_address+sysex_size) >= timbre_add_start && actual_address < timbre_add_end)
 			{
-				uint32_t start = actual_address;
-				uint32_t size = sysex_size;
+				uint32 start = actual_address;
+				uint32 size = sysex_size;
 				if (actual_address < timbre_add_start)
 				{
 					sysex_size -= timbre_add_start-actual_address;
@@ -1345,8 +1345,8 @@ void LowLevelMidiDriver::extractTimbreLibrary(XMidiEventList *eventlist)
 			}
 			if ((actual_address+sysex_size) >= patch_add_start && actual_address < patch_add_end)
 			{
-				uint32_t start = actual_address;
-				uint32_t size = sysex_size;
+				uint32 start = actual_address;
+				uint32 size = sysex_size;
 				if (actual_address < patch_add_start)
 				{
 					sysex_size -= patch_add_start-actual_address;
@@ -1358,7 +1358,7 @@ void LowLevelMidiDriver::extractTimbreLibrary(XMidiEventList *eventlist)
 				size /= 8;
 
 				// Set the current patch bank to -1
-				for (uint32_t patch = start; patch < start+size; patch++, msg+=8)
+				for (uint32 patch = start; patch < start+size; patch++, msg+=8)
 				{
 					mt32_patch_bank_sel[patch] = -1;
 
@@ -1376,8 +1376,8 @@ void LowLevelMidiDriver::extractTimbreLibrary(XMidiEventList *eventlist)
 			}
 			if ((actual_address+sysex_size) >= rhythm_add_start && actual_address < rhythm_add_end)
 			{
-				uint32_t start = actual_address;
-				uint32_t size = sysex_size;
+				uint32 start = actual_address;
+				uint32 size = sysex_size;
 				if (actual_address < rhythm_add_start)
 				{
 					sysex_size -= rhythm_add_start-actual_address;
@@ -1389,7 +1389,7 @@ void LowLevelMidiDriver::extractTimbreLibrary(XMidiEventList *eventlist)
 				size /= 4;
 
 				// Set the current patch bank to -1
-				for (uint32_t temp = start; temp < start+size; temp++, msg+=4)
+				for (uint32 temp = start; temp < start+size; temp++, msg+=4)
 				{
 					if (!mt32_rhythm_bank[temp]) mt32_rhythm_bank[temp] = new MT32Rhythm;
 					std::memcpy(mt32_rhythm_bank[temp],msg,4);
@@ -1401,7 +1401,7 @@ void LowLevelMidiDriver::extractTimbreLibrary(XMidiEventList *eventlist)
 
 // If data is NULL, then it is assumed that sysex_buffer already contains the data
 // address_base is 7-bit, while address_offset is 8 bit!
-void LowLevelMidiDriver::sendMT32SystemMessage(uint32_t address_base, uint16_t address_offset, uint32_t len, const void *data)
+void LowLevelMidiDriver::sendMT32SystemMessage(uint32 address_base, uint16 address_offset, uint32 len, const void *data)
 {
 	unsigned char sysex_buffer[512];
 
@@ -1412,7 +1412,7 @@ void LowLevelMidiDriver::sendMT32SystemMessage(uint32_t address_base, uint16_t a
 	sysex_buffer[3] = 0x12;		// DTI Command ID (set data)
 
 	// 7-bit address
-	uint32_t actual_address = address_offset + ConvBaseToActual(address_base);
+	uint32 actual_address = address_offset + ConvBaseToActual(address_base);
 	sysex_buffer[4] = (actual_address>>14)&0x7F;
 	sysex_buffer[5] = (actual_address>>7)&0x7F;
 	sysex_buffer[6] = actual_address&0x7F;
@@ -1422,7 +1422,7 @@ void LowLevelMidiDriver::sendMT32SystemMessage(uint32_t address_base, uint16_t a
 
 	// Calc checksum
 	char checksum = 0;
-	for (uint32_t j = 4; j < sysex_data_start+len; j++)
+	for (uint32 j = 4; j < sysex_data_start+len; j++)
 		checksum += sysex_buffer[j];
 
 	checksum = checksum & 0x7f;
@@ -1562,7 +1562,7 @@ void LowLevelMidiDriver::uploadTimbre(int bank, int patch)
 	}
 
 	int lru_index = -1;
-	uint32_t lru_time = 0xFFFFFFFF;
+	uint32 lru_time = 0xFFFFFFFF;
 
 	for (int i = 0; i < 64; i++) {
 		int tbank = mt32_timbre_used[i][0];
@@ -1619,15 +1619,15 @@ void LowLevelMidiDriver::uploadTimbre(int bank, int patch)
 
 void LowLevelMidiDriver::loadXMidiTimbreLibrary(IDataSource *ds)
 {
-	uint32_t i;
+	uint32 i;
 
 	// Read all the timbres
 	for (i = 0; ds->getPos() < ds->getSize(); i++) {
 		// Seek to the entry
 		ds->seek(i*6);
 
-		uint32_t patch = (uint8_t) ds->read1();
-		uint32_t bank = (uint8_t) ds->read1();
+		uint32 patch = (uint8) ds->read1();
+		uint32 bank = (uint8) ds->read1();
 
 		// If we read both == 255 then we've read all of them
 		if (patch == 255 || bank == 255) {
@@ -1636,10 +1636,10 @@ void LowLevelMidiDriver::loadXMidiTimbreLibrary(IDataSource *ds)
 		}
 
 		// Get offset and seek to it
-		uint32_t offset = ds->read4();
+		uint32 offset = ds->read4();
 		ds->seek(offset);
 
-		uint16_t size = ds->read2();
+		uint16 size = ds->read2();
 
 		char name[11] = {0};
 		ds->read(name,10);

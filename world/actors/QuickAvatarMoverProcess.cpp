@@ -62,16 +62,16 @@ void QuickAvatarMoverProcess::run()
 	}
 
 	MainActor * avatar = getMainActor();
-	int32_t x,y,z;
+	sint32 x,y,z;
 	avatar->getLocation(x,y,z);
-	int32_t ixd,iyd,izd;
+	sint32 ixd,iyd,izd;
 	avatar->getFootpadWorld(ixd, iyd, izd);
 
 	CurrentMap* cm = World::get_instance()->getCurrentMap();
 
-	int32_t dx = this->dx;
-	int32_t dy = this->dy;
-	int32_t dz = this->dz;
+	sint32 dx = this->dx;
+	sint32 dy = this->dy;
+	sint32 dz = this->dz;
 
 	for (int j = 0; j < 3; j++)
 	{
@@ -92,7 +92,7 @@ void QuickAvatarMoverProcess::run()
 		bool ok = false;
 
 		while (dx || dy || dz) {
-			uint32_t flags = avatar->getShapeInfo()->flags;
+			uint32 flags = avatar->getShapeInfo()->flags;
 
 			if (!clipping || cm->isValidPosition(x+dx,y+dy,z+dz,ixd,iyd,izd,flags,1,0,0))
 			{
@@ -182,7 +182,7 @@ void QuickAvatarMoverProcess::saveData(ODataSource* ods)
 	// don't save more information. We plan to terminate upon load
 }
 
-bool QuickAvatarMoverProcess::loadData(IDataSource* ids, uint32_t version)
+bool QuickAvatarMoverProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

@@ -71,37 +71,37 @@ void GameWidget::InitGump(Gump* newparent, bool take_focus)
 	w->InitGump(this, false);
 
 	w = new ButtonWidget(13, 86, "Play Game", false, 1, 0x80D000D0);
-	w->SetIndex(static_cast<int32_t>(GAME_PLAY));
+	w->SetIndex(static_cast<sint32>(GAME_PLAY));
 	w->InitGump(this, false);
 
 	w = new ButtonWidget(122, 86, "Load Savegame", false, 1, 0x80D000D0);
-	w->SetIndex(static_cast<int32_t>(GAME_LOAD));
+	w->SetIndex(static_cast<sint32>(GAME_LOAD));
 	w->InitGump(this, false);
 
 	w = new ButtonWidget(270, 86, "Settings", false, 1, 0x80D000D0);
-	w->SetIndex(static_cast<int32_t>(GAME_SETTINGS));
+	w->SetIndex(static_cast<sint32>(GAME_SETTINGS));
 	w->InitGump(this, false);
 
 	w = new ButtonWidget(361, 86, "Remove", false, 1, 0x80D000D0);
-	w->SetIndex(static_cast<int32_t>(GAME_REMOVE));
+	w->SetIndex(static_cast<sint32>(GAME_REMOVE));
 	w->InitGump(this, false);
 }
 
-void GameWidget::ChildNotify(Gump *child, uint32_t message)
+void GameWidget::ChildNotify(Gump *child, uint32 message)
 {
 	if (child->IsOfType<ButtonWidget>() &&
 		message == ButtonWidget::BUTTON_CLICK)
 	{
-		int32_t index = child->GetIndex();
+		sint32 index = child->GetIndex();
 
 		if (parent)
-			parent->ChildNotify(this, static_cast<uint32_t>(index));
+			parent->ChildNotify(this, static_cast<uint32>(index));
 	}
 }
 
-uint16_t GameWidget::TraceObjId(int mx, int my)
+uint16 GameWidget::TraceObjId(int mx, int my)
 {
-	uint16_t objid = Gump::TraceObjId(mx, my);
+	uint16 objid = Gump::TraceObjId(mx, my);
 	if (!objid) objid = getObjId();
 	return objid;
 }
@@ -124,7 +124,7 @@ void GameWidget::OnMouseLeft()
 }
 
 
-void GameWidget::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool /*scaled*/)
+void GameWidget::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool /*scaled*/)
 {
 	PentagramMenuGump* p = p_dynamic_cast<PentagramMenuGump*>(GetParent());
 	Texture* coversImage = p->getCovers();

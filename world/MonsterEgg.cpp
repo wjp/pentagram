@@ -44,7 +44,7 @@ MonsterEgg::~MonsterEgg()
 
 }
 
-uint16_t MonsterEgg::hatch()
+uint16 MonsterEgg::hatch()
 {
 	//!! do we need to check probability here?
 	//!! monster activity? combat? anything?
@@ -63,7 +63,7 @@ uint16_t MonsterEgg::hatch()
 			 <<	")." << std::endl;
 		return 0;
 	}
-	uint16_t objID = newactor->getObjId();
+	uint16 objID = newactor->getObjId();
 
 	// set stats
 	if (!newactor->loadMonsterStats()) {
@@ -92,14 +92,14 @@ void MonsterEgg::saveData(ODataSource* ods)
 	Item::saveData(ods);
 }
 
-bool MonsterEgg::loadData(IDataSource* ids, uint32_t version)
+bool MonsterEgg::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Item::loadData(ids, version)) return false;
 
 	return true;
 }
 
-uint32_t MonsterEgg::I_monsterEggHatch(const uint8_t*args,unsigned int /*argsize*/)
+uint32 MonsterEgg::I_monsterEggHatch(const uint8*args,unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	MonsterEgg* megg = p_dynamic_cast<MonsterEgg*>(item);
@@ -108,7 +108,7 @@ uint32_t MonsterEgg::I_monsterEggHatch(const uint8_t*args,unsigned int /*argsize
 	return megg->hatch();
 }
 
-uint32_t MonsterEgg::I_getMonId(const uint8_t*args,unsigned int /*argsize*/)
+uint32 MonsterEgg::I_getMonId(const uint8*args,unsigned int /*argsize*/)
 {
 	ARG_ITEM_FROM_PTR(item);
 	MonsterEgg* megg = p_dynamic_cast<MonsterEgg*>(item);

@@ -37,7 +37,7 @@ protected:
 	std::string		text;
 	bool			gamefont;
 	int				fontnum;
-	uint32_t 			blendColour;
+	uint32 			blendColour;
 	int				tx, ty;
 
 	unsigned int	current_start; //!< start of currently displaying text
@@ -60,9 +60,9 @@ public:
 	virtual void			InitGump(Gump* newparent, bool take_focus=true);
 
 	// Overloadable method to Paint just this Gump (RenderSurface is relative to this)
-	virtual void			PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
+	virtual void			PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
 
-	virtual void			PaintComposited(RenderSurface* surf, int32_t lerp_factor, int32_t scalex, int32_t scaley);
+	virtual void			PaintComposited(RenderSurface* surf, sint32 lerp_factor, sint32 scalex, sint32 scaley);
 
 	virtual Gump* OnMouseMotion(int mx, int my);
 
@@ -81,7 +81,7 @@ public:
 	}
 
 	//! set the colour to blend the rendered text with. (0 to disable)
-	void setBlendColour(uint32_t col) { blendColour = col; }
+	void setBlendColour(uint32 col) { blendColour = col; }
 
 	//! get the RenderedText's vlead
 	int getVlead();
@@ -92,7 +92,7 @@ protected:
 	Pentagram::Font* getFont() const;
 
 public:
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 
 protected:
 	virtual void saveData(ODataSource* ods);

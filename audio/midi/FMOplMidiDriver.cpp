@@ -289,10 +289,10 @@ void FMOplMidiDriver::close()
 //
 // Generate the samples
 //
-void FMOplMidiDriver::lowLevelProduceSamples(int16_t *samples, uint32_t num_samples)
+void FMOplMidiDriver::lowLevelProduceSamples(sint16 *samples, uint32 num_samples)
 {
 	if (!opl)
-		memset(samples, 0, num_samples * sizeof(int16_t) * (stereo?2:1));
+		memset(samples, 0, num_samples * sizeof(sint16) * (stereo?2:1));
 	else if (stereo)
 		FMOpl_Pentagram::YM3812UpdateOne_Stereo(opl, samples, num_samples);
 	else
@@ -318,7 +318,7 @@ int FMOplMidiDriver::midi_calc_volume(int channel, int vel)
 //
 // Send a single packed midi command to the Opl (to be played now)
 //
-void FMOplMidiDriver::send(uint32_t b)
+void FMOplMidiDriver::send(uint32 b)
 {
 	unsigned char channel = (char)(b & 0x0F);
 
@@ -825,13 +825,13 @@ void FMOplMidiDriver::loadXMIDITimbres(IDataSource *ds)
 	std::memset(read, false, sizeof(read));
 
 	// Read all the timbres
-	uint32_t i;
+	uint32 i;
 	for (i = 0; ds->getPos() < ds->getSize(); i++) {
 		// Seek to the entry
 		ds->seek(i*6);
 
-		uint32_t patch = (uint8_t) ds->read1();
-		uint32_t bank = (uint8_t) ds->read1();
+		uint32 patch = (uint8) ds->read1();
+		uint32 bank = (uint8) ds->read1();
 
 		// If we read both == 255 then we've read all of them
 		if (patch == 255 || bank == 255) {
@@ -840,7 +840,7 @@ void FMOplMidiDriver::loadXMIDITimbres(IDataSource *ds)
 		}
 
 		// Get offset and seek to it
-		uint32_t offset = ds->read4();
+		uint32 offset = ds->read4();
 
 		//POUT ("Patch " << i << " = " << bank << ":" << patch << " @ " << offset);
 
@@ -854,7 +854,7 @@ void FMOplMidiDriver::loadXMIDITimbres(IDataSource *ds)
 		ds->seek(offset);
 
 		// Get len of the entry
-		uint16_t len = ds->read2();
+		uint16 len = ds->read2();
 
 		// Only accept lens that are 0xC
 		if (len != 0xE) {
@@ -1007,8 +1007,8 @@ void FMOplMidiDriver::loadU7VoiceTimbres(IDataSource *ds)
 		// Read the timbre
 		u7voice_ins.read(ds);
 
-		uint32_t patch = u7voice_ins.prog_num;
-		uint32_t bank = 0;
+		uint32 patch = u7voice_ins.prog_num;
+		uint32 bank = 0;
 
 		//POUT ("Patch " << i << " = " << bank << ":" << patch);
 

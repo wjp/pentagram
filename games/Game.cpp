@@ -56,7 +56,7 @@ Game* Game::createGame(GameInfo* info)
 	return 0;
 }
 
-uint32_t Game::I_playEndgame(const uint8_t* args, unsigned int /*argsize*/)
+uint32 Game::I_playEndgame(const uint8* args, unsigned int /*argsize*/)
 {
 	SettingManager* settingman = SettingManager::get_instance();
 	settingman->set("endgame", true);

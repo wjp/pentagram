@@ -31,15 +31,15 @@ class IDataSource
 		IDataSource() {}
 		virtual ~IDataSource() {}
 
-		virtual uint8_t read1()=0;
-		virtual uint16_t read2()=0;
-		virtual uint16_t read2high()=0;
-		virtual uint32_t read3()=0;
-		virtual uint32_t read4()=0;
-		virtual uint32_t read4high()=0;
-		virtual int32_t read(void *str, int32_t num_bytes)=0;
+		virtual uint8 read1()=0;
+		virtual uint16 read2()=0;
+		virtual uint16 read2high()=0;
+		virtual uint32 read3()=0;
+		virtual uint32 read4()=0;
+		virtual uint32 read4high()=0;
+		virtual sint32 read(void *str, sint32 num_bytes)=0;
 
-		uint32_t readX(uint32_t num_bytes)
+		uint32 readX(uint32 num_bytes)
 		{
 			assert(num_bytes > 0 && num_bytes <= 4);
 			if (num_bytes == 1) return read1();
@@ -48,13 +48,13 @@ class IDataSource
 			else return read4();
 		}
 		
-		int32_t readXS(uint32_t num_bytes)
+		sint32 readXS(uint32 num_bytes)
 		{
 			assert(num_bytes > 0 && num_bytes <= 4);
-			if (num_bytes == 1) return static_cast<int8_t>(read1());
-			else if (num_bytes == 2) return static_cast<int16_t>(read2());
-			else if (num_bytes == 3) return (((static_cast<int32_t>(read3())) << 8)>>8);
-			else return static_cast<int32_t>(read4());
+			if (num_bytes == 1) return static_cast<sint8>(read1());
+			else if (num_bytes == 2) return static_cast<sint16>(read2());
+			else if (num_bytes == 3) return (((static_cast<sint32>(read3())) << 8)>>8);
+			else return static_cast<sint32>(read4());
 		}
 
 		/* FIXME: Dubious conversion between float and int */
@@ -62,15 +62,15 @@ class IDataSource
 		{
 #if 1
 			union {
-				uint32_t	i;
+				uint32	i;
 				float	f;
 			} int_float;
 			int_float.i = read4();
 			return int_float.f;
 #else
-			uint32_t i = read4();
-			uint32_t mantissa = i & 0x3FFFFF;
-			int32_t exponent = ((i >> 23) & 0xFF);
+			uint32 i = read4();
+			uint32 mantissa = i & 0x3FFFFF;
+			sint32 exponent = ((i >> 23) & 0xFF);
 
 			// Zero
 			if (!exponent && !mantissa) 
@@ -104,10 +104,10 @@ class IDataSource
 			}
 		}
 
-		virtual void seek(uint32_t pos)=0;
-		virtual void skip(int32_t delta)=0;
-		virtual uint32_t getSize()=0;
-		virtual uint32_t getPos()=0;
+		virtual void seek(uint32 pos)=0;
+		virtual void skip(sint32 delta)=0;
+		virtual uint32 getSize()=0;
+		virtual uint32 getPos()=0;
 		virtual bool eof()=0;
 
 		virtual std::ifstream *GetRawIfstream() { 
@@ -191,74 +191,74 @@ class IFileDataSource: public IDataSource
 	bool good() const { return in->good(); }
 
 	//	Read a byte value
-	virtual uint8_t read1()
+	virtual uint8 read1()
 	{
-		return static_cast<uint8_t>(in->get());
+		return static_cast<uint8>(in->get());
 	}
 
 	//	Read a 2-byte value, lsb first.
-	virtual uint16_t read2()
+	virtual uint16 read2()
 	{
-		uint16_t val = 0;
-		val |= static_cast<uint16_t>(in->get());
-		val |= static_cast<uint16_t>(in->get()<<8);
+		uint16 val = 0;
+		val |= static_cast<uint16>(in->get());
+		val |= static_cast<uint16>(in->get()<<8);
 		return val;
 	}
 
 	//	Read a 2-byte value, hsb first.
-	virtual uint16_t read2high()
+	virtual uint16 read2high()
 	{
-		uint16_t val = 0;
-		val |= static_cast<uint16_t>(in->get()<<8);
-		val |= static_cast<uint16_t>(in->get());
+		uint16 val = 0;
+		val |= static_cast<uint16>(in->get()<<8);
+		val |= static_cast<uint16>(in->get());
 		return val;
 	}
 
 	//	Read a 3-byte value, lsb first.
-	virtual uint32_t read3()
+	virtual uint32 read3()
 	{
-		uint32_t val = 0;
-		val |= static_cast<uint32_t>(in->get());
-		val |= static_cast<uint32_t>(in->get()<<8);
-		val |= static_cast<uint32_t>(in->get()<<16);
+		uint32 val = 0;
+		val |= static_cast<uint32>(in->get());
+		val |= static_cast<uint32>(in->get()<<8);
+		val |= static_cast<uint32>(in->get()<<16);
 		return val;
 	}
 
 	//	Read a 4-byte long value, lsb first.
-	virtual uint32_t read4()
+	virtual uint32 read4()
 	{
-		uint32_t val = 0;
-		val |= static_cast<uint32_t>(in->get());
-		val |= static_cast<uint32_t>(in->get()<<8);
-		val |= static_cast<uint32_t>(in->get()<<16);
-		val |= static_cast<uint32_t>(in->get()<<24);
+		uint32 val = 0;
+		val |= static_cast<uint32>(in->get());
+		val |= static_cast<uint32>(in->get()<<8);
+		val |= static_cast<uint32>(in->get()<<16);
+		val |= static_cast<uint32>(in->get()<<24);
 		return val;
 	}
 
 	//	Read a 4-byte long value, hsb first.
-	virtual uint32_t read4high()
+	virtual uint32 read4high()
 	{
-		uint32_t val = 0;
-		val |= static_cast<uint32_t>(in->get()<<24);
-		val |= static_cast<uint32_t>(in->get()<<16);
-		val |= static_cast<uint32_t>(in->get()<<8);
-		val |= static_cast<uint32_t>(in->get());
+		uint32 val = 0;
+		val |= static_cast<uint32>(in->get()<<24);
+		val |= static_cast<uint32>(in->get()<<16);
+		val |= static_cast<uint32>(in->get()<<8);
+		val |= static_cast<uint32>(in->get());
 		return val;
 	}
 
-	int32_t read(void *b, int32_t len)
+	sint32 read(void *b, sint32 len)
 	{
 		in->read(static_cast<char *>(b), len);
-		int32_t count = in->gcount();
+		sint32 count = in->gcount();
 		if (in->eof()) in->clear(); // clear eof state
 		return count;
 	}
 
-	virtual void seek(uint32_t pos)  { in->seekg(pos); }
+	virtual void seek(uint32 pos)  { in->seekg(pos); }
 
-	virtual void skip(int32_t pos)  { in->seekg(pos, std::ios::cur); }
+	virtual void skip(sint32 pos)  { in->seekg(pos, std::ios::cur); }
 
-	virtual uint32_t getSize()
+	virtual uint32 getSize()
 	{
 		long pos = in->tellg();
 		in->seekg(0, std::ios::end);
@@ -267,7 +267,7 @@ class IFileDataSource: public IDataSource
 		return len;
 	}
 
-	virtual uint32_t getPos() { return in->tellg(); }
+	virtual uint32 getPos() { return in->tellg(); }
 
 	virtual bool eof() { return in->peek() == std::char_traits<char>::eof(); }
 
@@ -279,24 +279,24 @@ class IFileDataSource: public IDataSource
 class IBufferDataSource : public IDataSource
 {
 protected:
-	const uint8_t* buf;
-	const uint8_t* buf_ptr;
+	const uint8* buf;
+	const uint8* buf_ptr;
 	bool free_buffer;
-	uint32_t size;
+	uint32 size;
 
 	void ConvertTextBuffer()
 	{
 #ifdef WIN32
-		uint8_t* new_buf = new uint8_t[size];
-		uint8_t* new_buf_ptr = new_buf;
-		uint32_t new_size = 0;
+		uint8* new_buf = new uint8[size];
+		uint8* new_buf_ptr = new_buf;
+		uint32 new_size = 0;
 
 		// What we want to do is convert all 0x0D 0x0A to just 0x0D
 
 		// Do for all but last byte
 		while (size > 1)
 		{
-			if (*(uint16_t*)buf_ptr == 0x0A0D)
+			if (*(uint16*)buf_ptr == 0x0A0D)
 			{
 				buf_ptr++;
 				size--;
@@ -314,7 +314,7 @@ protected:
 		if (size) *new_buf_ptr = *buf_ptr;
 
 		// Delete old buffer if requested
-		if (free_buffer) delete[] const_cast<uint8_t*>(buf);
+		if (free_buffer) delete[] const_cast<uint8*>(buf);
 
 		buf_ptr = buf = new_buf;
 		size = new_size;
@@ -326,7 +326,7 @@ public:
 	IBufferDataSource(const void* data, unsigned int len, bool is_text = false,
 					  bool delete_data = false) {
 		assert(data != 0 || len == 0);
-		buf = buf_ptr = static_cast<const uint8_t *>(data);
+		buf = buf_ptr = static_cast<const uint8 *>(data);
 		size = len;
 		free_buffer = delete_data;
 
@@ -335,12 +335,12 @@ public:
 
 	virtual void load(const void* data, unsigned int len, bool is_text = false,
 					  bool delete_data = false) {
-		if (free_buffer && buf) delete [] const_cast<uint8_t *>(buf);
+		if (free_buffer && buf) delete [] const_cast<uint8 *>(buf);
 		free_buffer = false;
 		buf = buf_ptr = 0;
 
 		assert(data != 0 || len == 0);
-		buf = buf_ptr = static_cast<const uint8_t *>(data);
+		buf = buf_ptr = static_cast<const uint8 *>(data);
 		size = len;
 		free_buffer = delete_data;
 
@@ -348,41 +348,41 @@ public:
 	}
 
 	virtual ~IBufferDataSource() { 
-		if (free_buffer && buf) delete [] const_cast<uint8_t *>(buf);
+		if (free_buffer && buf) delete [] const_cast<uint8 *>(buf);
 		free_buffer = false;
 		buf = buf_ptr = 0;
 	}
 
-	virtual uint8_t read1() {
-		uint8_t b0;
+	virtual uint8 read1() {
+		uint8 b0;
 		b0 = *buf_ptr++;
 		return (b0);
 	}
 
-	virtual uint16_t read2() {
-		uint8_t b0, b1;
+	virtual uint16 read2() {
+		uint8 b0, b1;
 		b0 = *buf_ptr++;
 		b1 = *buf_ptr++;
 		return (b0 | (b1 << 8));
 	}
 
-	virtual uint16_t read2high() {
-		uint8_t b0, b1;
+	virtual uint16 read2high() {
+		uint8 b0, b1;
 		b1 = *buf_ptr++;
 		b0 = *buf_ptr++;
 		return (b0 | (b1 << 8));
 	}
 
-	virtual uint32_t read3() {
-		uint8_t b0, b1, b2;
+	virtual uint32 read3() {
+		uint8 b0, b1, b2;
 		b0 = *buf_ptr++;
 		b1 = *buf_ptr++;
 		b2 = *buf_ptr++;
 		return (b0 | (b1 << 8) | (b2 << 16));
 	}
 
-	virtual uint32_t read4() {
-		uint8_t b0, b1, b2, b3;
+	virtual uint32 read4() {
+		uint8 b0, b1, b2, b3;
 		b0 = *buf_ptr++;
 		b1 = *buf_ptr++;
 		b2 = *buf_ptr++;
@@ -390,8 +390,8 @@ public:
 		return (b0 | (b1<<8) | (b2<<16) | (b3<<24));
 	}
 
-	virtual uint32_t read4high() {
-		uint8_t b0, b1, b2, b3;
+	virtual uint32 read4high() {
+		uint8 b0, b1, b2, b3;
 		b3 = *buf_ptr++;
 		b2 = *buf_ptr++;
 		b1 = *buf_ptr++;
@@ -399,33 +399,33 @@ public:
 		return (b0 | (b1<<8) | (b2<<16) | (b3<<24));
 	}
 	
-	virtual int32_t read(void *str, int32_t num_bytes) {
+	virtual sint32 read(void *str, sint32 num_bytes) {
 		if (buf_ptr >= buf + size) return 0;
-		int32_t count = num_bytes;
+		sint32 count = num_bytes;
 		if (buf_ptr + num_bytes > buf + size)
-			count = static_cast<int32_t>(buf - buf_ptr + size);
+			count = static_cast<sint32>(buf - buf_ptr + size);
 		std::memcpy(str, buf_ptr, count);
 		buf_ptr += count;
 		return count;
 	}
 
-	virtual void seek(uint32_t pos) {
+	virtual void seek(uint32 pos) {
 		buf_ptr = buf + pos;
 	}
 
-	virtual void skip(int32_t delta) {
+	virtual void skip(sint32 delta) {
 		buf_ptr += delta;
 	}
 
-	virtual uint32_t getSize() {
+	virtual uint32 getSize() {
 		return size;
 	}
 
-	virtual uint32_t getPos() {
-		return static_cast<uint32_t>(buf_ptr - buf);
+	virtual uint32 getPos() {
+		return static_cast<uint32>(buf_ptr - buf);
 	}
 
-	virtual bool eof() { return (static_cast<uint32_t>(buf_ptr-buf))>=size; }
+	virtual bool eof() { return (static_cast<uint32>(buf_ptr-buf))>=size; }
 
 };
 

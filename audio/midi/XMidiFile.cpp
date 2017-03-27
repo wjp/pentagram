@@ -369,62 +369,62 @@ const char XMidiFile::gmasmt32[128] =
 //
 // MT32 SysEx
 //
-static const uint32_t sysex_data_start = 7;		// Data starts at byte 7
-static const uint32_t sysex_max_data_size = 256;
+static const uint32 sysex_data_start = 7;		// Data starts at byte 7
+static const uint32 sysex_max_data_size = 256;
 
 
 //
 // Percussion
 //
 
-static const uint32_t rhythm_base = 0x030110;	// Note, these are 7 bit!
-static const uint32_t rhythm_mem_size = 4;
+static const uint32 rhythm_base = 0x030110;	// Note, these are 7 bit!
+static const uint32 rhythm_mem_size = 4;
 
-static const uint32_t rhythm_first_note = 24;
-static const uint32_t rhythm_num_notes = 64;
+static const uint32 rhythm_first_note = 24;
+static const uint32 rhythm_num_notes = 64;
 
 // Memory offset based on index in the table
-static inline uint32_t rhythm_mem_offset(uint32_t index_num) { 
+static inline uint32 rhythm_mem_offset(uint32 index_num) { 
 	return index_num * 4; 
 }
 
 // Memory offset based on note key num
-static inline uint32_t rhythm_mem_offset_note(uint32_t rhythm_note_num) { 
+static inline uint32 rhythm_mem_offset_note(uint32 rhythm_note_num) { 
 	return (rhythm_note_num-rhythm_first_note) * 4; 
 }
 
 struct RhythmSetupData {
-	uint8_t		timbre;					// 0-94 (M1-M64,R1-30,OFF)
-	uint8_t		output_level;			// 0-100
-	uint8_t		panpot;					// 0-14 (L-R)
-	uint8_t		reverb_switch;			// 0-1 (off,on)
+	uint8		timbre;					// 0-94 (M1-M64,R1-30,OFF)
+	uint8		output_level;			// 0-100
+	uint8		panpot;					// 0-14 (L-R)
+	uint8		reverb_switch;			// 0-1 (off,on)
 };
 
 
 //
 // Timbre Memory Consts
 //
-static const uint32_t timbre_base = 0x080000;	// Note, these are 7 bit!
-static const uint32_t timbre_mem_size = 246;
-static inline uint32_t timbre_mem_offset(uint32_t timbre_num) { return timbre_num * 256; }
+static const uint32 timbre_base = 0x080000;	// Note, these are 7 bit!
+static const uint32 timbre_mem_size = 246;
+static inline uint32 timbre_mem_offset(uint32 timbre_num) { return timbre_num * 256; }
 
 
 //
 // Patch Memory Consts
 //
-static const uint32_t patch_base = 0x050000;		// Note, these are 7 bit!
-static const uint32_t patch_mem_size = 8;
-static inline uint32_t patch_mem_offset(uint32_t patch_num) { return patch_num * 8; }
+static const uint32 patch_base = 0x050000;		// Note, these are 7 bit!
+static const uint32 patch_mem_size = 8;
+static inline uint32 patch_mem_offset(uint32 patch_num) { return patch_num * 8; }
 
 struct PatchMemData {
-	uint8_t		timbre_group;			// 0-3	(group A, group B, Memory, Rhythm)
-	uint8_t		timbre_num;				// 0-63
-	uint8_t		key_shift;				// 0-48
-	uint8_t		fine_tune;				// 0-100 (-50 - +50)
-	uint8_t		bender_range;			// 0-24
-	uint8_t		assign_mode;			// 0-3 (POLY1, POLY2, POLY3, POLY4)
-	uint8_t		reverb_switch;			// 0-1 (off,on)
-	uint8_t		dummy;
+	uint8		timbre_group;			// 0-3	(group A, group B, Memory, Rhythm)
+	uint8		timbre_num;				// 0-63
+	uint8		key_shift;				// 0-48
+	uint8		fine_tune;				// 0-100 (-50 - +50)
+	uint8		bender_range;			// 0-24
+	uint8		assign_mode;			// 0-3 (POLY1, POLY2, POLY3, POLY4)
+	uint8		reverb_switch;			// 0-1 (off,on)
+	uint8		dummy;
 };
 
 static const PatchMemData patch_template = {
@@ -442,8 +442,8 @@ static const PatchMemData patch_template = {
 //
 // System Area Consts
 //
-static const uint32_t system_base = 0x100000;	// Note, these are 7 bit!
-static const uint32_t system_mem_size = 0x17;	// Display is 20 ASCII characters (32-127)
+static const uint32 system_base = 0x100000;	// Note, these are 7 bit!
+static const uint32 system_mem_size = 0x17;	// Display is 20 ASCII characters (32-127)
 #define system_mem_offset(setting) ((uintptr)(&((systemArea*)0)->setting))
 
 struct systemArea {
@@ -463,8 +463,8 @@ static const char system_part_rsv[9] = { 3,4,3,4,3,4,3,4,4 };		// # of reserved 
 //
 // Display  Consts
 //
-static const uint32_t display_base = 0x200000;	// Note, these are 7 bit!
-static const uint32_t display_mem_size = 0x14;	// Display is 20 ASCII characters (32-127)
+static const uint32 display_base = 0x200000;	// Note, these are 7 bit!
+static const uint32 display_mem_size = 0x14;	// Display is 20 ASCII characters (32-127)
 
 // Display messages                         0123456789ABCDEF0123
 #ifdef PENTAGRAM_IN_EXULT
@@ -484,7 +484,7 @@ static const char display_beginning[] =    "--=| Pentagram! |=--";
 //
 // All Dev Reset
 //
-static const uint32_t all_dev_reset_base = 0x7f0000;
+static const uint32 all_dev_reset_base = 0x7f0000;
 
 
 //
@@ -494,7 +494,7 @@ static const uint32_t all_dev_reset_base = 0x7f0000;
 //
 
 // The key num that the data below belongs to (subtract 24 to get memory num)
-static uint8_t U7PercussionNotes[] = {
+static uint8 U7PercussionNotes[] = {
 	28, 33, 74, 76, 77, 78, 79, 80,
 	81, 82, 83, 84, 85, 86, 87, 0
 };
@@ -546,7 +546,7 @@ XMidiFile::~XMidiFile()
 	}
 }
 
-XMidiEventList *XMidiFile::GetEventList (uint32_t track)
+XMidiEventList *XMidiFile::GetEventList (uint32 track)
 {
 	if (!events)
 	{
@@ -611,7 +611,7 @@ void XMidiFile::CreateNewEvent (int time)
 //
 // Get a Conventional Variable Length Quantity
 //
-int XMidiFile::GetVLQ (IDataSource *source, uint32_t &quant)
+int XMidiFile::GetVLQ (IDataSource *source, uint32 &quant)
 {
 	int i;
 	quant = 0;
@@ -638,7 +638,7 @@ int XMidiFile::GetVLQ (IDataSource *source, uint32_t &quant)
 //
 // Get a XMidiFile Variable Length Quantity
 //
-int XMidiFile::GetVLQ2 (IDataSource *source, uint32_t &quant)
+int XMidiFile::GetVLQ2 (IDataSource *source, uint32 &quant)
 {
 	int i;
 	quant = 0;
@@ -775,220 +775,220 @@ void XMidiFile::ApplyFirstState(first_state &fs, int chan_mask)
 	}
 }
 
-//#ifndef BEOS
-//// Unsigned 64 Bit Int emulation. Only supports SOME operations
-//struct uint64_t {
-//	uint32_t	low;		// Low is first so uint64_t can be cast as uint32_t to get low dword
-//	uint32_t	high;		//
-//
-//	uint64_t() : low(0), high(0) { }
-//	uint64_t(uint32_t i) : low(i), high(0) { }
-//	uint64_t(uint32_t h, uint32_t l) : low(l), high(h) { }
-//	uint64_t(const uint64_t &i) : low(i.low), high(i.high) { }
-//
-//	inline void addlow(uint32_t l) {
-//		uint32_t mid = (low >> 16);
-//		low = (low & 0xFFFF) + (l & 0xFFFF);
-//		mid += (low >> 16) + (l >> 16);
-//		low = (low&0xFFFF) + (mid << 16);
-//		high += mid >> 16;
-//	}
-//
-//	// uint64_t operations
-//
-//	inline uint64_t & operator = (uint64_t &o) {
-//		low = o.low;
-//		high = o.high;
-//		return *this;
-//	}
-//
-//	inline uint64_t & operator += (uint64_t &o) {
-//		addlow(o.low);
-//		high += o.high;
-//		return *this;
-//	}
-//
-//	inline uint64_t operator + (uint64_t &o) {
-//		uint64_t n(*this);
-//		n.addlow(o.low);
-//		n.high += o.high;
-//		return n;
-//	}
-//
-//	// uint32_t operations
-//
-//	inline uint64_t & operator = (uint32_t i) {
-//		low = i;
-//		high = 0;
-//		return *this;
-//	}
-//
-//	inline uint64_t & operator += (uint32_t i) {
-//		addlow(i);
-//		return *this;
-//	}
-//
-//	inline uint64_t operator + (uint32_t i) {
-//		uint64_t n(*this);
-//		n.addlow(i);
-//		return n;
-//	}
-//
-//	inline uint64_t & operator *= (uint32_t i) {
-//		// High 16 bits
-//		uint32_t h1 =   i >> 16;
-//		uint32_t h2 = low >> 16;
-//		//uint32_t h3 = high >> 16;
-//
-//		// Low 16 Bits
-//		uint32_t l1 =   i & 0xFFFF;
-//		uint32_t l2 = low & 0xFFFF;
-//		uint32_t l3 = high & 0xFFFF;
-//
-//		// The accumulator
-//		uint32_t accum;
-//
-//		// 0 -> 32
-//		low = l1*l2;
-//		high = 0;
-//
-//		// 16 -> 48
-//		accum = h1*l2;
-//		addlow(accum<<16);
-//		high += accum>>16;
-//
-//		// 16 -> 48
-//		accum = l1*h2;
-//		addlow(accum<<16);
-//		high += accum>>16;
-//
-//		// 32 -> 64
-//		high += h1*h2;
-//
-//		// 32 -> 64
-//		high += l1*l3;
-//
-//		// 48 -> 80
-//		high += (h1*l3) << 16;
-//
-//		// 48 -> 80
-//		high += (l1*l3) << 16;
-//
-//		return *this;
-//	}
-//
-//	inline uint64_t operator * (uint32_t i) {
-//		uint64_t n(*this);
-//		return n*=i;
-//	}
-//
-//	inline uint64_t & operator /= (uint32_t div) {
-//
-//		// If there isn't a high dword, we only need to work on the low dword
-//		if (!high) {
-//			low /= div;
-//			return *this;
-//		}
-//
-//		// modulus of last division
-//		uint32_t mod = high;
-//		uint32_t l = low;
-//
-//		// Low shift
-//		uint32_t shift = 32;
-//		low = 0;
-//
-//		// Only High DWORD
-//		// Can divide
-//		if (mod >= div) {
-//			high = mod / div;
-//			mod %= div;
-//		}
-//		else high = 0;
-//
-//		// Only Both high and low
-//		while (--shift) {
-//
-//			mod <<= 1;
-//			mod |= (l>>shift) & 1;
-//
-//			// Can divide
-//			if (mod >= div) {
-//				uint32_t v = mod / div;
-//				mod %= div;
-//				addlow(v << shift);
-//				high += v >> (32 - shift);
-//			}
-//		}
-//
-//
-//		// Only Low DWORD
-//		mod <<= 1;
-//		mod |= l & 1;
-//
-//		// Can divide
-//		if (mod >= div) {
-//			uint32_t v = mod / div;
-//			mod %= div;
-//			addlow(v << shift);
-//		}
-//
-//		return *this;
-//	}
-//
-//	inline uint64_t operator / (uint32_t i) {
-//		uint64_t n(*this);
-//		return n/=i;
-//	}
-//
-//	inline uint64_t & operator %= (uint32_t div) {
-//
-//		// If there isn't a high dword, we only need to work on the low dword
-//		if (!high) {
-//			low %= div;
-//			return *this;
-//		}
-//
-//		// Remainder of last division
-//		uint32_t mod = high;
-//
-//		// Low shift
-//		uint32_t shift = 32;
-//
-//		while (1) {
-//
-//			// Can divide
-//			if (mod >= div) mod %= div;
-//
-//			if (shift == 0) break;
-//
-//			mod <<= 1;
-//			shift--;
-//			mod |= (low>>shift) & 1;
-//		}
-//
-//		high = 0;
-//		low = mod;
-//
-//		return *this;
-//	}
-//
-//	inline uint64_t operator % (uint32_t i) {
-//		uint64_t n(*this);
-//		return n%=i;
-//	}
-//
-//	inline operator uint32_t ()
-//	{
-//		return low;
-//	}
-//
-//	void printx() {
-//		if (high) std::printf ("%X%08X", high, low);
-//		else printf ("%X", low);
-//	}
-//};
-//#endif
+#ifndef BEOS
+// Unsigned 64 Bit Int emulation. Only supports SOME operations
+struct uint64 {
+	uint32	low;		// Low is first so uint64 can be cast as uint32 to get low dword
+	uint32	high;		// 
+
+	uint64() : low(0), high(0) { }
+	uint64(uint32 i) : low(i), high(0) { }
+	uint64(uint32 h, uint32 l) : low(l), high(h) { }
+	uint64(const uint64 &i) : low(i.low), high(i.high) { }
+
+	inline void addlow(uint32 l) {
+		uint32 mid = (low >> 16);
+		low = (low & 0xFFFF) + (l & 0xFFFF);
+		mid += (low >> 16) + (l >> 16);
+		low = (low&0xFFFF) + (mid << 16);
+		high += mid >> 16;
+	}
+
+	// uint64 operations
+
+	inline uint64 & operator = (uint64 &o) {
+		low = o.low;
+		high = o.high;
+		return *this;
+	}
+
+	inline uint64 & operator += (uint64 &o) {
+		addlow(o.low);
+		high += o.high;
+		return *this;
+	}
+
+	inline uint64 operator + (uint64 &o) {
+		uint64 n(*this);
+		n.addlow(o.low);
+		n.high += o.high;
+		return n;
+	}
+
+	// uint32 operations
+
+	inline uint64 & operator = (uint32 i) {
+		low = i;
+		high = 0;
+		return *this;
+	}
+
+	inline uint64 & operator += (uint32 i) {
+		addlow(i);
+		return *this;
+	}
+
+	inline uint64 operator + (uint32 i) {
+		uint64 n(*this);
+		n.addlow(i);
+		return n;
+	}
+
+	inline uint64 & operator *= (uint32 i) {
+		// High 16 bits
+		uint32 h1 =   i >> 16;
+		uint32 h2 = low >> 16;
+		//uint32 h3 = high >> 16;
+
+		// Low 16 Bits
+		uint32 l1 =   i & 0xFFFF;
+		uint32 l2 = low & 0xFFFF;
+		uint32 l3 = high & 0xFFFF;
+
+		// The accumulator
+		uint32 accum;
+
+		// 0 -> 32
+		low = l1*l2;
+		high = 0;
+
+		// 16 -> 48
+		accum = h1*l2;
+		addlow(accum<<16);
+		high += accum>>16;
+
+		// 16 -> 48
+		accum = l1*h2;
+		addlow(accum<<16);	
+		high += accum>>16;
+
+		// 32 -> 64
+		high += h1*h2;
+
+		// 32 -> 64
+		high += l1*l3;
+
+		// 48 -> 80
+		high += (h1*l3) << 16;
+
+		// 48 -> 80
+		high += (l1*l3) << 16;
+
+		return *this;
+	}
+
+	inline uint64 operator * (uint32 i) {
+		uint64 n(*this);
+		return n*=i;
+	}
+
+	inline uint64 & operator /= (uint32 div) {
+
+		// If there isn't a high dword, we only need to work on the low dword
+		if (!high) {
+			low /= div;
+			return *this;
+		}
+
+		// modulus of last division
+		uint32 mod = high;
+		uint32 l = low;
+
+		// Low shift
+		uint32 shift = 32;
+		low = 0;
+
+		// Only High DWORD
+		// Can divide
+		if (mod >= div) {
+			high = mod / div;
+			mod %= div;
+		}
+		else high = 0;
+
+		// Only Both high and low
+		while (--shift) {
+
+			mod <<= 1;
+			mod |= (l>>shift) & 1;
+
+			// Can divide
+			if (mod >= div) {
+				uint32 v = mod / div;
+				mod %= div;
+				addlow(v << shift);
+				high += v >> (32 - shift);
+			}
+		}
+
+
+		// Only Low DWORD
+		mod <<= 1;
+		mod |= l & 1;
+
+		// Can divide
+		if (mod >= div) {
+			uint32 v = mod / div;
+			mod %= div;
+			addlow(v << shift);
+		}
+
+		return *this;
+	}
+
+	inline uint64 operator / (uint32 i) {
+		uint64 n(*this);
+		return n/=i;
+	}
+
+	inline uint64 & operator %= (uint32 div) {
+
+		// If there isn't a high dword, we only need to work on the low dword
+		if (!high) {
+			low %= div;
+			return *this;
+		}
+
+		// Remainder of last division
+		uint32 mod = high;
+
+		// Low shift
+		uint32 shift = 32;
+
+		while (1) {
+
+			// Can divide
+			if (mod >= div) mod %= div;
+
+			if (shift == 0) break;
+
+			mod <<= 1;
+			shift--;
+			mod |= (low>>shift) & 1;
+		}
+
+		high = 0;
+		low = mod;
+
+		return *this;
+	}
+
+	inline uint64 operator % (uint32 i) {
+		uint64 n(*this);
+		return n%=i;
+	}
+
+	inline operator uint32 ()
+	{
+		return low;
+	}
+
+	void printx() {
+		if (high) std::printf ("%X%08X", high, low);
+		else printf ("%X", low);
+	}
+};
+#endif
 
 //
 // AdjustTimings
@@ -998,12 +998,12 @@ void XMidiFile::ApplyFirstState(first_state &fs, int chan_mask)
 //
 // This is used by Midi's ONLY! It will do nothing with XMidiFile
 //
-void XMidiFile::AdjustTimings(uint32_t ppqn)
+void XMidiFile::AdjustTimings(uint32 ppqn)
 {
-	uint32_t		tempo = 500000;
-	uint32_t		time_prev = 0;
-	uint32_t		hs_rem = 0;
-	uint32_t		hs     = 0;
+	uint32		tempo = 500000;
+	uint32		time_prev = 0;
+	uint32		hs_rem = 0;
+	uint32		hs     = 0;
 
 	ppqn *= 10000;
 
@@ -1015,7 +1015,7 @@ void XMidiFile::AdjustTimings(uint32_t ppqn)
 			// Note 64 bit int is required because multiplication by tempo can
 			// require 52 bits in some circumstances
 
-			uint64_t aim = event->time - time_prev;
+			uint64 aim = event->time - time_prev;
 			aim *= tempo;
 
 			hs_rem += aim%ppqn;
@@ -1186,7 +1186,7 @@ int XMidiFile::ConvertEvent (const int time, const unsigned char status, IDataSo
 
 int XMidiFile::ConvertNote (const int time, const unsigned char status, IDataSource *source, const int size)
 {
-	uint32_t	delta = 0;
+	uint32	delta = 0;
 	int	data;
 
 	data = source->read1();
@@ -1260,7 +1260,7 @@ int XMidiFile::ConvertSystemMessage (const int time, const unsigned char status,
 
 // If data is NULL, then it is assumed that sysex_buffer already contains the data
 // address_base is 7-bit, while address_offset is 8 bit!
-int XMidiFile::CreateMT32SystemMessage(const int time, uint32_t address_base, uint16_t address_offset, uint32_t len, const void *data, IDataSource *source)
+int XMidiFile::CreateMT32SystemMessage(const int time, uint32 address_base, uint16 address_offset, uint32 len, const void *data, IDataSource *source)
 {
 	CreateNewEvent (time);
 	// SysEx status
@@ -1278,7 +1278,7 @@ int XMidiFile::CreateMT32SystemMessage(const int time, uint32_t address_base, ui
 	sysex_buffer[3] = 0x12;		// DTI Command ID (set data)
 
 	// 7-bit address
-	uint32_t actual_address = address_offset;
+	uint32 actual_address = address_offset;
 	actual_address += (address_base>>2) & (0x7f<<14);
 	actual_address += (address_base>>1) & (0x7f<<7);
 	actual_address += (address_base>>0) & (0x7f<<0);
@@ -1292,7 +1292,7 @@ int XMidiFile::CreateMT32SystemMessage(const int time, uint32_t address_base, ui
 
 	// Calc checksum
 	char checksum = 0;
-	for (uint32_t j = 4; j < sysex_data_start+len; j++)
+	for (uint32 j = 4; j < sysex_data_start+len; j++)
 		checksum += sysex_buffer[j];
 
 	checksum = checksum & 0x7f;
@@ -1311,11 +1311,11 @@ int XMidiFile::CreateMT32SystemMessage(const int time, uint32_t address_base, ui
 int XMidiFile::ConvertFiletoList (IDataSource *source, const bool is_xmi, first_state &fs)
 {
 	int 	time = 0;			// 120th of a second
-	uint32_t 	data;
+	uint32 	data;
 	int		end = 0;
-	uint32_t	status = 0;
+	uint32	status = 0;
 	int		play_size = 2;
-	uint32_t	file_size = source->getSize();
+	uint32	file_size = source->getSize();
 	int		retval = 0;
 
 	if (is_xmi) play_size = 3;
@@ -1374,7 +1374,7 @@ int XMidiFile::ConvertFiletoList (IDataSource *source, const bool is_xmi, first_
 			if (status == 0xFF)
 			{
 				int	pos = source->getPos();
-				uint32_t	data = source->read1();
+				uint32	data = source->read1();
 				
 				if (data == 0x2F)					// End, of track
 					end = 1;
@@ -1403,7 +1403,7 @@ int XMidiFile::ConvertFiletoList (IDataSource *source, const bool is_xmi, first_
 int XMidiFile::ExtractTracksFromXmi (IDataSource *source)
 {
 	int				num = 0;
-	uint32_t			len = 0;
+	uint32			len = 0;
 	char			buf[32];
 
 	first_state	fs;
@@ -1462,10 +1462,10 @@ int XMidiFile::ExtractTracksFromXmi (IDataSource *source)
 	return num;
 }
 
-int XMidiFile::ExtractTracksFromMid (IDataSource *source, const uint32_t ppqn, const int num_tracks, const bool type1)
+int XMidiFile::ExtractTracksFromMid (IDataSource *source, const uint32 ppqn, const int num_tracks, const bool type1)
 {
 	int			num = 0;
-	uint32_t		len = 0;
+	uint32		len = 0;
 	char		buf[32];
 	int			chan_mask = 0;
 
@@ -1522,10 +1522,10 @@ int XMidiFile::ExtractTracksFromMid (IDataSource *source, const uint32_t ppqn, c
 
 int XMidiFile::ExtractTracks (IDataSource *source)
 {
-	uint32_t		i = 0;
+	uint32		i = 0;
 	int		start;
-	uint32_t		len;
-	uint32_t		chunk_len;
+	uint32		len;
+	uint32		chunk_len;
 	int 		count;
 	char		buf[32];
 
@@ -1713,7 +1713,7 @@ int XMidiFile::ExtractTracks (IDataSource *source)
 		if (type == 1) num_tracks = 1;
 
 		events = XMidiEvent__Calloc<XMidiEventList*>(num_tracks); //new XMidiEvent *[info.tracks];
-		const uint32_t ppqn = source->read2high();
+		const uint32 ppqn = source->read2high();
 
 		for (i = 0; i < num_tracks; i++)
 			events[i] = XMidiEvent__Calloc<XMidiEventList>();
@@ -1793,7 +1793,7 @@ int XMidiFile::ExtractTracks (IDataSource *source)
 
 int XMidiFile::ExtractTracksFromU7V (IDataSource *source)
 {
-	uint32_t			i, j;
+	uint32			i, j;
 	int				num = 0;
 	int				time = 0;
 	int				time_inc = 32;
@@ -1809,7 +1809,7 @@ int XMidiFile::ExtractTracksFromU7V (IDataSource *source)
 	int chan_mask = 0;
 
 	source->seek(0);
-	uint32_t num_timbres = source->read1();
+	uint32 num_timbres = source->read1();
 	pout << num_timbres << " custom timbres..." << std::endl;
 
 	if (source->getSize() != 247*num_timbres+1) {

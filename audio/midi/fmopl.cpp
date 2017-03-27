@@ -111,9 +111,9 @@ static const int slot_array[32]=
 	-1,-1,-1,-1,-1,-1,-1,-1
 };
 
-#define SC(mydb) (static_cast<uint32_t>(mydb / (EG_STEP/2)))
+#define SC(mydb) (static_cast<uint32>(mydb / (EG_STEP/2)))
 
-static const uint32_t KSL_TABLE[8 * 16] = {
+static const uint32 KSL_TABLE[8 * 16] = {
 	/* OCT 0 */
 	SC(0.000), SC(0.000), SC(0.000), SC(0.000),
 	SC(0.000), SC(0.000), SC(0.000), SC(0.000),
@@ -186,7 +186,7 @@ static int ENV_CURVE[2*EG_ENT+1];
 
 /* multiple table */
 #define ML(a) static_cast<int>(a*2)
-static const uint32_t MUL_TABLE[16]= {
+static const uint32 MUL_TABLE[16]= {
 /* 1/2, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
    ML(0.50), ML(1.00), ML(2.00),  ML(3.00), ML(4.00), ML(5.00), ML(6.00), ML(7.00),
    ML(8.00), ML(9.00), ML(10.00), ML(10.00),ML(12.00),ML(12.00),ML(15.00),ML(15.00)
@@ -299,7 +299,7 @@ inline void OPL_KEYOFF(OPL_SLOT *SLOT)
 
 /* ---------- calcrate Envelope Generator & Phase Generator ---------- */
 /* return : envelope output */
-inline uint32_t OPL_CALC_SLOT( OPL_SLOT *SLOT )
+inline uint32 OPL_CALC_SLOT( OPL_SLOT *SLOT )
 {
 	/* calcrate envelope generator */
 	if( (SLOT->evc+=SLOT->evs) >= SLOT->eve )
@@ -431,7 +431,7 @@ inline void set_sl_rr(FM_OPL *OPL,int slot,int v)
 /* ---------- calcrate one of channel ---------- */
 inline void OPL_CALC_CH( OPL_CH *CH )
 {
-	uint32_t env_out;
+	uint32 env_out;
 	OPL_SLOT *SLOT;
 
 	feedback2 = 0;
@@ -476,7 +476,7 @@ inline void OPL_CALC_CH( OPL_CH *CH )
 #define WHITE_NOISE_db 6.0
 inline void OPL_CALC_RH( OPL_CH *CH )
 {
-	uint32_t env_tam,env_sd,env_top,env_hh;
+	uint32 env_tam,env_sd,env_top,env_hh;
 	int whitenoise = int((std::rand()&1)*(WHITE_NOISE_db/EG_STEP));
 	int tone8;
 
@@ -710,7 +710,7 @@ static void OPL_initalize(FM_OPL *OPL)
 	/* make fnumber -> increment counter table */
 	for( fn=0 ; fn < 1024 ; fn++ )
 	{
-		OPL->FN_TABLE[fn] = (uint32_t)(OPL->freqbase * fn * FREQ_RATE * (1<<7) / 2);
+		OPL->FN_TABLE[fn] = (uint32)(OPL->freqbase * fn * FREQ_RATE * (1<<7) / 2);
 	}
 	/* LFO freq.table */
 	OPL->amsIncr = (int)(OPL->rate ? (double)AMS_ENT*(1<<AMS_SHIFT) / OPL->rate * 3.7 * ((double)OPL->clock/3600000) : 0);
@@ -722,7 +722,7 @@ void OPLWriteReg(FM_OPL *OPL, int r, int v)
 {
 	OPL_CH *CH;
 	int slot;
-	uint32_t block_fnum;
+	uint32 block_fnum;
 
 	switch(r&0xe0)
 	{
@@ -759,8 +759,8 @@ void OPLWriteReg(FM_OPL *OPL, int r, int v)
 			}
 			else
 			{	/* set IRQ mask ,timer enable*/
-				uint8_t st1 = v&1;
-				uint8_t st2 = (v>>1)&1;
+				uint8 st1 = v&1;
+				uint8 st2 = (v>>1)&1;
 				/* IRQRST,T1MSK,t2MSK,EOSMSK,BRMSK,x,ST2,ST1 */
 				OPL_STATUS_RESET(OPL,v&0x78);
 				OPL_STATUSMASK_SET(OPL,((~v)&0x78)|0x01);
@@ -808,7 +808,7 @@ void OPLWriteReg(FM_OPL *OPL, int r, int v)
 		case 0xbd:
 			/* amsep,vibdep,r,bd,sd,tom,tc,hh */
 			{
-			uint8_t rkey = OPL->rythm^v;
+			uint8 rkey = OPL->rythm^v;
 			OPL->ams_table = &AMS_TABLE[v&0x80 ? AMS_ENT : 0];
 			OPL->vib_table = &VIB_TABLE[v&0x40 ? VIB_ENT : 0];
 			OPL->rythm  = v&0x3f;
@@ -950,14 +950,14 @@ static void OPL_UnLockTable(void)
 /*******************************************************************************/
 
 /* ---------- update one of chip ----------- */
-void YM3812UpdateOne_Mono(FM_OPL *OPL, int16_t *buffer, int length)
+void YM3812UpdateOne_Mono(FM_OPL *OPL, sint16 *buffer, int length)
 {
     int i;
 	int data;
-	int16_t *buf = buffer;
-	uint32_t amsCnt  = OPL->amsCnt;
-	uint32_t vibCnt  = OPL->vibCnt;
-	uint8_t rythm = OPL->rythm&0x20;
+	sint16 *buf = buffer;
+	uint32 amsCnt  = OPL->amsCnt;
+	uint32 vibCnt  = OPL->vibCnt;
+	uint8 rythm = OPL->rythm&0x20;
 	OPL_CH *CH,*R_CH;
 
 	if( (void *)OPL != cur_chip ){
@@ -1000,16 +1000,16 @@ void YM3812UpdateOne_Mono(FM_OPL *OPL, int16_t *buffer, int length)
 	OPL->vibCnt = vibCnt;
 }
 
-void YM3812UpdateOne_Stereo(FM_OPL *OPL, int16_t *buffer, int length)
+void YM3812UpdateOne_Stereo(FM_OPL *OPL, sint16 *buffer, int length)
 {
     int i;
 	int data;
 	int left;
 	int right;
-	int16_t *buf = buffer;
-	uint32_t amsCnt  = OPL->amsCnt;
-	uint32_t vibCnt  = OPL->vibCnt;
-	uint8_t rythm = OPL->rythm&0x20;
+	sint16 *buf = buffer;
+	uint32 amsCnt  = OPL->amsCnt;
+	uint32 vibCnt  = OPL->vibCnt;
+	uint8 rythm = OPL->rythm&0x20;
 	OPL_CH *CH,*R_CH;
 
 	if( (void *)OPL != cur_chip ){

@@ -27,38 +27,38 @@
 class LoopScriptNode : public Node
 {
 	public:
-		LoopScriptNode(const uint32_t opcode, const uint32_t offset, const uint32_t newScriptTok)
+		LoopScriptNode(const uint32 opcode, const uint32 offset, const uint32 newScriptTok)
 			: Node(opcode, offset, Type(Type::T_INVALID)), scriptTok(newScriptTok)
 			{
 				assert(acceptOp(opcode, 0x74));
 			};
 		~LoopScriptNode() {};
 		
-		void print_unk(Console &o, const uint32_t isize) const;
+		void print_unk(Console &o, const uint32 isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 		bool fold(DCUnit *unit, std::deque<Node *> &nodes);
 		
-		const uint32_t lsTok() const { return scriptTok; };
+		const uint32 lsTok() const { return scriptTok; };
 
 	protected:
 
 	private:
-		uint32_t scriptTok;
+		uint32 scriptTok;
 };
 
 class LoopNode : public ColNode
 {
 	public:
 		LoopNode() : ColNode() {};
-		LoopNode(const uint32_t opcode, const uint32_t offset, const uint32_t newCurrObj, const uint32_t newStrSize, const uint32_t newSearchType)
+		LoopNode(const uint32 opcode, const uint32 offset, const uint32 newCurrObj, const uint32 newStrSize, const uint32 newSearchType)
 			: ColNode(opcode, offset, Type(Type::T_VOID)), currObj(newCurrObj), strSize(newStrSize), searchType(newSearchType)
 			{
 				assert(acceptOp(opcode, 0x70));
 			};
 		~LoopNode() {};
 
-		void print_unk(Console &o, const uint32_t isize) const;
+		void print_unk(Console &o, const uint32 isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 
@@ -67,22 +67,22 @@ class LoopNode : public ColNode
 	protected:
 
 	private:
-		uint32_t currObj;
-		uint32_t strSize;
-		uint32_t searchType;
+		uint32 currObj;
+		uint32 strSize;
+		uint32 searchType;
 };
 
 class LoopNextNode : public Node
 {
 	public:
-		LoopNextNode(const uint32_t opcode, const uint32_t offset)
+		LoopNextNode(const uint32 opcode, const uint32 offset)
 			: Node(opcode, offset, Type(Type::T_INVALID))
 			{
 				assert(acceptOp(opcode, 0x73));
 			};
 		~LoopNextNode() {};
 		
-		void print_unk(Console &o, const uint32_t isize) const;
+		void print_unk(Console &o, const uint32 isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 		bool fold(DCUnit *unit, std::deque<Node *> &nodes);

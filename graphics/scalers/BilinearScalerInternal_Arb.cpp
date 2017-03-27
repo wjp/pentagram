@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 namespace Pentagram {
 
 template<class uintX, class Manip, class uintS> 
-bool BilinearScalerInternal_Arb(Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+bool BilinearScalerInternal_Arb(Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	// Source buffer pointers
 	uintS *texel = reinterpret_cast<uintS*>(tex->buffer) + (sy * tex->width + sx);
@@ -33,24 +33,24 @@ bool BilinearScalerInternal_Arb(Texture *tex, int32_t sx, int32_t sy, int32_t sw
 	uintS *tex_end = texel + (sh-4)*tex->width;
 	int tex_diff = (tex->width*4) - sw;
 
-	uint8_t a[4], b[4], c[4], d[4], e[4], f[4], g[4], h[4], i[4], j[4];
+	uint8 a[4], b[4], c[4], d[4], e[4], f[4], g[4], h[4], i[4], j[4];
 
-	uint32_t pos_y=0, pos_x=0;
+	uint32 pos_y=0, pos_x=0;
 
-	uint32_t add_y = (sh<<16)/dh;
-	uint32_t add_x = (sw<<16)/dw;
+	uint32 add_y = (sh<<16)/dh;
+	uint32 add_x = (sw<<16)/dw;
 
-	uint32_t start_x = (sw<<16) - (add_x * dw);
-	uint32_t dst_y = (sh<<16) - (add_y * dh);
-	uint32_t end_y = 1<<16;
+	uint32 start_x = (sw<<16) - (add_x * dw);
+	uint32 dst_y = (sh<<16) - (add_y * dh);
+	uint32 end_y = 1<<16;
 
 	if (sw == dw*2) start_x += 0x8000;
 	if (sh == dh*2) dst_y += 0x8000;
 
-	uint8_t* blockline_start = 0;
-	uint8_t* next_block = 0;
+	uint8* blockline_start = 0;
+	uint8* next_block = 0;
 
-//	uint8_t* pixel_start = pixel;
+//	uint8* pixel_start = pixel;
 
 	bool clip_x = true;
 	if (sw+sx < tex->width && clamp_src == false)
@@ -72,8 +72,8 @@ bool BilinearScalerInternal_Arb(Texture *tex, int32_t sx, int32_t sy, int32_t sw
 		Read5(a,b,c,d,e);
 		texel++;
 
-		uint32_t end_x = 1<<16;
-		uint32_t dst_x = start_x;
+		uint32 end_x = 1<<16;
+		uint32 dst_x = start_x;
 
 		next_block = pixel;
 
@@ -165,8 +165,8 @@ bool BilinearScalerInternal_Arb(Texture *tex, int32_t sx, int32_t sy, int32_t sw
 		Read5_Clipped(a,b,c,d,e);
 		texel++;
 
-		uint32_t end_x = 1<<16;
-		uint32_t dst_x = start_x;
+		uint32 end_x = 1<<16;
+		uint32 dst_x = start_x;
 
 		next_block = pixel;
 

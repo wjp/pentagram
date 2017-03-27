@@ -23,7 +23,7 @@
 
 #include "GenericNodes.h"
 
-/*bool is_temp(uint32_t op)
+/*bool is_temp(uint32 op)
 {
 	// in crusader 'u8's end is actually a push type opcode.
 	if((!crusader) && op==0x79)
@@ -68,7 +68,7 @@ class TempNode : public Node
 		~TempNode() {};
 
 		void print() const;
-		void fold(const uint32_t end);
+		void fold(const uint32 end);
 
 		enum temptype { POP_TEMP, PUSH_GLOBAL, POP_GLOBAL,
 			RET, JNE, JMP, SUSPEND,
@@ -84,15 +84,15 @@ class TempNode : public Node
 	protected:
 
 	private:
-		uint32_t offset; // jne/jmp/ *global/foreach*list
-		int32_t delta; // loopscr
+		uint32 offset; // jne/jmp/ *global/foreach*list
+		sint32 delta; // loopscr
 		Node *node; // loop/free* /foreach*list/param pid change
-		uint32_t size; // loop/ *global/foreach*list
-		uint32_t type; // loop/param pid change
+		uint32 size; // loop/ *global/foreach*list
+		uint32 type; // loop/param pid change
 };*/
 
 
-/*bool is_convert(uint32_t op)
+/*bool is_convert(uint32 op)
 {
 	switch(op)
 	{
@@ -113,7 +113,7 @@ class ConvertNode : public UniNode
 		~ConvertNode() {};
 
 		void print() const;
-		void fold(const uint32_t end);
+		void fold(const uint32 end);
 
 	protected:
 		enum convtype { NONE, WORD_DWORD, DWORD_WORD, STR_PTR } ctype;
@@ -124,7 +124,7 @@ class ConvertNode : public UniNode
 class UniOperatorNode : public UniNode
 {
 	public:
-		UniOperatorNode(const uint32_t opcode, const uint32_t offset)
+		UniOperatorNode(const uint32 opcode, const uint32 offset)
 			: UniNode(opcode, offset, Type(Type::T_INVALID))
 			{
 				assert(acceptOp(opcode, 0x30, 0x6B));
@@ -137,7 +137,7 @@ class UniOperatorNode : public UniNode
 			};
 		~UniOperatorNode() {};
 
-		void print_unk(Console &o, const uint32_t isize) const;
+		void print_unk(Console &o, const uint32 isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource  &o) const;
 		bool fold(DCUnit *unit, std::deque<Node *> &nodes);
@@ -151,7 +151,7 @@ class UniOperatorNode : public UniNode
 class BinOperatorNode : public BinNode
 {
 	public:
-		BinOperatorNode(const uint32_t opcode, const uint32_t offset)
+		BinOperatorNode(const uint32 opcode, const uint32 offset)
 			: BinNode(opcode, offset, Type(Type::T_INVALID))
 			{
 				assert(acceptOp(opcode, 0x14, 0x1C, 0x1E) || acceptOp(opcode, 0x24, 0x28, 0x2A, 0x2C)
@@ -177,7 +177,7 @@ class BinOperatorNode : public BinNode
 			};
 		~BinOperatorNode() {};
 
-		void print_unk(Console &o, const uint32_t isize) const;
+		void print_unk(Console &o, const uint32 isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource  &o) const;
 		bool fold(DCUnit *unit, std::deque<Node *> &nodes);

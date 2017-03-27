@@ -35,8 +35,8 @@ class UCProcess : public Process
 	friend class Kernel;
 public:
 	UCProcess();
-	UCProcess(uint16_t classid_, uint16_t offset_, uint32_t this_ptr = 0,
-			  int thissize = 0, const uint8_t* args = 0, int argsize = 0);
+	UCProcess(uint16 classid_, uint16 offset_, uint32 this_ptr = 0,
+			  int thissize = 0, const uint8* args = 0, int argsize = 0);
     ~UCProcess();
 
 	// p_dynamic_cast stuff
@@ -46,37 +46,37 @@ public:
 
 	virtual void terminate();
 
-	void freeOnTerminate(uint16_t index, int type);
+	void freeOnTerminate(uint16 index, int type);
 
-	void setReturnValue(uint32_t retval) { temp32 = retval; }
+	void setReturnValue(uint32 retval) { temp32 = retval; }
 
 	//! dump some info about this process to pout
 	virtual void dumpInfo();
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
-	void load(uint16_t classid_, uint16_t offset_, uint32_t this_ptr = 0,
-			  int thissize = 0, const uint8_t* args = 0, int argsize = 0);
-	void call(uint16_t classid_, uint16_t offset_);
+	void load(uint16 classid_, uint16 offset_, uint32 this_ptr = 0,
+			  int thissize = 0, const uint8* args = 0, int argsize = 0);
+	void call(uint16 classid_, uint16 offset_);
 	bool ret();
 
 	// stack base pointer
-	uint16_t bp;
+	uint16 bp;
 
 	Usecode* usecode;
 
-	uint16_t classid;
-	uint16_t ip;
+	uint16 classid;
+	uint16 ip;
 
-	uint32_t temp32;
+	uint32 temp32;
 
 	// data stack
 	UCStack stack;
 
 	// "Free Me" list
-	std::list<std::pair<uint16_t, int> > freeonterminate;
+	std::list<std::pair<uint16, int> > freeonterminate;
 };
 
 #endif

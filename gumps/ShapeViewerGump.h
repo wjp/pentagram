@@ -34,10 +34,10 @@ public:
 	ShapeViewerGump();
 	ShapeViewerGump(int width, int height,
 					std::vector<std::pair<std::string,ShapeArchive*> >& flexes,
-					uint32_t _Flags = 0, int32_t layer = LAYER_MODAL);
+					uint32 _Flags = 0, sint32 layer = LAYER_MODAL);
 	virtual ~ShapeViewerGump(void);
 
-	virtual void PaintThis(RenderSurface*, int32_t lerp_factor, bool scaled);
+	virtual void PaintThis(RenderSurface*, sint32 lerp_factor, bool scaled);
 
 	virtual bool OnKeyDown(int key, int mod);
 	virtual bool OnTextInput(int unicode);
@@ -52,12 +52,12 @@ protected:
 	std::vector<std::pair<std::string,ShapeArchive*> > flexes;	
 	unsigned int curflex;
 	ShapeArchive* flex;
-	uint32_t curshape;
-	uint32_t curframe;
+	uint32 curshape;
+	uint32 curframe;
 
-	uint32_t background;
+	uint32 background;
 
-	int32_t shapew,shapeh,shapex,shapey;
+	sint32 shapew,shapeh,shapex,shapey;
 };
 
 #endif

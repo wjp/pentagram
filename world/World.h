@@ -93,7 +93,7 @@ public:
 	//! switch map. This unloads the CurrentMap back into a Map, kills
 	//! processes, and loads a new Map into the CurrentMap.
 	//! \return true if successful
-	bool switchMap(uint32_t newmap);
+	bool switchMap(uint32 newmap);
 
 	//! push an item onto the ethereal void
 	void etherealPush(ObjId objid) { ethereal.push_front(objid); }
@@ -114,13 +114,13 @@ public:
 	void saveMaps(ODataSource* ods);
 
 	//! load Maps
-	bool loadMaps(IDataSource* ids, uint32_t version);
+	bool loadMaps(IDataSource* ids, uint32 version);
 
 	//! save the rest of the World data (ethereal items, current map number).
 	void save(ODataSource* ods);
 
 	//! load World data
-	bool load(IDataSource* ids, uint32_t version);
+	bool load(IDataSource* ids, uint32 version);
 
 private:
 	static World *world;

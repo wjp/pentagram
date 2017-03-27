@@ -48,8 +48,8 @@ public:
 protected:
 	virtual int			open();
 	virtual void		close();
-	virtual void		send(uint32_t message);
-	virtual void		send_sysex(uint8_t status, const uint8_t *msg, uint16_t length);
+	virtual void		send(uint32 message);
+	virtual void		send_sysex(uint8 status, const uint8 *msg, uint16 length);
 	virtual void		increaseThreadPriority();
 	virtual void		yield();
 };

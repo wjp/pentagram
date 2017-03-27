@@ -30,7 +30,7 @@ class hq3xScaler : public Scaler
 public:
 	hq3xScaler();
 
-	virtual const uint32_t	ScaleBits() const;			//< bits for supported integer scaling
+	virtual const uint32	ScaleBits() const;			//< bits for supported integer scaling
 	virtual const bool		ScaleArbitrary() const;		//< supports arbitrary scaling of any degree 
 
 	virtual const char *	ScalerName() const;			//< Name Of the Scaler (1 word)

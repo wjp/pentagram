@@ -151,7 +151,7 @@ void WindowsMidiDriver::close()
 	_streamBufferSize = 0;
 }
 
-void WindowsMidiDriver::send(uint32_t message)
+void WindowsMidiDriver::send(uint32 message)
 {
 #ifdef WIN32_USE_DUAL_MIDIDRIVERS
 	if (message & 0x1 && midi_port2 != 0) 
@@ -163,7 +163,7 @@ void WindowsMidiDriver::send(uint32_t message)
 #endif
 }
 
-void WindowsMidiDriver::send_sysex (uint8_t status, const uint8_t *msg, uint16_t length)
+void WindowsMidiDriver::send_sysex (uint8 status, const uint8 *msg, uint16 length)
 {
 #ifdef WIN32_USE_DUAL_MIDIDRIVERS
 	// Hack for multiple devices. Not exactly 'fast'
@@ -202,7 +202,7 @@ void WindowsMidiDriver::send_sysex (uint8_t status, const uint8_t *msg, uint16_t
 	if (_streamBufferSize < length) {
 		delete [] _streamBuffer;
 		_streamBufferSize = length*2;
-		_streamBuffer = new uint8_t[_streamBufferSize];
+		_streamBuffer = new uint8[_streamBufferSize];
 	}
 
 	_streamBuffer[0] = status;

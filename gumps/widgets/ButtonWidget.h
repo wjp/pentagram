@@ -30,14 +30,14 @@ public:
 
 	ButtonWidget();
 	ButtonWidget(int X, int Y, std::string txt, bool gamefont, int font,
-				 uint32_t mouseOverBlendCol = 0, int width = 0, int height = 0,
-				 int32_t layer = LAYER_NORMAL);
+				 uint32 mouseOverBlendCol = 0, int width = 0, int height = 0,
+				 sint32 layer = LAYER_NORMAL);
 	ButtonWidget(int X, int Y, FrameID frame_up, FrameID frame_down,
-				 bool mouseOver = false, int32_t layer = LAYER_NORMAL);
+				 bool mouseOver = false, sint32 layer = LAYER_NORMAL);
 	virtual ~ButtonWidget(void);
 
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
-	virtual uint16_t TraceObjId(int mx, int my);
+	virtual uint16 TraceObjId(int mx, int my);
 	virtual bool PointOnGump(int mx, int my);
 
 	virtual Gump* OnMouseDown(int button, int mx, int my);
@@ -51,8 +51,8 @@ public:
 	//! return the textwidget's vlead, or 0 for an image button
 	int getVlead();
 
-	//void SetShapeDown(Shape *_shape, uint32_t _framenum);
-	//void SetShapeUp(Shape *_shape, uint32_t _framenum);
+	//void SetShapeDown(Shape *_shape, uint32 _framenum);
+	//void SetShapeUp(Shape *_shape, uint32 _framenum);
 
 	enum Message
 	{
@@ -63,16 +63,16 @@ public:
 
 protected:
 	Shape *shape_up;
-	uint32_t framenum_up;
+	uint32 framenum_up;
 	Shape *shape_down;
-	uint32_t framenum_down;
-	uint16_t textwidget;
-	uint32_t mouseOverBlendCol;
+	uint32 framenum_down;
+	uint16 textwidget;
+	uint32 mouseOverBlendCol;
 	bool mouseOver;
 	int origw, origh;
 
 public:
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

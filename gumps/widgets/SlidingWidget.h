@@ -27,13 +27,13 @@ public:
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	SlidingWidget();
-	SlidingWidget(int x, int y, Shape* shape, uint32_t framenum);
+	SlidingWidget(int x, int y, Shape* shape, uint32 framenum);
 	virtual ~SlidingWidget();
 
 	virtual void InitGump(Gump* newparent, bool take_focus=true);
-	virtual uint16_t TraceObjId(int mx, int my);
+	virtual uint16 TraceObjId(int mx, int my);
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

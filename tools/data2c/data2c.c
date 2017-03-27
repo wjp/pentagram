@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
 			return 1;
 		}
 
-		fprintf(outfile, "static const uint8_t data%d[] = {\n", index);
+		fprintf(outfile, "static const uint8 data%d[] = {\n", index);
 		first = 1;
 		filesizes[index] = 0;
 
@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
 		fclose(infile);
 	}
 
-	fprintf(outfile, "struct DataFile { const char* name; const uint8_t* data; unsigned int size; };\n");
+	fprintf(outfile, "struct DataFile { const char* name; const uint8* data; unsigned int size; };\n");
 
 	fprintf(outfile, "DataFile files[] = {\n");
 

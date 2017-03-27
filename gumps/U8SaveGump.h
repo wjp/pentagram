@@ -39,7 +39,7 @@ public:
 	virtual Gump* OnMouseDown(int button, int mx, int my);
 	virtual void OnMouseClick(int button, int mx, int my);
 	virtual bool OnKeyDown(int key, int mod);
-	virtual void ChildNotify(Gump *child, uint32_t message);
+	virtual void ChildNotify(Gump *child, uint32 message);
 	virtual void OnFocus(bool gain);
 
 	static std::string getFilename(int index);

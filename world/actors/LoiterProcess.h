@@ -27,18 +27,18 @@ class LoiterProcess : public Process
 {
 public:
 	LoiterProcess();
-	LoiterProcess(Actor* actor, int32_t count=-1);
+	LoiterProcess(Actor* actor, sint32 count=-1);
 
 	// p_dynamic_cast stuff
 	ENABLE_RUNTIME_CLASSTYPE();
 
 	virtual void run();
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 
-	int32_t count;
+	sint32 count;
 };
 
 

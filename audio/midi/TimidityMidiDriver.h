@@ -42,8 +42,8 @@ protected:
 	// LowLevelMidiDriver implementation
 	virtual int			open();
 	virtual void		close();
-	virtual void		send(uint32_t b);
-	virtual void		lowLevelProduceSamples(int16_t *samples, uint32_t num_samples);
+	virtual void		send(uint32 b);
+	virtual void		lowLevelProduceSamples(sint16 *samples, uint32 num_samples);
 
 	// MidiDriver overloads
 	virtual bool		isSampleProducer() { return true; }

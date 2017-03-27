@@ -48,7 +48,7 @@ MessageBoxGump::MessageBoxGump()
 
 }
 
-MessageBoxGump::MessageBoxGump(const std::string & title_, const std::string & message_, uint32_t title_colour_, 
+MessageBoxGump::MessageBoxGump(const std::string & title_, const std::string & message_, uint32 title_colour_, 
 						   std::vector<std::string> *buttons_) :
 	ModalGump(0, 0, 100, 100), title(title_), message(message_), title_colour(title_colour_)
 {
@@ -108,7 +108,7 @@ void MessageBoxGump::InitGump(Gump* newparent, bool take_focus)
 	for (size_t i = 0; i < buttons.size(); i++)
 	{
 		w = new ButtonWidget(off, dims.h-23, buttons[i], false, 1, 0x80D000D0);
-		w->SetIndex(static_cast<int32_t>(i));
+		w->SetIndex(static_cast<sint32>(i));
 		w->InitGump(this, false);
 		width = height = 0;
 		font->getStringSize(buttons[i],width,height);
@@ -128,12 +128,12 @@ void MessageBoxGump::Close(bool no_del)
 	ModalGump::Close(no_del);
 }
 
-void MessageBoxGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool /*scaled*/)
+void MessageBoxGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool /*scaled*/)
 {
 	// Background is partially transparent
 	surf->FillBlended(0x80000000,0,0,dims.w,dims.h);
 
-	uint32_t line_colour = 0xFFFFFFFF;
+	uint32 line_colour = 0xFFFFFFFF;
 	if (!IsFocus()) line_colour = 0xFF7F7F7F;
 
 	// outer border
@@ -153,7 +153,7 @@ void MessageBoxGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool /*
 	else surf->Fill32(0xFF000000,1,1,dims.w-2,22);
 }
 
-void MessageBoxGump::ChildNotify(Gump *child, uint32_t message)
+void MessageBoxGump::ChildNotify(Gump *child, uint32 message)
 {
 	if (child->IsOfType<ButtonWidget>() &&
 		message == ButtonWidget::BUTTON_CLICK)
@@ -163,7 +163,7 @@ void MessageBoxGump::ChildNotify(Gump *child, uint32_t message)
 	}
 }
 
-ProcId MessageBoxGump::Show(std::string title, std::string message, uint32_t title_colour, std::vector<std::string> *buttons)
+ProcId MessageBoxGump::Show(std::string title, std::string message, uint32 title_colour, std::vector<std::string> *buttons)
 {
 	Gump *gump = new MessageBoxGump(title,message,title_colour,buttons);
 	gump->InitGump(0);
@@ -177,7 +177,7 @@ void MessageBoxGump::saveData(ODataSource* ods)
 	CANT_HAPPEN_MSG("Trying to load ModalGump");
 }
 
-bool MessageBoxGump::loadData(IDataSource* ids, uint32_t version)
+bool MessageBoxGump::loadData(IDataSource* ids, uint32 version)
 {
 	CANT_HAPPEN_MSG("Trying to load ModalGump");
 

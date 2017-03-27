@@ -28,14 +28,14 @@ class ConvertUsecodeCrusader : public ConvertUsecode
 	public:
 		const char* const *intrinsics()  { return _intrinsics;  };
 		const char* const *event_names() { return _event_names; };
-		void readheader(IDataSource *ucfile, UsecodeHeader &uch, uint32_t &curOffset);
+		void readheader(IDataSource *ucfile, UsecodeHeader &uch, uint32 &curOffset);
 		void readevents(IDataSource *ucfile, const UsecodeHeader &uch)
 		{
 			EventMap.clear();
-			uint32_t num_crusader_routines = uch.offset / 6;
-			for (uint32_t i=0; i < num_crusader_routines; i++) {
-				/*uint32_t size =*/ read2(ucfile);
-				uint32_t offset = read4(ucfile);
+			uint32 num_crusader_routines = uch.offset / 6;
+			for (uint32 i=0; i < num_crusader_routines; i++) {
+				/*uint32 size =*/ read2(ucfile);
+				uint32 offset = read4(ucfile);
 				EventMap[offset] = i;
 				#ifdef DISASM_DEBUG
 				pout << "Crusader Routine: " << i << ": " << std::hex << std::setw(4) << offset << std::dec << " size " << size << endl;
@@ -45,9 +45,9 @@ class ConvertUsecodeCrusader : public ConvertUsecode
 		
 		// as weird as this may seem, we'll start this with Crusader's opcodes first.
 		// They're both simpler and more complex. *grin*
-		void readOp(TempOp &op, IDataSource *ucfile, uint32_t &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)
+		void readOp(TempOp &op, IDataSource *ucfile, uint32 &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)
 		{ readOpGeneric(op, ucfile, dbg_symbol_offset, debugSymbols, done, true); };
-		Node *readOp(IDataSource *ucfile, uint32_t &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)
+		Node *readOp(IDataSource *ucfile, uint32 &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)
 		{ return readOpGeneric(ucfile, dbg_symbol_offset, debugSymbols, done, true); };
 
 	private:
@@ -60,11 +60,11 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	// 0000
 	"Intrinsic0000()",
 	"Item::getFrame(void)",
-	"Item::setFrame(uint16_t)",
+	"Item::setFrame(uint16)",
 	"Item::getMapNum(void)",
 	"Item::getStatus(void)",
-	"Item::orStatus(int16_t)",
-	"Item::callEvent0A(int16_t)",
+	"Item::orStatus(sint16)",
+	"Item::callEvent0A(sint16)",
 	"Intrinsic0007()",
 	"Item::isNpc(void)",
 	"Item::getZ(void)",
@@ -79,65 +79,65 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	"Item::getType(void)",
 	"Intrinsic0012()",
 	"Intrinsic0013()",
-	"Item::legal_create(uint16_t,uint16_t,uint16_t,uint16_t,uint16_t)",
+	"Item::legal_create(uint16,uint16,uint16,uint16,uint16)",
 	"Item::andStatus(void)",
 	"Intrinsic0016()",
 	"Intrinsic00C3()",
 	"Intrinsic00DA()",
 	"Intrinsic0019()",
-	"Item::create(uint16_t,uint16_t)",
-	"Item::pop(uint16_t,uint16_t,uint8_t)",
+	"Item::create(uint16,uint16)",
+	"Item::pop(uint16,uint16,uint8)",
 	"Intrinsic00FA()",
 	"Item::push(void)",
 	"Intrinsic001E()",
 	"Item::getQLo(void)",
 	// 0020
-	"Item::setQLo(int16_t)",
+	"Item::setQLo(sint16)",
 	"Item::getQHi(void)",
-	"Item::setQHi(int16_t)",
+	"Item::setQHi(sint16)",
 	"Intrinsic0023()",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getCY(void)",
 	"Item::getCX(void)",
 	"Intrinsic0027()",
-	"Item::setNpcNum(int16_t)",
+	"Item::setNpcNum(sint16)",
 	"Intrinsic0029()",
 	"Intrinsic002A()",
 	"Item::pop(void)",
 	"Intrinsic002C()",
-	"Item::isCompletelyOn(uint16_t)",
-	"Item::pop(uint16_t)",
+	"Item::isCompletelyOn(uint16)",
+	"Item::pop(uint16)",
 	"Intrinsic002F()",
 	// 0030
 	"Intrinsic0030()",
 	"Item::getFamily(void)",
 	"Item::destroyContents(void)",
 	"Intrinsic0033()",
-	"Item::getDirToItem(uint16_t)",
+	"Item::getDirToItem(uint16)",
 	"Intrinsic0035()",
 	"Intrinsic0036()",
 	"Intrinsic0037()",
 	"Item::andStatus(void)",
-	"Kernel::resetRef(uint16_t,ProcessType)",
+	"Kernel::resetRef(uint16,ProcessType)",
 	"Item::touch(void)",
 	"Egg::getEggId(void)",
 	"Intrinsic003C()",
 	"Intrinsic003D()",
-	"Item::callEvent11(int16_t)",
+	"Item::callEvent11(sint16)",
 	"Intrinsic003F()",
 	// 0040
 	"Intrinsic0040()",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Item::getQHi(void)",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Item::getQHi(void)",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Item::getQHi(void)",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Item::getQHi(void)",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Item::getQHi(void)",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Item::getQHi(void)",
 	"Intrinsic004D()",
 	"Npc::isDead(void)",
@@ -152,23 +152,23 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	"Intrinsic0056()",
 	"Intrinsic0057()",
 	"Item::use(void)",
-	"Item::setQuantity(int16_t)",
+	"Item::setQuantity(sint16)",
 	"Intrinsic005A()",
 	"Item::getSurfaceWeight(void)",
 	"Intrinsic005C()",
-	"Item::setFrame(uint16_t)",
+	"Item::setFrame(uint16)",
 	"Intrinsic00DA()",
 	"Intrinsic005F()",
 	// 0060
 	"Intrinsic0060()",
 	"Intrinsic0061()",
 	"Intrinsic0062()",
-	"Item::legal_create(uint16_t,uint16_t,WorldPoint&)",
+	"Item::legal_create(uint16,uint16,WorldPoint&)",
 	"Item::getPoint(WorldPoint&)",
-	"Item::legal_move(WorldPoint&,uint16_t,uint16_t)",
+	"Item::legal_move(WorldPoint&,uint16,uint16)",
 	"Item::fall(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
-	"Kernel::getNumProcesses(uint16_t,ProcessType)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
+	"Kernel::getNumProcesses(uint16,ProcessType)",
 	"Item::getCY(void)",
 	"Intrinsic006A()",
 	"Intrinsic006B()",
@@ -185,9 +185,9 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	"Item::getNpcNum(void)",
 	"IntrinsicReturn0",
 	"Intrinsic0077()",
-	"Item::callEvent0B(int16_t)",
+	"Item::callEvent0B(sint16)",
 	"Item::andStatus(void)",
-	"Item::move(uint16_t,uint16_t,uint8_t)",
+	"Item::move(uint16,uint16,uint8)",
 	"Intrinsic007B()",
 	"Intrinsic007C()",
 	"Intrinsic007D()",
@@ -200,28 +200,28 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	"Intrinsic0083()",
 	"Intrinsic0084()",
 	"Intrinsic0085()",
-	"teleportToEgg(int16_t,int,uint8_t)",
+	"teleportToEgg(sint16,int,uint8)",
 	"Intrinsic0087()",
 	"Intrinsic0088()",
 	"Intrinsic00BD()",
 	"Item::getQuality(void)",
-	"Item::setQuality(int16_t)",
+	"Item::setQuality(sint16)",
 	"Intrinsic008C()",
 	"Intrinsic008D()",
 	"Intrinsic008E()",
 	"Camera::getX(void)",
 	// 0090
 	"Camera::getY(void)",
-	"Item::setMapNum(int16_t)",
+	"Item::setMapNum(sint16)",
 	"Item::getNpcNum(void)",
-	"Item::shoot(WorldPoint&,int16_t,int16_t)",
+	"Item::shoot(WorldPoint&,sint16,sint16)",
 	"Intrinsic0094()",
 	"Item::enterFastArea(void)",
 	"Intrinsic00CA()",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
 	"Intrinsic0099()",
-	"teleportToEgg(int16_t,uint8_t)",
+	"teleportToEgg(sint16,uint8)",
 	"Intrinsic009B()",
 	"Intrinsic009C()",
 	"Intrinsic009D()",
@@ -230,32 +230,32 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	// 00A0
 	"Item::andStatus(void)",
 	"Item::getUnkEggType(void)",
-	"Egg::setEggXRange(uint16_t)",
-	"Item::setFrame(uint16_t)",
-	"Item::overlaps(uint16_t)",
-	"Item::isOn(uint16_t)",
+	"Egg::setEggXRange(uint16)",
+	"Item::setFrame(uint16)",
+	"Item::overlaps(uint16)",
+	"Item::isOn(uint16)",
 	"Item::getQHi(void)",
 	"Intrinsic00DA()",
 	"Item::getCY(void)",
 	"Intrinsic00A9()",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Npc::isDead(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Intrinsic00AD()",
 	"Item::getQHi(void)",
 	"Item::andStatus(void)",
 	// 00B0
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::andStatus(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::andStatus(void)",
-	"Item::getDirToCoords(uint16_t,uint16_t)",
+	"Item::getDirToCoords(uint16,uint16)",
 	"Intrinsic00B5()",
 	"Intrinsic00B6()",
 	"Item::getNpcNum(void)",
 	"Item::getCY(void)",
-	"Item::isOn(uint16_t)",
-	"Item::getFootpad(int16_t&,int16_t&,int16_t&)",
+	"Item::isOn(uint16)",
+	"Item::getFootpad(sint16&,sint16&,sint16&)",
 	"Npc::isDead(void)",
 	"Intrinsic00BC()",
 	"Intrinsic00BD()",
@@ -267,17 +267,17 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	"IntrinsicReturn0",
 	"Intrinsic00C3()",
 	"Item::getQHi(void)",
-	"Item::setQuality(int16_t)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::setQuality(sint16)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Intrinsic00C7()",
 	"Intrinsic00C8()",
-	"Item::callEvent0A(int16_t)",
+	"Item::callEvent0A(sint16)",
 	"Intrinsic00CA()",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Intrinsic00CC()",
 	"Intrinsic00CD()",
 	"Item::getQHi(void)",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	// 00D0
 	"Intrinsic00D0()",
 	"Intrinsic00D1()",
@@ -296,29 +296,29 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	"Item::getNpcNum(void)",
 	"Intrinsic00DF()",
 	// 00E0
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Intrinsic00FA()",
 	"Item::getQLo(void)",
 	"Item::getCY(void)",
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	// 00F0
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
 	"Item::andStatus(void)",
 	"Intrinsic00FA()",
@@ -328,26 +328,26 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	"Intrinsic00FC()",
 	"Item::getQLo(void)",
 	"Intrinsic00FE()",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	// 0100
 	"Item::andStatus(void)",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Npc::isDead(void)",
 	"Intrinsic00BD()",
 	"Item::getQHi(void)",
 	"Intrinsic00DA()",
 	"Intrinsic00FA()",
 	"Item::getQLo(void)",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Item::getQHi(void)",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Item::getQHi(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getNpcNum(void)",
 	"Item::getCY(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	// 0110
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Intrinsic0111()",
 	"IntrinsicReturn0",
 	"Npc::isDead(void)",
@@ -362,7 +362,7 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	"Intrinsic011C()",
 	"Item::andStatus(void)",
 	"Item::getNpcNum(void)",
-	"Item::AvatarStoleSomehting(uint16_t)",
+	"Item::AvatarStoleSomehting(uint16)",
 	// 0120
 	"Item::andStatus(void)",
 	"Item::getNpcNum(void)",
@@ -384,18 +384,18 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	"Item::getNpcNum(void)",
 	"Intrinsic0131()",
 	"Item::andStatus(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::andStatus(void)",
 	"Camera::getY(void)",
 	"Camera::getZ(void)",
 	"Intrinsic0137()",
 	"Intrinsic009C()",
-	"Item::getTypeFlagCrusader(int16_t)",
+	"Item::getTypeFlagCrusader(sint16)",
 	"Item::getNpcNum(void)",
-	"Item::hurl(int16_t,int16_t,int16_t,int16_t)",
+	"Item::hurl(sint16,sint16,sint16,sint16)",
 	"Item::getCY(void)",
 	"Item::getCZ(void)",
-	"Item::setFrame(uint16_t)",
+	"Item::setFrame(uint16)",
 	"Intrinsic013F()",
 	// 0140
 	"Intrinsic0140()",
@@ -417,11 +417,11 @@ const char* const ConvertUsecodeCrusader::_intrinsics[] = {
 	// 0150
 	"Intrinsic009C()",
 	"Intrinsic0072()",
-	"Item::setFrame(uint16_t)",
+	"Item::setFrame(uint16)",
 	"Intrinsic00C1()",
 	"Intrinsic00C3()",
 	"Intrinsic00C1()",
-	"Item::isOn(uint16_t)",
+	"Item::isOn(uint16)",
 	"Intrinsic00C3()",
 	"Intrinsic00FA()",
 	"Item::getQHi(void)",
@@ -443,15 +443,15 @@ const char * const ConvertUsecodeCrusader::_event_names[] = {
 	"hatch()",						// 0x07
 	"schedule()",					// 0x08
 	"release()",					// 0x09
-	"func0A(int16_t)",				// 0x0A
-	"func0B(int16_t)",				// 0x0B
+	"func0A(sint16)",				// 0x0A
+	"func0B(sint16)",				// 0x0B
 	"combine()",					// 0x0C
 	"func0D",						// 0x0D
 	"calledFromAnim()",				// 0x0E
 	"enterFastArea()",				// 0x0F
 
 	"leaveFastArea()",				// 0x10
-	"func11(int16_t)",				// 0x11
+	"func11(sint16)",				// 0x11
 	"justMoved()",					// 0x12
 	"AvatarStoleSomething(uword)",	// 0x13
 	"animGetHit()",					// 0x14
@@ -469,7 +469,7 @@ const char * const ConvertUsecodeCrusader::_event_names[] = {
 	0
 };
 
-void ConvertUsecodeCrusader::readheader(IDataSource *ucfile, UsecodeHeader &uch, uint32_t &curOffset)
+void ConvertUsecodeCrusader::readheader(IDataSource *ucfile, UsecodeHeader &uch, uint32 &curOffset)
 {
 	uch.routines = read4(ucfile);     // routines
 	uch.maxOffset = read4(ucfile);           // total code size,
@@ -488,7 +488,7 @@ void ConvertUsecodeCrusader::readheader(IDataSource *ucfile, UsecodeHeader &uch,
 	curOffset = 1-uch.offset;
 };
 
-/*void ConvertUsecodeCrusader::readOp(TempOp &op, IDataSource *ucfile, uint32_t &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)
+/*void ConvertUsecodeCrusader::readOp(TempOp &op, IDataSource *ucfile, uint32 &dbg_symbol_offset, std::vector<DebugSymbol> &debugSymbols, bool &done)
 {
 
 };*/

@@ -41,7 +41,7 @@ public:
 
 static inline uintX Interpolate_2xSaI (uintS colorA, uintS colorB)
 {
-	uint8_t r0, r1, g0, g1, b0, b1, a0, a1;
+	uint8 r0, r1, g0, g1, b0, b1, a0, a1;
 	Manip::split(colorA, r0, g0, b0, a0);
 	Manip::split(colorB, r1, g1, b1, a1);
 	int r = (r0 + r1)>>1;
@@ -53,8 +53,8 @@ static inline uintX Interpolate_2xSaI (uintS colorA, uintS colorB)
 
 static inline uintX OInterpolate_2xSaI (uintS colorA, uintS colorB, uintS colorC)
 {
-	uint8_t r0, r1, g0, g1, b0, b1, a0, a1;
-	uint8_t r2, g2, b2, a2;
+	uint8 r0, r1, g0, g1, b0, b1, a0, a1;
+	uint8 r2, g2, b2, a2;
 	Manip::split(colorA, r0, g0, b0, a0);
 	Manip::split(colorB, r1, g1, b1, a1);
 	Manip::split(colorC, r2, g2, b2, a2);
@@ -67,8 +67,8 @@ static inline uintX OInterpolate_2xSaI (uintS colorA, uintS colorB, uintS colorC
 
 static inline uintX QInterpolate_2xSaI (uintS colorA, uintS colorB, uintS colorC, uintS colorD)
 {
-	uint8_t r0, r1, g0, g1, b0, b1, a0, a1;
-	uint8_t r2, r3, g2, g3, b2, b3, a2, a3;
+	uint8 r0, r1, g0, g1, b0, b1, a0, a1;
+	uint8 r2, r3, g2, g3, b2, b3, a2, a3;
 	Manip::split(colorA, r0, g0, b0, a0);
 	Manip::split(colorB, r1, g1, b1, a1);
 	Manip::split(colorC, r2, g2, b2, a2);
@@ -782,8 +782,8 @@ static void Scale_SuperEagle
 	
 }
 
-static bool Scale2xSaI(Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+static bool Scale2xSaI(Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	if (sw*2!=dw || sh*2!=dh) return false;
 
@@ -802,8 +802,8 @@ static bool Scale2xSaI(Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t
 	return true;
 }
 
-static bool ScaleSuper2xSaI(Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+static bool ScaleSuper2xSaI(Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	if (sw*2!=dw || sh*2!=dh) return false;
 
@@ -822,8 +822,8 @@ static bool ScaleSuper2xSaI(Texture *tex, int32_t sx, int32_t sy, int32_t sw, in
 	return true;
 }
 
-static bool ScaleSuperEagle(Texture *tex, int32_t sx, int32_t sy, int32_t sw, int32_t sh, 
-					uint8_t* pixel, int32_t dw, int32_t dh, int32_t pitch, bool clamp_src)
+static bool ScaleSuperEagle(Texture *tex, sint32 sx, sint32 sy, sint32 sw, sint32 sh, 
+					uint8* pixel, sint32 dw, sint32 dh, sint32 pitch, bool clamp_src)
 {
 	if (sw*2!=dw || sh*2!=dh) return false;
 
@@ -849,16 +849,16 @@ static bool ScaleSuperEagle(Texture *tex, int32_t sx, int32_t sy, int32_t sw, in
 //
 _2xSaIScaler::_2xSaIScaler() : Scaler()
 {
-	Scale16Nat = _2xSaIScalerInternal<uint16_t, Manip_Nat2Nat_16, uint16_t>::Scale2xSaI;
-	Scale16Sta = _2xSaIScalerInternal<uint16_t, Manip_Sta2Nat_16, uint32_t>::Scale2xSaI;
+	Scale16Nat = _2xSaIScalerInternal<uint16, Manip_Nat2Nat_16, uint16>::Scale2xSaI;
+	Scale16Sta = _2xSaIScalerInternal<uint16, Manip_Sta2Nat_16, uint32>::Scale2xSaI;
 
-	Scale32Nat = _2xSaIScalerInternal<uint32_t, Manip_Nat2Nat_32, uint32_t>::Scale2xSaI;
-	Scale32Sta = _2xSaIScalerInternal<uint32_t, Manip_Sta2Nat_32, uint32_t>::Scale2xSaI;
-	Scale32_A888 = _2xSaIScalerInternal<uint32_t, Manip_32_A888, uint32_t>::Scale2xSaI;
-	Scale32_888A = _2xSaIScalerInternal<uint32_t, Manip_32_888A, uint32_t>::Scale2xSaI;
+	Scale32Nat = _2xSaIScalerInternal<uint32, Manip_Nat2Nat_32, uint32>::Scale2xSaI;
+	Scale32Sta = _2xSaIScalerInternal<uint32, Manip_Sta2Nat_32, uint32>::Scale2xSaI;
+	Scale32_A888 = _2xSaIScalerInternal<uint32, Manip_32_A888, uint32>::Scale2xSaI;
+	Scale32_888A = _2xSaIScalerInternal<uint32, Manip_32_888A, uint32>::Scale2xSaI;
 }
 
-const uint32_t _2xSaIScaler::ScaleBits() const { return 1<<2; }
+const uint32 _2xSaIScaler::ScaleBits() const { return 1<<2; }
 const bool _2xSaIScaler::ScaleArbitrary() const { return false; }
 
 const char *_2xSaIScaler::ScalerName() const { return "2xSaI"; }
@@ -872,16 +872,16 @@ const _2xSaIScaler _2xSaI_scaler;
 //
 Super2xSaIScaler::Super2xSaIScaler() : Scaler()
 {
-	Scale16Nat = _2xSaIScalerInternal<uint16_t, Manip_Nat2Nat_16, uint16_t>::ScaleSuper2xSaI;
-	Scale16Sta = _2xSaIScalerInternal<uint16_t, Manip_Sta2Nat_16, uint32_t>::ScaleSuper2xSaI;
+	Scale16Nat = _2xSaIScalerInternal<uint16, Manip_Nat2Nat_16, uint16>::ScaleSuper2xSaI;
+	Scale16Sta = _2xSaIScalerInternal<uint16, Manip_Sta2Nat_16, uint32>::ScaleSuper2xSaI;
 
-	Scale32Nat = _2xSaIScalerInternal<uint32_t, Manip_Nat2Nat_32, uint32_t>::ScaleSuper2xSaI;
-	Scale32Sta = _2xSaIScalerInternal<uint32_t, Manip_Sta2Nat_32, uint32_t>::ScaleSuper2xSaI;
-	Scale32_A888 = _2xSaIScalerInternal<uint32_t, Manip_32_A888, uint32_t>::ScaleSuper2xSaI;
-	Scale32_888A = _2xSaIScalerInternal<uint32_t, Manip_32_888A, uint32_t>::ScaleSuper2xSaI;
+	Scale32Nat = _2xSaIScalerInternal<uint32, Manip_Nat2Nat_32, uint32>::ScaleSuper2xSaI;
+	Scale32Sta = _2xSaIScalerInternal<uint32, Manip_Sta2Nat_32, uint32>::ScaleSuper2xSaI;
+	Scale32_A888 = _2xSaIScalerInternal<uint32, Manip_32_A888, uint32>::ScaleSuper2xSaI;
+	Scale32_888A = _2xSaIScalerInternal<uint32, Manip_32_888A, uint32>::ScaleSuper2xSaI;
 }
 
-const uint32_t Super2xSaIScaler::ScaleBits() const { return 1<<2; }
+const uint32 Super2xSaIScaler::ScaleBits() const { return 1<<2; }
 const bool Super2xSaIScaler::ScaleArbitrary() const { return false; }
 
 const char *Super2xSaIScaler::ScalerName() const { return "Super2xSaI"; }
@@ -895,16 +895,16 @@ const Super2xSaIScaler Super2xSaI_scaler;
 //
 SuperEagleScaler::SuperEagleScaler() : Scaler()
 {
-	Scale16Nat = _2xSaIScalerInternal<uint16_t, Manip_Nat2Nat_16, uint16_t>::ScaleSuperEagle;
-	Scale16Sta = _2xSaIScalerInternal<uint16_t, Manip_Sta2Nat_16, uint32_t>::ScaleSuperEagle;
+	Scale16Nat = _2xSaIScalerInternal<uint16, Manip_Nat2Nat_16, uint16>::ScaleSuperEagle;
+	Scale16Sta = _2xSaIScalerInternal<uint16, Manip_Sta2Nat_16, uint32>::ScaleSuperEagle;
 
-	Scale32Nat = _2xSaIScalerInternal<uint32_t, Manip_Nat2Nat_32, uint32_t>::ScaleSuperEagle;
-	Scale32Sta = _2xSaIScalerInternal<uint32_t, Manip_Sta2Nat_32, uint32_t>::ScaleSuperEagle;
-	Scale32_A888 = _2xSaIScalerInternal<uint32_t, Manip_32_A888, uint32_t>::ScaleSuperEagle;
-	Scale32_888A = _2xSaIScalerInternal<uint32_t, Manip_32_888A, uint32_t>::ScaleSuperEagle;
+	Scale32Nat = _2xSaIScalerInternal<uint32, Manip_Nat2Nat_32, uint32>::ScaleSuperEagle;
+	Scale32Sta = _2xSaIScalerInternal<uint32, Manip_Sta2Nat_32, uint32>::ScaleSuperEagle;
+	Scale32_A888 = _2xSaIScalerInternal<uint32, Manip_32_A888, uint32>::ScaleSuperEagle;
+	Scale32_888A = _2xSaIScalerInternal<uint32, Manip_32_888A, uint32>::ScaleSuperEagle;
 }
 
-const uint32_t SuperEagleScaler::ScaleBits() const { return 1<<2; }
+const uint32 SuperEagleScaler::ScaleBits() const { return 1<<2; }
 const bool SuperEagleScaler::ScaleArbitrary() const { return false; }
 
 const char *SuperEagleScaler::ScalerName() const { return "SuperEagle"; }
@@ -922,17 +922,17 @@ const SuperEagleScaler SuperEagle_scaler;
 
 GC_2xSaIScaler::GC_2xSaIScaler() : Scaler()
 {
-	Scale16Nat = _2xSaIScalerInternal<uint16_t, Manip_Nat2Nat_16_GC, uint16_t>::Scale2xSaI;
-	Scale16Sta = _2xSaIScalerInternal<uint16_t, Manip_Sta2Nat_16_GC, uint32_t>::Scale2xSaI;
+	Scale16Nat = _2xSaIScalerInternal<uint16, Manip_Nat2Nat_16_GC, uint16>::Scale2xSaI;
+	Scale16Sta = _2xSaIScalerInternal<uint16, Manip_Sta2Nat_16_GC, uint32>::Scale2xSaI;
 
-	Scale32Nat = _2xSaIScalerInternal<uint32_t, Manip_Nat2Nat_32_GC, uint32_t>::Scale2xSaI;
-	Scale32Sta = _2xSaIScalerInternal<uint32_t, Manip_Sta2Nat_32_GC, uint32_t>::Scale2xSaI;
-	Scale32_A888 = _2xSaIScalerInternal<uint32_t, Manip_32_A888_GC, uint32_t>::Scale2xSaI;
-	Scale32_888A = _2xSaIScalerInternal<uint32_t, Manip_32_888A_GC, uint32_t>::Scale2xSaI;
+	Scale32Nat = _2xSaIScalerInternal<uint32, Manip_Nat2Nat_32_GC, uint32>::Scale2xSaI;
+	Scale32Sta = _2xSaIScalerInternal<uint32, Manip_Sta2Nat_32_GC, uint32>::Scale2xSaI;
+	Scale32_A888 = _2xSaIScalerInternal<uint32, Manip_32_A888_GC, uint32>::Scale2xSaI;
+	Scale32_888A = _2xSaIScalerInternal<uint32, Manip_32_888A_GC, uint32>::Scale2xSaI;
 
 }
 
-const uint32_t GC_2xSaIScaler::ScaleBits() const { return 1<<2; }
+const uint32 GC_2xSaIScaler::ScaleBits() const { return 1<<2; }
 const bool GC_2xSaIScaler::ScaleArbitrary() const { return false; }
 
 const char *GC_2xSaIScaler::ScalerName() const { return "GC-2xSaI"; }
@@ -948,17 +948,17 @@ const GC_2xSaIScaler GC_2xSaI_scaler;
 
 GC_Super2xSaIScaler::GC_Super2xSaIScaler() : Scaler()
 {
-	Scale16Nat = _2xSaIScalerInternal<uint16_t, Manip_Nat2Nat_16_GC, uint16_t>::ScaleSuper2xSaI;
-	Scale16Sta = _2xSaIScalerInternal<uint16_t, Manip_Sta2Nat_16_GC, uint32_t>::ScaleSuper2xSaI;
+	Scale16Nat = _2xSaIScalerInternal<uint16, Manip_Nat2Nat_16_GC, uint16>::ScaleSuper2xSaI;
+	Scale16Sta = _2xSaIScalerInternal<uint16, Manip_Sta2Nat_16_GC, uint32>::ScaleSuper2xSaI;
 
-	Scale32Nat = _2xSaIScalerInternal<uint32_t, Manip_Nat2Nat_32_GC, uint32_t>::ScaleSuper2xSaI;
-	Scale32Sta = _2xSaIScalerInternal<uint32_t, Manip_Sta2Nat_32_GC, uint32_t>::ScaleSuper2xSaI;
-	Scale32_A888 = _2xSaIScalerInternal<uint32_t, Manip_32_A888_GC, uint32_t>::ScaleSuper2xSaI;
-	Scale32_888A = _2xSaIScalerInternal<uint32_t, Manip_32_888A_GC, uint32_t>::ScaleSuper2xSaI;
+	Scale32Nat = _2xSaIScalerInternal<uint32, Manip_Nat2Nat_32_GC, uint32>::ScaleSuper2xSaI;
+	Scale32Sta = _2xSaIScalerInternal<uint32, Manip_Sta2Nat_32_GC, uint32>::ScaleSuper2xSaI;
+	Scale32_A888 = _2xSaIScalerInternal<uint32, Manip_32_A888_GC, uint32>::ScaleSuper2xSaI;
+	Scale32_888A = _2xSaIScalerInternal<uint32, Manip_32_888A_GC, uint32>::ScaleSuper2xSaI;
 
 }
 
-const uint32_t GC_Super2xSaIScaler::ScaleBits() const { return 1<<2; }
+const uint32 GC_Super2xSaIScaler::ScaleBits() const { return 1<<2; }
 const bool GC_Super2xSaIScaler::ScaleArbitrary() const { return false; }
 
 const char *GC_Super2xSaIScaler::ScalerName() const { return "GC-Super2xSaI"; }
@@ -973,16 +973,16 @@ const GC_Super2xSaIScaler GC_Super2xSaI_scaler;
 //
 GC_SuperEagleScaler::GC_SuperEagleScaler() : Scaler()
 {
-	Scale16Nat = _2xSaIScalerInternal<uint16_t, Manip_Nat2Nat_16_GC, uint16_t>::ScaleSuperEagle;
-	Scale16Sta = _2xSaIScalerInternal<uint16_t, Manip_Sta2Nat_16_GC, uint32_t>::ScaleSuperEagle;
+	Scale16Nat = _2xSaIScalerInternal<uint16, Manip_Nat2Nat_16_GC, uint16>::ScaleSuperEagle;
+	Scale16Sta = _2xSaIScalerInternal<uint16, Manip_Sta2Nat_16_GC, uint32>::ScaleSuperEagle;
 
-	Scale32Nat = _2xSaIScalerInternal<uint32_t, Manip_Nat2Nat_32_GC, uint32_t>::ScaleSuperEagle;
-	Scale32Sta = _2xSaIScalerInternal<uint32_t, Manip_Sta2Nat_32_GC, uint32_t>::ScaleSuperEagle;
-	Scale32_A888 = _2xSaIScalerInternal<uint32_t, Manip_32_A888_GC, uint32_t>::ScaleSuperEagle;
-	Scale32_888A = _2xSaIScalerInternal<uint32_t, Manip_32_888A_GC, uint32_t>::ScaleSuperEagle;
+	Scale32Nat = _2xSaIScalerInternal<uint32, Manip_Nat2Nat_32_GC, uint32>::ScaleSuperEagle;
+	Scale32Sta = _2xSaIScalerInternal<uint32, Manip_Sta2Nat_32_GC, uint32>::ScaleSuperEagle;
+	Scale32_A888 = _2xSaIScalerInternal<uint32, Manip_32_A888_GC, uint32>::ScaleSuperEagle;
+	Scale32_888A = _2xSaIScalerInternal<uint32, Manip_32_888A_GC, uint32>::ScaleSuperEagle;
 }
 
-const uint32_t GC_SuperEagleScaler::ScaleBits() const { return 1<<2; }
+const uint32 GC_SuperEagleScaler::ScaleBits() const { return 1<<2; }
 const bool GC_SuperEagleScaler::ScaleArbitrary() const { return false; }
 
 const char *GC_SuperEagleScaler::ScalerName() const { return "GC-SuperEagle"; }

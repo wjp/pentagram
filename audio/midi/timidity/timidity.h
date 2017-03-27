@@ -51,7 +51,7 @@ extern void Timidity_FreeSong(MidiSong *song);
 #define PE_ULAW 	0x08  /* versus linear */
 #define PE_BYTESWAP	0x10  /* versus the other way */
 
-int Timidity_Init_Simple(int rate, int samples, int32_t encoding);
+int Timidity_Init_Simple(int rate, int samples, sint32 encoding);
 void Timidity_DeInit();
 extern void Timidity_FinalInit(bool patches[128], bool drums[128]);
 extern void Timidity_PlayEvent(unsigned char status, int a, int b);
@@ -243,14 +243,14 @@ extern void Timidity_GenerateSamples(void *stream, int samples);
 #define AMP_BITS (15-GUARD_BITS)
 
 #ifdef LOOKUP_HACK
-   typedef int8_t sample_t;
-   typedef uint8_t final_volume_t;
+   typedef sint8 sample_t;
+   typedef uint8 final_volume_t;
 #  define FINAL_VOLUME(v) (~_l2u[v])
 #  define MIXUP_SHIFT 5
 #  define MAX_AMP_VALUE 4095
 #else
-   typedef int16_t sample_t;
-   typedef int32_t final_volume_t;
+   typedef sint16 sample_t;
+   typedef sint32 final_volume_t;
 #  define FINAL_VOLUME(v) (v)
 #  define MAX_AMP_VALUE ((1<<(AMP_BITS+1))-1)
 #endif

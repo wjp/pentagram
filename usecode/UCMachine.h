@@ -45,35 +45,35 @@ public:
 
 	void execProcess(UCProcess* proc);
 
-	std::string& getString(uint16_t str);
-	UCList* getList(uint16_t l);
+	std::string& getString(uint16 str);
+	UCList* getList(uint16 l);
 
-	void freeString(uint16_t s);
-	void freeStringList(uint16_t l);
-	void freeList(uint16_t l);
+	void freeString(uint16 s);
+	void freeStringList(uint16 l);
+	void freeList(uint16 l);
 
-	uint16_t duplicateString(uint16_t str);
+	uint16 duplicateString(uint16 str);
 
 	void usecodeStats();
 
-	static uint32_t listToPtr(uint16_t l);
-	static uint32_t stringToPtr(uint16_t s);
-	static uint32_t stackToPtr(uint16_t pid, uint16_t offset);
-	static uint32_t globalToPtr(uint16_t offset);
-	static uint32_t objectToPtr(uint16_t objID);
+	static uint32 listToPtr(uint16 l);
+	static uint32 stringToPtr(uint16 s);
+	static uint32 stackToPtr(uint16 pid, uint16 offset);
+	static uint32 globalToPtr(uint16 offset);
+	static uint32 objectToPtr(uint16 objID);
 
-	static uint16_t ptrToObject(uint32_t ptr);
+	static uint16 ptrToObject(uint32 ptr);
 
-	bool assignPointer(uint32_t ptr, const uint8_t* data, uint32_t size);
-	bool dereferencePointer(uint32_t ptr, uint8_t* data, uint32_t size);
+	bool assignPointer(uint32 ptr, const uint8* data, uint32 size);
+	bool dereferencePointer(uint32 ptr, uint8* data, uint32 size);
 
 	void saveGlobals(ODataSource* ods);
 	void saveStrings(ODataSource* ods);
 	void saveLists(ODataSource* ods);
 
-	bool loadGlobals(IDataSource* ids, uint32_t version);
-	bool loadStrings(IDataSource* ids, uint32_t version);
-	bool loadLists(IDataSource* ids, uint32_t version);
+	bool loadGlobals(IDataSource* ids, uint32 version);
+	bool loadStrings(IDataSource* ids, uint32 version);
+	bool loadLists(IDataSource* ids, uint32 version);
 
 	INTRINSIC(I_true);
 	INTRINSIC(I_dummyProcess);
@@ -94,11 +94,11 @@ private:
 
 	BitSet* globals;
 
-	std::map<uint16_t, UCList*> listHeap;
-	std::map<uint16_t, std::string> stringHeap;
+	std::map<uint16, UCList*> listHeap;
+	std::map<uint16, std::string> stringHeap;
 
-	uint16_t assignString(const char* str);
-	uint16_t assignList(UCList* l);
+	uint16 assignString(const char* str);
+	uint16 assignList(UCList* l);
 
 	idMan* listIDs;
 	idMan* stringIDs;
@@ -116,9 +116,9 @@ private:
 	bool trace_events;
 	std::set<ObjId> trace_ObjIDs;
 	std::set<ProcId> trace_PIDs;
-	std::set<uint16_t> trace_classes;
+	std::set<uint16> trace_classes;
 
-	inline bool trace_show(ProcId pid, ObjId objid, uint16_t ucclass) {
+	inline bool trace_show(ProcId pid, ObjId objid, uint16 ucclass) {
 		if (!tracing_enabled) return false;
 		if (trace_all) return true;
 		if (trace_ObjIDs.find(objid) != trace_ObjIDs.end()) return true;

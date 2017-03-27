@@ -50,7 +50,7 @@ void MainShapeArchive::loadTypeFlags(IDataSource *ds)
 	typeFlags->load(ds);
 }
 
-ShapeInfo* MainShapeArchive::getShapeInfo(uint32_t shapenum)
+ShapeInfo* MainShapeArchive::getShapeInfo(uint32 shapenum)
 {
 	assert(typeFlags);
 
@@ -68,14 +68,14 @@ void MainShapeArchive::loadAnimDat(IDataSource *ds)
 	animdat->load(ds);
 }
 
-ActorAnim* MainShapeArchive::getAnim(uint32_t shape) const
+ActorAnim* MainShapeArchive::getAnim(uint32 shape) const
 {
 	assert(animdat);
 
 	return animdat->getAnim(shape);
 }
 
-AnimAction* MainShapeArchive::getAnim(uint32_t shape, uint32_t action) const
+AnimAction* MainShapeArchive::getAnim(uint32 shape, uint32 action) const
 {
 	assert(animdat);
 

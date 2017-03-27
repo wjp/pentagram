@@ -93,24 +93,24 @@ void SpriteProcess::run()
 
 // createSprite(shape, frame, end,               delay, x, y, z);
 // createSprite(shape, frame, end, unk, repeats, delay, x, y, z);
-uint32_t SpriteProcess::I_createSprite(const uint8_t* args, unsigned int argsize)
+uint32 SpriteProcess::I_createSprite(const uint8* args, unsigned int argsize)
 {
 	int repeats = 1;
-	ARG_int16_t(shape);
-	ARG_int16_t(frame);
-	ARG_int16_t(last_frame);
+	ARG_SINT16(shape);
+	ARG_SINT16(frame);
+	ARG_SINT16(last_frame);
 
 	if (argsize == 18)
 	{
-		ARG_int16_t(unknown);
-		ARG_int16_t(repeats_count);
+		ARG_SINT16(unknown);
+		ARG_SINT16(repeats_count);
 		repeats = repeats_count;
 	}
 
-	ARG_int16_t(delay);
-	ARG_uint16_t(x);
-	ARG_uint16_t(y);
-	ARG_uint8_t(z);
+	ARG_SINT16(delay);
+	ARG_UINT16(x);
+	ARG_UINT16(y);
+	ARG_UINT8(z);
 	Process *p = new SpriteProcess(shape, frame, last_frame, repeats, delay, x, y, z);
 	return Kernel::get_instance()->addProcess(p);
 }
@@ -119,20 +119,20 @@ void SpriteProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 
-	ods->write4(static_cast<uint32_t>(shape));
-	ods->write4(static_cast<uint32_t>(frame));
-	ods->write4(static_cast<uint32_t>(first_frame));
-	ods->write4(static_cast<uint32_t>(last_frame));
-	ods->write4(static_cast<uint32_t>(repeats));
-	ods->write4(static_cast<uint32_t>(delay));
-	ods->write4(static_cast<uint32_t>(x));
-	ods->write4(static_cast<uint32_t>(y));
-	ods->write4(static_cast<uint32_t>(z));
-	ods->write4(static_cast<uint32_t>(delay_counter));
+	ods->write4(static_cast<uint32>(shape));
+	ods->write4(static_cast<uint32>(frame));
+	ods->write4(static_cast<uint32>(first_frame));
+	ods->write4(static_cast<uint32>(last_frame));
+	ods->write4(static_cast<uint32>(repeats));
+	ods->write4(static_cast<uint32>(delay));
+	ods->write4(static_cast<uint32>(x));
+	ods->write4(static_cast<uint32>(y));
+	ods->write4(static_cast<uint32>(z));
+	ods->write4(static_cast<uint32>(delay_counter));
 	ods->write1(initialized ? 1 : 0);
 }
 
-bool SpriteProcess::loadData(IDataSource* ids, uint32_t version)
+bool SpriteProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

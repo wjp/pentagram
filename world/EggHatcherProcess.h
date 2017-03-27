@@ -37,13 +37,13 @@ public:
 	virtual void run();
 
 	void addEgg(Egg* egg);
-	void addEgg(uint16_t egg);
+	void addEgg(uint16 egg);
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 private:
 	virtual void saveData(ODataSource* ods);
 
-	std::vector<uint16_t> eggs;
+	std::vector<uint16> eggs;
 };
 
 

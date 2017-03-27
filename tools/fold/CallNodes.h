@@ -29,7 +29,7 @@ class DCCallPostfixNode : public Node
 {
 	public:
 		DCCallPostfixNode() : Node() {};
-		DCCallPostfixNode(const uint32_t opcode, const uint32_t offset, const uint32_t newSP)
+		DCCallPostfixNode(const uint32 opcode, const uint32 offset, const uint32 newSP)
 			: Node(opcode, offset, Type(Type::T_INVALID)), sp(newSP)
 			{
 				assert(acceptOp(opcode, 0x65, 0x6E));
@@ -40,7 +40,7 @@ class DCCallPostfixNode : public Node
 					default: assert(false);
 				}
 			};
-		DCCallPostfixNode(const uint32_t opcode, const uint32_t offset)
+		DCCallPostfixNode(const uint32 opcode, const uint32 offset)
 			: Node(opcode, offset, Type(Type::T_INVALID)), sp(0)
 			{
 				assert(acceptOp(opcode, 0x5D, 0x5E));
@@ -54,26 +54,26 @@ class DCCallPostfixNode : public Node
 		~DCCallPostfixNode() {};
 
 		void print() const {};
-		void print_unk(Console &o, const uint32_t isize, const bool comment) const;
-		void print_unk(Console &o, const uint32_t isize) const { print_unk(o, isize, true); };
+		void print_unk(Console &o, const uint32 isize, const bool comment) const;
+		void print_unk(Console &o, const uint32 isize) const { print_unk(o, isize, true); };
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 
 		bool fold(DCUnit *unit, std::deque<Node *> &nodes);
 
-		int32_t size() const { return static_cast<int8_t>(sp); };
+		sint32 size() const { return static_cast<sint8>(sp); };
 
 	protected:
 		enum callpostfixtype { PUSH_RETVAL, FREESTR, ADDSP } ptype;
 
 	private:
-		uint32_t sp;
+		uint32 sp;
 };
 
 class DCCallMutatorNode : public BinNode
 {
 	public:
-		DCCallMutatorNode(const uint32_t opcode, const uint32_t offset, const uint32_t newNumBytes)
+		DCCallMutatorNode(const uint32 opcode, const uint32 offset, const uint32 newNumBytes)
 			: BinNode(opcode, offset, Type(Type::T_INVALID)), numBytes(newNumBytes)
 			{
 				assert(acceptOp(opcode, 0x4C));
@@ -84,7 +84,7 @@ class DCCallMutatorNode : public BinNode
 					default: assert(false);
 				}
 			};
-		DCCallMutatorNode(const uint32_t opcode, const uint32_t offset)
+		DCCallMutatorNode(const uint32 opcode, const uint32 offset)
 			: BinNode(opcode, offset, Type(Type::T_INVALID)), numBytes(0)
 			{
 				assert(acceptOp(opcode, 0x77, 0x78));
@@ -97,8 +97,8 @@ class DCCallMutatorNode : public BinNode
 			};
 		~DCCallMutatorNode() {};
 
-		void print_unk(Console &o, const uint32_t isize, const bool comment) const;
-		void print_unk(Console &o, const uint32_t isize) const { print_unk(o, isize, true); };
+		void print_unk(Console &o, const uint32 isize, const bool comment) const;
+		void print_unk(Console &o, const uint32 isize) const { print_unk(o, isize, true); };
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 
@@ -108,7 +108,7 @@ class DCCallMutatorNode : public BinNode
 		enum mutatortype { PUSH_INDIRECT, SET_INFO, PROCESS_EXCLUDE } mtype;
 
 	private:
-		uint32_t numBytes;
+		uint32 numBytes;
 	
 	public: // accessors
 		const Node *a_lnode() const { return lnode; };
@@ -119,7 +119,7 @@ class DCCallNode : public ColNode
 {
 	public:
 		DCCallNode() : ColNode() {};
-		DCCallNode(const uint32_t opcode, const uint32_t offset, const uint32_t newValue1, const uint32_t newValue2)
+		DCCallNode(const uint32 opcode, const uint32 offset, const uint32 newValue1, const uint32 newValue2)
 			: ColNode(opcode, offset, Type(Type::T_VOID)), addSP(0), retVal(0), thisP(0)
 			{
 				assert(acceptOp(opcode, 0x0F, 0x11));
@@ -138,7 +138,7 @@ class DCCallNode : public ColNode
 					default: assert(false);
 				}
 			};
-		DCCallNode(const uint32_t opcode, const uint32_t offset, const uint32_t newValue1, const uint32_t newValue2, const uint32_t newValue3, const uint32_t newValue4)
+		DCCallNode(const uint32 opcode, const uint32 offset, const uint32 newValue1, const uint32 newValue2, const uint32 newValue3, const uint32 newValue4)
 			: ColNode(opcode, offset, Type(Type::T_VOID)), addSP(0), retVal(0), thisP(0)
 			{
 				assert(acceptOp(opcode, 0x57));
@@ -158,8 +158,8 @@ class DCCallNode : public ColNode
 		~DCCallNode() {};
 
 		void print() const {};
-		void print_extern_unk(Console &o, const uint32_t isize) const;
-		void print_unk(Console &o, const uint32_t isize) const;
+		void print_extern_unk(Console &o, const uint32 isize) const;
+		void print_unk(Console &o, const uint32 isize) const;
 		void print_asm(Console &o) const;
 		void print_bin(ODequeDataSource &o) const;
 
@@ -174,13 +174,13 @@ class DCCallNode : public ColNode
 		enum calltype { CALLI, CALL, SPAWN } ctype;
 
 	private:
-		uint32_t uclass; // call & spawn
-		uint32_t targetOffset; // call & spawn
+		uint32 uclass; // call & spawn
+		uint32 targetOffset; // call & spawn
 		
-		uint32_t spsize; // calli & spawn
-		uint32_t intrinsic; // calli
+		uint32 spsize; // calli & spawn
+		uint32 intrinsic; // calli
 		
-		uint32_t thispsize; // spawn
+		uint32 thispsize; // spawn
 
 		DCCallPostfixNode *addSP;
 		DCCallPostfixNode *retVal;

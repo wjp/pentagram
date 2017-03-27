@@ -52,11 +52,11 @@ AnimationTracker::~AnimationTracker()
 }
 
 bool AnimationTracker::init(Actor* actor_, Animation::Sequence action_,
-							uint32_t dir_, PathfindingState* state_)
+							uint32 dir_, PathfindingState* state_)
 {
 	assert(actor_);
 	actor = actor_->getObjId();
-	uint32_t shape = actor_->getShape();
+	uint32 shape = actor_->getShape();
 	animaction = GameData::get_instance()->getMainShapes()->
 		getAnim(shape, action_);
 	if (!animaction) return false;
@@ -122,7 +122,7 @@ unsigned int AnimationTracker::getNextFrame(unsigned int frame)
 	return frame;
 }
 
-bool AnimationTracker::stepFrom(int32_t x_, int32_t y_, int32_t z_)
+bool AnimationTracker::stepFrom(sint32 x_, sint32 y_, sint32 z_)
 {
 	x = x_;
 	y = y_;
@@ -131,7 +131,7 @@ bool AnimationTracker::stepFrom(int32_t x_, int32_t y_, int32_t z_)
 	return step();
 }
 
-void AnimationTracker::evaluateMaxAnimTravel(int32_t& max_endx, int32_t& max_endy, uint32_t dir)
+void AnimationTracker::evaluateMaxAnimTravel(sint32& max_endx, sint32& max_endy, uint32 dir)
 {
 	max_endx = x;
 	max_endy = y;
@@ -151,8 +151,8 @@ void AnimationTracker::evaluateMaxAnimTravel(int32_t& max_endx, int32_t& max_end
 	{
 		AnimFrame& f = animaction->frames[dir][testframe];
 		// determine movement for this frame
-		int32_t dx = 4 * x_fact[dir] * f.deltadir;
-		int32_t dy = 4 * y_fact[dir] * f.deltadir;
+		sint32 dx = 4 * x_fact[dir] * f.deltadir;
+		sint32 dy = 4 * y_fact[dir] * f.deltadir;
 		max_endx += dx;
 		max_endy += dy;
 		testframe = getNextFrame(testframe);
@@ -202,9 +202,9 @@ bool AnimationTracker::step()
 	flipped = f.is_flipped();
 
 	// determine movement for this frame
-	int32_t dx = 4 * x_fact[dir] * f.deltadir;
-	int32_t dy = 4 * y_fact[dir] * f.deltadir;
-	int32_t dz = f.deltaz;
+	sint32 dx = 4 * x_fact[dir] * f.deltadir;
+	sint32 dy = 4 * y_fact[dir] * f.deltadir;
+	sint32 dz = f.deltaz;
 
 	if (mode == TargetMode && !(f.flags & AnimFrame::AFF_ONGROUND))
 	{
@@ -221,10 +221,10 @@ bool AnimationTracker::step()
 
 	// determine footpad
 	bool actorflipped = (a->getFlags() & Item::FLG_FLIPPED) != 0;
-	int32_t xd, yd, zd;
+	sint32 xd, yd, zd;
 	a->getFootpadWorld(xd, yd, zd);
 	if (actorflipped != flipped) {
-		int32_t t = xd;
+		sint32 t = xd;
 		xd = yd;
 		yd = t;
 	}
@@ -256,7 +256,7 @@ bool AnimationTracker::step()
 	// to the Upper Catacombs places you inside the floor. Using this
 	// scanForValidPosition after a teleport would work around that problem.
 
-	int32_t tx,ty,tz;
+	sint32 tx,ty,tz;
 	tx = x+dx;
 	ty = y+dy;
 	tz = z+dz;
@@ -264,9 +264,9 @@ bool AnimationTracker::step()
 	// Only for particularly large steps we do a full sweepTest
 	if (abs(dx) >= xd - 8 || abs(dy) >= yd - 8 || abs(dz) >= zd - 8) {
 
-		int32_t start[3] = { x, y, z };
-		int32_t end[3] = { tx, ty, tz };
-		int32_t dims[3] = { xd, yd, zd };
+		sint32 start[3] = { x, y, z };
+		sint32 end[3] = { tx, ty, tz };
+		sint32 dims[3] = { xd, yd, zd };
 
 		// Do the sweep test
 		std::list<CurrentMap::SweepItem> collisions;
@@ -307,7 +307,7 @@ bool AnimationTracker::step()
 	if (GAME_IS_U8 && targetok && support)
 	{
 		// Might need to check for bridge traversal adjustments
-		uint32_t supportshape = support->getShape();
+		uint32 supportshape = support->getShape();
 		if(supportshape >= 675 && supportshape <= 681)
 		{
 			// Could be a sloping portion of a bridge.  For a bridge along the
@@ -428,13 +428,13 @@ AnimFrame* AnimationTracker::getAnimFrame()
 	return &animaction->frames[dir][currentframe];
 }
 
-void AnimationTracker::setTargetedMode(int32_t x_, int32_t y_, int32_t z_)
+void AnimationTracker::setTargetedMode(sint32 x_, sint32 y_, sint32 z_)
 {
 	unsigned int i;
 	int totaldir = 0;
 	int totalz = 0;
 	int offGround = 0;
-	int32_t end_dx, end_dy, end_dz;
+	sint32 end_dx, end_dy, end_dz;
 
 	for (i=startframe; i != endframe; i = getNextFrame(i))
 	{
@@ -496,7 +496,7 @@ void AnimationTracker::checkWeaponHit()
 
 	ObjId hit = 0;
 	for (unsigned int i = 0; i < itemlist.getSize(); ++i) {
-		ObjId itemid = itemlist.getuint16_t(i);
+		ObjId itemid = itemlist.getuint16(i);
 		if (itemid == actor) continue; // don't want to hit self
 
 		Actor* item = getActor(itemid);
@@ -563,19 +563,19 @@ void AnimationTracker::updateActorFlags()
 		a->animframe = currentframe;
 }
 
-void AnimationTracker::getInterpolatedPosition(int32_t& x_, int32_t& y_,
-											   int32_t& z_, int fc)
+void AnimationTracker::getInterpolatedPosition(sint32& x_, sint32& y_,
+											   sint32& z_, int fc)
 {
-	int32_t dx = x - prevx;
-	int32_t dy = y - prevy;
-	int32_t dz = z - prevz;
+	sint32 dx = x - prevx;
+	sint32 dy = y - prevy;
+	sint32 dz = z - prevz;
 
 	x_ = prevx + (dx*fc)/(animaction->framerepeat+1);
 	y_ = prevy + (dy*fc)/(animaction->framerepeat+1);
 	z_ = prevz + (dz*fc)/(animaction->framerepeat+1);
 }
 
-void AnimationTracker::getSpeed(int32_t& dx, int32_t& dy, int32_t& dz)
+void AnimationTracker::getSpeed(sint32& dx, sint32& dy, sint32& dz)
 {
 	dx = x - prevx;
 	dy = y - prevy;
@@ -587,12 +587,12 @@ void AnimationTracker::save(ODataSource* ods)
 {
 	ods->write4(startframe);
 	ods->write4(endframe);
-	uint8_t ff = firstframe ? 1 : 0;
+	uint8 ff = firstframe ? 1 : 0;
 	ods->write1(ff);
 	ods->write4(currentframe);
 
 	ods->write2(actor);
-	ods->write1(static_cast<uint8_t>(dir));
+	ods->write1(static_cast<uint8>(dir));
 
 	if (animaction) {
 		ods->write4(animaction->shapenum);
@@ -602,27 +602,27 @@ void AnimationTracker::save(ODataSource* ods)
 		ods->write4(0);
 	}
 
-	ods->write4(static_cast<uint32_t>(prevx));
-	ods->write4(static_cast<uint32_t>(prevy));
-	ods->write4(static_cast<uint32_t>(prevz));
-	ods->write4(static_cast<uint32_t>(x));
-	ods->write4(static_cast<uint32_t>(y));
-	ods->write4(static_cast<uint32_t>(z));
+	ods->write4(static_cast<uint32>(prevx));
+	ods->write4(static_cast<uint32>(prevy));
+	ods->write4(static_cast<uint32>(prevz));
+	ods->write4(static_cast<uint32>(x));
+	ods->write4(static_cast<uint32>(y));
+	ods->write4(static_cast<uint32>(z));
 
-	ods->write2(static_cast<uint16_t>(mode));
+	ods->write2(static_cast<uint16>(mode));
 	if (mode == TargetMode) {
-		ods->write4(static_cast<uint32_t>(target_dx));
-		ods->write4(static_cast<uint32_t>(target_dy));
-		ods->write4(static_cast<uint32_t>(target_dz));
-		ods->write4(static_cast<uint32_t>(target_offground_left));
+		ods->write4(static_cast<uint32>(target_dx));
+		ods->write4(static_cast<uint32>(target_dy));
+		ods->write4(static_cast<uint32>(target_dz));
+		ods->write4(static_cast<uint32>(target_offground_left));
 	}
-	uint8_t fs = firststep ? 1 : 0;
+	uint8 fs = firststep ? 1 : 0;
 	ods->write1(fs);
-	uint8_t fl = flipped ? 1 : 0;
+	uint8 fl = flipped ? 1 : 0;
 	ods->write1(fl);
 	ods->write4(shapeframe);
 
-	uint8_t flag = done ? 1 : 0;
+	uint8 flag = done ? 1 : 0;
 	ods->write1(flag);
 	flag = blocked ? 1 : 0;
 	ods->write1(flag);
@@ -631,7 +631,7 @@ void AnimationTracker::save(ODataSource* ods)
 	ods->write2(hitobject);
 }
 
-bool AnimationTracker::load(IDataSource* ids, uint32_t version)
+bool AnimationTracker::load(IDataSource* ids, uint32 version)
 {
 	startframe = ids->read4();
 	endframe = ids->read4();
@@ -641,8 +641,8 @@ bool AnimationTracker::load(IDataSource* ids, uint32_t version)
 	actor = ids->read2();
 	dir = ids->read1();
 
-	uint32_t shapenum = ids->read4();
-	uint32_t action = ids->read4();
+	uint32 shapenum = ids->read4();
+	uint32 action = ids->read4();
 	if (shapenum == 0) {
 		animaction = 0;
 	} else {

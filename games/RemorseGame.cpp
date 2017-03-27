@@ -77,7 +77,7 @@ bool RemorseGame::startGame()
 	ObjectManager* objman = ObjectManager::get_instance();
 
 	// reserve a number of objids just in case we'll need them sometime
-	for (uint16_t i = 384; i < 512; ++i)
+	for (uint16 i = 384; i < 512; ++i)
 		objman->reserveObjId(i);
 
 	// FIXME: fix flags and such
@@ -128,19 +128,19 @@ void RemorseGame::writeSaveInfo(ODataSource* ods)
 {
 #if 0
 	MainActor* av = getMainActor();
-	int32_t x,y,z;
+	sint32 x,y,z;
 
 	std::string avname = av->getName();
-	uint8_t namelength = static_cast<uint8_t>(avname.size());
+	uint8 namelength = static_cast<uint8>(avname.size());
 	ods->write1(namelength);
 	for (unsigned int i = 0; i < namelength; ++i)
-		ods->write1(static_cast<uint8_t>(avname[i]));
+		ods->write1(static_cast<uint8>(avname[i]));
 
 	av->getLocation(x,y,z);
 	ods->write2(av->getMapNum());
-	ods->write4(static_cast<uint32_t>(x));
-	ods->write4(static_cast<uint32_t>(y));
-	ods->write4(static_cast<uint32_t>(z));
+	ods->write4(static_cast<uint32>(x));
+	ods->write4(static_cast<uint32>(y));
+	ods->write4(static_cast<uint32>(z));
 
 	ods->write2(av->getStr());
 	ods->write2(av->getInt());
@@ -154,7 +154,7 @@ void RemorseGame::writeSaveInfo(ODataSource* ods)
 
 	for (unsigned int i = 1; i <= 6; i++)
 	{
-		uint16_t objid = av->getEquip(i);
+		uint16 objid = av->getEquip(i);
 		Item* item = getItem(objid);
 		if (item) {
 			ods->write4(item->getShape());

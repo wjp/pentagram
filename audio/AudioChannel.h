@@ -28,43 +28,43 @@ class AudioChannel
 	// We have:
 	// 1x decompressor size
 	// 2x frame size
-	uint8_t			*playdata;			//
-	uint32_t			playdata_size;
-	uint32_t			decompressor_size;	// Persistent data for the decompressor
-	uint32_t			frame_size;			// 
+	uint8			*playdata;			//
+	uint32			playdata_size;
+	uint32			decompressor_size;	// Persistent data for the decompressor
+	uint32			frame_size;			// 
 
-	uint32_t			sample_rate;
+	uint32			sample_rate;
 	bool			stereo;
 
-	int32_t			loop;
+	sint32			loop;
 	AudioSample		*sample;
 
 	// Info for sampling
-	uint32_t			frame_evenodd;	// which buffer is 'frame0'
-	uint32_t			frame0_size;	// Size of the frame0 buffer in samples
-	uint32_t			frame1_size;	// Size of the frame1 buffer in samples
-	uint32_t			position;		// Position in frame0 buffer
+	uint32			frame_evenodd;	// which buffer is 'frame0'
+	uint32			frame0_size;	// Size of the frame0 buffer in samples
+	uint32			frame1_size;	// Size of the frame1 buffer in samples
+	uint32			position;		// Position in frame0 buffer
 	int				lvol, rvol;		// 0-256
-	uint32_t			pitch_shift;	// 0x10000 = no shift
+	uint32			pitch_shift;	// 0x10000 = no shift
 	int				priority;		// anything. 
 	bool			paused;			// true/false
 
 public:
-	AudioChannel(uint32_t sample_rate, bool stereo);
+	AudioChannel(uint32 sample_rate, bool stereo);
 	~AudioChannel(void);
 
 	void stop() { sample = 0; }
 
-	void playSample(AudioSample *sample, int loop, int priority, bool paused, uint32_t pitch_shift, int lvol, int rvol);
-	void resampleAndMix(int16_t *stream, uint32_t bytes);
+	void playSample(AudioSample *sample, int loop, int priority, bool paused, uint32 pitch_shift, int lvol, int rvol);
+	void resampleAndMix(sint16 *stream, uint32 bytes);
 
 	bool isPlaying() { return sample != 0; }
 
 	void setPitchShift(int pitch_shift_) { pitch_shift = pitch_shift_; }
-	uint32_t getPitchShift() const { return pitch_shift; }
+	uint32 getPitchShift() const { return pitch_shift; }
 
 	void setLoop(int loop_) { loop = loop_; }
-	int32_t getLoop() const { return loop;}
+	sint32 getLoop() const { return loop;}
 
 	void setVolume(int lvol_, int rvol_) { lvol = lvol_;  rvol = rvol_; }
 	void getVolume(int &lvol_, int &rvol_) const { lvol_ = lvol; rvol_ = rvol; }
@@ -142,7 +142,7 @@ private:
 			}
 			
 			/* t must be a 16.16 fixed point number between 0 and 1 */
-			inline int interpolate(uint32_t fp_pos)
+			inline int interpolate(uint32 fp_pos)
 			{
 				int result = 0;
 				int t = fp_pos >> 8;
@@ -170,8 +170,8 @@ private:
 	int					fp_pos;
 	int					fp_speed;
 
-	void resampleFrameM8toS(int16_t *&samples, uint32_t &bytes);
-	void resampleFrameM8toM(int16_t *&samples, uint32_t &bytes);
+	void resampleFrameM8toS(sint16 *&samples, uint32 &bytes);
+	void resampleFrameM8toM(sint16 *&samples, uint32 &bytes);
 
 
 

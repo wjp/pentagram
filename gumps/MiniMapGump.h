@@ -29,9 +29,9 @@ class MiniMapGump : public Gump
 {
 	Texture				minimap;
 	unsigned int		lastMapNum;
-	uint32_t				texbuffer[MAP_NUM_CHUNKS*MINMAPGUMP_SCALE][MAP_NUM_CHUNKS*MINMAPGUMP_SCALE];
+	uint32				texbuffer[MAP_NUM_CHUNKS*MINMAPGUMP_SCALE][MAP_NUM_CHUNKS*MINMAPGUMP_SCALE];
 
-	uint32_t				sampleAtPoint(int x, int y, CurrentMap *map);
+	uint32				sampleAtPoint(int x, int y, CurrentMap *map);
 
 public:
 	ENABLE_RUNTIME_CLASSTYPE();
@@ -40,13 +40,13 @@ public:
 	MiniMapGump(int x, int y);
 	virtual ~MiniMapGump(void);
 
-	virtual void		PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled);
-	virtual uint16_t		TraceObjId(int mx, int my);
+	virtual void		PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled);
+	virtual uint16		TraceObjId(int mx, int my);
 
 	static void			ConCmd_toggle(const Console::ArgvType &argv);	//!< "MiniMapGump::toggle" console command
 	static void			ConCmd_generateWholeMap(const Console::ArgvType &argv);	//!< "MiniMapGump::generateWholeMap" console command
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 };

@@ -445,7 +445,7 @@ HID_Key HID_translateSDL_Keycode(SDL_Keycode key)
 	return HID_LAST;
 }
 
-HID_Key HID_translateSDLMouseButton(uint8_t button)
+HID_Key HID_translateSDLMouseButton(uint8 button)
 {
 	switch(button)
 	{
@@ -471,7 +471,7 @@ HID_Key HID_translateSDLMouseButton(uint8_t button)
 	return HID_LAST;
 }
 
-HID_Key HID_translateSDLJoystickButton(uint8_t button)
+HID_Key HID_translateSDLJoystickButton(uint8 button)
 {
 	switch(button)
 	{

@@ -104,12 +104,12 @@ void GravityProcess::run()
     //     - bounce off the item (need to consider FLG_LOW_FRICTION?)
     //     - call the relevant events: hit/gothit ?
 
-	int32_t ix,iy,iz;
+	sint32 ix,iy,iz;
 	item->getLocation(ix, iy, iz);
-	int32_t ixd,iyd,izd;
+	sint32 ixd,iyd,izd;
 	item->getFootpadWorld(ixd, iyd, izd);
 
-	int32_t tx,ty,tz;
+	sint32 tx,ty,tz;
 	tx = ix + xspeed;
 	ty = iy + yspeed;
 	tz = iz + zspeed;
@@ -120,7 +120,7 @@ void GravityProcess::run()
 #if 0
 	if (tx < 0 && ix >= 0) 
 	{
-		int32_t scale = (ix - tx)>>0x8;
+		sint32 scale = (ix - tx)>>0x8;
 		tx = 0;
 		ty = iy + ((yspeed*scale)>>0x2000);
 		tz = iz + ((zspeed*scale)>>0x2000);
@@ -128,7 +128,7 @@ void GravityProcess::run()
 	}
 	if (ty < 0 && iy >= 0) 
 	{
-		int32_t scale = (iy - ty)>>0x8;
+		sint32 scale = (iy - ty)>>0x8;
 		tx = ix + ((xspeed*scale)>>0x2000);
 		ty = 0;
 		tz = iz + ((zspeed*scale)>>0x2000);
@@ -136,7 +136,7 @@ void GravityProcess::run()
 	}
 	if (tz < 0 && iz >= 0) 
 	{
-		int32_t scale = (iz - tz)>>0x8;
+		sint32 scale = (iz - tz)>>0x8;
 		tx = ix + ((xspeed*scale)>>0x2000);
 		ty = iy + ((yspeed*scale)>>0x2000);
 		tz = 0;
@@ -147,8 +147,8 @@ void GravityProcess::run()
 //#define BOUNCE_DIAG
 
 	ObjId hititemid;
-	uint8_t dirs;
-	int32_t dist = item->collideMove(tx,ty,tz, false, false, &hititemid, &dirs);
+	uint8 dirs;
+	sint32 dist = item->collideMove(tx,ty,tz, false, false, &hititemid, &dirs);
 
 	if (dist == 0x4000 && !clipped) {
 		// normal move
@@ -366,13 +366,13 @@ void GravityProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 
-	ods->write4(static_cast<uint32_t>(gravity));
-	ods->write4(static_cast<uint32_t>(xspeed));
-	ods->write4(static_cast<uint32_t>(yspeed));
-	ods->write4(static_cast<uint32_t>(zspeed));
+	ods->write4(static_cast<uint32>(gravity));
+	ods->write4(static_cast<uint32>(xspeed));
+	ods->write4(static_cast<uint32>(yspeed));
+	ods->write4(static_cast<uint32>(zspeed));
 }
 
-bool GravityProcess::loadData(IDataSource* ids, uint32_t version)
+bool GravityProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 

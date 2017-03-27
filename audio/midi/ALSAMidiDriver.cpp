@@ -116,7 +116,7 @@ void ALSAMidiDriver::close() {
 		snd_seq_close(seq_handle);
 }
 
-void ALSAMidiDriver::send(uint32_t b) {
+void ALSAMidiDriver::send(uint32 b) {
 	unsigned int midiCmd[4];
 	ev.type = SND_SEQ_EVENT_OSS;
 
@@ -169,7 +169,7 @@ void ALSAMidiDriver::send(uint32_t b) {
 	}
 }
 
-void ALSAMidiDriver::send_sysex(uint8_t status,const uint8_t *msg,uint16_t length) {
+void ALSAMidiDriver::send_sysex(uint8 status,const uint8 *msg,uint16 length) {
 	unsigned char buf[1024];
 
 	if (length > 511) {

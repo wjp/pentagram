@@ -158,7 +158,7 @@ void MenuGump::InitGump(Gump* newparent, bool take_focus)
 }
 
 
-void MenuGump::PaintThis(RenderSurface* surf, int32_t lerp_factor, bool scaled)
+void MenuGump::PaintThis(RenderSurface* surf, sint32 lerp_factor, bool scaled)
 {
 	Gump::PaintThis(surf, lerp_factor, scaled);
 }
@@ -183,7 +183,7 @@ bool MenuGump::OnKeyDown(int key, int mod)
 	return true;
 }
 
-void MenuGump::ChildNotify(Gump *child, uint32_t message)
+void MenuGump::ChildNotify(Gump *child, uint32 message)
 {
 	if (child->IsOfType<EditWidget>() && message == EditWidget::EDIT_ENTER)
 	{

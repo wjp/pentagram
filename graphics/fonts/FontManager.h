@@ -57,18 +57,18 @@ public:
 	//! \param bordersize the size of the black border to add
 	//! \param SJIS true for a Japanese game font
 	bool addTTFOverride(unsigned int fontnum, std::string filename,
-						int pointsize, uint32_t rgb, int bordersize,
+						int pointsize, uint32 rgb, int bordersize,
 						bool SJIS=false);
 
 	//! override a game font with a Japanese font.
 	//! \param fontnum the font to override
 	//! \param jpfont the fontnum of the Japanese font to use
 	//! \param rgb the color to use
-	bool addJPOverride(unsigned int fontnum, unsigned int jpfont, uint32_t rgb);
+	bool addJPOverride(unsigned int fontnum, unsigned int jpfont, uint32 rgb);
 
 	//! load a TTF (for non-game fonts)
 	bool loadTTFont(unsigned int ttfnum, std::string filename,
-					int pointsize, uint32_t rgb, int bordersize);
+					int pointsize, uint32 rgb, int bordersize);
 
 	// Reset the game fonts
 	void resetGameFonts();

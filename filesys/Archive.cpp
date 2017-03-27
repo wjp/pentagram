@@ -66,7 +66,7 @@ bool Archive::addSource(ArchiveFile* af)
 {
 	sources.push_back(af);
 
-	uint32_t indexcount = af->getIndexCount();
+	uint32 indexcount = af->getIndexCount();
 	if (indexcount > count) count = indexcount;
 
 	return true;
@@ -118,7 +118,7 @@ void Archive::uncache()
 		uncache(i);
 }
 
-uint8_t* Archive::getRawObject(uint32_t index, uint32_t* sizep)
+uint8* Archive::getRawObject(uint32 index, uint32* sizep)
 {
 	ArchiveFile* f = findArchiveFile(index);
 	if (!f) return 0;
@@ -126,7 +126,7 @@ uint8_t* Archive::getRawObject(uint32_t index, uint32_t* sizep)
 	return f->getObject(index, sizep);
 }
 
-uint32_t Archive::getRawSize(uint32_t index)
+uint32 Archive::getRawSize(uint32 index)
 {
 	ArchiveFile* f = findArchiveFile(index);
 	if (!f) return 0;
@@ -134,7 +134,7 @@ uint32_t Archive::getRawSize(uint32_t index)
 	return f->getSize(index);
 }
 
-ArchiveFile* Archive::findArchiveFile(uint32_t index)
+ArchiveFile* Archive::findArchiveFile(uint32 index)
 {
 	unsigned int n = sources.size();
 	for (unsigned int i = 1; i <= n; ++i) {

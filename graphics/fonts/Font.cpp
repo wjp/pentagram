@@ -61,7 +61,7 @@ bool Font::Traits::canBreakAfter(std::string::const_iterator& i)
 bool Font::SJISTraits::canBreakAfter(std::string::const_iterator& i)
 {
 	std::string::const_iterator j = i;
-	uint32_t u1 = unicode(j);
+	uint32 u1 = unicode(j);
 
 	// See: http://www.wesnoth.org/wiki/JapaneseTranslation#Word-Wrapping
 	// and: http://ja.wikipedia.org/wiki/%E7%A6%81%E5%89%87
@@ -75,7 +75,7 @@ bool Font::SJISTraits::canBreakAfter(std::string::const_iterator& i)
 		break;
 	}
 
-	uint32_t u2 = unicode(j);
+	uint32 u2 = unicode(j);
 	switch (u2) {
 	case 0x3001: case 0x3002: case 0xff0c: case 0xff0e: case 0xff09:
 	case 0x3015: case 0xff3d: case 0xff5d: case 0x3009: case 0x300b:

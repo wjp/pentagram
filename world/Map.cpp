@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //#define DUMP_ITEMS
 
-Map::Map(uint32_t mapnum_)
+Map::Map(uint32 mapnum_)
 	: mapnum(mapnum_)
 {
 
@@ -71,9 +71,9 @@ void Map::loadNonFixed(IDataSource* ds)
 
 // Utility function for fixing up map bugs: shift a coordinate to a
 // different z without changing its on-screen position.
-static void shiftCoordsToZ(int32_t& x, int32_t& y, int32_t& z, int32_t newz)
+static void shiftCoordsToZ(sint32& x, sint32& y, sint32& z, sint32 newz)
 {
-	int32_t zd = newz - z;
+	sint32 zd = newz - z;
 
 	x += 4*zd;
 	y += 4*zd;
@@ -248,7 +248,7 @@ void Map::loadFixed(IDataSource* ds)
 
 		for (iter = fixeditems.begin(); iter != fixeditems.end(); ++iter) {
 			if ((*iter)->getShape() == 347 && (*iter)->getZ() == 96) {
-				int32_t x, y, z;
+				sint32 x, y, z;
 				(*iter)->getLocation(x, y, z);
 				if ((x == 23007 && y == 21343) || (x == 23135 && y == 21471) ||
 				    (x == 23135 && y == 21343) )
@@ -265,10 +265,10 @@ void Map::loadFixed(IDataSource* ds)
 		std::list<Item*>::iterator iter;
 
 		for (iter = fixeditems.begin(); iter != fixeditems.end(); ++iter) {
-			int32_t z = (*iter)->getZ();
-			uint32_t sh = (*iter)->getShape();
+			sint32 z = (*iter)->getZ();
+			uint32 sh = (*iter)->getShape();
 			if (z == 8 && (sh == 301 || sh == 31 || sh == 32)) {
-				int32_t x, y;
+				sint32 x, y;
 				(*iter)->getLocation(x, y, z);
 				if ((x == 6783 || x == 6655) && (y == 15743 || y == 15615))
 				{
@@ -285,7 +285,7 @@ void Map::loadFixed(IDataSource* ds)
 
 		for (iter = fixeditems.begin(); iter != fixeditems.end(); ++iter) {
 			if ((*iter)->getShape() == 71 && (*iter)->getFrame() == 8 && (*iter)->getZ() == 0) {
-				int32_t x, y, z;
+				sint32 x, y, z;
 				(*iter)->getLocation(x, y, z);
 				if ((x == 9151 && y == 24127) || (x == 9279 && y == 23999) ||
 				    (x == 9535 && y == 23615) || (x == 9151 && y == 23487) ||
@@ -312,36 +312,36 @@ void Map::unloadFixed()
 }
 
 void Map::loadFixedFormatObjects(std::list<Item*>& itemlist, IDataSource* ds,
-								 uint32_t extendedflags)
+								 uint32 extendedflags)
 {
 	if (!ds) return;
-	uint32_t size = ds->getSize();
+	uint32 size = ds->getSize();
 	if (size == 0) return;
 
-	uint32_t itemcount = size / 16;
+	uint32 itemcount = size / 16;
 
 	std::stack<Container*> cont;
 	int contdepth = 0;
 
-	for (uint32_t i = 0; i < itemcount; ++i)
+	for (uint32 i = 0; i < itemcount; ++i)
 	{
 		// These are ALL unsigned on disk
-		int32_t x = static_cast<int32_t>(ds->readX(2));
-		int32_t y = static_cast<int32_t>(ds->readX(2));
-		int32_t z = static_cast<int32_t>(ds->readX(1));
+		sint32 x = static_cast<sint32>(ds->readX(2));
+		sint32 y = static_cast<sint32>(ds->readX(2));
+		sint32 z = static_cast<sint32>(ds->readX(1));
 
 		if (GAME_IS_CRUSADER) {
 			x *= 2;
 			y *= 2;
 		}
 
-		uint32_t shape = ds->read2();
-		uint32_t frame = ds->read1();
-		uint16_t flags = ds->read2();
-		uint16_t quality = ds->read2();
-		uint16_t npcnum = static_cast<uint16_t>(ds->read1());
-		uint16_t mapnum = static_cast<uint16_t>(ds->read1());
-		uint16_t next = ds->read2(); // do we need next for anything?
+		uint32 shape = ds->read2();
+		uint32 frame = ds->read1();
+		uint16 flags = ds->read2();
+		uint16 quality = ds->read2();
+		uint16 npcnum = static_cast<uint16>(ds->read1());
+		uint16 mapnum = static_cast<uint16>(ds->read1());
+		uint16 next = ds->read2(); // do we need next for anything?
 
 		// find container this item belongs to, if any.
 		// the x coordinate stores the container-depth of this item,
@@ -395,7 +395,7 @@ void Map::loadFixedFormatObjects(std::list<Item*>& itemlist, IDataSource* ds,
 
 void Map::save(ODataSource* ods)
 {
-	ods->write4(static_cast<uint32_t>(dynamicitems.size()));
+	ods->write4(static_cast<uint32>(dynamicitems.size()));
 
 	std::list<Item*>::iterator iter;
 	for (iter = dynamicitems.begin(); iter != dynamicitems.end(); ++iter) {
@@ -404,9 +404,9 @@ void Map::save(ODataSource* ods)
 }
 
 
-bool Map::load(IDataSource* ids, uint32_t version)
+bool Map::load(IDataSource* ids, uint32 version)
 {
-	uint32_t itemcount = ids->read4();
+	uint32 itemcount = ids->read4();
 
 	for (unsigned int i = 0; i < itemcount; ++i) {
 		Object* obj = ObjectManager::get_instance()->loadObject(ids, version);

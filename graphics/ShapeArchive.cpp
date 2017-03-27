@@ -30,7 +30,7 @@ ShapeArchive::~ShapeArchive()
 	Archive::uncache();
 }
 
-Shape* ShapeArchive::getShape(uint32_t shapenum)
+Shape* ShapeArchive::getShape(uint32 shapenum)
 {
 	if (shapenum >= count) return 0;
 	cache(shapenum);
@@ -38,15 +38,15 @@ Shape* ShapeArchive::getShape(uint32_t shapenum)
 	return shapes[shapenum];
 }
 
-void ShapeArchive::cache(uint32_t shapenum)
+void ShapeArchive::cache(uint32 shapenum)
 {
 	if (shapenum >= count) return;
 	if (shapes.empty()) shapes.resize(count);
 
 	if (shapes[shapenum]) return;
 
-	uint32_t shpsize;
-	uint8_t *data = getRawObject(shapenum, &shpsize);
+	uint32 shpsize;
+	uint8 *data = getRawObject(shapenum, &shpsize);
 
 	if (!data || shpsize == 0) return;
 
@@ -69,7 +69,7 @@ void ShapeArchive::cache(uint32_t shapenum)
 	shapes[shapenum] = shape;
 }
 
-void ShapeArchive::uncache(uint32_t shapenum)
+void ShapeArchive::uncache(uint32 shapenum)
 {
 	if (shapenum >= count) return;
 	if (shapes.empty()) return;
@@ -78,7 +78,7 @@ void ShapeArchive::uncache(uint32_t shapenum)
 	shapes[shapenum] = 0;
 }
 
-bool ShapeArchive::isCached(uint32_t shapenum)
+bool ShapeArchive::isCached(uint32 shapenum)
 {
 	if (shapenum >= count) return false;
 	if (shapes.empty()) return false;

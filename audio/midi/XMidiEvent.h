@@ -72,15 +72,15 @@ struct XMidiEvent
 	union 
 	{
 		struct {
-			uint32_t			len;			// Length of SysEx Data
+			uint32			len;			// Length of SysEx Data
 			unsigned char	*buffer;		// SysEx Data
 		} sysex_data;
 
 		struct {
 			int				duration;		// Duration of note (120 Hz)
 			XMidiEvent		*next_note;		// The next note on the stack
-			uint32_t			note_time;		// Time note stops playing (6000th of second)
-			uint8_t			actualvel;		// Actual velocity of playing note
+			uint32			note_time;		// Time note stops playing (6000th of second)
+			uint8			actualvel;		// Actual velocity of playing note
 		} note_on;
 
 		struct {

@@ -36,8 +36,8 @@ RenderSurface::Format	RenderSurface::format = {
 	0,	0,	0,	0
 };
 
-uint8_t RenderSurface::Gamma10toGamma22[256];
-uint8_t RenderSurface::Gamma22toGamma10[256];
+uint8 RenderSurface::Gamma10toGamma22[256];
+uint8 RenderSurface::Gamma22toGamma10[256];
 
 //
 // RenderSurface::SetVideoMode()
@@ -46,9 +46,9 @@ uint8_t RenderSurface::Gamma22toGamma10[256];
 // Returns: Created RenderSurface or 0
 //
 
-RenderSurface *RenderSurface::SetVideoMode(uint32_t width,		// Width of desired mode
-									uint32_t height,		// Height of desired mode
-									uint32_t bpp,			// Bits Per Pixel of desired mode
+RenderSurface *RenderSurface::SetVideoMode(uint32 width,		// Width of desired mode
+									uint32 height,		// Height of desired mode
+									uint32 bpp,			// Bits Per Pixel of desired mode
 									bool fullscreen,	// Fullscreen if true, Windowed if false
 									bool use_opengl)	// Use OpenGL if true, Software if false
 {
@@ -69,7 +69,7 @@ RenderSurface *RenderSurface::SetVideoMode(uint32_t width,		// Width of desired 
 	}
 
 	// SDL Flags to set
-	uint32_t flags = 0;
+	uint32 flags = 0;
 
 	// Specific Windowed code
 	if (!fullscreen) 
@@ -124,28 +124,28 @@ RenderSurface *RenderSurface::SetVideoMode(uint32_t width,		// Width of desired 
 	// Now create the SoftRenderSurface
 	RenderSurface *surf;
 
-	if (bpp == 32) surf = new SoftRenderSurface<uint32_t>(renderer, texture, width, height, bpp);
-	else surf = new SoftRenderSurface<uint16_t>(renderer, texture, width, height, bpp);
+	if (bpp == 32) surf = new SoftRenderSurface<uint32>(renderer, texture, width, height, bpp);
+	else surf = new SoftRenderSurface<uint16>(renderer, texture, width, height, bpp);
 
 	// Initialize gamma correction tables
 	for (int i = 0; i < 256; i++)
 	{
-		Gamma22toGamma10[i] = static_cast<uint8_t>(0.5 + (std::pow (i/255.0, 2.2/1.0) * 255.0));
-		Gamma10toGamma22[i] = static_cast<uint8_t>(0.5 + (std::pow (i/255.0, 1.0/2.2) * 255.0));
+		Gamma22toGamma10[i] = static_cast<uint8>(0.5 + (std::pow (i/255.0, 2.2/1.0) * 255.0));
+		Gamma10toGamma22[i] = static_cast<uint8>(0.5 + (std::pow (i/255.0, 1.0/2.2) * 255.0));
 	}
 
 	return surf;
 }
 
 // Create a SecondaryRenderSurface with an associated Texture object
-RenderSurface *RenderSurface::CreateSecondaryRenderSurface(uint32_t width, uint32_t height)
+RenderSurface *RenderSurface::CreateSecondaryRenderSurface(uint32 width, uint32 height)
 {
 	// Now create the SoftRenderSurface
 	RenderSurface *surf;
 
 	// TODO: Change this
-	if (format.s_bpp == 32) surf = new SoftRenderSurface<uint32_t>(width,height);
-	else surf = new SoftRenderSurface<uint16_t>(width,height);
+	if (format.s_bpp == 32) surf = new SoftRenderSurface<uint32>(width,height);
+	else surf = new SoftRenderSurface<uint16>(width,height);
 	return surf;
 }
 

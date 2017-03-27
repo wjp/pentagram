@@ -168,7 +168,7 @@ void TextWidget::renderText()
 }
 
 // Overloadable method to Paint just this Gump (RenderSurface is relative to this)
-void TextWidget::PaintThis(RenderSurface*surf, int32_t lerp_factor, bool scaled)
+void TextWidget::PaintThis(RenderSurface*surf, sint32 lerp_factor, bool scaled)
 {
 	Gump::PaintThis(surf,lerp_factor,scaled);
 
@@ -187,7 +187,7 @@ void TextWidget::PaintThis(RenderSurface*surf, int32_t lerp_factor, bool scaled)
 }
 
 // Overloadable method to Paint just this gumps unscaled components that require compositing (RenderSurface is relative to parent).
-void TextWidget::PaintComposited(RenderSurface* surf, int32_t lerp_factor, int32_t sx, int32_t sy)
+void TextWidget::PaintComposited(RenderSurface* surf, sint32 lerp_factor, sint32 sx, sint32 sy)
 {
 	Pentagram::Font *font = getFont();
 
@@ -223,18 +223,18 @@ void TextWidget::saveData(ODataSource* ods)
 	Gump::saveData(ods);
 
 	ods->write1(gamefont ? 1 : 0);
-	ods->write4(static_cast<uint32_t>(fontnum));
+	ods->write4(static_cast<uint32>(fontnum));
 	ods->write4(blendColour);
-	ods->write4(static_cast<uint32_t>(current_start));
-	ods->write4(static_cast<uint32_t>(current_end));
-	ods->write4(static_cast<uint32_t>(targetwidth));
-	ods->write4(static_cast<uint32_t>(targetheight));
-	ods->write2(static_cast<uint16_t>(textalign));
+	ods->write4(static_cast<uint32>(current_start));
+	ods->write4(static_cast<uint32>(current_end));
+	ods->write4(static_cast<uint32>(targetwidth));
+	ods->write4(static_cast<uint32>(targetheight));
+	ods->write2(static_cast<uint16>(textalign));
 	ods->write4(text.size());
 	ods->write(text.c_str(), text.size());
 }
 
-bool TextWidget::loadData(IDataSource* ids, uint32_t version)
+bool TextWidget::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Gump::loadData(ids, version)) return false;
 
@@ -247,7 +247,7 @@ bool TextWidget::loadData(IDataSource* ids, uint32_t version)
 	targetheight = static_cast<int>(ids->read4());
 	textalign = static_cast<Font::TextAlign>(ids->read2());
 
-	uint32_t slen = ids->read4();
+	uint32 slen = ids->read4();
 	if (slen > 0) {
 		char* buf = new char[slen+1];
 		ids->read(buf, slen);

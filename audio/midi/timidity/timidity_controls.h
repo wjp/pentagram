@@ -75,7 +75,7 @@ struct ControlMode {
   int (*open)(int using_stdin, int using_stdout);
   void (*pass_playing_list)(int number_of_files, char *list_of_files[]);
   void (*close)(void);
-  int (*read)(int32_t *valp);
+  int (*read)(sint32 *valp);
   int (*cmsg)(int type, int verbosity_level, const char *fmt, ...);
 
   void (*refresh)(void);

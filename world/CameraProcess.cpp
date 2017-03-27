@@ -40,9 +40,9 @@ DEFINE_RUNTIME_CLASSTYPE_CODE(CameraProcess,Process);
 // Statics
 //
 CameraProcess *CameraProcess::camera = 0;
-int32_t CameraProcess::earthquake = 0;
-int32_t CameraProcess::eq_x = 0;
-int32_t CameraProcess::eq_y = 0;
+sint32 CameraProcess::earthquake = 0;
+sint32 CameraProcess::eq_x = 0;
+sint32 CameraProcess::eq_y = 0;
 
 CameraProcess::CameraProcess() : Process()
 {
@@ -55,7 +55,7 @@ CameraProcess::~CameraProcess()
 		camera = 0;
 }
 
-uint16_t CameraProcess::SetCameraProcess(CameraProcess *cam)
+uint16 CameraProcess::SetCameraProcess(CameraProcess *cam)
 {
 	if (!cam) cam = new CameraProcess(0);
 	if (camera) camera->terminate();
@@ -69,7 +69,7 @@ void CameraProcess::ResetCameraProcess()
 	camera = 0;
 }
 
-void CameraProcess::GetCameraLocation(int32_t &x, int32_t &y, int32_t &z)
+void CameraProcess::GetCameraLocation(sint32 &x, sint32 &y, sint32 &z)
 {
  	if (!camera) 
 	{
@@ -104,7 +104,7 @@ void CameraProcess::GetCameraLocation(int32_t &x, int32_t &y, int32_t &z)
 // 
 
 // Track item, do nothing
-CameraProcess::CameraProcess(uint16_t _itemnum) : 
+CameraProcess::CameraProcess(uint16 _itemnum) : 
 	time(0), elapsed(0), itemnum(_itemnum), last_framenum(0)
 {
 	GetCameraLocation(sx,sy,sz);
@@ -129,14 +129,14 @@ CameraProcess::CameraProcess(uint16_t _itemnum) :
 }
 
 // Stay over point
-CameraProcess::CameraProcess(int32_t _x, int32_t _y, int32_t _z) : 
+CameraProcess::CameraProcess(sint32 _x, sint32 _y, sint32 _z) : 
 	ex(_x), ey(_y), ez(_z), time(0), elapsed(0), itemnum(0), last_framenum(0)
 {
 	GetCameraLocation(sx,sy,sz);
 }
 
 // Scroll
-CameraProcess::CameraProcess(int32_t _x, int32_t _y, int32_t _z, int32_t _time) : 
+CameraProcess::CameraProcess(sint32 _x, sint32 _y, sint32 _z, sint32 _time) : 
 	ex(_x), ey(_y), ez(_z), time(_time), elapsed(0), itemnum(0), last_framenum(0)
 {
 	GetCameraLocation(sx,sy,sz);
@@ -197,7 +197,7 @@ void CameraProcess::ItemMoved()
 	}
 }
 
-void CameraProcess::GetLerped(int32_t &x, int32_t &y, int32_t &z, int32_t factor, bool noupdate)
+void CameraProcess::GetLerped(sint32 &x, sint32 &y, sint32 &z, sint32 factor, bool noupdate)
 {
 	if (time == 0)
 	{
@@ -256,19 +256,19 @@ void CameraProcess::GetLerped(int32_t &x, int32_t &y, int32_t &z, int32_t factor
 	else
 	{
 		// Do a quadratic interpolation here of velocity (maybe), but not yet 
-		int32_t sfactor = elapsed;
-		int32_t efactor = elapsed+1;
+		sint32 sfactor = elapsed;
+		sint32 efactor = elapsed+1;
 
 		if (sfactor > time) sfactor = time;
 		if (efactor > time) efactor = time;
 
-		int32_t lsx = ((sx*(time-sfactor) + ex*sfactor)/time);
-		int32_t lsy = ((sy*(time-sfactor) + ey*sfactor)/time);
-		int32_t lsz = ((sz*(time-sfactor) + ez*sfactor)/time);
+		sint32 lsx = ((sx*(time-sfactor) + ex*sfactor)/time);
+		sint32 lsy = ((sy*(time-sfactor) + ey*sfactor)/time);
+		sint32 lsz = ((sz*(time-sfactor) + ez*sfactor)/time);
 
-		int32_t lex = ((sx*(time-efactor) + ex*efactor)/time);
-		int32_t ley = ((sy*(time-efactor) + ey*efactor)/time);
-		int32_t lez = ((sz*(time-efactor) + ez*efactor)/time);
+		sint32 lex = ((sx*(time-efactor) + ex*efactor)/time);
+		sint32 ley = ((sy*(time-efactor) + ey*efactor)/time);
+		sint32 lez = ((sz*(time-efactor) + ez*efactor)/time);
 
 		// Update the fast area
 		if (!noupdate) World::get_instance()->getCurrentMap()->updateFastArea(lsx,lsy,lsz,lex,ley,lez);
@@ -286,17 +286,17 @@ void CameraProcess::GetLerped(int32_t &x, int32_t &y, int32_t &z, int32_t factor
 	}
 }
 
-uint16_t CameraProcess::FindRoof(int32_t factor)
+uint16 CameraProcess::FindRoof(sint32 factor)
 {
-	int32_t x,y,z;
-	int32_t earthquake_old = earthquake;
+	sint32 x,y,z;
+	sint32 earthquake_old = earthquake;
 	earthquake = 0;
 	GetLerped(x,y,z,factor);
 	earthquake = earthquake_old;
 	Item *avatar = getItem(1);
-	int32_t dx,dy,dz;
+	sint32 dx,dy,dz;
 	avatar->getFootpadWorld(dx,dy,dz);
-	uint16_t roofid;
+	uint16 roofid;
 	World::get_instance()->getCurrentMap()->isValidPosition(x, y, z-10, dx/2, dy/2, dz/2, 0, 1, 0, &roofid);
 	return roofid;
 }
@@ -305,38 +305,38 @@ void CameraProcess::saveData(ODataSource* ods)
 {
 	Process::saveData(ods);
 
-	ods->write4(static_cast<uint32_t>(sx));
-	ods->write4(static_cast<uint32_t>(sy));
-	ods->write4(static_cast<uint32_t>(sz));
-	ods->write4(static_cast<uint32_t>(ex));
-	ods->write4(static_cast<uint32_t>(ey));
-	ods->write4(static_cast<uint32_t>(ez));
-	ods->write4(static_cast<uint32_t>(time));
-	ods->write4(static_cast<uint32_t>(elapsed));
+	ods->write4(static_cast<uint32>(sx));
+	ods->write4(static_cast<uint32>(sy));
+	ods->write4(static_cast<uint32>(sz));
+	ods->write4(static_cast<uint32>(ex));
+	ods->write4(static_cast<uint32>(ey));
+	ods->write4(static_cast<uint32>(ez));
+	ods->write4(static_cast<uint32>(time));
+	ods->write4(static_cast<uint32>(elapsed));
 	ods->write2(itemnum);
 	ods->write4(last_framenum);
-	ods->write4(static_cast<uint32_t>(earthquake));
-	ods->write4(static_cast<uint32_t>(eq_x));
-	ods->write4(static_cast<uint32_t>(eq_y));
+	ods->write4(static_cast<uint32>(earthquake));
+	ods->write4(static_cast<uint32>(eq_x));
+	ods->write4(static_cast<uint32>(eq_y));
 }
 
-bool CameraProcess::loadData(IDataSource* ids, uint32_t version)
+bool CameraProcess::loadData(IDataSource* ids, uint32 version)
 {
 	if (!Process::loadData(ids, version)) return false;
 
-	sx = static_cast<int32_t>(ids->read4());
-	sy = static_cast<int32_t>(ids->read4());
-	sz = static_cast<int32_t>(ids->read4());
-	ex = static_cast<int32_t>(ids->read4());
-	ey = static_cast<int32_t>(ids->read4());
-	ez = static_cast<int32_t>(ids->read4());
-	time = static_cast<int32_t>(ids->read4());
-	elapsed = static_cast<int32_t>(ids->read4());
+	sx = static_cast<sint32>(ids->read4());
+	sy = static_cast<sint32>(ids->read4());
+	sz = static_cast<sint32>(ids->read4());
+	ex = static_cast<sint32>(ids->read4());
+	ey = static_cast<sint32>(ids->read4());
+	ez = static_cast<sint32>(ids->read4());
+	time = static_cast<sint32>(ids->read4());
+	elapsed = static_cast<sint32>(ids->read4());
 	itemnum = ids->read2();
 	last_framenum = ids->read4();
-	earthquake = static_cast<int32_t>(ids->read4()); //static
-	eq_x = static_cast<int32_t>(ids->read4()); //static
-	eq_y = static_cast<int32_t>(ids->read4()); //static
+	earthquake = static_cast<sint32>(ids->read4()); //static
+	eq_x = static_cast<sint32>(ids->read4()); //static
+	eq_y = static_cast<sint32>(ids->read4()); //static
 
 	camera = this; //static
 
@@ -344,18 +344,18 @@ bool CameraProcess::loadData(IDataSource* ids, uint32_t version)
 }
 
 //	"Camera::move_to(uword, uword, ubyte, word)",
-uint32_t CameraProcess::I_move_to(const uint8_t* args, unsigned int /*argsize*/)
+uint32 CameraProcess::I_move_to(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_uint16_t(x);
-	ARG_uint16_t(y);
-	ARG_uint8_t(z);
-	ARG_int16_t(unk);
+	ARG_UINT16(x);
+	ARG_UINT16(y);
+	ARG_UINT8(z);
+	ARG_SINT16(unk);
 	CameraProcess::SetCameraProcess(new CameraProcess(x,y,z));
 	return 0;
 }
 
 //	"Camera::setCenterOn(uword)",
-uint32_t CameraProcess::I_setCenterOn(const uint8_t* args, unsigned int /*argsize*/)
+uint32 CameraProcess::I_setCenterOn(const uint8* args, unsigned int /*argsize*/)
 {
 	ARG_OBJID(itemnum);
 	CameraProcess::SetCameraProcess(new CameraProcess(itemnum));
@@ -363,25 +363,25 @@ uint32_t CameraProcess::I_setCenterOn(const uint8_t* args, unsigned int /*argsiz
 }
 
 //	Camera::scrollTo(uword, uword, ubyte, word)
-uint32_t CameraProcess::I_scrollTo(const uint8_t* args, unsigned int /*argsize*/)
+uint32 CameraProcess::I_scrollTo(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_uint16_t(x);
-	ARG_uint16_t(y);
-	ARG_uint8_t(z);
-	ARG_int16_t(unk);
+	ARG_UINT16(x);
+	ARG_UINT16(y);
+	ARG_UINT8(z);
+	ARG_SINT16(unk);
 	return CameraProcess::SetCameraProcess(new CameraProcess(x,y,z, 25));
 }
 
 //	Camera::startQuake(word)
-uint32_t CameraProcess::I_startQuake(const uint8_t* args, unsigned int /*argsize*/)
+uint32 CameraProcess::I_startQuake(const uint8* args, unsigned int /*argsize*/)
 {
-	ARG_uint16_t(strength);
+	ARG_UINT16(strength);
 	SetEarthquake(strength);
 	return 0;
 }
 
 //	Camera::stopQuake()
-uint32_t CameraProcess::I_stopQuake(const uint8_t* /*args*/, unsigned int /*argsize*/)
+uint32 CameraProcess::I_stopQuake(const uint8* /*args*/, unsigned int /*argsize*/)
 {
 	SetEarthquake(0);
 	return 0;

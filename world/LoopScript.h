@@ -59,7 +59,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 // Usage:
 //
-// const uint8_t script[] = { 
+// const uint8 script[] = { 
 //	LS_TOKEN_SHAPE,
 //	LS_TOKEN_INT,
 //	LS_CONSTANT(73),
@@ -73,7 +73,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // };
 //
 
-#define LOOPSCRIPT(name,tokens) const uint8_t name[] = { tokens, LS_TOKEN_END }
+#define LOOPSCRIPT(name,tokens) const uint8 name[] = { tokens, LS_TOKEN_END }
 
 #define LS_CONSTANT(val)			((val)&0xFF), ((val>>8)&0xFF)
 #define LS_INT(val)					LS_TOKEN_INT, LS_CONSTANT(val)

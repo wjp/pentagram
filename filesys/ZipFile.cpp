@@ -133,20 +133,20 @@ bool ZipFile::readMetadata()
 
 bool ZipFile::exists(const std::string& name)
 {
-	std::map<std::string, uint32_t>::iterator iter;
+	std::map<std::string, uint32>::iterator iter;
 	iter = sizes.find(name);
 	return (iter != sizes.end());
 }
 
-uint32_t ZipFile::getSize(const std::string& name)
+uint32 ZipFile::getSize(const std::string& name)
 {
-	std::map<std::string, uint32_t>::iterator iter;
+	std::map<std::string, uint32>::iterator iter;
 	iter = sizes.find(name);
 	if (iter == sizes.end()) return 0;
 	return (iter->second);
 }
 
-uint8_t* ZipFile::getObject(const std::string& name, uint32_t* sizep)
+uint8* ZipFile::getObject(const std::string& name, uint32* sizep)
 {
 	PentZip::unzFile unzfile = static_cast<PentZip::unzFile>(unzipfile);
 	if (sizep) *sizep = 0;
@@ -154,16 +154,16 @@ uint8_t* ZipFile::getObject(const std::string& name, uint32_t* sizep)
 	if (PentZip::unzLocateFile(unzfile, name.c_str(), 1) != UNZ_OK) return 0;
 
 	PentZip::unz_file_info info;
-	uint8_t* buf = 0;
+	uint8* buf = 0;
 
 	if (PentZip::unzGetCurrentFileInfo(unzfile, &info, 0, 0, 0, 0, 0, 0)
 		!= UNZ_OK)
 		return 0;
 
 	if (PentZip::unzOpenCurrentFile(unzfile) != UNZ_OK) return 0;
-	uint32_t size = info.uncompressed_size;
+	uint32 size = info.uncompressed_size;
 
-	buf = new uint8_t[size];
+	buf = new uint8[size];
 
 	if (PentZip::unzReadCurrentFile(unzfile, buf, size) < static_cast<int>(size)) {
 		delete[] buf;

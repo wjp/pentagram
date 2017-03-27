@@ -41,7 +41,7 @@ public:
 
 	INTRINSIC(I_invertScreen);
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 protected:
 	virtual void saveData(ODataSource* ods);
 

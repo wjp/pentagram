@@ -32,19 +32,19 @@ public:
 	explicit FlexWriter(FlexFile * f = 0);
 	virtual ~FlexWriter();
 
-	virtual void add_object(const uint8_t* obj, uint32_t size);
+	virtual void add_object(const uint8* obj, uint32 size);
 	virtual void add_datasource(IDataSource* ds);
 
-	virtual void set_object(uint32_t index, const uint8_t* obj, uint32_t size);
-	virtual void set_datasource(uint32_t index, IDataSource* ds);
+	virtual void set_object(uint32 index, const uint8* obj, uint32 size);
+	virtual void set_datasource(uint32 index, IDataSource* ds);
 
 	virtual void write(ODataSource* ds);
 protected:
 	virtual void writeHead(ODataSource* ds);
 
 	struct FlexObject {
-		uint8_t * obj;
-		uint32_t size;
+		uint8 * obj;
+		uint32 size;
 	};
 	std::vector<FlexObject> objects;
 };

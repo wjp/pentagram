@@ -57,11 +57,11 @@ public:
 
 	//! Set item location. This strictly sets the location, and does not
 	//! even update CurrentMap
-	void setLocation(int32_t x, int32_t y, int32_t z); // this only sets the loc.
+	void setLocation(sint32 x, sint32 y, sint32 z); // this only sets the loc.
 
 	//! Move an item. This moves an item to the new location, and updates
 	//! CurrentMap and fastArea if necessary.
-	void move(int32_t x, int32_t y, int32_t z);
+	void move(sint32 x, sint32 y, sint32 z);
 
 	//! Move an item. This moves an item to a container and  updates
 	//! CurrentMap and fastArea if necessary.
@@ -80,25 +80,25 @@ public:
 
 	//! Get the location of the top-most container this Item is in, or
 	//! this Item's location if not in a container.
-	void getLocationAbsolute(int32_t& x, int32_t& y, int32_t& z) const;
+	void getLocationAbsolute(sint32& x, sint32& y, sint32& z) const;
 
 	//! Get this Item's location. Note that this does not return
 	//! 'usable' coordinates if the Item is contained or equipped.
-	inline void getLocation(int32_t& x, int32_t& y, int32_t& z) const;
+	inline void getLocation(sint32& x, sint32& y, sint32& z) const;
 
 	//! Get this Item's Z coordinate.
-	int32_t getZ() const;
+	sint32 getZ() const;
 
 	//! Set this Item's Z coordinate
-	void setZ(int32_t z_) { z = z_; }
+	void setZ(sint32 z_) { z = z_; }
 
 	//! Get this Item's location in a ContainerGump. Undefined if the Item 
 	//! is not in a Container.
-	void getGumpLocation(int32_t& x, int32_t& y) const;
+	void getGumpLocation(sint32& x, sint32& y) const;
 
 	//! Set the Item's location in a ContainerGump. NOP if the Item
 	//! is not in a Container.
-	void setGumpLocation(int32_t x, int32_t y);
+	void setGumpLocation(sint32 x, sint32 y);
 
 	//! Randomize the Item's location in a ContainerGump. Effectively
 	//! this sets the coordinates to (255,255) and lets the ContainerGump
@@ -107,75 +107,75 @@ public:
 
 	//! Get the world coordinates of the Item's centre. Undefined if the Item
 	//! is contained or equipped.
-	void getCentre(int32_t& x, int32_t& y, int32_t& z) const;
+	void getCentre(sint32& x, sint32& y, sint32& z) const;
 
 	//! Get the size of this item's 3D bounding box, in world coordinates.
-	inline void getFootpadWorld(int32_t& x, int32_t& y, int32_t& z) const;
+	inline void getFootpadWorld(sint32& x, sint32& y, sint32& z) const;
 
 	//! Get the size of this item's 3D bounding box, scaled as in the datafiles
 	//! (i.e., the dimensions are not in the same unit as world coordinates!)
-	inline void getFootpadData(int32_t& x, int32_t& y, int32_t& z) const;
+	inline void getFootpadData(sint32& x, sint32& y, sint32& z) const;
 
 	//! Get the Box this item occupies in the world. Undef if item is contained
 	Pentagram::Box getWorldBox() const;
 
 	//! Get flags
-	inline uint16_t getFlags() const { return flags; }
+	inline uint16 getFlags() const { return flags; }
 
 	//! Set the flags set in the given mask.
-	void setFlag(uint32_t mask) { flags |= mask; }
+	void setFlag(uint32 mask) { flags |= mask; }
 
-	virtual void setFlagRecursively(uint32_t mask) { setFlag(mask); }
+	virtual void setFlagRecursively(uint32 mask) { setFlag(mask); }
 
 	//! Clear the flags set in the given mask.
-	void clearFlag(uint32_t mask) { flags &= ~mask; }
+	void clearFlag(uint32 mask) { flags &= ~mask; }
 
 	//! Set extendedflags
-	void setExtFlags(uint32_t f) { extendedflags = f; }
+	void setExtFlags(uint32 f) { extendedflags = f; }
 
 	//! Get extendedflags
-	inline uint32_t getExtFlags() const { return extendedflags; }
+	inline uint32 getExtFlags() const { return extendedflags; }
 
 	//! Set the extendedflags set in the given mask.
-	void setExtFlag(uint32_t mask) { extendedflags |= mask; }
+	void setExtFlag(uint32 mask) { extendedflags |= mask; }
 
 	//! Clear the extendedflags set in the given mask.
-	void clearExtFlag(uint32_t mask) { extendedflags &= ~mask; }
+	void clearExtFlag(uint32 mask) { extendedflags &= ~mask; }
 
 	//! Get this Item's shape number
-	uint32_t getShape() const { return shape; }
+	uint32 getShape() const { return shape; }
 
 	//! Set this Item's shape number
-	void setShape(uint32_t shape_)
+	void setShape(uint32 shape_)
 		{ shape = shape_; cachedShapeInfo = 0; cachedShape = 0; }
 
 	//! Get this Item's frame number
-	uint32_t getFrame() const { return frame; }
+	uint32 getFrame() const { return frame; }
 
 	//! Set this Item's frame number
-	void setFrame(uint32_t frame_) { frame = frame_; }
+	void setFrame(uint32 frame_) { frame = frame_; }
 
 	//! Get this Item's quality (a.k.a. 'Q')
-	uint16_t getQuality() const { return quality; }
+	uint16 getQuality() const { return quality; }
 
 	//! Set this Item's quality (a.k.a 'Q');
-	void setQuality(uint16_t quality_) { quality = quality_; }
+	void setQuality(uint16 quality_) { quality = quality_; }
 
 	//! Get the 'NpcNum' of this Item. Note that this can represent various
 	//! things depending on the family of this Item.
-	uint16_t getNpcNum() const { return npcnum; }
+	uint16 getNpcNum() const { return npcnum; }
 
 	//! Set the 'NpcNum' of this Item. Note that this can represent various
 	//! things depending on the family of this Item.
-	void setNpcNum(uint16_t npcnum_) { npcnum = npcnum_; }
+	void setNpcNum(uint16 npcnum_) { npcnum = npcnum_; }
 
 	//! Get the 'MapNum' of this Item. Note that this can represent various
 	//! things depending on the family of this Item.
-	uint16_t getMapNum() const { return mapnum; }
+	uint16 getMapNum() const { return mapnum; }
 
 	//! Set the 'NpcNum' of this Item. Note that this can represent various
 	//! things depending on the family of this Item.
-	void setMapNum(uint16_t mapnum_) { mapnum = mapnum_; }
+	void setMapNum(uint16 mapnum_) { mapnum = mapnum_; }
 
 	//! Get the ShapeInfo object for this Item. (The pointer will be cached.)
 	inline ShapeInfo* getShapeInfo() const;
@@ -188,7 +188,7 @@ public:
 
 	//! Get the family of the shape number of this Item. (This is a
 	//! member of the ShapeInfo object.)
-	uint16_t getFamily();
+	uint16 getFamily();
 
 	//! Check if we can merge with another item.
 	bool canMergeWith(Item* other);
@@ -198,7 +198,7 @@ public:
 	//! Call this to notify the Item's open Gump has closed.
 	void clearGump(); // set gump to 0 and clear the GUMP_OPEN flag
 	//! Open a gump with the given shape for this Item
-	ObjId openGump(uint32_t gumpshape);
+	ObjId openGump(uint32 gumpshape);
 	//! Close this Item's gump, if any
 	void closeGump();
 
@@ -215,7 +215,7 @@ public:
 	bool isOn(Item& item2) const;
 
 	//! Check if this item can exist at the given coordinates
-	bool canExistAt(int32_t x,int32_t y,int32_t z, bool needsupport=false) const;
+	bool canExistAt(sint32 x,sint32 y,sint32 z, bool needsupport=false) const;
 
 	//! Get direction from centre to another item's centre.
 	//! Undefined if either item is contained or equipped.
@@ -231,7 +231,7 @@ public:
 	//! \param x x coordinate of other to use, If zero, use real coords.
 	//! \param y y coordinate of other to use
 	//! \param z z coordinate of other to use.
-	bool canReach(Item* other, int range, int32_t x=0, int32_t y=0, int32_t z=0);
+	bool canReach(Item* other, int range, sint32 x=0, sint32 y=0, sint32 z=0);
 
 	//! Move the object to (x,y,z) colliding with objects in the way.
 	//! \param teleport move without colliding with objects between source and
@@ -246,8 +246,8 @@ public:
 	//!          0 = didn't move
 	//!          0x4000 = reached destination
 	//! \note This can destroy the object
-	int32_t collideMove(int32_t x,int32_t y,int32_t z, bool teleport, bool force,
-					   ObjId* hititem=0, uint8_t* dirs=0);
+	sint32 collideMove(sint32 x,sint32 y,sint32 z, bool teleport, bool force,
+					   ObjId* hititem=0, uint8* dirs=0);
 
 	//! Make the item move up (delta>0) or down (delta<0),
 	//! including any items on top of it
@@ -255,7 +255,7 @@ public:
 	//! \returns 0-0x4000 representing how far it got.
 	//!          0 = didn't move
 	//!          0x4000 = reached destination
-	int32_t ascend(int delta);
+	sint32 ascend(int delta);
 
 	//! Make the item fall down.
 	//! This creates a GravityProcess to do the actual work if the Item
@@ -281,29 +281,29 @@ public:
 	virtual GravityProcess* ensureGravityProcess();
 
 	//! Get the weight of this Item
-	virtual uint32_t getWeight();
+	virtual uint32 getWeight();
 
 	//! Get the weight of this Item and its contents, if any
-	virtual uint32_t getTotalWeight();
+	virtual uint32 getTotalWeight();
 
 	//! Get the volume this item takes up in a container
-	virtual uint32_t getVolume();
+	virtual uint32 getVolume();
 
 	//! explode
 	void explode();
 
 	//! get the damage type this object does when hitting something
-	virtual uint16_t getDamageType();
+	virtual uint16 getDamageType();
 
 	//! receive a hit
 	//! \param other The item delivering the hit
 	//! \param dir The direction the hit is coming from (or inverse? CHECKME!)
 	//! \param damage The force of the hit. Zero for default
 	//! \param type The type of damage done. Zero for default
-	virtual void receiveHit(ObjId other, int dir, int damage, uint16_t type);
+	virtual void receiveHit(ObjId other, int dir, int damage, uint16 type);
 
 	//! count nearby objects of a given shape
-	unsigned int countNearby(uint32_t shape, uint16_t range);
+	unsigned int countNearby(uint32 shape, uint16 range);
 
 	//! can this item be dragged?
 	bool canDrag();
@@ -316,35 +316,35 @@ public:
 	//! \param script The loopscript to run
 	//! \param scriptsize The size (in bytes) of the loopscript
 	//! \return true if the item matches, false otherwise
-	bool checkLoopScript(const uint8_t* script, uint32_t scriptsize);
+	bool checkLoopScript(const uint8* script, uint32 scriptsize);
 	
-	uint32_t callUsecodeEvent_look();								// event 0
-	uint32_t callUsecodeEvent_use();								// event 1
-	uint32_t callUsecodeEvent_anim();								// event 2
-	uint32_t callUsecodeEvent_cachein();							// event 4
-	uint32_t callUsecodeEvent_hit(ObjId hitted, int16_t hitforce);	// event 5
-	uint32_t callUsecodeEvent_gotHit(ObjId hitter, int16_t hitforce);// event 6
-	uint32_t callUsecodeEvent_hatch();							// event 7
-	uint32_t callUsecodeEvent_schedule(uint32_t time);				// event 8
-	uint32_t callUsecodeEvent_release();							// event 9
-	uint32_t callUsecodeEvent_combine();							// event C
-	uint32_t callUsecodeEvent_enterFastArea();					// event F
-	uint32_t callUsecodeEvent_leaveFastArea();					// event 10
-	uint32_t callUsecodeEvent_cast(uint16_t unk);					// event 11
-	uint32_t callUsecodeEvent_justMoved();						// event 12
-	uint32_t callUsecodeEvent_AvatarStoleSomething(uint16_t unk);	// event 14
-	uint32_t callUsecodeEvent_guardianBark(int16_t unk);			// event 15
+	uint32 callUsecodeEvent_look();								// event 0
+	uint32 callUsecodeEvent_use();								// event 1
+	uint32 callUsecodeEvent_anim();								// event 2
+	uint32 callUsecodeEvent_cachein();							// event 4
+	uint32 callUsecodeEvent_hit(ObjId hitted, sint16 hitforce);	// event 5
+	uint32 callUsecodeEvent_gotHit(ObjId hitter, sint16 hitforce);// event 6
+	uint32 callUsecodeEvent_hatch();							// event 7
+	uint32 callUsecodeEvent_schedule(uint32 time);				// event 8
+	uint32 callUsecodeEvent_release();							// event 9
+	uint32 callUsecodeEvent_combine();							// event C
+	uint32 callUsecodeEvent_enterFastArea();					// event F
+	uint32 callUsecodeEvent_leaveFastArea();					// event 10
+	uint32 callUsecodeEvent_cast(uint16 unk);					// event 11
+	uint32 callUsecodeEvent_justMoved();						// event 12
+	uint32 callUsecodeEvent_AvatarStoleSomething(uint16 unk);	// event 14
+	uint32 callUsecodeEvent_guardianBark(sint16 unk);			// event 15
 
-	uint32_t use();
+	uint32 use();
 
 	//! Get lerped location.
-	inline void getLerped(int32_t& x, int32_t& y, int32_t& z) const
+	inline void getLerped(sint32& x, sint32& y, sint32& z) const
 		{ x = ix; y = iy; z = iz; }
 
 	//! Do lerping for an in between frame (0-256)
 	//! The result can be retrieved with getLerped(x,y,z)
 	//! \param factor The lerp factor: 0 is start of move, 256 is end of move
-	inline void doLerp(int32_t factor)
+	inline void doLerp(sint32 factor)
 	{
 	// Should be noted that this does indeed limit us to 'only' 24bit coords
 	// not that it matters because on disk they are unsigned 16 bit
@@ -377,7 +377,7 @@ public:
 	}
 
 	//! Setup the lerped info for this gametick and animate the item
-	void setupLerp(int32_t gametick);		
+	void setupLerp(sint32 gametick);		
 
 	//! The item has entered the fast area
 	virtual void enterFastArea(); 
@@ -389,7 +389,7 @@ public:
 	//! dump some info about this item to pout
 	virtual void dumpInfo();
 
-	bool loadData(IDataSource* ids, uint32_t version);
+	bool loadData(IDataSource* ids, uint32 version);
 
 	// Intrinsics
 	INTRINSIC(I_touch);
@@ -476,18 +476,18 @@ public:
 	INTRINSIC(I_isCrusTypeNPC);
 
 private:
-	uint32_t shape;	// DO NOT modify this directly! Always use setShape()!
+	uint32 shape;	// DO NOT modify this directly! Always use setShape()!
 
 protected:
-	uint32_t frame;
+	uint32 frame;
 
-	int32_t x,y,z; // world coordinates
-	uint16_t flags;
-	uint16_t quality;
-	uint16_t npcnum;
-	uint16_t mapnum;
+	sint32 x,y,z; // world coordinates
+	uint16 flags;
+	uint16 quality;
+	uint16 npcnum;
+	uint16 mapnum;
 
-	uint32_t extendedflags; // pentagram's own flags
+	uint32 extendedflags; // pentagram's own flags
 
 	ObjId parent; // objid container this item is in (or 0 for top-level items)
 
@@ -497,13 +497,13 @@ protected:
 	// This is stuff that is used for displaying and interpolation
 	struct Lerped
 	{
-		int32_t x,y,z;
-		uint32_t shape,frame;
+		sint32 x,y,z;
+		uint32 shape,frame;
 	};
 	
 	Lerped	l_prev;			// Previous state (relative to camera)
 	Lerped	l_next;			// Next (current) state (relative to camera)
-	int32_t	ix,iy,iz;		// Interpolated position in camera space
+	sint32	ix,iy,iz;		// Interpolated position in camera space
 
 	ObjId gump;			// Item's gump
 	ProcId gravitypid;		// Item's GravityTracker (or 0)
@@ -514,10 +514,10 @@ protected:
 private:
 
 	//! Call a Usecode Event. Use the separate functions instead!
-	uint32_t callUsecodeEvent(uint32_t event, const uint8_t* args=0, int argsize=0);
+	uint32 callUsecodeEvent(uint32 event, const uint8* args=0, int argsize=0);
 
 	//! The gametick setupLerp was last called on
-	int32_t	last_setup;	
+	sint32	last_setup;	
 
 	//! Animate the item (called by setupLerp)
 	void animateItem();
@@ -559,7 +559,7 @@ inline ShapeInfo* Item::getShapeInfo() const
 	return cachedShapeInfo;
 }
 
-inline void Item::getFootpadData(int32_t& X, int32_t& Y, int32_t& Z) const
+inline void Item::getFootpadData(sint32& X, sint32& Y, sint32& Z) const
 {
 	ShapeInfo* si = getShapeInfo();
 	Z = si->z;
@@ -574,7 +574,7 @@ inline void Item::getFootpadData(int32_t& X, int32_t& Y, int32_t& Z) const
 }
 
 // like getFootpadData, but scaled to world coordinates
-inline void Item::getFootpadWorld(int32_t& X, int32_t& Y, int32_t& Z) const
+inline void Item::getFootpadWorld(sint32& X, sint32& Y, sint32& Z) const
 {
 	ShapeInfo* si = getShapeInfo();
 	Z = si->z * 8;
@@ -588,7 +588,7 @@ inline void Item::getFootpadWorld(int32_t& X, int32_t& Y, int32_t& Z) const
 	}
 }
 
-inline void Item::getLocation(int32_t& X, int32_t& Y, int32_t& Z) const
+inline void Item::getLocation(sint32& X, sint32& Y, sint32& Z) const
 {
 	X = x;
 	Y = y;
